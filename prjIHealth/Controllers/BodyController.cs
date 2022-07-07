@@ -9,7 +9,20 @@ namespace prjiHealth.Controllers
 {
     public class BodyController : Controller
     {
-        public IActionResult Index()
+        public IActionResult BodyCalculatorMain()
+        {
+            return View();
+        }
+        public IActionResult BMICalculator()
+        {
+            return View();
+        }
+        //[HttpPost]
+        //public IActionResult BMICalculator(CBodyRecordViewModel body)
+        //{
+        //    return View(body);
+        //}
+        public IActionResult TDEECalculator()
         {
             return View();
         }
