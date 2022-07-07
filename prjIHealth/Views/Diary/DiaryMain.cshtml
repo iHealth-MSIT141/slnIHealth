@@ -1,0 +1,343 @@
+﻿
+@{
+    ViewData["Title"] = "iHealth 我的飲食日誌";
+}
+
+
+
+@section Styles{
+    <style>
+        .bodyForm {
+            margin-bottom:3vw;
+        }
+            .bodyForm fieldset {
+                border: 2px dotted green;
+                border-radius: 20px;
+                padding-bottom: 1vw;
+            }
+            .bodyForm legend {
+                margin-left: 3vw;
+                padding:5px;
+                width:130px;
+                font-size:20px;
+            }
+        #btnUpdateBody {
+            position: absolute;
+            bottom: 1vw;
+        }
+        .pro-qty{
+            width:130px;
+        }
+            .pro-qty .qtybtn {
+                width: 10px;
+            }
+        .pro-qty input{
+            width:40px;
+        }
+        .shoping-cart {
+            padding: 0;
+        }
+        .shoping__cart__table table tbody tr td {
+            padding-bottom: 0;
+        }
+        .product__discount__title {
+            margin-bottom: 0px; 
+        }
+        .product__discount__title h2{
+            font-size:22px;
+        }
+    </style>
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2 class="reveal_t1">我的飲食日誌</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        @*<a href="./index.html">Home</a>
+                        <span>Shop</span>*@
+                        <br />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>會員專區</h4>
+                        <ul>
+                            <li><a href="#">個人資料</a></li>
+                            <li><a href="#">訂單查詢</a></li>
+                            <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
+                            <li><a href="#">客服記錄</a></li>
+                        </ul>
+                        <br />
+                        <br />
+                        <br />
+                        <h4>預約平台</h4>
+                        <ul>
+                            <li><a href="#">履歷管理</a></li>
+                            <li><a href="#">教練連繫記錄</a></li>
+                            <li><a href="#">課程列表</a></li>
+                            <li><a href="#">課程行事曆</a></li>
+                            <li><a href="#">候選教練</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                @*※※※會員專區View內容請從此開始※※※*@
+                <div class="row">
+                    <div class="col-lg-12 bodyForm">
+                        <form>
+                            <fieldset class="row">
+                                <legend>我的身體數據</legend>
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        @*<label class="control-label">身高(cm)</label><span class="text-danger"></span>*@
+                                        <input class="form-control" id="inpHeight" type="text" pattern="^[0-9]+(.[0-9])?$$" placeholder="身高(cm)" required />
+                                    </div>
+                                    <div class="form-group">
+                                        @*<label class="control-label">體重(kg)</label><span class="text-danger"></span>*@
+                                        <input class="form-control" id="inpWeight" type="text" pattern="^[0-9]+(.[0-9])?$" placeholder="體重(kg)" required />
+                                    </div>
+                                    <div class="form-group">
+                                        @*<label class="control-label">活動量</label><span class="text-danger"></span>*@
+                                        <select id="inpWorkload" required>
+                                            <option value="" style="display: none">活動量</option>
+                                            <option value="1.2">趨於靜態</option>
+                                            <option value="1.375">每周運動1~3天</option>
+                                            <option value="1.55">每周運動3~5天</option>
+                                            <option value="1.72">每周運動6~7天</option>
+                                            <option value="1.9">長時間運動或體力勞動工作者</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        @*<label class="control-label">身高(cm)</label><span class="text-danger"></span>*@
+                                        <input class="form-control" id="inpHeight" type="text" pattern="^[0-9]+(.[0-9])?$$" placeholder="BMI" required />
+                                    </div>
+                                    <div class="form-group">
+                                        @*<label class="control-label">體重(kg)</label><span class="text-danger"></span>*@
+                                        <input class="form-control" id="inpWeight" type="text" pattern="^[0-9]+(.[0-9])?$" placeholder="體脂率" required />
+                                    </div>
+                                    <div class="form-group">
+                                        @*<label class="control-label">體重(kg)</label><span class="text-danger"></span>*@
+                                        <input class="form-control" id="inpWeight" type="text" pattern="^[0-9]+(.[0-9])?$" placeholder="TDEE" required />
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button type="button" class="site-btn" id="btnUpdateBody">更新</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                    <div class="col-lg-8">
+
+                        <div class="section-title product__discount__title">
+                            <h2>早餐</h2>
+                            @*<div class="shoping__checkout">
+            <h5>Cart Total</h5>
+            <ul>
+                <li>Subtotal <span>$454.98</span></li>
+                <li>Total <span>$454.98</span></li>
+            </ul>
+            <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+        </div>*@
+                            <section class="shoping-cart">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="shoping__cart__table">
+                                                <table>
+                                                    @*<thead>
+                                                        <tr>
+                                                            <th class="shoping__product">食物</th>
+                                                            <th>數量</th>
+                                                            <th>單位</th>
+                                                            <th>熱量(kcal)</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>*@
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="col-lg-2">
+                                                                <h5>蘋果</h5>
+                                                            </td>
+                                                            <td class="col-lg-3">
+                                                                <div class="quantity">
+                                                                    <div class="pro-qty">
+                                                                        <span class="dec qtybtn"></span>
+                                                                        <input type="text" value="20">
+                                                                        <span class="inc qtybtn"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-lg-2">
+                                                                顆
+                                                            </td>
+                                                            <td class="col-lg-3">
+                                                                250
+                                                            </td>
+                                                            <td class="col-lg-2">
+                                                                <span class="icon_close"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="section-title product__discount__title">
+                            <h2>午餐</h2>
+                            <section class="shoping-cart">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="shoping__cart__table">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="col-lg-2">
+                                                                <h5>蘋果</h5>
+                                                            </td>
+                                                            <td class="col-lg-3">
+                                                                <div class="quantity">
+                                                                    <div class="pro-qty">
+                                                                        <span class="dec qtybtn"></span>
+                                                                        <input type="text" value="20">
+                                                                        <span class="inc qtybtn"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-lg-2">
+                                                                顆
+                                                            </td>
+                                                            <td class="col-lg-3">
+                                                                250
+                                                            </td>
+                                                            <td class="col-lg-2">
+                                                                <span class="icon_close"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td class="col-lg-2">
+                                                                <h5>蘋果</h5>
+                                                            </td>
+                                                            <td class="col-lg-3">
+                                                                <div class="quantity">
+                                                                    <div class="pro-qty">
+                                                                        <span class="dec qtybtn"></span>
+                                                                        <input type="text" value="20">
+                                                                        <span class="inc qtybtn"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-lg-2">
+                                                                顆
+                                                            </td>
+                                                            <td class="col-lg-3">
+                                                                250
+                                                            </td>
+                                                            <td class="col-lg-2">
+                                                                <span class="icon_close"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="section-title product__discount__title">
+                            <h2>晚餐</h2>
+                            <section class="shoping-cart">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="shoping__cart__table">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="section-title product__discount__title">
+                            <h2>其他</h2>
+                            <section class="shoping-cart">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="shoping__cart__table">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="checkout__order" style="text-align:center">
+                            <div class="section-title">
+                                <h2 style="font-size:30px">今日攝取</h2>
+                            </div>
+                            <h4 style="font-size:26px;position:relative;bottom:20px">980 大卡</h4>
+
+                            <div class="section-title">
+                                <h2 style="font-size:30px">尚可攝取</h2>
+                            </div>
+                            <h4 style="font-size: 26px; position: relative; bottom: 20px">220 大卡</h4>
+                            <div class="blog__item__text"><a href="#" class="blog__btn"><span class="arrow_up"></span>TOP</a></div>
+                        </div>
+                        
+                    </div>
+
+
+                </div>
+                
+                @*※※※會員專區View內容請從此結束※※※*@
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+
+}
