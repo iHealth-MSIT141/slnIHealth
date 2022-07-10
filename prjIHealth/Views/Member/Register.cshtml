@@ -1,0 +1,172 @@
+﻿@model prjIHealth.Models.TMember
+
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card card-registration my-4">
+                    <div class="row g-0">
+                        <div class="col-xl-6 d-none d-xl-block">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                                 alt="Sample photo" class="img-fluid"
+                                 style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card-body p-md-5 text-black">
+                                <h3 class="mb-5 text-uppercase">歡迎加入IHealth會員!</h3>
+                                @*@using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()*@
+                                <form asp-action="Register">
+                                    <div class="form-outline mb-4">
+                                        <input asp-for="FUserName" class="form-control" placeholder="帳號,至少需二個字(含)以上" autocomplete="off"/>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input asp-for="FMemberName" class="form-control" placeholder="姓名" autocomplete="off"/>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input asp-for="FPassword" class="form-control" placeholder="密碼需含數字, 大,小寫英文字母" autocomplete="off"/>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input asp-for="FAddress" class="form-control " placeholder="地址"autocomplete="off" />
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input asp-for="FPhone" class="form-control" placeholder="電話" autocomplete="off"/>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input asp-for="FEmail" class="form-control" placeholder="電子郵件信箱" autocomplete="off"/>
+                                    </div>
+                                    <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
+                                        <h6 class="mb-0 me-4">生理性別: </h6>
+                                        <div class="form-check form-check-inline mb-0 me-4">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"
+                                                   value="option1" />
+                                            <label class="form-check-label" for="femaleGender">Female</label>
+                                        </div>
+                                        <div class="form-check form-check-inline mb-0 me-4">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"
+                                                   value="option2" />
+                                            <label class="form-check-label" for="maleGender">Male</label>
+                                        </div>
+
+                                        <div class="form-check form-check-inline mb-0">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="otherGender"
+                                                   value="option3" />
+                                            <label class="form-check-label" for="otherGender">Other</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input type="hidden"  asp-for="FAuthorityId" class="form-control" placeholder="authoid" />
+
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input type="hidden" asp-for="FRegisterDate" class="form-control" />
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input type="hidden" asp-for="FRemarks" class="form-control" />
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input type="hidden" value="true" asp-for="FDisabled" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-md-8 col-md-4-offset">
+                                        <input type="submit" value="送出" class="btn btn-primary" />
+                                        <input type="reset" value="重設" class="btn btn-danger" />
+                                    </div>
+                                    @*}*@
+                                </form >
+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+
+
+
+
+
+
+<!--<h1 class="h4 text-gray-900 mb-4">歡迎加入IHealth會員!</h1>
+</div>
+                                              <hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Register">
+            <div class="form-group">
+                <input asp-for="FUserName" class="form-control" placeholder="帳號,至少需二個字(含)以上" />
+            </div>
+            <div class="form-group">
+                <input asp-for="FPassword" class="form-control" placeholder="密碼需含數字, 大,小寫英文字母" />
+            </div>
+            <div class="form-group">
+                <input asp-for="FMemberName" class="form-control"  placeholder="姓名"/>
+            </div>
+            <div class="form-group">
+                <input asp-for="FBirthday" class="form-control" placeholder="生日" />
+            </div>
+                    <div class="input-group">
+                            <div class="input-group-text">
+                                <input  aria-label="Radio button for following text input" asp-for="FGender">
+                        </div>
+                    </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="FAuthorId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input asp-for="FAddress" class="form-control" placeholder="地址" />
+            </div>
+            <div class="form-group">
+                <input asp-for="FPhone" class="form-control"  placeholder="電話"/>
+            </div>
+            <div class="form-group">
+                <input asp-for="FEmail" class="form-control"  placeholder="電子郵件信箱"/>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="FRegisterDate" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="FRemarks" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Fdisable" class="form-control" />
+            </div>
+            <div class="form-group">-->
+@*<input asp-for="FPicturePath" class="form-control" />*@
+<!--</div>
+<div class="form-group">
+    <input type="submit" value="送出" class="btn btn-primary" />-->
+
+
+
+<body class="bg-gradient-primary">
+
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+</body>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*※※※非會員專區的View的內容請從此處開始※※※*@
+
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+
+}

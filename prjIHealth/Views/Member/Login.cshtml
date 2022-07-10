@@ -1,0 +1,87 @@
+﻿@model prjIHealth.Models.TMember
+
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card card-registration my-4">
+                    <div class="row g-0">
+                        <div class="col-xl-6 d-none d-xl-block">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                                 alt="Sample photo" class="img-fluid"
+                                 style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card-body p-md-5 text-black">
+                                <h3 class="mb-5 text-uppercase">歡迎加入IHealth會員!</h3>
+
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+                                        <hr />
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                        <input type="hidden" name="fAuthorityId" id="fAuthorityId">
+                                        <div class="form-outline mb-4">
+                                            <div class="col-md-12 mb-3">
+                                                @Html.TextBox("fUserName", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入帳號" })
+                                            </div>
+                                            <div class="col-md-12 mb-3">
+                                                @Html.TextBox("fPassword", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入密碼" })
+                                            </div>
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <label class="custom-control-label" for="customCheck">記住帳號  </label>
+                                            </div>
+                                            <div class=" col-md-12  ">
+                                                <input type="submit" value="會員登入" class="btn btn-primary ">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+
+                                        </div>
+                                    </div>
+                                }
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<body class="bg-gradient-primary">
+
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+</body>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*※※※非會員專區的View的內容請從此處開始※※※*@
+
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+
+}
+
+
+
