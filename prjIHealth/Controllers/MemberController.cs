@@ -8,7 +8,14 @@ namespace prjiHealth.Controllers
 {
     public class MemberController : Controller
     {
-
+        public IActionResult OrderList()
+        {
+            return View();
+        }
+        public IActionResult OrderdetailList()
+        {
+            return View();
+        }
 
     }
 }
