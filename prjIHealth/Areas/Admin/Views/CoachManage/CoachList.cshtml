@@ -1,0 +1,350 @@
+﻿@*@model IEnumerable<prjIHealth.Models.TCoach>*@
+
+@{
+    ViewData["Title"] = "iHeath後臺";
+    Layout = "~/Areas/Admin/Admin_Layout.cshtml";
+}
+@section Styles{
+
+    <style>
+        .modal-content {
+            padding: 10px;
+        }
+        .modal-title {
+            color: #7FAD39;
+            font-weight:600;
+        }
+        .dlResume {
+            text-align: left;
+        }
+        
+        .ddImg{
+            width:120px;
+            height:160px;
+            
+        }
+        .btn-light {
+            background-color: #7FAD39;
+            color: white;
+        }
+
+            .btn-light:hover {
+                background-color: #4F6C24;
+                color: white;
+            }
+        .btn-success {
+            background-color: #DFEACE;
+            color:black;
+            border:none;
+        }
+            .btn-success:hover {
+                background-color: #CFE0B5;
+                color: black;
+                border: none;
+            }
+        .divSearch {
+            width: 70%;
+            margin:15px auto;
+        }
+
+        .divSel {
+            padding: 0px;
+        }
+
+            .divSel > div {
+                width: 200px;
+            }
+
+        .divKeyword {
+            display: flex;
+        }
+
+        .divSubmit {
+            height: 38px;
+            padding: 0px;
+            margin: 0px;
+            text-align: center;
+        }
+    </style>
+}
+
+<h1>管理頁Demo-教練管理</h1>
+<section>
+    <div class="divSearch row">
+        <div class="divSel col-lg-3">
+            <select class="selCity">
+                <option value="1">臺北市</option>
+                <option value="2">新北市</option>
+                <option value="3">桃園市</option>
+            </select>
+        </div>
+        <div class="divSel col-lg-3">
+            <select>
+                <option value="1">肌肥大訓練</option>
+                <option value="2">體態評估與雕塑</option>
+                <option value="3">備賽指導</option>
+            </select>
+        </div>
+        <div class="col-lg-5 divKeyword">
+            <input type="text" class="form-control inKeyword" placeholder="請輸入教練編號或教練姓名">
+        </div>
+        <div class="divSubmit col-lg-1">
+            <button class="btn btn-light btnSearch" type="button">查詢</button>
+        </div>
+    </div>
+    <div>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        No.
+                    </th>
+                    <th>
+
+                        教練編號
+                    </th>
+
+                    <th>
+
+                        教練姓名
+                    </th>
+                    <th>
+
+                        所在城市
+                    </th>
+                    <th>
+
+                        申請時間
+                    </th>
+                    <th>
+
+                        履歷狀態
+                    </th>
+                    <th>
+
+                        公開狀態
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @*@foreach (var item in Model)
+                    {*@
+                <tr>
+                    <td>
+                        1
+                    </td>
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FCoachId)*@
+                        4
+                    </td>
+
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FMemberId)*@
+                        Michael
+                    </td>
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FRegionId)*@
+                        台北市
+                    </td>
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FApplyDate)*@
+                        2022-06-25 20:34:58
+                    </td>
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FStatusNumber)*@
+                        審核中
+                    </td>
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FVisible)*@
+                        未公開
+                    </td>
+                    <td class="details">
+                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                        @*@Html.ActionLink("查看履歷", "ViewResume", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-light" })*@
+                        @Html.ActionLink("審核通過", "Edit", new { @*/* id = Model.PrimaryKey */*@}, new { @class = "btn btn-light" })
+                        @Html.ActionLink("退回申請", "Edit", new { @*/* id = Model.PrimaryKey */*@}, new { @class = "btn btn-secondary" })
+                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">查看履歷</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        2
+                    </td>
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FCoachId)*@
+                        15
+                    </td>
+
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FMemberId)*@
+                        Tom
+                    </td>
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FRegionId)*@
+                        新北市
+                    </td>
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FApplyDate)*@
+                        2022-07-3 11:50:38
+                    </td>
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FStatusNumber)*@
+                        審核中
+                    </td>
+                    <td>
+                        @*@Html.DisplayNameFor(model => model.FVisible)*@
+                        未公開
+                    </td>
+                    <td class="details">
+                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                        @*@Html.ActionLink("查看履歷", "ViewResume", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-light" })*@
+                        @Html.ActionLink("審核通過", "Edit", new { @*/* id = Model.PrimaryKey */*@}, new { @class = "btn btn-light" })
+                        @Html.ActionLink("退回申請", "Edit", new { @*/* id = Model.PrimaryKey */*@}, new { @class = "btn btn-secondary" })
+                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">查看履歷</button>
+                    </td>
+                </tr>
+                @*}*@
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">教練履歷<span></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl class="row dlResume">
+                    <dt class="col-sm-3">
+                        教練編號
+                        @*Html.DisplayNameFor(model => model.FCoachId)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        4
+                        @*Html.DisplayFor(model => model.FCoachId)*@
+                    </dd>
+                    <dt class="col-sm-3">
+                        會員編號
+                        @*Html.DisplayNameFor(model => model.FMemberId)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        23
+                        @*Html.DisplayFor(model => model.FMemberId)*@
+                    </dd>
+                    <dt class="col-sm-3">
+                        所在城市
+                        @*Html.DisplayNameFor(model => model.FRegionId)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        台北市
+                        @*Html.DisplayFor(model => model.FRegionId)*@
+                    </dd>
+                    <dt class="col-sm-3">
+                        照片
+                    </dt>
+                    <dd class="col-sm-9">
+                        <img class="ddImg" src="" />
+                    </dd>
+                    <dt class="col-sm-3">
+                        專長種類
+                    </dt>
+                    <dd class="col-sm-9">
+                        肌肥大訓練、體態評估與雕塑、備賽指導
+                    </dd>
+                    <dt class="col-sm-3">
+                        經歷
+                        @*Html.DisplayNameFor(model => model.FExperience)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        People Fitness 全民運動健身中心 兼職教練
+                        @*Html.DisplayFor(model => model.FExperience)*@
+                    </dd>
+                    <dt class="col-sm-3">
+
+                        @*Html.DisplayNameFor(model => model.FExperience)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        Dynasty 皇家官邸聯誼會 私人教練
+                        @*Html.DisplayFor(model => model.FExperience)*@
+                    </dd>
+                    <dt class="col-sm-3">
+                        相關證照
+                        @*Html.DisplayNameFor(model => model.FLicense)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        NASM-CPT美國運動醫學私人教練認證
+                        @*Html.DisplayFor(model => model.FLicense)*@
+                    </dd>
+                    <dt class="col-sm-3">
+
+                        @*Html.DisplayNameFor(model => model.FLicense)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        中華民國健身協會體適能健身C級證照
+                        @*Html.DisplayFor(model => model.FLicense)*@
+                    </dd>
+                    <dt class="col-sm-3">
+                        希望待遇
+                        @*Html.DisplayNameFor(model => model.FCoachFee)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        1500-1600
+                        @*Html.DisplayFor(model => model.FCoachFee)*@
+                    </dd>
+                    <dt class="col-sm-3">
+                        介紹
+                        @*Html.DisplayNameFor(model => model.FCoachDescription)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        跟著Michael的腳步找回自信體態！
+                        @*Html.DisplayFor(model => model.FCoachDescription)*@
+                    </dd>
+                    <dt class="col-sm-3">
+                        申請時間
+                        @*Html.DisplayNameFor(model => model.FApplyDate)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        2022-06-25 20:34:58
+                        @*Html.DisplayFor(model => model.FApplyDate)*@
+                    </dd>
+                    <dt class="col-sm-3">
+                        履歷狀態
+                        @*Html.DisplayNameFor(model => model.FStatusNumber)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        審核中
+                        @*Html.DisplayFor(model => model.FStatusNumber)*@
+                    </dd>
+                    <dt class="col-sm-3">
+                        公開狀態
+                        @*Html.DisplayNameFor(model => model.FVisible)*@
+                    </dt>
+                    <dd class="col-sm-9">
+                        未公開
+                        @*Html.DisplayFor(model => model.FVisible)*@
+                    </dd>
+                </dl>
+            </div>            
+        </div>
+    </div>
+</div>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
