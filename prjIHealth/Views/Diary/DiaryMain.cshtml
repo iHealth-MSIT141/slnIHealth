@@ -1,4 +1,4 @@
-﻿
+@*@model prjIHealth.ViewModels.CDiaryViewModel*@
 @{
     ViewData["Title"] = "iHealth 我的飲食日誌";
 }
@@ -6,51 +6,168 @@
 
 
 @section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+
+        /*個人身體數據檔案樣式*/
         .bodyForm {
-            margin-bottom:3vw;
+            margin-bottom: 3vw;
+
         }
+
             .bodyForm fieldset {
                 border: 2px dotted green;
                 border-radius: 20px;
                 padding-bottom: 1vw;
             }
+
             .bodyForm legend {
                 margin-left: 3vw;
-                padding:5px;
-                width:130px;
-                font-size:20px;
+                padding: 5px;
+                width: 130px;
+                font-size: 20px;
             }
-        #btnUpdateBody {
+
+        .form-control:disabled {
+            background-color: transparent;
+            color: black;
+        }
+
+        #selWorkload {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+            #selWorkload:disabled {
+                color: black;
+                background-color: transparent;
+            }
+
+        .divEditBody {
             position: absolute;
             bottom: 1vw;
         }
-        .pro-qty{
-            width:130px;
+
+        #btnQuitEdit {
+            background-color: indianred;
         }
-            .pro-qty .qtybtn {
-                width: 10px;
+
+        /*飲食日誌樣式*/
+        .fa-circle-plus {
+            padding: 0;
+            border: none;
+            margin-right: 30px;
+            font-size: 22px;
+            color: #7fad39;
+            background-color: transparent;
+        }
+
+            .fa-circle-plus:hover {
+                font-size: 26px;
             }
-        .pro-qty input{
-            width:40px;
-        }
+
         .shoping-cart {
             padding: 0;
         }
+
         .shoping__cart__table table tbody tr td {
-            padding-bottom: 0;
+            padding: 10px 0 0 0;
         }
+
+        .pro-qty {
+            width: 130px;
+            height: 30px;
+        }
+
+            .pro-qty .qtybtn {
+                width: 10px;
+            }
+
+            .pro-qty input {
+                width: 40px;
+            }
+
+        .icon_close {
+            border: none;
+            background-color: transparent;
+        }
+
+        /*攝取量樣式*/
         .product__discount__title {
-            margin-bottom: 0px; 
+            margin-bottom: 0px;
         }
-        .product__discount__title h2{
-            font-size:22px;
+
+            .product__discount__title h2 {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+
+        /*日期選擇器樣式*/
+        #divDatepicker {
+            margin-bottom: 40px;
+            border: 4px solid #7fad39;
+            border-radius: 20px;
+            padding: 0;
+            display: flex;
+        }
+
+            #divDatepicker input {
+                font-size: 16px;
+                background-color: #f5f5f5;
+                border: none;
+            }
+
+        .fa-caret-left, .fa-caret-right {
+            margin-bottom: 8px;
+            border: none;
+            background-color: transparent;
+        }
+
+        /*彈出視窗樣式*/
+        .modal-title {
+            color: #7fad39;
+            font-weight: 800;
+        }
+
+        .modal-footer {
+            justify-content: center;
+        }
+
+        /*彈出視窗-新增紀錄樣式*/
+        #selMeal {
+            width: auto;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        #inpSearchName {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #495057;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            display: inline;
+            width: auto;
+            border-radius: 5px;
+        }
+
+        #btnAddFood {
+            float: right;
+            border: none;
+            background-color: transparent;
+            color: #7fad39;
+        }
+
+        /*彈出視窗-新增食物樣式*/
+        .text-danger {
+            float: right;
         }
     </style>
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -59,7 +176,7 @@
                     <h2 class="reveal_t1">我的飲食日誌</h2>
                     <div class="breadcrumb__option reveal_t1">
                         @*<a href="./index.html">Home</a>
-                        <span>Shop</span>*@
+                            <span>Shop</span>*@
                         <br />
                     </div>
                 </div>
@@ -72,7 +189,8 @@
 <section class="product spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-5">
+            @*會員專區垂直導覽列*@
+            <div class="col-lg-3 col-md-5 reveal_b1" >
                 <div class="sidebar">
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
@@ -92,7 +210,6 @@
                             <li><a href="#">課程列表</a></li>
                             <li><a href="#">課程行事曆</a></li>
                             <li><a href="#">候選教練</a></li>
-
                         </ul>
                     </div>
                 </div>
@@ -100,104 +217,78 @@
             <div class="col-lg-9 col-md-7">
                 @*※※※會員專區View內容請從此開始※※※*@
                 <div class="row">
-                    <div class="col-lg-12 bodyForm">
-                        <form>
+
+                    @*個人身體數據檔案*@
+                    <div class="col-lg-12 bodyForm reveal_b1">
+                        <form id="frmMyBoby">
                             <fieldset class="row">
                                 <legend>我的身體數據</legend>
                                 <div class="col-lg-5">
                                     <div class="form-group">
-                                        @*<label class="control-label">身高(cm)</label><span class="text-danger"></span>*@
-                                        <input class="form-control" id="inpHeight" type="text" pattern="^[0-9]+(.[0-9])?$$" placeholder="身高(cm)" required />
+                                        <input class="form-control" id="inpHeight" type="text" pattern="^[0-9]+(.[0-9])?$$" placeholder="請輸入身高(cm)" required disabled />
                                     </div>
                                     <div class="form-group">
-                                        @*<label class="control-label">體重(kg)</label><span class="text-danger"></span>*@
-                                        <input class="form-control" id="inpWeight" type="text" pattern="^[0-9]+(.[0-9])?$" placeholder="體重(kg)" required />
+                                        <input class="form-control" id="inpWeight" type="text" pattern="^[0-9]+(.[0-9])?$" placeholder="請輸入體重(kg)" required disabled />
                                     </div>
-                                    <div class="form-group">
-                                        @*<label class="control-label">活動量</label><span class="text-danger"></span>*@
-                                        <select id="inpWorkload" required>
-                                            <option value="" style="display: none">活動量</option>
-                                            <option value="1.2">趨於靜態</option>
-                                            <option value="1.375">每周運動1~3天</option>
-                                            <option value="1.55">每周運動3~5天</option>
-                                            <option value="1.72">每周運動6~7天</option>
-                                            <option value="1.9">長時間運動或體力勞動工作者</option>
-                                        </select>
+                                    <div class="form-group" id="divWorkload">
+                                        @*<select id="selWorkload" required disabled>
+                                                <option value="" style="display: none">請選擇活動量</option>
+                                                <option value="1.2">趨於靜態</option>
+                                                <option value="1.375">每周運動1~3天</option>
+                                                <option value="1.55">每周運動3~5天</option>
+                                                <option value="1.72">每周運動6~7天</option>
+                                                <option value="1.9">長時間運動或體力勞動工作者</option>
+                                            </select>*@
                                     </div>
                                 </div>
-                                <div class="col-lg-5">
+                                <div class="col-lg-5" id="divBodyNum">
                                     <div class="form-group">
-                                        @*<label class="control-label">身高(cm)</label><span class="text-danger"></span>*@
-                                        <input class="form-control" id="inpHeight" type="text" pattern="^[0-9]+(.[0-9])?$$" placeholder="BMI" required />
+                                        <input class="form-control" id="inpBMI" type="text" placeholder="BMI" disabled />
                                     </div>
                                     <div class="form-group">
-                                        @*<label class="control-label">體重(kg)</label><span class="text-danger"></span>*@
-                                        <input class="form-control" id="inpWeight" type="text" pattern="^[0-9]+(.[0-9])?$" placeholder="體脂率" required />
+                                        <input class="form-control" id="inpFat" type="text" placeholder="體脂率" disabled />
                                     </div>
                                     <div class="form-group">
-                                        @*<label class="control-label">體重(kg)</label><span class="text-danger"></span>*@
-                                        <input class="form-control" id="inpWeight" type="text" pattern="^[0-9]+(.[0-9])?$" placeholder="TDEE" required />
+                                        <input class="form-control" id="inpTDEE" type="text" placeholder="每日熱量消耗" disabled />
                                     </div>
                                 </div>
                                 <div class="col-lg-2">
-                                    <button type="button" class="site-btn" id="btnUpdateBody">更新</button>
+                                    <button type="button" class="site-btn" id="btnQuitEdit" hidden>放棄</button>
+                                    <div class="divEditBody">
+                                        <button type="button" class="site-btn" id="btnEditBody">修改</button>
+                                    </div>
                                 </div>
                             </fieldset>
                         </form>
                     </div>
 
-                    <div class="col-lg-8">
+
+                    @*飲食日誌*@
+                    <div class="col-lg-8 reveal_b2" >
 
                         <div class="section-title product__discount__title">
+                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>早餐</h2>
-                            @*<div class="shoping__checkout">
-            <h5>Cart Total</h5>
-            <ul>
-                <li>Subtotal <span>$454.98</span></li>
-                <li>Total <span>$454.98</span></li>
-            </ul>
-            <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
-        </div>*@
                             <section class="shoping-cart">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="shoping__cart__table">
                                                 <table>
-                                                    @*<thead>
-                                                        <tr>
-                                                            <th class="shoping__product">食物</th>
-                                                            <th>數量</th>
-                                                            <th>單位</th>
-                                                            <th>熱量(kcal)</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>*@
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="col-lg-2">
-                                                                <h5>蘋果</h5>
-                                                            </td>
-                                                            <td class="col-lg-3">
-                                                                <div class="quantity">
-                                                                    <div class="pro-qty">
-                                                                        <span class="dec qtybtn"></span>
-                                                                        <input type="text" value="20">
-                                                                        <span class="inc qtybtn"></span>
-                                                                    </div>
+                                                    <tbody id="tbdBreakfast">
+                                                    <tr>
+                                                        <td hidden="">undefined</td>
+                                                        <td class="col-lg-4"><h5>蘋果</h5></td>
+                                                        <td class="col-lg-3">
+                                                            <div class="quantity">
+                                                                <div class="pro-qty">
+                                                                    <span class="dec qtybtn"></span>
+                                                                    <input type="text" value="1" readonly>
+                                                                    <span class="inc qtybtn"></span>
                                                                 </div>
-                                                            </td>
-                                                            <td class="col-lg-2">
-                                                                顆
-                                                            </td>
-                                                            <td class="col-lg-3">
-                                                                250
-                                                            </td>
-                                                            <td class="col-lg-2">
-                                                                <span class="icon_close"></span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-lg-2">顆</td><td class="col-lg-2">72<small> kcal</small></td><td class="col-lg-1"><button class="icon_close"></button></td></tr><tr><td hidden="">undefined</td><td class="col-lg-4"><h5>玉米</h5></td><td class="col-lg-3"><div class="quantity"><div class="pro-qty"><span class="dec qtybtn"></span><input type="text" value="1" readonly=""><span class="inc qtybtn"></span></div></div></td><td class="col-lg-2">碗</td><td class="col-lg-2">346<small> kcal</small></td><td class="col-lg-1"><button class="icon_close"></button></td></tr></tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -207,6 +298,7 @@
                         </div>
 
                         <div class="section-title product__discount__title">
+                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>午餐</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -214,54 +306,7 @@
                                         <div class="col-lg-12">
                                             <div class="shoping__cart__table">
                                                 <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="col-lg-2">
-                                                                <h5>蘋果</h5>
-                                                            </td>
-                                                            <td class="col-lg-3">
-                                                                <div class="quantity">
-                                                                    <div class="pro-qty">
-                                                                        <span class="dec qtybtn"></span>
-                                                                        <input type="text" value="20">
-                                                                        <span class="inc qtybtn"></span>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td class="col-lg-2">
-                                                                顆
-                                                            </td>
-                                                            <td class="col-lg-3">
-                                                                250
-                                                            </td>
-                                                            <td class="col-lg-2">
-                                                                <span class="icon_close"></span>
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="col-lg-2">
-                                                                <h5>蘋果</h5>
-                                                            </td>
-                                                            <td class="col-lg-3">
-                                                                <div class="quantity">
-                                                                    <div class="pro-qty">
-                                                                        <span class="dec qtybtn"></span>
-                                                                        <input type="text" value="20">
-                                                                        <span class="inc qtybtn"></span>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td class="col-lg-2">
-                                                                顆
-                                                            </td>
-                                                            <td class="col-lg-3">
-                                                                250
-                                                            </td>
-                                                            <td class="col-lg-2">
-                                                                <span class="icon_close"></span>
-                                                            </td>
-                                                        </tr>
+                                                    <tbody id="tbdLunch">
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -272,6 +317,7 @@
                         </div>
 
                         <div class="section-title product__discount__title">
+                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>晚餐</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -279,9 +325,7 @@
                                         <div class="col-lg-12">
                                             <div class="shoping__cart__table">
                                                 <table>
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
+                                                    <tbody id="tbdDinner">
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -292,6 +336,7 @@
                         </div>
 
                         <div class="section-title product__discount__title">
+                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>其他</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -299,9 +344,7 @@
                                         <div class="col-lg-12">
                                             <div class="shoping__cart__table">
                                                 <table>
-                                                    <tbody>
-                                                        <tr>
-                                                        </tr>
+                                                    <tbody id="tbdElse">
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -313,25 +356,123 @@
 
                     </div>
 
-                    <div class="col-lg-4">
-                        <div class="checkout__order" style="text-align:center">
-                            <div class="section-title">
-                                <h2 style="font-size:30px">今日攝取</h2>
-                            </div>
-                            <h4 style="font-size:26px;position:relative;bottom:20px">980 大卡</h4>
+                    @*彈出視窗-新增紀錄*@
+                    <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">新增飲食日誌<span></span></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form id="frmAddRecord">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group" id="divSelMeal">
+                                                    @*<select name="FMeal" id="selMeal" class="form-group">
+                                                            <option>早餐</option>
+                                                            <option>午餐</option>
+                                                            <option>晚餐</option>
+                                                            <option>其他</option>
+                                                        </select>
+                                                        <label style="padding:8px">吃了什麼呢?</label>*@
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>食物名稱<small style="margin-left: 10px; color: #495057">(請於右側列表點選食物)</small></label>
+                                                    <input type="text" id="inpFoodId" name="FFoodId" hidden>
+                                                    <input type="text" class="form-control" id="inpFoodName" name="FFoodName" placeholder="請於右側列表點選食物" required disabled>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>數量</label>
+                                                    <div class="quantity">
+                                                        <div class="pro-qty">
+                                                            <span class="dec qtybtn"></span>
+                                                            <input id="inpQuantity" name="FQuantity" type="text" value="1">
+                                                            <span class="inc qtybtn"></span>
+                                                        </div>
+                                                        <span id="spnUnit" name="FUnit"></span>@*單位*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6" style="height:233px;overflow:auto">
 
-                            <div class="section-title">
-                                <h2 style="font-size:30px">尚可攝取</h2>
+                                                <label style="font-weight:800">食物列表</label>
+                                                <input type="text" id="inpSearchFood" placeholder="搜尋食物名稱">
+                                                <button id="btnAddFood" type="button" data-toggle="modal" data-target="#addFoodModal" data-dismiss="modal">新增</button>
+                                                <table class="table table-hover table-sm">
+                                                    <tbody id="tbdFoodList">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="site-btn" id="btnSaveRecord">儲存</button>
+                                    </div>
+                                </form>
                             </div>
-                            <h4 style="font-size: 26px; position: relative; bottom: 20px">220 大卡</h4>
-                            <div class="blog__item__text"><a href="#" class="blog__btn"><span class="arrow_up"></span>TOP</a></div>
                         </div>
-                        
                     </div>
 
+                    @*彈出視窗-新增食物*@
+                    <div class="modal fade" id="addFoodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">新增食物<span></span></h5>
+                                    <button type="button" class="close" data-toggle="modal" data-target="#addRecordModal" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="frmAddFood">
+                                        <div class="form-group">
+                                            <label>食物名稱</label><span class="text-danger"></span>
+                                            <input type="text" class="form-control" id="inpNewFoodName" name="FFoodName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>單位</label>
+                                            <input type="text" class="form-control" id="inpNewUnit" name="FUnit">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>單位熱量(kcal)</label>
+                                            <input type="text" class="form-control" id="inpNewCalories" name="FCalories">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="site-btn" id="btnSaveFood">新增</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*日期、攝取量計算*@
+                    <div class="col-lg-4 reveal_b3">
+                        <div class="checkout__order" style="text-align:center;" id="divDateTake">
+                            <div id="divDatepicker">
+                                <button class="fa-solid fa-caret-left" id="btnPrevDate"></button>
+                                <input type="date" id="inpDatepicker" />
+                                <button class="fa-solid fa-caret-right" id="btnNextDate"></button>
+                            </div>
+                            <div class="section-title">
+                                <h2 style="font-size:30px">當日攝取</h2>
+                            </div>
+                            <h4 style="font-size:26px;position:relative;bottom:20px" id="hTodayTake">980 大卡</h4>
+                            <div class="section-title">
+                                <h2 style="font-size:30px" id="hLave">尚可攝取</h2>
+                            </div>
+                            <h4 style="font-size: 26px; position: relative; bottom: 20px" id="hTodayLave">220 大卡</h4>
+                            <div class="blog__item__text"><a href="#" class="blog__btn"><span class="arrow_up"></span>TOP</a></div>
+                        </div>
+                    </div>
 
                 </div>
-                
+
                 @*※※※會員專區View內容請從此結束※※※*@
             </div>
         </div>
@@ -339,5 +480,371 @@
 </section>
 
 @section Scripts{
+
+    <script>
+
+        var theTDEE;
+
+        //Datepicker預設為今日日期
+        var today;
+        function getToday() {
+            let date = new Date();
+            let dd = date.getDate();
+            let mm = date.getMonth() + 1;
+            let yyyy = date.getFullYear();
+            if (dd < 10) { dd = '0' + dd }
+            if (mm < 10) { mm = '0' + mm }
+            today = yyyy + '-' + mm + '-' + dd;
+            $("#inpDatepicker").attr("value", today);
+            $("#inpDatepicker").attr("max", today);
+        }
+        getToday();
+
+        //新增select(免受template影響)
+        $("#divWorkload").html("<select id='selWorkload' required disabled><option value='' style='display:none'> 請選擇活動量</option ><option value='1.2'>趨於靜態</option><option value='1.375'>每周運動1~3天</option><option value='1.55'>每周運動3~5天</option><option value='1.72'>每周運動6~7天</option><option value='1.9'>長時間運動或體力勞動工作者</option></select >");
+        $("#divSelMeal").html("<select name='FMeal' id='selMeal' class='form-group'><option>早餐</option><option>午餐</option><option>晚餐</option><option>其他</option></select><label style='padding:8px'>吃了什麼呢?</label>");
+
+        //==========個人身體數據檔案==========
+        //個人身體數據檔案設為唯讀
+        function notEdit() {
+            $("#divBodyNum").find("input").removeAttr("hidden");
+            $("#btnQuitEdit").attr("hidden", "hidden");
+            $("#inpHeight").attr("disabled", "disabled");
+            $("#inpWeight").attr("disabled", "disabled");
+            $("#selWorkload").attr("disabled", "disabled");
+            $("#btnEditBody").text("修改");
+        }
+
+        //顯示計算後身體數據+ call載入飲食日誌函式
+        function showBodyRecord() {
+            notEdit();
+            $.get("@Url.Content("~/Diary/getBodyRecord")", { "date": $("#inpDatepicker").val() }, function (data) {
+                $("#inpHeight").val(`身高: ${data.fHeight} cm`);
+                $("#inpWeight").val(`體重: ${data.fWeight} kg`);
+                $("#selWorkload").val(data.fWorkload);
+                $("#inpBMI").val(`BMI: ${data.numBMI}`);
+                $("#inpFat").val(`體脂率: ${data.numFat}%`);
+                $("#inpTDEE").val(`每日熱量消耗: ${data.numTDEE} kcal`);
+                theTDEE = data.numTDEE;
+                loadDiary();
+            })
+        }
+        showBodyRecord();
+
+        //修改+儲存身體數據按鈕事件
+        $("#btnEditBody").click(function () {
+            if ($(this).text() == "修改") {
+                $("#frmMyBoby").find("input").val("");
+                $("#btnQuitEdit").removeAttr("hidden");
+                $("#inpHeight").removeAttr("disabled");
+                $("#inpWeight").removeAttr("disabled");
+                $("#selWorkload").removeAttr("disabled").val("");
+                $("#divBodyNum").find("input").attr("hidden", "hidden");
+                $(this).text("儲存");
+            }
+            else if ($(this).text() == "儲存") {
+                let isNum = /^[0-9]+(.[0-9])?$/;
+                if ($("#inpHeight").val() == null || $("#inpWeight").val() == null || $("#selWorkload").val() == "") {
+                    alert("儲存失敗，請確實填入身高、體重及選擇活動量。");
+                }
+                else if (!isNum.test($("#inpHeight").val()) || !isNum.test($("#inpWeight").val())) {
+                    alert("儲存失敗，身高、體重請填數字。");
+                }
+                else {
+                    $("#divBodyNum").find("input").removeAttr("hidden");
+                    $("#btnQuitEdit").attr("hidden", "hidden");
+                    $("#inpHeight").attr("disabled", "disabled");
+                    $("#inpWeight").attr("disabled", "disabled");
+                    $("#selWorkload").attr("disabled", "disabled");
+                    $.get("@Url.Content("~/Diary/addBodyRecord")", { "FHeight": $("#inpHeight").val(), "FWeight": $("#inpWeight").val(), "FWorkload": $("#selWorkload").val(), "FRecordDate": $("#inpDatepicker").val() }, function () {
+                        showBodyRecord();
+                    })
+                    $(this).text("修改");
+                }
+            }
+        })
+        //放棄修改身體數據按鈕事件
+        $("#btnQuitEdit").click(function () {
+            notEdit();
+            showBodyRecord();
+        })
+
+        //==========飲食日誌==========
+        //載入飲食日誌 (在載入身體數據的函式中呼叫 for執行順序)
+        function loadDiary() {
+            $.get("@Url.Content("~/Diary/getIntakeRecords")", { "date": $("#inpDatepicker").val() }, function (datas) {
+                let htmlBreakfast = "";
+                let htmlLunch = "";
+                let htmlDinner = "";
+                let htmlElse = "";
+                let total=0
+                $.each(datas, function (idx, record) {
+                    total += record.subtotal;
+                    if (record.fMeal == "早餐") {
+                        htmlBreakfast += `<tr><td hidden>${record.fCalorieIntakeId}</td>`;
+                        htmlBreakfast += `<td class="col-lg-4"><h5>${record.fFoodName}</h5></td>`;
+                        htmlBreakfast += `<td class="col-lg-3"><div class="quantity"><div class="pro-qty diaryQty"><span class="dec qtybtn">-</span><span class="dec qtybtn"></span>`;
+                        htmlBreakfast += `<input type="text" value="${record.fQuantity}" readonly><span class="inc qtybtn"></span><span class="inc qtybtn">+</span></div></div></td>`;
+                        htmlBreakfast += `<td class="col-lg-2">${record.fUnit}</td>`;
+                        htmlBreakfast += `<td class="col-lg-2">${record.subtotal}<small> kcal</small></td>`;
+                        htmlBreakfast += `<td class="col-lg-1"><button class="icon_close"></button></td></tr>`;
+                    }
+                    else if (record.fMeal == "午餐") {
+                        htmlLunch += `<tr><td hidden>${record.fCalorieIntakeId}</td>`;
+                        htmlLunch += `<td class="col-lg-4"><h5>${record.fFoodName}</h5></td>`;
+                        htmlLunch += `<td class="col-lg-3"><div class="quantity"><div class="pro-qty diaryQty"><span class="dec qtybtn">-</span><span class="dec qtybtn"></span>`;
+                        htmlLunch += `<input type="text" value="${record.fQuantity}" readonly><span class="inc qtybtn"></span><span class="inc qtybtn">+</span></div></div></td>`;
+                        htmlLunch += `<td class="col-lg-2">${record.fUnit}</td>`;
+                        htmlLunch += `<td class="col-lg-2">${record.subtotal}<small> kcal</small></td>`;
+                        htmlLunch += `<td class="col-lg-1"><button class="icon_close"></button></td></tr>`;
+                    }
+                    else if (record.fMeal == "晚餐") {
+                        htmlDinner += `<tr><td hidden>${record.fCalorieIntakeId}</td>`;
+                        htmlDinner += `<td class="col-lg-4"><h5>${record.fFoodName}</h5></td>`;
+                        htmlDinner += `<td class="col-lg-3"><div class="quantity"><div class="pro-qty diaryQty"><span class="dec qtybtn">-</span><span class="dec qtybtn"></span>`;
+                        htmlDinner += `<input type="text" value="${record.fQuantity}" readonly><span class="inc qtybtn"></span><span class="inc qtybtn">+</span></div></div></td>`;
+                        htmlDinner += `<td class="col-lg-2">${record.fUnit}</td>`;
+                        htmlDinner += `<td class="col-lg-2">${record.subtotal}<small> kcal</small></td>`;
+                        htmlDinner += `<td class="col-lg-1"><button class="icon_close"></button></td></tr>`;
+                    }
+                    else if (record.fMeal == "其他") {
+                        htmlElse += `<tr><td hidden>${record.fCalorieIntakeId}</td>`;
+                        htmlElse += `<td class="col-lg-4"><h5>${record.fFoodName}</h5></td>`;
+                        htmlElse += `<td class="col-lg-3"><div class="quantity"><div class="pro-qty diaryQty"><span class="dec qtybtn">-</span><span class="dec qtybtn"></span>`;
+                        htmlElse += `<input type="text" value="${record.fQuantity}" readonly><span class="inc qtybtn"></span><span class="inc qtybtn">+</span></div></div></td>`;
+                        htmlElse += `<td class="col-lg-2">${record.fUnit}</td>`;
+                        htmlElse += `<td class="col-lg-2">${record.subtotal}<small> kcal</small></td>`;
+                        htmlElse += `<td class="col-lg-1"><button class="icon_close"></button></td></tr>`;
+                    }
+                })
+                $("#tbdBreakfast").html(htmlBreakfast);
+                $("#tbdLunch").html(htmlLunch);
+                $("#tbdDinner").html(htmlDinner);
+                $("#tbdElse").html(htmlElse);
+                $("#hTodayTake").text(total + " 大卡");
+                let lave = theTDEE - total;
+                if (lave < 0) {
+                    $("#hLave").text("攝取超出");
+                    $("#hTodayLave").text((0 - lave).toString() + " 大卡");
+                }
+                else {
+                    $("#hLave").text("尚可攝取");
+                    $("#hTodayLave").text(lave.toString() + " 大卡");
+                }
+                
+                var proQty = $('.diaryQty');
+                proQty.on('click', '.qtybtn', function () {
+                    var $button = $(this);
+                    var oldValue = $button.parent().find('input').val();
+                    if ($button.hasClass('inc')) {
+                        var newVal = parseFloat(oldValue) + 1;
+                    } else {
+                        // Don't allow decrementing below zero
+                        if (oldValue > 2) {
+                            var newVal = parseFloat(oldValue) - 1;
+                        } else {
+                            newVal = 1;
+                        }
+                    }
+                    $button.parent().find('input').val(newVal);
+                });
+                proQty.on('click', '.qtybtn', changeTakeQty);
+                $(".icon_close").on("click", delCalorieIntake);
+            })
+        }
+
+        //開啟新增紀錄彈出視窗時清空欄位
+        function openRecordModal() {
+            $("#selMeal").val($(event.target).next().text());
+            $("#inpFoodId").val("");
+            $("#inpFoodName").val("");
+            $("#inpQuantity").val("1");
+            $("#inpSearchFood").val("");
+            loadAllFoods();
+        }
+
+        //修改攝取數量
+        function changeTakeQty() {
+            let FQuantity = $(event.target).parent().find('input').val();
+            let FCalorieIntakeId = $(event.target).closest("tr").children("td:eq(0)").text();
+            $.get("@Url.Content("~/Diary/editCalorieIntake")", { "FCalorieIntakeId": FCalorieIntakeId, "FQuantity": FQuantity }, function () {
+                loadDiary();
+            })
+        }
+
+        //刪除紀錄
+        function delCalorieIntake() {
+            if (confirm("確定要刪除嗎?")) {
+                let FCalorieIntakeId = $(event.target).closest("tr").children("td:eq(0)").text();
+                $.get("@Url.Content("~/Diary/delCalorieIntake")", { "FCalorieIntakeId": FCalorieIntakeId }, function () {
+                    loadDiary();
+                })
+            }
+        }
+
+        //==========彈出視窗-新增紀錄==========
+        //載入食物列表
+        function loadAllFoods() {
+            $.get("@Url.Content("~/Diary/loadAllFoods")", {}, function (datas) {
+                let html = "";
+                $.each(datas, function (idx,food) {
+                    html += `<tr onclick='trFoodClick();'>`;
+                    html += `<td hidden>${food.fFoodId}</td>`;
+                    html += `<td>${food.fFoodName}</td>`;
+                    html += `<td>/${food.fUnit}</td>`;
+                    html += `<td style="text-align:end">${food.fCalories} 大卡</td></tr>`;
+                })
+                $("#tbdFoodList").html(html);
+            })
+        }
+        loadAllFoods();
+
+        //點擊食物選單自動填入
+        function trFoodClick() {
+            let theTr = $(event.target).parent();
+            $("#inpFoodId").val(theTr.children("td:eq(0)").text());
+            $("#inpFoodName").val(theTr.children("td:eq(1)").text());
+            $("#spnUnit").text(theTr.children("td:eq(2)").text());
+        }
+
+        //儲存飲食紀錄
+        $("#btnSaveRecord").click(function () {
+            let isNum = /^[0-9]+(.[0-9])?$/;
+            if ($("#inpFoodName").val() == "") {
+                alert("儲存失敗，請選擇欲輸入的食物。");
+            }
+            else if (!isNum.test($("#inpQuantity").val())) {
+                alert("儲存失敗，數量請填入數字。");
+            }
+            else {
+                $.get("@Url.Content("~/Diary/addCalorieIntake")", { "FIntakeTime": $("#inpDatepicker").val(), "FFoodId": $("#inpFoodId").val(), "FQuantity": $("#inpQuantity").val(), "FMeal": $("#selMeal").val() }, function () {
+                    loadDiary();
+                })
+                $('#addRecordModal').modal('hide');
+            }
+        })
+
+        //搜尋食物
+        $("#inpSearchFood").keyup(function () {
+            if ($("#inpSearchFood").val() == "") {
+                loadAllFoods();
+            }
+            else {
+                $.get("@Url.Content("~/Diary/searchFood")", { "txtKeyword": $("#inpSearchFood").val() }, function (datas) {
+                    let html = "";
+                    $.each(datas, function (idx, food) {
+                        html += `<tr onclick='trFoodClick();'>`;
+                        html += `<td hidden>${food.fFoodId}</td>`;
+                        html += `<td>${food.fFoodName}</td>`;
+                        html += `<td>/${food.fUnit}</td>`;
+                        html += `<td style="text-align:end">${food.fCalories} 大卡</td></tr>`;
+                    })
+                    $("#tbdFoodList").html(html);
+                })
+            }
+        })
+
+        //開啟新增食物彈出視窗時清空欄位
+        $("#btnAddFood").click(function () {
+            $("#addFoodModal").find("input").val("").end().find(".text-danger").text("");
+        })
+
+        //==========彈出視窗-新增食物==========
+        //輸入時驗證食物名稱有無重複
+        $("#inpNewFoodName").keyup(function () {
+            if ($("#inpNewFoodName").val() != "") {
+                $.get("@Url.Content("~/Diary/checkFoodName")", { "txtKeyword": $("#inpNewFoodName").val() }, function (datas) {
+                    console.log(datas)
+                    if (datas.length != 0) {
+                        $("#inpNewFoodName").prev().text("已存在此食物。");
+                    }
+                    else {
+                        $("#inpNewFoodName").prev().text("");
+                    }
+                })
+            }
+            else {
+                $("#inpNewFoodName").prev().text("");
+            }
+        })
+
+        //儲存食物按鈕事件
+        $("#btnSaveFood").click(function () {
+            $("#inpNewFoodName").trigger("keyup");
+            let isNum = /^\d+$/;
+            if ($("#inpNewFoodName").val() == null || $("#inpNewUnit").val() == null || $("#inpNewCalories").val() == "") {
+                alert("儲存失敗，請確實填入食物名稱、單位及單位熱量。");
+            }
+            else if ($("#inpNewFoodName").prev().text() == "已存在此食物。") {
+                alert("儲存失敗，已存在此食物。");
+            }
+            else if (!isNum.test($("#inpNewCalories").val())) {
+                alert("儲存失敗，單位熱量請填入正整數值。");
+            }
+            else {
+                $.get("@Url.Content("~/Diary/addFoodCalory")", { "FFoodName": $("#inpNewFoodName").val(), "FUnit": $("#inpNewUnit").val(), "FCalories": $("#inpNewCalories").val() }, function (data) {
+                    loadAllFoods();
+                    $("#inpSearchFood").val(data.fFoodName);
+                    $("#inpSearchFood").trigger("keyup");
+                    $("#inpFoodId").val(data.fFoodId);
+                    $("#inpFoodName").val(data.fFoodName);
+                    $("#spnUnit").text(data.fUnit);
+                })
+                $('#addFoodModal').modal('hide');
+                $('#addRecordModal').modal('show');
+
+            }
+        })
+
+
+        //==========日期、攝取量計算==========
+        //Datepicker事件
+        $("#inpDatepicker").change(function () {
+            showBodyRecord();
+        })
+        //前一天按鈕事件
+        $("#btnPrevDate").click(function () {
+            let date = new Date($("#inpDatepicker").val().replace(/-/g, "/"));
+            date.setDate(date.getDate() - 1);
+            let dd = date.getDate();
+            let mm = date.getMonth() + 1;
+            let yyyy = date.getFullYear();
+            if (dd < 10) { dd = '0' + dd }
+            if (mm < 10) { mm = '0' + mm }
+            let theDate = yyyy + '-' + mm + '-' + dd;
+            $("#inpDatepicker").val(theDate);
+            showBodyRecord();
+        })
+        //後一天按鈕事件
+        $("#btnNextDate").click(function () {
+            if ($("#inpDatepicker").val() < today) {
+                let date = new Date($("#inpDatepicker").val().replace(/-/g, "/"));
+                date.setDate(date.getDate() + 1);
+                let dd = date.getDate();
+                let mm = date.getMonth() + 1;
+                let yyyy = date.getFullYear();
+                if (dd < 10) { dd = '0' + dd }
+                if (mm < 10) { mm = '0' + mm }
+                let theDate = yyyy + '-' + mm + '-' + dd;
+                $("#inpDatepicker").val(theDate);
+                showBodyRecord();
+            }
+        })
+
+        //Scroll fixed
+        //let navPosition = $("#divDateTake").offset().top;
+        //$(window).scroll(function () {
+        //    //console.log(bannerPosition)
+        //    let scrollTop = $(this).scrollTop();
+        //    if (scrollTop > navPosition) {
+        //        $("#divDateTake").css("position","fixed");
+        //        $("#divDateTake").css("top", "18vh");
+        //    }
+        //    else {
+        //        $("#divDateTake").css("position", "static");
+        //    }
+        //});
+
+    </script>
 
 }
