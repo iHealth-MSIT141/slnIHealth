@@ -16,15 +16,18 @@ namespace prjiHealth.Controllers
         public IActionResult BMICalculator()
         {
             return View();
+        }        
+        public IActionResult getBMI(CBodyRecordViewModel body)
+        {
+            return Content(body.NumBMI.ToString(), "text/plain", System.Text.Encoding.UTF8);
         }
-        //[HttpPost]
-        //public IActionResult BMICalculator(CBodyRecordViewModel body)
-        //{
-        //    return View(body);
-        //}
         public IActionResult TDEECalculator()
         {
             return View();
+        }       
+        public IActionResult getTDEE(CBodyRecordViewModel body)
+        {
+            return Content(body.NumTDEE.ToString(), "text/plain", System.Text.Encoding.UTF8);
         }
     }
 }

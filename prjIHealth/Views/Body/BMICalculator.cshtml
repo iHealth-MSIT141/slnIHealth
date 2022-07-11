@@ -1,29 +1,29 @@
-﻿@*@model prjiHealth.ViewModels.CBodyRecordViewModel*@
+﻿
 @{
     ViewData["Title"] = "BMICalculator";
-    //string strBMI = "";
-    //if (Model != null)
-    //{
-    //    strBMI = Model.NumBMI.ToString("#0.0");
-    //}
 }
 
 
 @section Styles{
     <style>
-        .text-danger {
-            float: right;
-        }
+        
         .leftdiv,.rightdiv {
             padding: 1vw;
         }
+        
         .rightdiv {
             border: 2px dotted green;
             border-radius: 5%;
         }
+        
         .form-group > label {
             margin-left: 1vw;
         }
+        
+        .text-danger {
+            float: right;
+        }
+        
         .divResult {
             border: 2px dotted green;
             border-radius: 10px;
@@ -31,6 +31,7 @@
             margin-top: 1vw;
             margin-bottom: 1vw;
         }
+        
         .blog__btn {
             display: inline-block;
             font-size: 14px;
@@ -41,7 +42,8 @@
             padding: 14px 20px 12px;
             border-radius: 25px;
         }
-            .blog__btn:visited {
+            
+        .blog__btn:visited {
                 color: #1c1c1c;
             }
 
@@ -77,6 +79,8 @@
 <div class="contact-form spad">
     <div class="container">
         <div class="row">
+
+            @*說明文字*@
             <div class="col-lg-12 reveal_b1">
                 <div class="contact__form__title">
                     <div class="col-lg-8 centered" style="text-align:start">
@@ -89,9 +93,10 @@
                     </div>
                 </div>
             </div>
+
+            @*BMI計算結果*@
             <div class="col-lg-6 leftdiv reveal_b2">
                 <div class="section-title product__discount__title" style="margin-bottom:2vw">
-                    @*<h2 style="font-size:30px" id="hResult">您的BMI值為：@strBMI</h2>*@
                     <h2 style="font-size:30px;" id="hResult">您的BMI值為：</h2>
                 </div>
                 <div class="divResult">
@@ -111,26 +116,28 @@
                     啊～「肥胖」，需要立刻力行健康體重管理囉！
                 </div>
             </div>
+
+            @*計算器*@
             <div class="col-lg-6 rightdiv reveal_b3">
                 @*<form method="post">*@
                 <br />
                 <div class="form-group">
                     <label class="control-label">身高(cm)</label><span class="text-danger"></span>
-                    <input class="form-control" id="FHeight" type="text" pattern="^[0-9]+(.[0-9])?$$" placeholder="請輸入身高(cm)" required />
+                    <input class="form-control" id="FHeight" type="number" pattern="^[0-9]+(.[0-9])?$$" placeholder="請輸入身高(cm)" required />
                 </div>
                 <div class="form-group">
                     <label class="control-label">體重(kg)</label><span class="text-danger"></span>
-                    <input class="form-control" id="FWeight" type="text" pattern="^[0-9]+(.[0-9])?$" placeholder="請輸入體重(kg)" required />
+                    <input class="form-control" id="FWeight" type="number" pattern="^[0-9]+(.[0-9])?$" placeholder="請輸入體重(kg)" required />
                 </div>
                 <br />
                 <div class="text-center">
-                    @*<button type="submit" class="site-btn">開始計算!</input>*@
                     <button class="site-btn" id="btnGetBMI">開始計算!</button>
                 </div>
                 <br />
                 <div class="text-center">想知道自己的每日總消耗熱量嗎？<a href="../Body/TDEECalculator" class="blog__btn" style="margin-left:1vw"><span class="arrow_right"></span>TDEE計算器</a></div>
                 @*</form>*@
             </div>
+        
         </div>
     </div>
 </div>
@@ -140,6 +147,7 @@
     @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
     <script>
 
+        //驗證空值+數字
         $("input").blur(function () {
             let isNum = /^[0-9]+(.[0-9])?$/;
             if ($(this).val() == "") {
@@ -154,26 +162,27 @@
                 $(this).prev().text("");
             }
         })
+
+        //show計算結果
         $("#btnGetBMI").click(function () {
             $("input").blur();
             $(".divResult").css("background-color", "transparent");
             if ($(".text-danger").text() == "") {
-                let w = $("#FWeight").val();
-                let h = $("#FHeight").val() / 100;
-                let numBMI = (w / (h * h)).toFixed(1);
-                if (numBMI < 18.5) {
-                    $(".divResult").first().css("transition", "1s").css("background-color", "#b5daa7");
-                }
-                else if (numBMI >= 18.5 && numBMI < 24) {
-                    $(".divResult").eq(1).css("transition", "1s").css("background-color", "#b5daa7");
-                }
-                else if (numBMI >= 24 && numBMI < 27) {
-                    $(".divResult").eq(2).css("transition", "1s").css("background-color", "#b5daa7");
-                }
-                else if (numBMI >= 27) {
-                    $(".divResult").eq(3).css("transition", "1s").css("background-color", "#b5daa7");
-                }
-                $("#hResult").text("您的BMI值為：" + numBMI);
+                $.get("@Url.Content("~/Body/getBMI")", { "FHeight": $("#FHeight").val(), "FWeight": $("#FWeight").val() }, function (numBMI) {
+                    if (numBMI < 18.5) {
+                        $(".divResult").first().css("transition", "1s").css("background-color", "#b5daa7");
+                    }
+                    else if (numBMI >= 18.5 && numBMI < 24) {
+                        $(".divResult").eq(1).css("transition", "1s").css("background-color", "#b5daa7");
+                    }
+                    else if (numBMI >= 24 && numBMI < 27) {
+                        $(".divResult").eq(2).css("transition", "1s").css("background-color", "#b5daa7");
+                    }
+                    else if (numBMI >= 27) {
+                        $(".divResult").eq(3).css("transition", "1s").css("background-color", "#b5daa7");
+                    }
+                    $("#hResult").text("您的BMI值為：" + numBMI);
+                })
             }
         })
 
