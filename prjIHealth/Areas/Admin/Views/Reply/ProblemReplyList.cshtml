@@ -29,7 +29,7 @@
                 </div>*@
                 <form asp-action="" style=" margin:10px">
                     <div class="row">
-                        <div class="col-lg-2 col-md-2 " @*style="padding:0px 0px 0px 0px "*@>
+                        <div class="col-lg-3 col-md-3 " @*style="padding:0px 0px 0px 0px "*@>
                             <select name="stype" id="stype" class="custom-select">
                                 @*<option value="999" disabled selected hidden>依處理狀態篩選</option>*@
                                 <option value="未處理">未處理</option>
@@ -40,7 +40,7 @@
                             <button type="button" class="site-btn" id="submitproblem" style="margin-top:5px;margin-left:0px">依處理狀態篩選</button>
                         </div>
 
-                        <div class="col-lg-2 col-md-2">
+                        <div class="col-lg-3 col-md-3">
                             <select name="qtype" id="qtype" class="custom-select">
                                 @* <option value="999" disabled selected hidden>依問題類型篩選</option>*@
                                 <option value="帳號/密碼/認證">帳號相關</option>
@@ -112,7 +112,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.FOrderId)
                             </td>
-                            <td>
+                            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                 @Html.DisplayFor(modelItem => item.FEmail)
                             </td>
                             <td>
