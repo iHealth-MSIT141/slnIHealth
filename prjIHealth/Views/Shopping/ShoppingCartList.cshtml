@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewData["Title"] = "ShoppingCartList";
+}
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2>購物車</h2>
+                    <div class="breadcrumb__option">
+                        @*<a href="./index.html">Home</a>*@
+                        @*<span>Shop</span>*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+@*※※※非會員專區的View的內容請從此處開始※※※*@
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">產品名稱</th>
+                                <th>價格</th>
+                                <th>數量</th>
+                                <th>總價</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <img src="/img/prjproduct/f1.jpg" alt="" style="width:30%;height:30%">
+                                    <h5>金牌巧克力乳清蛋白</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    $1999.00
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="1">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    $1999
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <span class="icon_close"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <img src="/img/prjproduct/f2.jpg" alt="" style="width:30%;height:30%">
+                                    <h5>MUSCLETECH™ WHEY GOLD耐如鐵</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    $1999
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="1">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    $1999
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <span class="icon_close"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <img src="/img/prjproduct/f6.jpg" alt="" style="width:30%;height:30%">
+                                    <h5>【加拿大ALLMAX】奧美仕經典乳清蛋白</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    $1880
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="1">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    $1880
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <span class="icon_close"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
+                    <a href="#" class="primary-btn cart-btn">繼續購物</a>
+                    @*<a href="#" class="primary-btn cart-btn cart-btn-right">
+                            <span class="icon_loading"></span>
+                            Upadate Cart
+                        </a>*@
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__continue">
+                    <div class="shoping__discount">
+                        <h5>折扣代碼</h5>
+                        <form action="#">
+                            <input type="text" placeholder="請輸入折扣代碼">
+                            <button type="submit" class="site-btn">使用折扣代碼</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>結帳明細</h5>
+                    <ul>
+                        <li>小計<span>$5878</span></li>
+                        <li>總金額<span>$5878</span></li>
+                    </ul>
+                    @*<a href="#" class="primary-btn">開始結帳</a>*@
+                    @Html.ActionLink("開始結帳", "CheckOut", new { @*id = item.FProblemId*@}, new { @class = "primary-btn" })
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+
+}
