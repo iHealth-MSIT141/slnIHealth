@@ -76,27 +76,6 @@
             </div>
             <div class="col-lg-8 col-md-7">
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="blog__item">
-                            <div class="blog__item__pic">
-                                <img src="~/img//blog/1.png" alt="">
-                            </div>
-                            <div class="blog__item__text">
-                                <ul>
-                                    @*日期和回應數*@
-                                    <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                    <li><i class="fa fa-comment-o"></i> 5</li>
-                                </ul>
-                                @*下方插入H5標題*@
-                                <h5><a href="#">COVID-19／今本土＋32567、198 中重症、88 死亡！新增 2 例兒童 MIS-C 重症個案</a></h5>
-                                @* 下方顯示預覽內容 *@
-                                <p>
-                                    指揮中心今宣布新增 32,567 例本土個案，及 114 例境外移入。而中重症今天新增 198 例，其中 88......
-                                </p>
-                                <a href="#" class="blog__btn">READ MORE <span class="arrow_right"></span></a>
-                            </div>
-                        </div>
-                    </div>
                     @{ //測試迴圈顯示
                                     foreach (var item in Model)
                                     {
@@ -117,9 +96,10 @@
                                         @*@item.FNewsContent.Substring(0, item.FNewsContent.Length > 20 ? 20 : item.FNewsContent.Length)*@
                                         @item.FContent.Substring(0, Math.Min(item.FContent.Length, 30))
                                     </p>
-                                    <a @Html.ActionLink("READ MORE", "BlogDetail", new { id = item.FNewsId }, new { @class = "blog__btn" })></a>
+                                    <a href="~/News/BlogDetail?id=@item.FNewsId" class="blog__btn" >READ MORE <span class="arrow_right"></span></a>
+                                    @*<a @Html.ActionLink("READ MORE", "BlogDetail", new { id = item.FNewsId }, new { @class = "blog__btn" })></a>*@
                                     @*<span class="arrow_right"></span>*@
-                                    @* //<a asp-action="BlogDetail" class="blog__btn">READ MORE <span class="arrow_right"></span></a> *@
+                                    @* //<a asp-action="BlogDetail" class="blog__btn"></a> *@
                                 </div>
                             </div>
                         </div> } }

@@ -3,18 +3,30 @@
     ViewData["Title"] = "iHeath後臺";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
+@section Styles{
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
+}
+<h2 id="title">意見回覆</h2>
+<hr />
 <section class="product spad">
     <div class="container">
         <div class="row">
             @*※※※非會員專區的View的內容請從此處開始※※※*@
             <div class="container">
-                <div class="row">
+                @*<div class="row">
                     <div class="col-lg-12">
                         <div class="contact__form__title">
                             <h2>意見回覆</h2>
                         </div>
                     </div>
-                </div>
+                </div>*@
                 <form asp-action="" style=" margin:10px">
                     <div class="row">
                         <div class="col-lg-2 col-md-2 " @*style="padding:0px 0px 0px 0px "*@>
@@ -25,7 +37,7 @@
                                 <option value="已完成">已完成</option>
                             </select>
                             <br>
-                            <button type="submit" class="site-btn" id="submitproblem" style="margin-top:5px;margin-left:0px">依處理狀態篩選</button>
+                            <button type="button" class="site-btn" id="submitproblem" style="margin-top:5px;margin-left:0px">依處理狀態篩選</button>
                         </div>
 
                         <div class="col-lg-2 col-md-2">
@@ -38,7 +50,7 @@
                                 <option value="其他建議相關">其他相關</option>
                             </select>
                             <br>
-                            <button type="submit" class="site-btn" id="submitproblem" style="margin-top:5px">依問題類型篩選</button>
+                            <button type="button" class="site-btn" id="submitproblem" style="margin-top:5px">依問題類型篩選</button>
                         </div>
 
                     </div>
@@ -142,6 +154,6 @@
             if ($('#qtype').val() == "其他相關")
                 ProblemCategoryID = 5;
         };
-        //$('#qtype').on("change", SelectTableByProblemCategoryID) /*選擇類別時會產生寫入資料庫所需的ProblemCategoryID*/
+            //$('#qtype').on("change", SelectTableByProblemCategoryID) /*選擇類別時會產生寫入資料庫所需的ProblemCategoryID*/
     </script>
 }
