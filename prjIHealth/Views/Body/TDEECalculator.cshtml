@@ -202,12 +202,12 @@
             let workload = $("#selWorkload").val();
             let numTDEE = 0;
             if (gender == 1) {
-                numTDEE = ((10 * w) + (6.25 * h) - (5 * age) + 5) * workload;
+                numTDEE = Math.round((((10 * w) + (6.25 * h) - (5 * age) + 5) * workload), 0);
             }
             else {
-                numTDEE = ((10 * w) + (6.25 * h) - (5 * age) - 161) * workload;
+                numTDEE = Math.round((((10 * w) + (6.25 * h) - (5 * age) - 161) * workload), 0);
             }
-            $("#hResult").text("您的TDEE為：" + numTDEE.toString());
+            $("#hResult").text("您的TDEE為：" + numTDEE.toString()+"大卡");
 
             @*錯誤訊息: Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR
                 $.get("@Url.Content("~/Body/getTDEE")", { "FHeight": $("#inpHeight").val(), "FWeight": $("#inpWeight").val(), "Age": $("#inpAge").val(), "Gender": $("input[name='inpGender']:checked").val(), "FWorkload": $("#selWorkload").val() }, function (numTDEE) {

@@ -27,7 +27,7 @@ namespace prjiHealth.Controllers
         }       
         public IActionResult getTDEE(CBodyRecordViewModel body)
         {
-            return Content(body.NumTDEE.ToString(), "text/plain", System.Text.Encoding.UTF8);
+            return Content(body.NumTDEE.ToString());
         }
     }
 }
