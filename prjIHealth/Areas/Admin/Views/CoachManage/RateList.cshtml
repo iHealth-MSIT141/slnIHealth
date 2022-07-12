@@ -19,11 +19,16 @@
             background-color: #4F6C24;
             color: white;
         }
+    #title {
+        font-weight: 800;
+        color: #599e32;
+        margin-left: 20vw;
+        margin-right: 20vw;
+    }
 </style>
 }
-<h1>管理頁Demo-教練評論管理</h1>
-
-
+<h2 id="title">教練評論管理</h2>
+<hr />
 <table class="table">
     <thead class="thead-dark">
         <tr>
@@ -102,7 +107,7 @@
                 @*@Html.DisplayFor(modelItem => item.FVisible)*@
             </td>
             <td>
-                @Html.ActionLink("隱藏評論", "Edit", new { /* id=item.PrimaryKey */ },new { @class= "btn btn-light" })
+                @Html.ActionLink("隱藏評論", "RateList", new { /* id=item.PrimaryKey */ },new { @class= "btn btn-light" })
                 @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
             </td>
         </tr>
@@ -143,7 +148,7 @@
                 @*@Html.DisplayFor(modelItem => item.FVisible)*@
             </td>
             <td>
-                @Html.ActionLink("隱藏評論", "Edit", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-light" })
+                @Html.ActionLink("隱藏評論", "RateList", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-light" })
                 @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
             </td>
         </tr>

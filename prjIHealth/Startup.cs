@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using prjIHealth.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,10 @@ namespace prjIHealth
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<IHealthContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("IHealthConnection"));
+            });
             services.AddControllersWithViews();
             services.AddSession();
         }
@@ -51,7 +57,7 @@ namespace prjIHealth
             {
                 endpoints.MapControllerRoute(
                    name: "areas",
-                   pattern: "{area:exists}/{controller=Admin}/{action=ºÞ²z­¶Demo}/{id?}");
+                   pattern: "{area:exists}/{controller=Admin}/{action=ï¿½Þ²zï¿½ï¿½Demo}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

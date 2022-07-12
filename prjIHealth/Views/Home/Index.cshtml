@@ -93,7 +93,7 @@
                         <h2>iHEALTH </h2>
                         <h3 style="font-weight:800;">一手包辦您的體態、運動、飲食計畫</h3>
                         <p></p>
-                        <a href="#" class="primary-btn">加入會員</a>
+                        <a href="../Member/Register" class="primary-btn">加入會員</a>
                     </div>
                 </div>
             </div>
@@ -111,12 +111,12 @@
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="/img/home/run.jpg">
+                    <div class="categories__item set-bg" data-setbg="/img/home/coach1.png">
                         <h5><a href="#">教練課程</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="/img/home/shopping.jpg">
+                    <div class="categories__item set-bg" data-setbg="/img/home/shopping1.png">
                         <h5><a href="#">周邊商城</a></h5>
                     </div>
                 </div>
@@ -423,7 +423,6 @@
         </div>
     </div>
 </section>
-
 @*身體數據*@
 <section class="product spad" id="begin">
     <div class="container">
@@ -454,12 +453,15 @@
         </div>
     </div>
 </section>
+@*加入會員*@
 
 @section Scripts{
     <script>
-        $(".divOption").hover(function () {
+        $(".divOption").hover(function ()
+        {
             $(this).children("img").css("border-radius", "50%").css("opacity", "0.2").end().find("h1").css("color", "black").end().children(".divBackground").css("visibility", "hidden");
-        }, function () {
+        }, function ()
+        {
             $(this).children("img").css("border-radius", "2%").css("opacity", "0.8").end().find("h1").css("color", "#ffffff").end().children(".divBackground").css("visibility", "visible");
         })
     </script>

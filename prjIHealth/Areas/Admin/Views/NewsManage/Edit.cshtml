@@ -5,16 +5,27 @@
     ViewData["Title"] = "iHeath後臺";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
-
+@section Styles{
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
+}
+<h2 id="title">編輯文章</h2>
+<hr />
 <div class="contact-form spad">
     <div class="container">
-        <div class="row">
+        @*<div class="row">
             <div class="col-lg-12">
                 <div class="contact__form__title">
                     <h2>編輯文章</h2>
                 </div>
             </div>
-        </div>
+        </div>*@
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" value="@Model.FNewsId" name="FNewsId" />

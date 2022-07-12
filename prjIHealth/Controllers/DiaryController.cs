@@ -11,12 +11,12 @@ namespace prjIHealth.Controllers
 {
     public class DiaryController : Controller
     {
-        //private readonly IHealthContext db;
-        //public DiaryController(IHealthContext context)
-        //{
-        //    db = context;
-        //}
-        IHealthContext db = new IHealthContext();
+        private readonly IHealthContext db;
+        public DiaryController(IHealthContext context)
+        {
+            db = context;
+        }
+        //IHealthContext db = new IHealthContext();
 
         //Diary主頁View
         public IActionResult DiaryMain()
