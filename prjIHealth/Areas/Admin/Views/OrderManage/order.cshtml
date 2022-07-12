@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "order";
+    Layout = "~/Areas/Admin/Admin_Layout.cshtml";
+}
+@section Styles{
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
+}
+<h2 id="title">訂單檢視</h2>
+<hr />
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*※※※非會員專區的View的內容請從此處開始※※※*@
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="margin-left:auto">
+                                    會員ID
+                                </th>
+                                <th style="margin-left:auto">
+                                    收件人
+                                </th>
+                                <th style="margin-left:auto">
+                                    電話
+                                </th>
+                                <th style="margin-left:auto">
+                                    日期
+                                </th>
+                                <th style="margin-left:auto">
+                                    地址
+                                </th>
+                                <th style="margin-left:auto">
+                                    付款方式
+                                </th>
+                                <th style="margin-left:auto">
+                                    狀態
+                                </th>
+                                <th style="margin-left:auto">
+                                    備註
+                                </th>
+                                <th style="margin-left:auto"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="margin-left:auto">
+                                    1
+                                </td>
+                                <td style="margin-left:auto" @*class="shoping__cart__item"*@>
+                                    邱景文<br />
+                                </td>
+                                <td style="margin-left:auto">
+                                    0987878787<br />
+                                </td>
+                                <td style="margin-left:auto">
+                                    2021/12/12<br />
+                                </td>
+                                <td style="margin-left:auto">
+                                    台北市大安區延<br />
+
+                                    @*@item.FNewsContent.Substring(0,Math.Min(item.FNewsContent.Length,20))*@
+                                </td>
+                                <td style="margin-left:auto">
+                                    貨到付款<br />
+                                </td>
+                                <td style="margin-left:auto">
+                                    出貨中<br />
+                                </td>
+                                <td style="margin-left:auto">
+                                    我是港仔
+                                </td>
+                                <td style="margin-left:auto">
+                                    <a asp-action="Orderdetail" class="primary-btn cart-btn">檢示</a><br />
+                                    <a asp-action="OrderEdit" class="primary-btn cart-btn">修改</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="margin-left:auto">
+                                    2
+                                </td>
+                                <td style="margin-left:auto">
+                                    Leon<br />
+                                </td>
+
+
+                                <td style="margin-left:auto">
+                                    0900001111<br />
+                                </td>
+
+
+                                <td style="margin-left:auto">
+                                    2021/12/12 <br />
+                                </td>
+
+                                <td style="margin-left:auto">
+                                    台北市大同區<br />
+                                </td>
+                                <td style="margin-left:auto">
+                                    支付保<br />
+                                </td>
+
+                                <td style="margin-left:auto">
+                                    待出貨<br />
+                                </td>
+                                <td style="margin-left:auto">
+                                    我是Leon
+                                </td>
+                                <td style="margin-left:auto">
+                                    <a asp-action="Orderdetail" class="primary-btn cart-btn">檢示</a><br />
+                                    <a asp-action="OrderEdit" class="primary-btn cart-btn">修改</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="margin-left:auto">
+                                    3
+                                </td>
+                                <td style="margin-left:auto">
+                                    Jack<br />
+                                </td>
+
+
+                                <td style="margin-left:auto">
+                                    0911112222<br />
+                                </td>
+
+
+                                <td style="margin-left:auto">
+                                    2012/10/10<br />
+                                </td>
+
+                                <td style="margin-left:auto">
+                                    台北市北投區<br />
+                                </td>
+                                <td style="margin-left:auto">
+                                    支付寶<br />
+                                </td>
+
+                                <td style="margin-left:auto">
+                                    已完成<br />
+                                </td>
+                                <td style="margin-left:auto">
+                                    我是Jack不是Jacky
+                                </td>
+                                <td style="margin-left:auto">
+                                    <a asp-action="Orderdetail" class="primary-btn cart-btn">檢示</a><br />
+                                    <a asp-action="orderedit" class="primary-btn cart-btn">修改</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="product__pagination" style="text-align:center">
+                        <a href="#">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+        </div>
+    </div>
+</section>
+
+@section Scripts{ }
+
+
+

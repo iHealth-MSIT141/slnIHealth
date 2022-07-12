@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "Productedit";
+    Layout = "~/Areas/Admin/Admin_Layout.cshtml";
+}
+@section Styles{
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
+}
+<h2 id="title">產品修改</h2>
+<hr />
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*※※※非會員專區的View的內容請從此處開始※※※*@
+
+
+            <div style="margin:auto;">
+                <form asp-action="Create" style="margin-left:20%">
+
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4"> <label for="InputName" style="font-size:30px;">商品名稱</label></div>
+                            <div class="col-md-8"><input type="text" class="form-control" id="InputName" name="name" value="金牌蛋白粉" style="text-align:center;"></div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4"> <label for="InputEmail" style="font-size:30px;">種類</label></div>
+                            <div class="col-md-8">
+                                <select class="form-control" id="InputEmail" name="email" style="width:380px;text-align:center;">
+                                    <option>乳清蛋白</option>
+                                    <option>男裝</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4"> <label for="InputAge" style="font-size:30px;">價錢</label></div>
+                            <div class="col-md-8"><input type="text" class="form-control" id="InputAge" name="Inputage" value="55" style="text-align:center;"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4"><label for="Inputdes" style="font-size:30px;">描述</label>  </div>
+                            <div class="col-md-8"> <textarea class="form-control" id="Inputdes" name="age">很好喝,很好喝,很好喝,很好喝,很好喝,很好喝,很好喝,很好喝</textarea></div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4"><label for="Inputvis" style="font-size:30px;">上架</label></div>
+                            <div class="col-md-8"><input type="checkbox" class="form-control" id="Inputvis" name="age" checked></div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4"><label style="font-size:30px;">新增圖片</label> </div>
+                            <div class="col-md-8"><input type="file" class="form-control" id="customFile" name="file"></div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-11">
+                        
+                        <a asp-action="Product" class="btn btn-primary">確定新增</a>
+                        <a asp-action="Product" class="btn btn-primary">返回清單</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

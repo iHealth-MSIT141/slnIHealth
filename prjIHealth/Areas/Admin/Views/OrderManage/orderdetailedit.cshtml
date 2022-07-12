@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "orderdetailedit";
+    Layout = "~/Areas/Admin/Admin_Layout.cshtml";
+}
+
+@section Styles{
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
+}
+<h2 id="title">明細修改</h2>
+<hr />
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*※※※非會員專區的View的內容請從此處開始※※※*@
+
+
+            <div style="margin:auto;">
+                <form asp-action="Create" style="margin-left:15%">
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4"><label for="InputName" style="font-size:30px">商品名稱</label>  </div>
+                            <div class="col-md-8"> <input type="text" class="form-control" id="InputName" name="name" style="text-align:center" value="蘋果"> </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">   <label for="InputEmail" style="font-size:30px">價錢</label> </div>
+                            <div class="col-md-8">  <input type="text" class="form-control" id="InputEmail" name="email" style="text-align:center" value="150"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4"> <label for="InputAge" style="font-size:30px">數量</label> </div>
+                            <div class="col-md-8">  <input type="text" class="form-control" id="InputAge" name="age" style="text-align:center" value="數量"> </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">   <label for="Inputdes" style="font-size:30px">折扣</label> </div>
+                            <div class="col-md-8"><textarea class="form-control" id="Inputdes" name="age" style="text-align:center"></textarea> </div>
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="form-group col-md-11">
+                       
+                        <a asp-action="orderdetail" class="site-btn">確定修改</a>
+                        <a asp-action="orderdetail" class="site-btn">返回清單</a>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

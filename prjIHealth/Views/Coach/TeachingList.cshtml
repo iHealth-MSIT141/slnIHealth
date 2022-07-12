@@ -1,0 +1,499 @@
+﻿@*@model IEnumerable<prjiHealth.Models.TCourse>*@
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .divTopic {
+            margin-bottom: 10px;
+        }
+
+        .divCreate {
+            margin-right: 12px;
+            text-align: right;
+        }
+
+        .details {
+            text-align: right
+        }
+
+        .divBar {
+            width: 200px;
+            height: 3px;
+            margin-left: 30px;
+            margin-bottom: 50px;
+            background-color: #7FAD39;
+        }
+
+        .btn-light {
+            background-color: #DFEACE;
+        }
+
+            .btn-light:hover {
+                background-color: #F3F7ED;
+            }
+
+        .btn-success {
+            background-color: #7FAD39;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #A9B6A8;
+            border: none;
+        }
+        .btnClose {
+            background-color: #4F534A;
+            border: none;
+        }
+
+        .divLink {
+            display: flex;
+            justify-items: center;
+            height: 70px;
+        }
+
+        .divOther {
+            padding: 0px;
+        }
+
+            .divOther span {
+                color: #5F822B;
+                line-height: 70px;
+            }
+
+            .divOther i {
+                color: #5F822B;
+            }
+
+        .divUrl {
+            margin-left: 10px;
+            padding: 15px;
+            line-height: 40px;
+            border: 1px solid #BFD69C;
+            border-radius: 20px;
+        }
+
+            .divUrl i {
+                color: #DFEACE;
+            }
+
+            .divUrl a {
+                color: #7FAD39;
+                text-decoration: none;
+                transition: .3s;
+            }
+
+                .divUrl a:hover {
+                    color: #5F822B;
+                }
+        .tdBtns{
+            text-align:right;
+        }
+        .blog__btn {
+            display: inline-block;
+            font-size: 14px;
+            color: #1c1c1c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #b2b2b2;
+            padding: 14px 20px 12px;
+            border-radius: 25px;
+        }
+
+            .blog__btn:visited {
+                color: #1c1c1c;
+            }
+
+            .blog__btn:hover {
+                color: black;
+                font-weight: 800;
+            }
+
+            .blog__btn:active {
+                color: black;
+                font-weight: 800;
+            }
+
+        .sidebar__item ul li a {
+            border: dashed 2px #7fad39;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            padding-left: 1vw;
+            margin-right: 8vw;
+            margin-bottom: 1vh;
+        }
+    </style>
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2>會員專區Demo</h2>
+                    <div class="breadcrumb__option">
+                        <a href="./index.html">Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>教練專區</h4>
+                        <ul>
+                            <li><a href="~/Coach/ManageResume">履歷管理</a></li>
+                            <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
+                            <li><a href="~/Coach/TeachingList">教課列表</a></li>
+                        </ul>
+                        <br />
+                        <a href="~/Home/會員專區ViewDemo" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                @*※※※會員專區View內容請從此開始※※※*@
+                <div>
+                    <div class="divTopic reveal_t1"><h3><b>課程列表</b></h3></div>
+                </div>
+                <div class="divBar reveal_r1"></div>
+                <table class="table reveal_b1">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>
+                                No.
+                            </th>
+                            <th>
+                                @*@Html.DisplayNameFor(model => model.FMemberId)*@
+                                會員編號
+                            </th>
+                            <th>
+                                @*@Html.DisplayNameFor(model => model.FMemberId)*@
+                                會員姓名
+                            </th>
+                            <th>
+                                @*@Html.DisplayNameFor(model => model.FMemberId)*@
+                                聯絡電話
+                            </th>
+                            @*<th>
+                                    @Html.DisplayNameFor(model => model.FCoachId)
+                                </th>*@
+                            <th>
+                                @*@Html.DisplayNameFor(model => model.FRemainingCourse)*@
+                                總堂數
+                            </th>
+                            <th>
+                                @*@Html.DisplayNameFor(model => model.FRemainingCourse)*@
+                                剩餘堂數
+                            </th>
+                            <th>
+                                @*@Html.DisplayNameFor(model => model.FStatusId)*@
+                                狀態
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*@foreach (var item in Model)
+                            {*@
+                        <tr>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                18
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FMemberId)*@
+                                Tom
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FRemainingCourse)*@
+                                0912345678
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.FCoachId)
+                                </td>*@
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FRemainingCourse)*@
+                                16
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FRemainingCourse)*@
+                                12
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FStatusId)*@
+                                進行中
+                            </td>
+                            <td class="details">
+                                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                                <button class="btn btn-light" data-toggle="modal" data-target="#addModal2">查看排課紀錄</button>
+                                @*@Html.ActionLink("查看詳細資訊", "ViewTeachingDetails", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-light" })*@
+                                @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定刪除課程？')", @class = "btn btn-secondary" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                2
+                            </td>
+                            <td>
+                                26
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FMemberId)*@
+                                Mary
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FRemainingCourse)*@
+                                0912345678
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.FCoachId)
+                                </td>*@
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FRemainingCourse)*@
+                                16
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FRemainingCourse)*@
+                                5
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FStatusId)*@
+                                進行中
+                            </td>
+                            <td class="details">
+                                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                                <button class="btn btn-light" data-toggle="modal" data-target="#addModal2">查看排課紀錄</button>
+                                @*@Html.ActionLink("查看詳細資訊", "ViewTeachingDetails", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-light" })*@
+                                @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定刪除課程？')", @class = "btn btn-secondary" })
+                            </td>
+                        </tr>
+                        @*}*@
+                    </tbody>
+                </table>
+                <div class="divCreate">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal1">新增課程</button>
+                </div>
+                <div class="divLink">
+                    <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span><b>&nbsp;&nbsp;想一覽所有課程？</b></span></div>
+                    <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Student/ViewCourseCalendar">&nbsp;&nbsp;前往<b>課程行事曆</b></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal --新增課程-->
+<div class="modal fade" id="addModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">新增課程<span></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="form-group">
+                        <label for="MemberId">會員編號</label>
+                        <input type="text" class="form-control" id="MemberId" name="MemberId">
+                    </div>
+                    <div class="form-group">
+                        <label for="MemberName">會員姓名</label>
+                        <input type="text" class="form-control" id="MemberName" name="MemberName">
+                    </div>
+                    <div class="form-group">
+                        <label for="Count">總堂數</label>
+                        <input type="text" class="form-control" id="Count" name="Count">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                <button type="button" class="btn btn-success" id="buttonSend">送出</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal --查看排課-->
+<div class="modal fade" id="addModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">排課紀錄<span></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.FCourseRecordsId)*@
+                                        No.
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.FCourseTime)*@
+                                        上課時間
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.FStatusId)*@
+                                        課程狀態
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*@foreach (var item in Model) {*@
+                                <tr>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => item.FCourseRecordsId)*@
+                                        <input type="hidden" />1
+                                    </td>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => item.FCourseTime)*@
+                                        2022/07/03 16:00
+                                    </td>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => item.FStatusId)*@
+                                        尚未執行
+                                    </td>
+                                    <td class="tdBtns">
+                                        <button type="button" class="btn btn-light">完成</button>
+                                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                                        @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定刪除該次排課？')", @class = "btn btn-secondary" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => item.FCourseRecordsId)*@
+                                        <input type="hidden" />2
+                                    </td>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => item.FCourseTime)*@
+                                        2022/07/10 17:00
+                                    </td>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => item.FStatusId)*@
+                                        尚未執行
+                                    </td>
+                                    <td class="tdBtns">
+                                        <button type="button" class="btn btn-light">完成</button>
+                                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                                        @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定刪除該次排課？')", @class = "btn btn-secondary" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => item.FCourseRecordsId)*@
+                                        <input type="hidden" />3
+                                    </td>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => item.FCourseTime)*@
+                                        2022/07/17 17:00
+                                    </td>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => item.FStatusId)*@
+                                        尚未執行
+                                    </td>
+                                    <td class="tdBtns">
+                                        <button type="button" class="btn btn-light">完成</button>
+                                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                                        @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定刪除該次排課？')", @class = "btn btn-secondary" })
+                                    </td>
+                                </tr>
+                                @*}*@
+                            </tbody>
+                        </table>
+                    </div>
+                    @*<div class="divCreateRecords">
+                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增排課</button>
+                    </div>*@
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">關閉</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增排課</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCourseId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FMemberId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCoachId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FRemainingCourse)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FStatusId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FVisible)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FCourseId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FMemberId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FCoachId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FRemainingCourse)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FStatusId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FVisible)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
+@section Scripts{
+
+}

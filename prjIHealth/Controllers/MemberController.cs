@@ -1,4 +1,6 @@
-﻿using System;
+
+using prjIHealth.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ namespace prjIHealth.Controllers
     public class MemberController : Controller
     {
         private readonly IHealthContext _context;
+
 
         public MemberController(IHealthContext context)
         {
@@ -52,6 +55,33 @@ namespace prjIHealth.Controllers
         {
            _context.TMembers.Add(tm);
             _context.SaveChanges();  return RedirectToRoute(new { controller = "Member", action = "Login" });
+
+        public IActionResult ShowTrackList()
+        {
+            return View();
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            IHealthContext dblIHealth = new IHealthContext();
+            TTrackList trackList = dblIHealth.TTrackLists.FirstOrDefault(t => t.FProductId == id);
+            if (trackList != null)
+            {
+                dblIHealth.TTrackLists.Remove(trackList);
+                dblIHealth.SaveChanges();
+            }
+            return RedirectToAction("ShowTrackList");
+        }
+
+        public IActionResult OrderList()
+        {
+            return View();
+        }
+        public IActionResult OrderdetailList()
+        {
+            return View();
+        }
+
 
             
         }

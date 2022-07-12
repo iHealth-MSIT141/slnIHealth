@@ -12,5 +12,18 @@ namespace prjiHealth.Controllers
         {
             return View();
         }
+
+        public IActionResult TeachingList()
+        {
+            return View();
+        }        
+        public IActionResult ManageResume()
+        {
+            return View();
+        }
+        public IActionResult RecruitmentList()
+        {
+            return View();
+        }
     }
 }

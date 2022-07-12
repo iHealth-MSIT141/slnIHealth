@@ -13,5 +13,21 @@ namespace prjIHealth.Areas.Admin.Controllers
         {
             return View();
         }
+        public IActionResult Product()
+        {
+            return View();
+        }
+        public IActionResult Productimg()
+        {
+            return View();
+        }
+        public IActionResult Productedit()
+        {
+            return View();
+        }
+        public IActionResult Productcreate()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Productimg";
+    Layout = "~/Areas/Admin/Admin_Layout.cshtml";
+}
+
+@section Styles{
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
+}
+<h2 id="title">產品圖片</h2>
+<hr />
+
+<div class="col-lg-8 col-md-7" style="margin-left:15%">
+
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-6">
+
+            <div class="product__item">
+                <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f1.jpg" style="background-image: url(&quot;/img/product/product-1.jpg&quot;);">
+                    <ul class="product__item__pic__hover">
+                        <li>
+                            <span class="icon_close"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="product__item__text">
+                    <h6><a href="/Shopping/ShowProductDetail">金牌巧克力乳清蛋白</a></h6>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="product__item">
+                <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f2.jpg" style="background-image: url(&quot;/img/product/product-2.jpg&quot;);">
+                    <a></a>
+                    <ul class="product__item__pic__hover">
+                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                    </ul>
+                </div>
+                <div class="product__item__text">
+                    <h6><a href="#">Crab Pool Security</a></h6>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="product__item">
+                <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f3.jpg" style="background-image: url(&quot;/img/product/product-3.jpg&quot;);">
+                    <ul class="product__item__pic__hover">
+                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                    </ul>
+                </div>
+                <div class="product__item__text">
+                    <h6><a href="#">Crab Pool Security</a></h6>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="custom-file  mt-3   col-lg-5">
+    <input type="file" class="custom-file-input" id="customFile" name="file">
+    <label class="custom-file-label" for="customFile">新增圖片</label>
+</div>
+<br />
+<a asp-action="Product" class="btn btn-primary">返回清單</a>
+

@@ -51,7 +51,10 @@ namespace prjiHealth.Controllers
         {
             return View();
         }
-
+        public IActionResult 教練專區ViewDemo()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
