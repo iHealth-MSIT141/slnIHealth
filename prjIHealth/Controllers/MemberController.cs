@@ -35,6 +35,13 @@ namespace prjIHealth.Controllers
             }
             return View();
         }
+        public IActionResult Edit(int ? id) {
+          
+            return View();
+        
+        }
+        //[HttpPost]
+        //public IActionResult Edit(){ }
         // GET: Member
         public IActionResult Register()
         {
@@ -43,9 +50,10 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(TMember tm)
         {
-            _context.TMembers.Add(tm);
-            _context.SaveChanges();
-            return RedirectToRoute(new { controller = "Member", action = "Login" });
+           _context.TMembers.Add(tm);
+            _context.SaveChanges();  return RedirectToRoute(new { controller = "Member", action = "Login" });
+
+            
         }
         public IActionResult ForgotPassword()
         {
