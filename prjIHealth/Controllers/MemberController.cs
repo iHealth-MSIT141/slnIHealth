@@ -53,8 +53,9 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(TMember tm)
         {
-           _context.TMembers.Add(tm);
-            _context.SaveChanges();  return RedirectToRoute(new { controller = "Member", action = "Login" });
+            _context.TMembers.Add(tm);
+            _context.SaveChanges(); return RedirectToRoute(new { controller = "Member", action = "Login" });
+        }
 
         public IActionResult ShowTrackList()
         {
@@ -84,7 +85,7 @@ namespace prjIHealth.Controllers
 
 
             
-        }
+        
         public IActionResult ForgotPassword()
         {
 

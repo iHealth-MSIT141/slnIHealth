@@ -44,7 +44,7 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="/member/showtracklist"><i class="fa fa-heart"></i> <span></span></a></li>
-                <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-bag"></i> <span></span></a></li>
+                <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
                 <li class="header__top__right__auth"><a href="~/Home/會員專區ViewDemo"><i class="fa fa-user"></i> 登入</a></li>
             </ul>
         </div>
@@ -77,7 +77,7 @@
         <div class="humberger__menu__contact">
             <ul>
                 @*<li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                <li>Free Shipping for all Order of $99</li>*@
+                    <li>Free Shipping for all Order of $99</li>*@
             </ul>
         </div>
     </div>
@@ -101,9 +101,8 @@
                                 <div class="header__cart" style="padding:0;">
                                     <ul>
                                         @*<a href="#"><i class="fa fa-user"></i> Login</a>*@
-
                                         <li><a href="/member/showtracklist"><i class="fa fa-heart"></i> <span></span></a></li>
-                                        <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-bag"></i> <span></span></a></li>
+                                        <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
 
                                     </ul>
                                 </div>
@@ -118,7 +117,7 @@
                 <div class="row">
                     <div class="col-lg-2">
                         <div class="header__logo">
-                            <a href="~/Admin/Admin/管理頁Demo">
+                            <a href="~/Home/Index">
                                 @*</img src="/img/logo.png" alt="">*@
                                 <h3>iHealth</h3>
                             </a>
@@ -132,11 +131,11 @@
                                 <li>
                                     <a href="~/shopping/ShowShoppingMall">周邊商城</a>
                                     @*<ul class="header__menu__dropdown">
-                                        <li><a href="./shop-details">Shop Details</a></li>
-                                        <li><a href="./shoping-cart">Shoping Cart</a></li>
-                                        <li><a href="./checkout">Check Out</a></li>
-                                        <li><a href="./blog-details">Blog Details</a></li>
-                                    </ul>*@
+                                            <li><a href="./shop-details">Shop Details</a></li>
+                                            <li><a href="./shoping-cart">Shoping Cart</a></li>
+                                            <li><a href="./checkout">Check Out</a></li>
+                                            <li><a href="./blog-details">Blog Details</a></li>
+                                        </ul>*@
                                 </li>
                                 <li><a href="~/Body/BodyCalculatorMain">BODY計算器</a></li>
 
@@ -148,24 +147,14 @@
                             <ul>
                                 @*<li><a href="#"><i class="fa fa-heart"></i> <span></span></a></li>
                                     <li><a href="#"><i class="fa fa-shopping-bag"></i> <span></span></a></li>*@
-                                <li class="header__top__right__auth">
+                                <li>
                                     <div class="header__top__right__auth">
-
-                                        <a href="../Member/Login"  data-bs-toggle="modal" data-target="loginModal">
-                                            <i class="fa fa-user"></i> 登入
-                                        </a>
-
-                                        <a href="~/Home/會員專區ViewDemo"><i class="fa fa-user"></i>會員專區</a>
+                                        <a href="~/Member/Login"><i class="fa fa-user"></i>登入</a>
                                         <ul class="header__menu__dropdown">
-                                            <li><a href="~/Home/會員專區ViewDemo">會員專區</a></li>
-                                            <li><a href="~/Home/教練專區ViewDemo">教練專區</a></li>
+                                            <li><a href="~/Member/Edit">會員專區</a></li>
+                                            <li><a href="~/Coach/ManageResume">教練專區</a></li>
                                         </ul>
-
                                     </div>
-                                </li>
-                                <li class="header__top__right__auth"></li>
-                                <li class="header__top__right__auth">
-
                                 </li>
                             </ul>
                         </div>
@@ -177,74 +166,6 @@
             </div>
         </div>
     </header>
-
-    <!-- 會員登入Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel">歡迎登入IHealth會員! <span></span></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="addForm">
-                        @*<input type="hidden" name="ShipperID" id="ShipperID">*@
-                        @*<div class="form-group">
-            <label for="CompanyName">CompanyNametext</label>
-            <input type="text" class="form-control" id="CompanyName" name="CompanyName"
-                   placeholder="帳號">
-        </div>
-        <div class="form-group">
-            <label for="Phone">Phone</label>
-            <input type="text" class="form-control" id="Phone" name="Phone" placeholder="密碼">
-        </div>*@
-                        @using (Html.BeginForm())
-                        {
-                            @Html.AntiForgeryToken()
-
-                        <div class="form-horizontal">
-                            <hr />
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                            <input type="hidden" name="fAuthorityId" id="fAuthorityId">
-                            <div class="form-outline mb-4">
-                                <div class="col-md-12 mb-3">
-                                    @Html.TextBox("fUserName", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入帳號" })
-                                </div>
-                                <div class="col-md-12 mb-3">
-                                    @Html.TextBox("fPassword", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入密碼" })
-                                </div>
-                                <div class="custom-control custom-checkbox small">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck">
-                                    <label class="custom-control-label" for="customCheck">記住帳號  </label>
-                                </div>
-                                <div class=" col-md-12  ">
-                                    <input type="submit" value="會員登入" class="btn btn-primary ">
-                                </div>
-                            </div>
-                            <div class="form-group">
-
-                            </div>
-                        </div>
-                        }
-                    </form>
-                </div>
-                <div class="modal-footer row">
-                    <div class="text-center  mb-4">
-                        @Html.ActionLink("忘記密碼?", "ForgotPassword", "Member", null, new { @class = "btn btn-primary" })
-                    </div>
-                    <div class="text-center">
-                        @Html.ActionLink("註冊會員", "Register", "Member", null, new { @class = "btn btn-success" })
-                    </div>
-                  
-                   
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Header Section End -->
     <!-- 各版頁面在此做轉換 -->
     <div>@RenderBody()</div>
@@ -256,7 +177,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index"><h3>iHealth</h3></a>
+                            <a href="~/Admin/Admin/管理頁Demo"><h3>iHealth</h3></a>
                         </div>
                         <ul>
                             <li>Address: 台北市大安區復興南路一段390號2樓</li>
@@ -267,58 +188,58 @@
                 </div>
                 <div class="col-lg-7 col-md-6 col-sm-6 offset-lg-1">
                     <div class="footer__widget">
-                    <ul style="width:20%">
-                        <li><h6>會員中心</h6></li>
-                        <li><a href="#">註冊會員</a></li>
-                        <li><a href="#">會員登入</a></li>
-                        <li><a href="#">忘記密碼</a></li>
-                        <li><a href="#">個人資料</a></li>
-                    </ul>
-                    <ul style="width:20%">
-                        <li><h6>體態管理</h6></li>
-                        <li><a href="~/News/Blog">健康資訊</a></li>
-                        <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
-                        <li><a href="~/Body/BMICalculator">BMI計算器</a></li>
-                        <li><a href="~/Body/TDEECalculator">TDEE計算器</a></li>
-                    </ul>
-                    <ul style="width:20%">
-                        <li><h6>周邊商城</h6></li>
-                        <li><a href="~/Shopping/ShowShoppingMall">商品總覽</a></li>
-                        <li><a href="~/Member/ShowTrackList">追蹤商品</a></li>
-                        <li><a href="~/Shopping/ShoppingCartList">購物車</a></li>
-                        <li><a href="~/Member/OrderList">訂單查詢</a></li>
-                    </ul>
-                    <ul style="width:20%">
-                        <li><h6>預約平台</h6></li>
-                        <li><a href="~/Student/CoachMainPage">教練總覽</a></li>
-                        <li><a href="~/Student/CandidateList">候選教練</a></li>
-                        <li><a href="~/Student/CourseList">課程列表</a></li>
-                        <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
-                    </ul>
-                    <ul style="width:20%">
-                        <li><h6>教練專區</h6></li>
-                        <li><a href="~/Coach/ManageResume">履歷管理</a></li>
-                        <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
-                        <li><a href="~/Coach/TeachingList">教課列表</a></li>
-                    </ul>
+                        <ul style="width:20%">
+                            <li><h6>會員中心</h6></li>
+                            <li><a href="~/Member/Register">註冊會員</a></li>
+                            <li><a href="~/Member/Login">會員登入</a></li>
+                            <li><a href="~/Member/ForgotPassword">忘記密碼</a></li>
+                            <li><a href="~/Member/Edit">個人資料</a></li>
+                        </ul>
+                        <ul style="width:20%">
+                            <li><h6>體態管理</h6></li>
+                            <li><a href="~/News/Blog">健康資訊</a></li>
+                            <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
+                            <li><a href="~/Body/BMICalculator">BMI計算器</a></li>
+                            <li><a href="~/Body/TDEECalculator">TDEE計算器</a></li>
+                        </ul>
+                        <ul style="width:20%">
+                            <li><h6>周邊商城</h6></li>
+                            <li><a href="~/Shopping/ShowShoppingMall">商品總覽</a></li>
+                            <li><a href="~/Member/ShowTrackList">追蹤商品</a></li>
+                            <li><a href="~/Shopping/ShoppingCartList">購物車</a></li>
+                            <li><a href="~/Member/OrderList">訂單查詢</a></li>
+                        </ul>
+                        <ul style="width:20%">
+                            <li><h6>預約平台</h6></li>
+                            <li><a href="~/Student/CoachMainPage">教練總覽</a></li>
+                            <li><a href="~/Student/CandidateList">候選教練</a></li>
+                            <li><a href="~/Student/CourseList">課程列表</a></li>
+                            <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
+                        </ul>
+                        <ul style="width:20%">
+                            <li><h6>教練專區</h6></li>
+                            <li><a href="~/Coach/ManageResume">履歷管理</a></li>
+                            <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
+                            <li><a href="~/Coach/TeachingList">教課列表</a></li>
+                        </ul>
                     </div>
                 </div>
                 @*<div class="col-lg-4 col-md-12">
-                    <div class="footer__widget">
-                        <h6>Join Our Newsletter Now</h6>
-                        <p>Get E-mail updates about our latest shop and special offers.</p>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your mail">
-                            <button type="submit" class="site-btn">Subscribe</button>
-                        </form>
-                        <div class="footer__widget__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        <div class="footer__widget">
+                            <h6>Join Our Newsletter Now</h6>
+                            <p>Get E-mail updates about our latest shop and special offers.</p>
+                            <form action="#">
+                                <input type="text" placeholder="Enter your mail">
+                                <button type="submit" class="site-btn">Subscribe</button>
+                            </form>
+                            <div class="footer__widget__social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -359,8 +280,7 @@
             $("body").css("padding-top", $(".fixed-top").height());
         };
         $(window).resize(onResize);
-        $(function ()
-        {
+        $(function () {
             onResize();
         });
     </script>
