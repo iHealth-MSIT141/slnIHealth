@@ -57,7 +57,7 @@ namespace prjIHealth
             {
                 endpoints.MapControllerRoute(
                    name: "areas",
-                   pattern: "{area:exists}/{controller=Admin}/{action=ºÞ²z­¶Demo}/{id?}");
+                   pattern: "{area:exists}/{controller=Admin}/{action=ï¿½Þ²zï¿½ï¿½Demo}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

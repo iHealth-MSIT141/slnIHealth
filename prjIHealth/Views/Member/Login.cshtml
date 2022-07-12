@@ -1,0 +1,194 @@
+﻿
+@{ ViewData["Title"] = "Login"; }
+
+@section Styles{
+
+}
+
+
+
+@*banner大圖*@
+<!-- 會員登入Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">歡迎登入IHealth! <span></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    @*<input type="hidden" name="ShipperID" id="ShipperID">*@
+                    @*<div class="form-group">
+                            <label for="CompanyName">CompanyNametext</label>
+                            <input type="text" class="form-control" id="CompanyName" name="CompanyName"
+                                   placeholder="帳號">
+                        </div>
+                        <div class="form-group">
+                            <label for="Phone">Phone</label>
+                            <input type="text" class="form-control" id="Phone" name="Phone" placeholder="密碼">
+                        </div>*@
+                    @using (Html.BeginForm())
+                    {
+        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <input type="hidden" name="fAuthorityId" id="fAuthorityId">
+                            <div class="form-outline mb-4">
+                                <div class="col-md-12 mb-3">
+                                    @Html.TextBox("fUserName", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入帳號" })
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    @Html.TextBox("fPassword", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入密碼" })
+                                </div>
+                                <div class="custom-control custom-checkbox small">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck">
+                                    <label class="custom-control-label" for="customCheck">記住帳號  </label>
+                                </div>
+                                <div class=" col-md-12  ">
+                                    <input type="submit" value="會員登入" class="btn btn-primary btn-block ">
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                            </div>
+                        </div>}
+                </form>
+            </div>
+            <div class="modal-footer row">
+                <div class="text-center  mb-4">
+                    @Html.ActionLink("忘記密碼?", "ForgotPassword", "Member", null, new { @class = "btn btn-primary" })
+                </div>
+                <div class="text-center">
+                    @Html.ActionLink("註冊會員", "Register", "Member", null, new { @class = "btn btn-success" })
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <div class="container">
+                        <!-- Outer Row -->
+                        <div class="row justify-content-center">
+
+                            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                                <div class="card o-hidden border-0 shadow-lg my-5">
+                                    <div class="card-body p-0">
+                                        <!-- Nested Row within Card Body -->
+                                        <div class="row">
+                                            @*<div class="col-lg-6 d-none d-lg-block bg-login-image"></div>*@
+                                            <div class="col-xl-6 d-none d-xl-block">
+                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                                                     alt="Sample photo" class="img-fluid"
+                                                     style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="p-5">
+                                                    <div class="text-center">
+                                                        <h1 class="h4 text-gray-900 mb-4">歡迎登入IHealth會員!</h1>
+                                                    </div>
+                                                    @using (Html.BeginForm())
+                                                    {
+                                        @Html.AntiForgeryToken()
+
+                                                        <div class="form-horizontal">
+                                                            <hr />
+                                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                                            <div class="form-outline mb-4">
+                                                                <div class="col-md-12 mb-3">
+                                                                    @Html.TextBox("fUserName", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入帳號" })
+                                                                </div>
+                                                                <div class="col-md-12 mb-3">
+                                                                    @Html.TextBox("fPassword", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入密碼" })
+                                                                </div>
+                                                                <div class=" col-md-12  ">
+                                                                    <input type="submit" value="會員登入" class="btn btn-primary ">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+
+                                                            </div>
+                                                        </div>}
+                                                    <div class="form-group">
+                                                        <div class="custom-control custom-checkbox small">
+                                                            <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                            <label class="custom-control-label" for="customCheck">記住帳號  </label>
+                                                        </div>
+
+
+
+                                                        <!--@*<a href="index.html" class="btn btn-google btn-user btn-block">
+                                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                                        </a>
+                                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook-->
+                                                        </a>*@
+                                                                                                    <!--</form>-->
+                                                        <hr>
+                                                        <div class="text-center  mb-4">
+                                                            @Html.ActionLink("忘記密碼?", "ForgotPassword", "Member", null, new { @class = "btn btn-primary" })
+                                                        </div>
+                                                        <div class="text-center">
+                                                            @Html.ActionLink("註冊會員", "Register", "Member", null, new { @class = "btn btn-success" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<body class="bg-gradient-primary">
+
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+</body>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*※※※非會員專區的View的內容請從此處開始※※※*@
+
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+
+}

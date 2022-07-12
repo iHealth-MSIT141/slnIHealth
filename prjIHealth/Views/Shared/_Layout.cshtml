@@ -148,14 +148,24 @@
                             <ul>
                                 @*<li><a href="#"><i class="fa fa-heart"></i> <span></span></a></li>
                                     <li><a href="#"><i class="fa fa-shopping-bag"></i> <span></span></a></li>*@
-                                <li>
+                                <li class="header__top__right__auth">
                                     <div class="header__top__right__auth">
+
+                                        <a href="../Member/Login"  data-bs-toggle="modal" data-target="loginModal">
+                                            <i class="fa fa-user"></i> 登入
+                                        </a>
+
                                         <a href="~/Home/會員專區ViewDemo"><i class="fa fa-user"></i>會員專區</a>
                                         <ul class="header__menu__dropdown">
                                             <li><a href="~/Home/會員專區ViewDemo">會員專區</a></li>
                                             <li><a href="~/Home/教練專區ViewDemo">教練專區</a></li>
                                         </ul>
+
                                     </div>
+                                </li>
+                                <li class="header__top__right__auth"></li>
+                                <li class="header__top__right__auth">
+
                                 </li>
                             </ul>
                         </div>
@@ -167,6 +177,74 @@
             </div>
         </div>
     </header>
+
+    <!-- 會員登入Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">歡迎登入IHealth會員! <span></span></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addForm">
+                        @*<input type="hidden" name="ShipperID" id="ShipperID">*@
+                        @*<div class="form-group">
+            <label for="CompanyName">CompanyNametext</label>
+            <input type="text" class="form-control" id="CompanyName" name="CompanyName"
+                   placeholder="帳號">
+        </div>
+        <div class="form-group">
+            <label for="Phone">Phone</label>
+            <input type="text" class="form-control" id="Phone" name="Phone" placeholder="密碼">
+        </div>*@
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <input type="hidden" name="fAuthorityId" id="fAuthorityId">
+                            <div class="form-outline mb-4">
+                                <div class="col-md-12 mb-3">
+                                    @Html.TextBox("fUserName", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入帳號" })
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    @Html.TextBox("fPassword", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入密碼" })
+                                </div>
+                                <div class="custom-control custom-checkbox small">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck">
+                                    <label class="custom-control-label" for="customCheck">記住帳號  </label>
+                                </div>
+                                <div class=" col-md-12  ">
+                                    <input type="submit" value="會員登入" class="btn btn-primary ">
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                            </div>
+                        </div>
+                        }
+                    </form>
+                </div>
+                <div class="modal-footer row">
+                    <div class="text-center  mb-4">
+                        @Html.ActionLink("忘記密碼?", "ForgotPassword", "Member", null, new { @class = "btn btn-primary" })
+                    </div>
+                    <div class="text-center">
+                        @Html.ActionLink("註冊會員", "Register", "Member", null, new { @class = "btn btn-success" })
+                    </div>
+                  
+                   
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Header Section End -->
     <!-- 各版頁面在此做轉換 -->
     <div>@RenderBody()</div>
@@ -281,7 +359,8 @@
             $("body").css("padding-top", $(".fixed-top").height());
         };
         $(window).resize(onResize);
-        $(function () {
+        $(function ()
+        {
             onResize();
         });
     </script>

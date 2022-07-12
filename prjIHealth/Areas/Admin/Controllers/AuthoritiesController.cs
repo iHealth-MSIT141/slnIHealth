@@ -10,23 +10,22 @@ using prjIHealth.Models;
 namespace prjIHealth.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class MemberManageController : Controller
+    public class AuthoritiesController : Controller
     {
         private readonly IHealthContext _context;
 
-        public MemberManageController(IHealthContext context)
+        public AuthoritiesController(IHealthContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/MemberManage
+        // GET: Admin/Authorities
         public async Task<IActionResult> Index()
         {
-            var iHealthContext = _context.TMembers.Include(t => t.FAuthority);
-            return View(await iHealthContext.ToListAsync());
+            return View(await _context.TAuthorities.ToListAsync());
         }
 
-        // GET: Admin/MemberManage/Details/5
+        // GET: Admin/Authorities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace prjIHealth.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var tMember = await _context.TMembers
-                .Include(t => t.FAuthority)
-                .FirstOrDefaultAsync(m => m.FMemberId == id);
-            if (tMember == null)
+            var tAuthority = await _context.TAuthorities
+                .FirstOrDefaultAsync(m => m.FAutorityId == id);
+            if (tAuthority == null)
             {
                 return NotFound();
             }
 
-            return View(tMember);
+            return View(tAuthority);
         }
 
-        // GET: Admin/MemberManage/Create
+        // GET: Admin/Authorities/Create
         public IActionResult Create()
         {
-            ViewData["FAuthorityId"] = new SelectList(_context.TAuthorities, "FAutorityId", "FAuthorityName");
             return View();
         }
 
-        // POST: Admin/MemberManage/Create
+        // POST: Admin/Authorities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FMemberId,FMemberName,FPassword,FBirthday,FGender,FPicturePath,FUserName,FAddress,FPhone,FEmail,FRegisterDate,FAuthorityId,FDisabled,FRemarks")] TMember tMember)
+        public async Task<IActionResult> Create([Bind("FAutorityId,FAuthorityName,FRemarks")] TAuthority tAuthority)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tMember);
+                _context.Add(tAuthority);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FAuthorityId"] = new SelectList(_context.TAuthorities, "FAutorityId", "FAuthorityName", tMember.FAuthorityId);
-            return View(tMember);
+            return View(tAuthority);
         }
 
-        // GET: Admin/MemberManage/Edit/5
+        // GET: Admin/Authorities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace prjIHealth.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var tMember = await _context.TMembers.FindAsync(id);
-            if (tMember == null)
+            var tAuthority = await _context.TAuthorities.FindAsync(id);
+            if (tAuthority == null)
             {
                 return NotFound();
             }
-            ViewData["FAuthorityId"] = new SelectList(_context.TAuthorities, "FAutorityId", "FAuthorityName", tMember.FAuthorityId);
-            return View(tMember);
+            return View(tAuthority);
         }
 
-        // POST: Admin/MemberManage/Edit/5
+        // POST: Admin/Authorities/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FMemberId,FMemberName,FPassword,FBirthday,FGender,FPicturePath,FUserName,FAddress,FPhone,FEmail,FRegisterDate,FAuthorityId,FDisabled,FRemarks")] TMember tMember)
+        public async Task<IActionResult> Edit(int id, [Bind("FAutorityId,FAuthorityName,FRemarks")] TAuthority tAuthority)
         {
-            if (id != tMember.FMemberId)
+            if (id != tAuthority.FAutorityId)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace prjIHealth.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(tMember);
+                    _context.Update(tAuthority);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TMemberExists(tMember.FMemberId))
+                    if (!TAuthorityExists(tAuthority.FAutorityId))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace prjIHealth.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FAuthorityId"] = new SelectList(_context.TAuthorities, "FAutorityId", "FAuthorityName", tMember.FAuthorityId);
-            return View(tMember);
+            return View(tAuthority);
         }
 
-        // GET: Admin/MemberManage/Delete/5
+        // GET: Admin/Authorities/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace prjIHealth.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var tMember = await _context.TMembers
-                .Include(t => t.FAuthority)
-                .FirstOrDefaultAsync(m => m.FMemberId == id);
-            if (tMember == null)
+            var tAuthority = await _context.TAuthorities
+                .FirstOrDefaultAsync(m => m.FAutorityId == id);
+            if (tAuthority == null)
             {
                 return NotFound();
             }
 
-            return View(tMember);
+            return View(tAuthority);
         }
 
-        // POST: Admin/MemberManage/Delete/5
+        // POST: Admin/Authorities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tMember = await _context.TMembers.FindAsync(id);
-            _context.TMembers.Remove(tMember);
+            var tAuthority = await _context.TAuthorities.FindAsync(id);
+            _context.TAuthorities.Remove(tAuthority);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TMemberExists(int id)
+        private bool TAuthorityExists(int id)
         {
-            return _context.TMembers.Any(e => e.FMemberId == id);
+            return _context.TAuthorities.Any(e => e.FAutorityId == id);
         }
     }
 }
