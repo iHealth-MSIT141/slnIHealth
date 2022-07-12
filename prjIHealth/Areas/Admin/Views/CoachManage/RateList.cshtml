@@ -1,0 +1,152 @@
+﻿@model IEnumerable<prjIHealth.Models.TCoachRate>
+
+@{
+    ViewData["Title"] = "iHeath後臺";
+    Layout = "~/Areas/Admin/Admin_Layout.cshtml";
+}
+@section Styles{ 
+<style>
+    .tdRateText{
+        max-width:400px;
+        text-align:justify;
+    }
+    .btn-light {
+        background-color: #7FAD39;
+        color: white;
+    }
+
+        .btn-light:hover {
+            background-color: #4F6C24;
+            color: white;
+        }
+</style>
+}
+<h1>管理頁Demo-教練評論管理</h1>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                No.
+                @*@Html.DisplayNameFor(model => model.FRateId)*@
+            </th>
+            <th>
+                會員編號
+                @*@Html.DisplayNameFor(model => model.FMemberId)*@
+            </th>
+            <th>
+                教練編號
+                @*@Html.DisplayNameFor(model => model.FCoachId)*@
+            </th>
+            <th>
+                評分(1-5)
+                @*@Html.DisplayNameFor(model => model.FRateStar)*@
+            </th>
+            <th>
+                評論
+                @*@Html.DisplayNameFor(model => model.FRateText)*@
+            </th>
+            <th>
+                評分時間
+                @*@Html.DisplayNameFor(model => model.FRateDate)*@
+            </th>
+            <th>
+                是否公開
+                @*@Html.DisplayNameFor(model => model.FVisible)*@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @*@foreach (var item in Model)
+        {*@
+        <tr>
+            <td>
+                1
+                @*@Html.DisplayFor(modelItem => item.FRateId)*@
+            </td>
+            <td>
+                9
+                @*@Html.DisplayFor(modelItem => item.FMemberId)*@
+            </td>
+            <td>
+                15
+                @*@Html.DisplayFor(modelItem => item.FCoachId)*@
+            </td>
+            <td>
+                4
+                @*@Html.DisplayFor(modelItem => item.FRateStar)*@
+            </td>
+            <td class="tdRateText">
+                由於從事業務工作，
+                三餐不定時，
+                體重來到人生的巔峰！
+                又遇到人生大事-結婚！
+                婚紗穿了不好看，
+                還被笑說很像丈母娘，
+                讓我非常的難過。
+                下定決心馬上減肥，
+                我改變飲食並結合運動的方式，
+                在2個月的時間就減了6公斤，
+                體脂肪8％，成為最美麗的新娘，
+                至今已維持7年沒有復胖
+                @*@Html.DisplayFor(modelItem => item.FRateText)*@
+            </td>
+            <td>
+                2022-7-3
+                @*@Html.DisplayFor(modelItem => item.FRateDate)*@
+            </td>
+            <td>
+                是
+                @*@Html.DisplayFor(modelItem => item.FVisible)*@
+            </td>
+            <td>
+                @Html.ActionLink("隱藏評論", "Edit", new { /* id=item.PrimaryKey */ },new { @class= "btn btn-light" })
+                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2
+                @*@Html.DisplayFor(modelItem => item.FRateId)*@
+            </td>
+            <td>
+                25
+                @*@Html.DisplayFor(modelItem => item.FMemberId)*@
+            </td>
+            <td>
+                10
+                @*@Html.DisplayFor(modelItem => item.FCoachId)*@
+            </td>
+            <td>
+                5
+                @*@Html.DisplayFor(modelItem => item.FRateStar)*@
+            </td>
+            <td class="tdRateText">
+                從高中開始，吃飽飯就坐著唸書，直到工作之後體重飆升，
+                我認真覺得不行了！試過上健身房找私人教練，
+                上完課後體重仍然降不下來。
+                直到近乎放棄減肥的我
+                在這裏建立正確飲食觀念加上運動輔助，三個月體重降了7公斤，
+                體脂肪少了7％，
+                這是我以前從來沒有過體驗！
+
+                @*@Html.DisplayFor(modelItem => item.FRateText)*@
+            </td>
+            <td>
+                2022-7-3
+                @*@Html.DisplayFor(modelItem => item.FRateDate)*@
+            </td>
+            <td>
+                是
+                @*@Html.DisplayFor(modelItem => item.FVisible)*@
+            </td>
+            <td>
+                @Html.ActionLink("隱藏評論", "Edit", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-light" })
+                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            </td>
+        </tr>
+        @*}*@
+    </tbody>
+</table>

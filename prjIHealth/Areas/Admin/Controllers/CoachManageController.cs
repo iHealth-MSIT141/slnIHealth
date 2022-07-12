@@ -13,5 +13,13 @@ namespace prjIHealth.Areas.Admin.Controllers
         {
             return View();
         }
+        public IActionResult CoachList()
+        {
+            return View();
+        }       
+        public IActionResult RateList()
+        {
+            return View();
+        }
     }
 }

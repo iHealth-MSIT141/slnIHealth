@@ -1,0 +1,351 @@
+﻿@model IEnumerable<prjIHealth.Models.TCoach>
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    .divSearch {
+        display: flex;
+        justify-content: center;
+        padding: 0px 20px;
+    }
+
+    .divSelCity {
+        padding-left: 10px;
+        text-align: right;
+    }
+
+        .divSelCity > div {
+            width: 180px;
+        }
+    .divKeyword {
+        display: flex;
+    }
+
+    .divSubmit {
+        height: 38px;
+        padding: 0px;
+        margin: 0px;
+        text-align: center;
+    }
+    .hero__search__form, .divCoachList {
+        width: 100%;
+    }       
+    .filter{
+        margin:30px 0px;
+    }    
+    .divCoachCount {
+        text-align: right;
+    }
+    .divCoachCard {
+        display: flex;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+        border: 2px solid lightgray;
+        box-shadow: 2px 2px 5px lightgray;
+    }
+    .imgCoach {
+        border-radius: 10px;
+        border: 3px solid white;
+        width: 180px;
+        height: 200px;
+        transition: .3s;
+    }
+        .imgCoach:hover {            
+            border: 3px solid gray;
+        }
+    .divCoachInfo{
+        padding:20px;
+    }
+    .imgIcon {
+        height: 20px;
+    }
+    .li{
+        margin:5px 0px;
+    }
+    .liCoachName {
+        margin-bottom: 10px;
+    }
+    .liSlogan{
+        margin-top:18px;
+    }    
+    .divPage{
+        text-align:right;
+    }
+    .btn-success {
+        background-color: #7fad39;
+        border:none;
+    }
+    .btn-light {
+        background-color: #4F6C24;
+        color: white;
+    }
+        .btn-light:hover {
+            background-color: #304115;
+            color: white;
+        }
+    .ulCategory li{
+        padding-right:80px;
+    }
+        .ulCategory li a {
+            color: #585A55 !important;
+            transition: .2s;
+        }
+            .ulCategory li a:hover {
+                background-color: #ECF1E4;
+                color: black !important;
+            }
+    .inKeyword {
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+
+    .btnSearch {
+        height: 38px;
+        border-bottom-left-radius: 0px;
+        border-top-left-radius: 0px;
+    }
+</style>
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2>私人教練專區</h2>
+                    <div class="breadcrumb__option">
+                        <a href="./index.html">Home</a>
+                        <span>Training</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            @*※※※非會員專區的View的內容請從此處開始※※※*@
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="sidebar__item reveal_l1">
+                        <h4>運動類別</h4>
+                        <ul class="ulCategory">
+                            <li><a href="#">肌肥大訓練</a></li>
+                            <li><a href="#">增肌減脂</a></li>
+                            <li><a href="#">體態評估雕塑</a></li>
+                            <li><a href="#">功能性訓練</a></li>
+                            <li><a href="#">TRX課程訓練</a></li>
+                            <li><a href="#">壺鈴課程訓練</a></li>
+                            <li><a href="#">拳擊訓練</a></li>
+                            <li><a href="#">備賽指導</a></li>
+                            <li><a href="#">銀髮族訓練</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="divSearch row">
+                    <div class="divSelCity col-lg-3">
+                        <select>
+                            <option value="1">臺北市</option>
+                            <option value="2">新北市</option>
+                            <option value="3">桃園市</option>
+                        </select>
+                    </div>
+                    <div class="divKeyword col-lg-6">
+                        <input type="text" class="form-control inKeyword" placeholder="請輸入關鍵字">
+                        <div class="divSubmit col-lg-1">
+                            <button class="btn btn-success btnSearch" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                    </div>                    
+                    <div class="divApply col-lg-2">
+                        <button class="btn btn-light" type="button">成為教練</button>
+                    </div>
+                </div>
+                
+                <div class="row filter">
+                    <div class="col-lg-4 col-md-5">
+                        <div class="filter__sort">
+                            <span>排序依據</span>
+                            <select>
+                                <option value="1">預設</option>
+                                <option value="2">加入日期新至舊</option>
+                                <option value="3">加入日期舊至新</option>
+                            </select>
+
+                            @*<select>
+                                <option value="0"></option>
+                                <option value="0"></option>
+                            </select>
+                            <div class="nice-select" tabindex="0">
+                                <span class="current">預設</span>
+                                <ul class="list">
+                                    <li data-value="0" class="option selected">加入日期新至舊
+                                </ul>
+                            </div>*@
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-4">
+                        <div class="filter__found divCoachCount">
+                            <h6>共 <span> 16</span> 位私人教練</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="divCoachList">
+                    <div class="divCoachCard row reveal_b1">
+                        <div class="col-3">
+                            <a href="/Student/ViewCoachDetails"><img src="/img/Coach/coachImage/May.jpg" class="imgCoach"></a>
+                        </div>
+                        <div class="col-9 divCoachInfo">
+                            <ul>
+                                <li style="list-style:none" class="liCoachName"><h3><b>May</b></h3></li>
+                                <li style="list-style:none" class="li">
+                                    <img src="~/img/Coach/icon/location.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b><span>台北市</span>
+                                </li>
+                                <li style="list-style:none" class="li">
+                                    <img src="~/img/Coach/icon/skill.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;專長項目： </b><span>肌肥大訓練、體態評估雕塑、增肌減脂</span>
+                                </li>
+                                <li style="list-style:none" class="liSlogan"><h5><b>擅長幫助各年齡層女性量身打造增肌減脂計畫，找回自信體態！</b></h5></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="divCoachCard row reveal_b1">
+                        <div class="col-3">
+                            <a href="/Student/ViewCoachDetails"><img src="~/img/Coach/coachImage/Zac.jpg" class="imgCoach"></a>
+                        </div>
+                        <div class="col-9 divCoachInfo">
+                            <ul>
+                                <li style="list-style:none" class="liCoachName"><h3><b>Zac</b></h3></li>
+                                <li style="list-style:none" class="li">
+                                    <img src="~/img/Coach/icon/location.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b><span>台北市</span>
+                                </li>
+                                <li style="list-style:none" class="li">
+                                    <img src="~/img/Coach/icon/skill.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;專長項目： </b><span>肌肥大訓練、備賽指導</span>
+                                </li>
+                                <li style="list-style:none" class="liSlogan"><h5><b>夏天來臨前，跟著Zac一起打造完美body！</b></h5></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="divCoachCard row reveal_b1">
+                        <div class="col-3">
+                            <a href="/Student/ViewCoachDetails"><img src="~/img/Coach/coachImage/Peeta.jpg" class="imgCoach"></a>
+                        </div>
+                        <div class="col-9 divCoachInfo">
+                            <ul>
+                                <li style="list-style:none" class="liCoachName"><h3><b>Peeta</b></h3></li>
+                                <li style="list-style:none" class="li">
+                                    <img src="~/img/Coach/icon/location.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b><span>新竹市</span>
+                                </li>
+                                <li style="list-style:none" class="li">
+                                    <img src="~/img/Coach/icon/skill.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;專長項目： </b><span>肌肥大訓練、備賽指導</span>
+                                </li>
+                                <li style="list-style:none" class="liSlogan"><h5><b>Peeta Fitness is the BEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEST!</b></h5></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="product__pagination divPage">
+                    <a href="#">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                </div>
+            </div>
+            @*<table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FCoachId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FMemberId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FRegionId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FCoachImage)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FExperience)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FLicense)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FCoachFee)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FCoachDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FApplyDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FStatusId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FVisible)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FCoachId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FMemberId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FRegionId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FCoachImage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FExperience)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FLicense)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FCoachFee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FCoachDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FApplyDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FStatusId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FVisible)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>*@
+
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+
+}
