@@ -297,17 +297,17 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label asp-for="FExperience" class="col-sm-2 col-form-label">經歷<br /><span class="spRemind">*最多填寫10項</span></label>
+                                <label  class="col-sm-2 col-form-label">經歷<br /><span class="spRemind">*最多填寫10項</span></label>
                                 <div class="col-sm-10" id="divExp">
-                                    <input asp-for="FExperience" class="form-control" id="exp1" />
-                                    <span asp-validation-for="FExperience" class="text-danger"></span>
+                                    <input  class="form-control" id="exp1" />
+                                    <span  class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label asp-for="FLicense" class="col-sm-2 col-form-label">相關證照<br /><span class="spRemind">*最多填寫10項</span></label>
+                                <label  class="col-sm-2 col-form-label">相關證照<br /><span class="spRemind">*最多填寫10項</span></label>
                                 <div class="col-sm-10" id="divLic">
-                                    <input asp-for="FLicense" class="form-control" id="lic1" />
-                                    <span asp-validation-for="FLicense" class="text-danger"></span>
+                                    <input class="form-control" id="lic1" />
+                                    <span class="text-danger"></span>
                                 </div>
 
                             </div>
@@ -315,6 +315,14 @@
                                 <label asp-for="FCoachDescription" class="col-sm-2 col-form-label">介紹<br /><span class="spRemind">*字數限120字</span></label>
                                 <div class="col-sm-10">
                                     <textarea asp-for="FCoachDescription" style="height:150px" class="form-control"></textarea>
+                                    @*<input asp-for="FCoachDescription" class="form-control" />*@
+                                    <span asp-validation-for="FCoachDescription" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Slogan<br /><span class="spRemind">*字數限50字</span></label>
+                                <div class="col-sm-10">
+                                    <textarea asp-for="FCoachDescription" style="height:100px" class="form-control"></textarea>
                                     @*<input asp-for="FCoachDescription" class="form-control" />*@
                                     <span asp-validation-for="FCoachDescription" class="text-danger"></span>
                                 </div>
@@ -352,7 +360,7 @@
                 let exp = document.createElement("input");
                 exp.type = "text";
                 exp.setAttribute("name", `exp${expCount}`);
-                exp.classList = "form-control newInput";
+                exp.classList = "form-control newInput";                              
                 divExp.appendChild(exp);
 
                 //新增證照btn往下移
