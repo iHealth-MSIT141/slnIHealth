@@ -5,7 +5,19 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
 
-<h1>會員權限資料管理</h1>
+@section Styles{
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+        /*        <h2 id="title">管理頁Demo</h2>*/
+    </style>
+}
+<h2 id="title">會員權限資料管理</h2>
+<hr />
 
 <p>
     <a asp-action="Create" class="btn btn-primary">會員權限資料新增</a>
@@ -49,5 +61,5 @@
     </tbody>
 </table>
 @*<div class="embed-responsive embed-responsive-16by9" width="200" height="200">
-    <a>   <iframe class="embed-responsive-item " src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" ></iframe></a>
-</div>*@
+        <a>   <iframe class="embed-responsive-item " src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" ></iframe></a>
+    </div>*@
