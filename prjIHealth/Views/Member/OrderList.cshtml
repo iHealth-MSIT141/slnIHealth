@@ -1,0 +1,215 @@
+﻿
+@{
+    ViewData["Title"] = "OrderList";
+}
+
+
+
+@section Styles{
+    table {
+    border-spacing: 0;
+    width: 100%;
+    }
+    tr {
+    text-align: center;
+    }
+    th {
+    padding: 10px;
+    }
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2>訂單查詢</h2>
+                    <div class="breadcrumb__option">
+                        <a href="./index.html">Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>會員專區</h4>
+                        <ul>
+                            <li><a href="#">個人資料</a></li>
+                            <li><a href="#">訂單查詢</a></li>
+                            <li><a href="#">飲食日誌</a></li>
+                            <li><a href="#">客服記錄</a></li>
+                        </ul>
+                        <br />
+                        <br />
+                        <br />
+                        <h4>預約平台</h4>
+                        <ul>
+                            <li><a href="#">履歷管理</a></li>
+                            <li><a href="#">教練連繫記錄</a></li>
+                            <li><a href="#">課程列表</a></li>
+                            <li><a href="#">課程行事曆</a></li>
+                            <li><a href="#">候選教練</a></li>
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7" style="height:400px">
+                @*※※※會員專區View內容請從此開始※※※*@
+
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        收件人
+                                    </th>
+                                    <th>
+                                        電話
+                                    </th>
+                                    <th>
+                                        日期
+                                    </th>
+                                    <th>
+                                        地址
+                                    </th>
+                                    <th>
+                                        付款方式
+                                    </th>
+                                    <th>
+                                        狀態
+                                    </th>
+                                    <th>
+                                        備註
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td @*class="shoping__cart__item"*@>
+                                        邱景文<br />
+                                    </td>
+                                    <td>
+                                        0987878787<br />
+                                    </td>
+                                    <td>
+                                        2021/12/12<br />
+                                    </td>
+                                    <td>
+                                        台北市大安區<br />
+                                    </td>
+                                    <td>
+                                        貨到付款<br />
+                                    </td>
+                                    <td>
+                                        出貨中<br />
+                                    </td>
+                                    <td>
+                                        我是港仔
+                                    </td>
+                                    <td>
+                                        <a asp-action="OrderdetailList">檢示</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Leon<br />
+                                    </td>
+
+
+                                    <td>
+                                        0900001111<br />
+                                    </td>
+
+
+                                    <td>
+                                        2021/12/12 <br />
+                                    </td>
+
+                                    <td>
+                                        台北市大同區<br />
+                                    </td>
+                                    <td>
+                                        支付保<br />
+                                    </td>
+
+                                    <td>
+                                        待出貨<br />
+                                    </td>
+                                    <td>
+                                        我是Leon
+                                    </td>
+                                    <td>
+                                        <a asp-action="OrderdetailList">檢示</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Jack<br />
+                                    </td>
+
+
+                                    <td>
+                                        0911112222<br />
+                                    </td>
+
+
+                                    <td>
+                                        2012/10/10<br />
+                                    </td>
+
+                                    <td>
+                                        台北市北投區<br />
+                                    </td>
+                                    <td>
+                                        支付寶<br />
+                                    </td>
+
+                                    <td>
+                                        已完成<br />
+                                    </td>
+                                    <td>
+                                        我是Jack<br />
+                                        不是Jacky
+                                    </td>
+                                    <td>
+                                        <a asp-action="OrderdetailList">檢示</a><br />
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="product__pagination">
+                            <a href="#">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts
+{
+
+}
+
+
+

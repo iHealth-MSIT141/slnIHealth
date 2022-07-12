@@ -1,0 +1,356 @@
+﻿@*@model IEnumerable<prjiHealth.Models.TCoachContact>*@
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .divTopic {
+            margin-bottom: 10px;
+        }
+
+        .divBar {
+            width: 200px;
+            height: 3px;
+            margin-left: 30px;
+            margin-bottom: 50px;
+            background-color: #7FAD39;
+        }
+        .table{
+            table-layout:fixed;
+            word-break:break-all;
+        }
+        .thNo{
+            width:8%;
+        }
+        .thName{
+            width:10%;
+        }
+        .thPhone{
+            width:15%;
+        }
+        .thEmail{
+            width:20%;
+        }
+        .thTime{
+            width:21%;
+        }
+        .thStatus {
+            width: 12%;
+        }
+        .btnView {
+            border: none;
+            background-color: #DFEACE;
+            border-radius: 5px;
+            height: 36px;
+            vertical-align: bottom;
+        }
+
+            .btnView:hover {
+                background-color: #C3CDB4;
+            }
+
+        .hiddenRow {
+            padding: 0 !important;
+        }
+
+        .tdBtn {
+            width:14%;
+            text-align: right;
+        }
+        .tdBtn button:disabled{
+            background-color:gray;
+        }
+
+        .btn-success {
+            background-color: #7fad39;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #A9B6A8;
+            border: none;
+        }
+    </style>
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2>會員專區Demo</h2>
+                    <div class="breadcrumb__option">
+                        <a href="./index.html">Home</a>
+                        <span>Member</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>會員專區</h4>
+                        <ul>
+                            <li><a href="#">個人資料</a></li>
+                            <li><a href="#">訂單查詢</a></li>
+                            <li><a href="#">飲食日誌</a></li>
+                            <li><a href="#">客服記錄</a></li>
+                        </ul>
+                        <br />
+                        <br />
+                        <br />
+                        <h4>預約平台</h4>
+                        <ul>
+                            <li><a href="../Coach/ManageResume">履歷管理</a></li>
+                            <li><a href="../Coach/ContactList">教練連繫記錄</a></li>
+                            <li><a href="../Coach/CourseList">課程列表</a></li>
+                            <li><a href="../Coach/ViewCourseCalendar">課程行事曆</a></li>
+                            <li><a href="../Coach/CandidateList">候選教練</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                @*※※※會員專區View內容請從此開始※※※*@
+                <div class="divTopic reveal_t1"><h3><b>招生紀錄</b></h3></div>
+                <div class="divBar reveal_r1"></div>
+                <table class="table reveal_b1">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="thNo">
+                                No.
+                            </th>
+                            <th class="thName">
+                                @*@Html.DisplayNameFor(model => model.FCoachId)*@
+                                會員姓名
+                            </th>
+                            <th class="thPhone">
+                                @*@Html.DisplayNameFor(model => model.FCoachId)*@
+                                聯絡電話
+                            </th>
+                            <th class="thEmail">
+                                @*@Html.DisplayNameFor(model => model.FCoachId)*@
+                                聯絡E-mail
+                            </th>
+                            <th class="thTime">
+                                @*@Html.DisplayNameFor(model => model.FContactDate)*@
+                                發送時間
+                            </th>                            
+                            <th class="tdBtn"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            //int count = 0;
+                            //foreach (var item in Model)
+                            //{
+                            //    count++;
+                            <tr>
+                                <td>
+                                    1
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
+                                    Amy
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
+                                    0988888888
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@                                    
+                                    mem1@gmail.com
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
+                                    2022-07-09 23:27:04
+                                </td>                                
+                                <td class="tdBtn">
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增課程</button>
+                                </td>
+                            </tr>
+
+
+
+                            <tr>
+                                <td>
+                                    2
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
+                                    Tom
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
+                                    0968168168
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@                                    
+                                    mem2@gmail.com
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
+                                    2022-06-20 17:54:15
+                                </td>                               
+                                <td class="tdBtn">
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增課程</button>
+                                    @*@Html.ActionLink("新增課程", "CreateCourse", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-outline-success" })*@
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    3
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
+                                    Mary
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
+                                    0977777777                                    
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
+                                    mem3@gmail.com
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
+                                    2022-06-28 17:54:15
+                                </td>                               
+                                <td class="tdBtn">
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增課程</button>
+                                    @*@Html.ActionLink("新增課程", "CreateCourse", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-outline-success" })*@
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    4
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
+                                    Peter
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
+                                    0999090909
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@                                    
+                                    mem4@gmail.com
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
+                                    2022-07-08 17:54:15
+                                </td>                                
+                                <td class="tdBtn">
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增課程</button>
+                                    @*@Html.ActionLink("新增課程", "CreateCourse", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-outline-success" })*@
+                                </td>
+                            </tr>
+
+                        }
+                        @*}*@
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">新增課程<span></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="form-group">
+                        <label for="MemberId">會員編號</label>
+                        <input type="text" class="form-control" id="MemberId" name="MemberId">
+                    </div>
+                    <div class="form-group">
+                        <label for="MemberName">會員姓名</label>
+                        <input type="text" class="form-control" id="MemberName" name="MemberName">
+                    </div>
+                    <div class="form-group">
+                        <label for="Count">總堂數</label>
+                        <input type="text" class="form-control" id="Count" name="Count">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                <button type="button" class="btn btn-success" id="buttonSend">送出</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCoachContactId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FMemberId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCoachId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FContactDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FStatusId)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FCoachContactId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FMemberId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FCoachId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FContactDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FStatusId)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
+
+@section Scripts{
+    <script>
+        console.log(new Date());
+    </script>
+}
