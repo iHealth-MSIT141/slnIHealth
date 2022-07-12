@@ -1,0 +1,306 @@
+﻿@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .divTopic {
+            margin-bottom: 10px;
+        }
+
+        .divBar {
+            width: 200px;
+            height: 3px;
+            margin-left: 30px;
+            margin-bottom: 50px;
+            background-color: #7FAD39;
+        }
+
+        .divDate {
+            width:70%;
+            margin:30px auto;
+            padding:0px 100px;
+            display:flex;
+        }
+            .divDate button {
+                width: 30px;
+                margin: 0px 10px;
+                background-color: whitesmoke;
+                border:none;
+                border-radius: 50px;
+                transition: .3s;
+            }
+                .divDate button:hover {
+                    background-color: #C5D2B2;
+                }
+        #inputMon {
+            display:inline;
+            width: 300px;
+        }
+        #tableCal {
+            width: 100%;
+            border: 1px solid #7fad39;
+        }
+
+        thead {
+            background-color: #7fad39;
+            color: white;
+            font-family: Consolas;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        tbody {
+            font-size: 18px;
+            text-align: center;
+            color: dimgray;
+        }
+        tbody tr{
+            height:120px;
+        }
+            tbody tr td {
+                vertical-align: top;
+            }
+
+        th, td, .orig {
+            border: 1px solid #7fad39;
+            width: 120px;
+        }
+        .false {
+            background-color: #F1F1EF;
+        }
+        .true {
+            background-color: white;
+        }
+        .today {
+            border: 3px solid darkolivegreen;
+        }
+        .divRecord {
+            display: inline-block;
+            margin: 0px;
+            width: 100%;
+            font-size: 16px;
+            background-color: #F2F2DB;
+        }
+            .divRecord:hover {
+                border: 2px solid darkolivegreen;
+                box-shadow: 2px 2px 3px lightgray;
+            }
+      
+    </style>
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2>會員專區Demo</h2>
+                    <div class="breadcrumb__option">
+                        <a href="./index.html">Home</a>
+                        <span>Member</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>會員專區</h4>
+                        <ul>
+                            <li><a href="#">個人資料</a></li>
+                            <li><a href="#">訂單查詢</a></li>
+                            <li><a href="#">飲食日誌</a></li>
+                            <li><a href="#">客服記錄</a></li>
+                        </ul>
+                        <br />
+                        <br />
+                        <br />
+                        <h4>預約平台</h4>
+                        <ul>
+                            <li><a href="../Coach/ManageResume">履歷管理</a></li>
+                            <li><a href="../Coach/ContactList">教練連繫記錄</a></li>
+                            <li><a href="../Coach/CourseList">課程列表</a></li>
+                            <li><a href="../Coach/ViewCourseCalendar">課程行事曆</a></li>
+                            <li><a href="../Coach/CandidateList">候選教練</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                @*※※※會員專區View內容請從此開始※※※*@
+                <div class="divTopic reveal_t1"><h3><b>課程行事曆</b></h3></div>
+                <div class="divBar reveal_r1"></div>
+                <div >
+                    <div class="divDate reveal_t1">                        
+                        <button id="btnPre"><i class="fa-solid fa-caret-left"></i></button>
+                        <input type="month" id="inputMon" class=""/>
+                        <button id="btnNext"><i class="fa-solid fa-caret-right"></i></button>
+                    </div>
+                    <div class="result reveal_b1">
+                        <div class="divCal">
+                            <div>
+                                <table id="tableCal" >
+                                    <thead>
+                                        <tr>
+                                            <th>Sun</th>
+                                            <th>Mon</th>
+                                            <th>Tue</th>
+                                            <th>Wed</th>
+                                            <th>Thu</th>
+                                            <th>Fri</th>
+                                            <th>Sat</th>
+                                        </tr>
+                                    </thead>
+                                </table>                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{ 
+<script>    
+    let fullDate = new Date();  //取得今天日期    
+    let year = fullDate.getFullYear();
+    let month = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
+    let date = fullDate.getDate();
+    let totalDate = (new Date(year, month, 0)).getDate();   //取得該月總天數
+    let weekDay, firstDay;
+    $("#inputMon").val(`${year}-${month}`);        
+    CreateCalendar();
+    LoadTestData();
+
+    //年月改變時重新載入月曆
+    $("#inputMon").change(() => {
+        year = $("#inputMon").val().substr(0, 4);
+        month = $("#inputMon").val().substr(5, 2);
+        totalDate = (new Date(year, month, 0)).getDate();
+        CreateCalendar();
+        LoadTestData();        
+    })
+
+    //click下個月
+    $("#btnNext").click(() => {        
+        if (month == 12) {
+            year++;
+            month = "01";
+        }
+        else {
+            let m = parseInt($("#inputMon").val().substr(5, 2));
+            let newMon = m + 1 >= 10 ? m + 1 : "0" + (m + 1)
+            month = newMon;       
+        }        
+        $("#inputMon").val(`${year}-${month}`);
+        CreateCalendar();
+        LoadTestData();
+    })
+    //click上個月
+    $("#btnPre").click(() => {
+        if (month == 1) {
+            year--;
+            month = "12";
+        }
+        else {
+            let m = parseInt($("#inputMon").val().substr(5, 2));
+            let newMon = m - 1 >= 10 ? m - 1 : "0" + (m - 1);
+            month = newMon;
+        }
+        $("#inputMon").val(`${year}-${month}`);
+        CreateCalendar();
+        LoadTestData();
+    })
+
+    //建立月曆
+    function CreateCalendar() {
+        let recent = document.querySelector("#tbody");
+        if (recent)
+            recent.remove();    //移除舊的月曆
+
+        //新增tbody、第一行
+        var tbody = document.createElement("tbody");        
+        tbody.setAttribute("id", "tbody");
+        var fragtable = document.createDocumentFragment();
+        var row = document.createElement("tr");
+        var count = 0;
+
+        //新增第一行空格
+        firstDay = (new Date(year, month - 1, 1)).getDay(); //取得該月份第一天星期幾
+        for (let i = 1; i <= firstDay; i++) {
+            let td = document.createElement("td");
+            td.className = "false";
+            row.appendChild(td);
+            count += 1;
+        }
+
+        //新增日期
+        for (let i = 1; i <= totalDate; i++) {
+            if (count >= 7) { //已大於7天則新增至下一週
+                fragtable.appendChild(row);
+                row = document.createElement("tr");
+                var td = document.createElement("td");
+                td.setAttribute("id", i);
+                td.className = "true";
+                let text = document.createTextNode(i);
+                td.appendChild(text);
+                row.appendChild(td);
+                count = 1; //以新的一行計算
+            }
+            else {
+                var td = document.createElement("td");
+                td.setAttribute("id", i);
+                td.className = "true";
+                let text = document.createTextNode(i);
+                td.appendChild(text);
+                row.appendChild(td);
+                count += 1;
+            }            
+        }
+
+        //新增最後一行空格
+        let d = new Date(year, month - 1, totalDate);
+        let lastDay = d.getDay();
+        for (i = 1; i <= 6 - lastDay; i++) {
+            let td = document.createElement("td");
+            td.className = "false";
+            row.appendChild(td);
+        }
+        fragtable.appendChild(row);
+        tbody.appendChild(fragtable);
+        document.querySelector("#tableCal").appendChild(tbody);
+
+        //當天日期的邊框變色
+        let thisYear = fullDate.getFullYear();
+        let thisMon = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
+        if (thisYear == year && thisMon== month)
+            $(`#${date}`).addClass("today");
+    }    
+
+    //假資料
+    function LoadTestData() {
+        var data = {
+            "records": [{ "coach": "May", "date": "2022-07-13", "time": "16:00" },
+                { "coach": "Jessica", "date": "2022-07-25", "time": "16:00" },
+                { "coach": "Alisa", "date": "2022-07-29", "time": "16:00" },
+            { "coach": "Zac", "date": "2022-08-10", "time": "16:00" },
+            { "coach": "Peeta", "date": "2022-09-16", "time": "16:00" }]
+        }
+        $.each(data.records, function (index, record) {
+            if (record.date.substr(0, 4) == year && record.date.substr(5, 2) == month) {
+                let target = record.date.substr(8, 2) < 10 ? record.date.substr(9, 1) : record.date.substr(8, 2);
+                $(`#${target}`).append(`<div class="divRecord"><b>${record.coach}</b>-${record.time}</div>`);
+            }
+        })
+    }
+
+</script>
+
+}
