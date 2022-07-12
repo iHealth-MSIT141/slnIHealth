@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewData["Title"] = "CheckOut";
+}
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2>結帳</h2>
+                    <div class="breadcrumb__option">
+                        @*<a href="./index.html">Home</a>*@
+                        @*<span>Shop</span>*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="checkout spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h6>
+                    <span class="icon_tag_alt"></span> 有折扣代碼? @Html.ActionLink("點此", "ShoppingCartList", new { @*id = item.FProblemId*@}) 返回購物車輸入您的代碼
+                </h6>
+            </div>
+        </div>
+        <div class="checkout__form">
+            <h4>帳單明細</h4>
+            <form action="#">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>姓名<span>*</span></p>
+                                    <input type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>郵遞區號<span>*</span></p>
+                                    <input type="text">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>縣市<span>*</span></p>
+                                    <input type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>地址<span>*</span></p>
+                            <input type="text" placeholder="" class="checkout__input__add">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>電話<span>*</span></p>
+                                    <input type="text">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Email<span>*</span></p>
+                                    <input type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>訂單備註<span>*</span></p>
+                            <input type="text"
+                                   placeholder="寫下訂單備註,例如:指定送達時間">
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-6">
+                        <div class="checkout__order">
+                            <h4>您的訂單</h4>
+                            <div class="checkout__order__products">產品 <span>總金額</span></div>
+                            <ul>
+                                <li>金牌巧克力乳清蛋白 <span>$1999</span></li>
+                                <li>MUSCLETECH™ WHEY GOLD耐如鐵 <span>$1999</span></li>
+                                <li>【加拿大ALLMAX】奧美仕經典乳清蛋白 <span>$1880</span></li>
+                            </ul>
+                            <div class="checkout__order__subtotal">小計 <span>$5878</span></div>
+                            <div class="checkout__order__total">總金額 <span>$5878</span></div>
+
+                            <div class="checkout__input__checkbox">
+                                <label for="payment">
+                                    現金付款
+                                    <input type="checkbox" id="payment">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="checkout__input__checkbox">
+                                <label for="paypal">
+                                    信用卡
+                                    <input type="checkbox" id="paypal">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <button type="submit" class="site-btn">結帳</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+

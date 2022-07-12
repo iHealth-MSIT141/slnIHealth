@@ -953,7 +953,7 @@ namespace prjIHealth.Models
                     .IsUnique();
 
                 entity.Property(e => e.FStatusId)
-                    .ValueGeneratedNever()
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("fStatusID");
 
                 entity.Property(e => e.FStatus)
