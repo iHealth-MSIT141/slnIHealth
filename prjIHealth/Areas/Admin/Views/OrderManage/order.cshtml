@@ -2,8 +2,17 @@
     ViewData["Title"] = "order";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
-
-<h1>訂單檢視</h1>
+@section Styles{
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
+}
+<h2 id="title">訂單檢視</h2>
 <hr />
 
 <section class="product spad">

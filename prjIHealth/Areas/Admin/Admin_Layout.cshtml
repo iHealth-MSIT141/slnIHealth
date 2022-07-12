@@ -44,7 +44,7 @@
 
         #sidebar {
             width: 250px;
-            height: 100vh;
+            height: 100%;
             background-color: #7fad39;
             color: white;
             transition: 1s;
@@ -57,7 +57,7 @@
         .container-right {
             background-color: #F0FFF0;
             width: 100%;
-            height: 100vh;
+            min-height:100vh;
             text-align: center;
             padding: 30px;
         }
@@ -164,17 +164,17 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#">專欄管理<i class="fab fa fa-newspaper-o"></i> </a>
+                        <a href="~/Admin/NewsManage/List">專欄管理<i class="fab fa fa-newspaper-o"></i> </a>
                     </li>
                     <li>
                         <a href="#CoachList" data-bs-toggle="collapse" id="dropdown">教練管理<i class="far fa fa-address-book"></i></a>
                         <!-- 子連結列表  -->
                         <ul id="CoachList" class="list-unstyled collapse">
                             <li>
-                                <a href="#">-審核教練<i class="far fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a href="~/Admin/CoachManage/CoachList">-審核教練<i class="far fa fa-pencil-square-o" aria-hidden="true"></i></a>
                             </li>
                             <li>
-                                <a href="#">-教練評論管理<i class="far fa fa-star-half-o" aria-hidden="true"></i></a>
+                                <a href="~/Admin/CoachManage/RateList">-教練評論管理<i class="far fa fa-star-half-o" aria-hidden="true"></i></a>
                             </li>
                         </ul>
                     </li>
@@ -183,15 +183,15 @@
                         <!-- 子連結列表  -->
                         <ul id="ShoppingList" class="list-unstyled collapse">
                             <li>
-                                <a href="#">-產品上架<i class="far fa fa-cart-plus" aria-hidden="true"></i></a>
+                                <a href="~/Admin/ProductManage/Product">-產品上架<i class="far fa fa-cart-plus" aria-hidden="true"></i></a>
                             </li>
                             <li>
-                                <a href="#">-訂單管理<i class="far fa fa-list-ol" aria-hidden="true"></i></a>
+                                <a href="~/Admin/OrderManage/order">-訂單管理<i class="far fa fa-list-ol" aria-hidden="true"></i></a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#ProblemList" data-bs-toggle="collapse" id="dropdown">客服回覆<i class="far fa fa-comments"></i></a>
+                        <a href="~/Admin/Reply/ProblemReplyList">客服回覆<i class="far fa fa-comments"></i></a>
                     </li>
                 </ul>
             </nav>

@@ -12,6 +12,11 @@ namespace prjIHealth.ViewModels
 {
     public class CDiaryViewModel
     {
+        //private readonly IHealthContext db;
+        //public CDiaryViewModel(IHealthContext context)
+        //{
+        //    db = context;
+        //}
         IHealthContext db = new IHealthContext();
 
         //載入全部食物列表
