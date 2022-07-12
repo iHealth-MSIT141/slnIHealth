@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using prjiHealth.ViewModels;
-using prjIHealth.Models;
 
 namespace prjIHealth.Controllers
 {
@@ -53,9 +52,9 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(TMember tm)
         {
-           _context.TMembers.Add(tm);
-            _context.SaveChanges();  return RedirectToRoute(new { controller = "Member", action = "Login" });
-
+            _context.TMembers.Add(tm);
+            _context.SaveChanges(); return RedirectToRoute(new { controller = "Member", action = "Login" });
+        }
         public IActionResult ShowTrackList()
         {
             return View();
@@ -81,15 +80,12 @@ namespace prjIHealth.Controllers
         {
             return View();
         }
-
-
-            
-        }
+                    
         public IActionResult ForgotPassword()
         {
-
             return View();
         }
+
         [HttpPost]
         public IActionResult ForgotPassword(CLoginViewModel vModel)
         {
