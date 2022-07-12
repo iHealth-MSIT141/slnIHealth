@@ -55,6 +55,7 @@ namespace prjIHealth.Controllers
             _context.TMembers.Add(tm);
             _context.SaveChanges(); return RedirectToRoute(new { controller = "Member", action = "Login" });
         }
+
         public IActionResult ShowTrackList()
         {
             return View();
@@ -80,7 +81,10 @@ namespace prjIHealth.Controllers
         {
             return View();
         }
-                    
+
+
+            
+        
         public IActionResult ForgotPassword()
         {
             return View();

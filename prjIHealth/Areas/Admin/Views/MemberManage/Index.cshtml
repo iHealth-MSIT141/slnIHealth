@@ -14,7 +14,19 @@
     https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js
     https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js
 </script>
-<h1>會員資料管理列表</h1>
+
+@section Styles{
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
+}
+<h2 id="title">會員資料管理列表</h2>
+<hr />
 
 <p>
     <a asp-action="Create">會員資料新增</a>
@@ -116,9 +128,12 @@
         }
     </tbody>
 </table>
-<script>
-    $(document).ready(function ()
-    {
-        $('#example').DataTable();
-    });
-     </script>
+
+@section Scripts{ 
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+}
+
