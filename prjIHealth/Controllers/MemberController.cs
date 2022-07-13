@@ -53,9 +53,12 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(TMember tm)
         {
-           _context.TMembers.Add(tm);
-            _context.SaveChanges();  return RedirectToRoute(new { controller = "Member", action = "Login" });
+            _context.TMembers.Add(tm);
+            _context.SaveChanges();
+            //return RedirectToRoute(new { controller = "Member", action = "Login" });
+            return RedirectToAction("Login","member");
 
+        }
         public IActionResult ShowTrackList()
         {
             return View();
@@ -81,17 +84,14 @@ namespace prjIHealth.Controllers
         {
             return View();
         }
-
-
-            
-        }
+      
         public IActionResult ForgotPassword()
         {
 
             return View();
         }
         [HttpPost]
-        public IActionResult ForgotPassword(CLoginViewModel vModel)
+        public IActionResult ForgotPassword([Bind("fEmail")]CLoginViewModel vModel)
         {
             var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
             if (q != null)

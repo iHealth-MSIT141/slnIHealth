@@ -1,19 +1,26 @@
-﻿@model IEnumerable<prjIHealth.Models.TMember>
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<prjIHealth.Models.TMember>
+@{ ViewData["Title"] = "iHeath後臺";
+    Layout = "~/Areas/Admin/Admin_Layout.cshtml"; }
+@{
+    ViewData["Title"] = "Index";
+}
+
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 
 }
-<style>
-    https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css
-    https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css
-</style>
-<script>
-    https://code.jquery.com/jquery-3.5.1.js
-    https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js
-    https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js
-</script>
+@section Styles{
+   
+        https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css
+        https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css
+        <link href="/css/PagedList.css" rel="stylesheet" type="text/css" />
+}
+
+
 <h1>會員資料管理列表</h1>
 
 <p>
@@ -23,44 +30,43 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FMemberName)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FMemberId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FPassword)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FPassword)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FBirthday)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FBirthday)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FGender)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FGender)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FPicturePath)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FPicturePath)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FUserName)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FUserName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FAddress)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FAddress)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FPhone)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FAddress)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FEmail)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FEmail)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FRegisterDate)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FRegisterDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FDisabled)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FDisabled)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FRemarks)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FRemarks)
             </th>
             <th>
-                @*權限名稱*@
-                @Html.DisplayNameFor(model => model.FAuthorityId)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FAuthority.FAuthorityName)
             </th>
             <th></th>
         </tr>
@@ -116,9 +122,11 @@
         }
     </tbody>
 </table>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+@section Scripts{ 
 <script>
-    $(document).ready(function ()
-    {
-        $('#example').DataTable();
-    });
-     </script>
+    https://code.jquery.com/jquery-3.5.1.js
+    https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js
+    https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js
+</script>
+}

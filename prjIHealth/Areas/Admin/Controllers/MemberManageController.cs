@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using prjIHealth.Models;
+using X.PagedList;
 
 namespace prjIHealth.Areas.Admin.Controllers
 {
@@ -13,17 +14,19 @@ namespace prjIHealth.Areas.Admin.Controllers
     public class MemberManageController : Controller
     {
         private readonly IHealthContext _context;
-
         public MemberManageController(IHealthContext context)
         {
             _context = context;
         }
 
         // GET: Admin/MemberManage
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int?  page)
         {
-            var iHealthContext = _context.TMembers.Include(t => t.FAuthority);
-            return View(await iHealthContext.ToListAsync());
+            var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
+            var iHealthContext = _context.TMembers.Include(t => t.FAuthority).ToList();
+            var onePageOfMembers =iHealthContext.ToPagedList(pageNumber,6); // will only contain 6 items max because of the pageSize
+            ViewBag.onePageOfMembers = onePageOfMembers;
+            return View(onePageOfMembers);
         }
 
         // GET: Admin/MemberManage/Details/5
@@ -33,7 +36,6 @@ namespace prjIHealth.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             var tMember = await _context.TMembers
                 .Include(t => t.FAuthority)
                 .FirstOrDefaultAsync(m => m.FMemberId == id);
