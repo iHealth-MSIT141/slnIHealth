@@ -29,7 +29,8 @@ namespace prjIHealth.Areas.Admin.Controllers
                                FOrderId = t.FOrderId,
                                FEmail = t.FEmail,
                                FContactPhone = t.FContactPhone,
-                               Status = t.FStatusNumberNavigation
+                               Status = t.FStatusNumberNavigation,
+                               FFilePath=t.FFilePath
                            }).ToList();
             return View(datafix);
         }
@@ -52,7 +53,8 @@ namespace prjIHealth.Areas.Admin.Controllers
                             FOrderId = t.FOrderId,
                             FEmail = t.FEmail,
                             FContactPhone = t.FContactPhone,
-                            Status = t.FStatusNumberNavigation
+                            Status = t.FStatusNumberNavigation,
+                            FFilePath=t.FFilePath
                         }).ToList();
             if (prob == null)
             {
