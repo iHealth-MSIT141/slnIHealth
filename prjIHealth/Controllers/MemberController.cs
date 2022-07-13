@@ -60,7 +60,7 @@ namespace prjIHealth.Controllers
         }
 
 
-        }
+        
         public IActionResult ShowTrackList()
         {
             return View();
@@ -104,5 +104,4 @@ namespace prjIHealth.Controllers
         }
     }
 }
-
 
