@@ -14,17 +14,14 @@
 
 }
 @section Styles{
-   
-        https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css
-        https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css
-        <link href="/css/PagedList.css" rel="stylesheet" type="text/css" />
-}
 
+    <link href="/css/PagedList.css" rel="stylesheet" type="text/css" />
+}
 
 <h1>會員資料管理列表</h1>
 
 <p>
-    <a asp-action="Create">會員資料新增</a>
+    <a asp-action="Create" class="btn btn-primary">會員資料新增</a>
 </p>
 <table class="table">
     <thead>
@@ -32,9 +29,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FMemberId)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FPassword)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FBirthday)
             </th>
@@ -62,9 +59,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FDisabled)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FRemarks)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FAuthority.FAuthorityName)
             </th>
@@ -78,9 +75,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.FMemberName)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.FPassword)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.FBirthday)
                 </td>
@@ -108,9 +105,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.FDisabled)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.FRemarks)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.FAuthority.FAuthorityName)
                 </td>
@@ -123,10 +120,10 @@
     </tbody>
 </table>
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-@section Scripts{ 
-<script>
-    https://code.jquery.com/jquery-3.5.1.js
-    https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js
-    https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js
-</script>
+@section Scripts{
+    <script>
+        https://code.jquery.com/jquery-3.5.1.js
+        https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js
+        https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js
+    </script>
 }
