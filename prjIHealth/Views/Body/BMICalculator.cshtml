@@ -133,9 +133,9 @@
                 <br />
                 <div class="text-center">
                     <button class="site-btn" id="btnGetBMI">開始計算!</button>
+                    <button type="button" class="btn btn-info" id="btnDemo">Demo</button>
                 </div>
-                <br />
-                <div class="text-center">想知道自己的每日總消耗熱量嗎？<a href="../Body/TDEECalculator" class="blog__btn" style="margin-left:1vw"><span class="arrow_right"></span>TDEE計算器</a></div>
+                <div class="text-center">想知道自己的每日總消耗熱量嗎？<a href="../Body/TDEECalculator" class="blog__btn" style="margin-left:1vw;margin-top:1vh"><span class="arrow_right"></span>TDEE計算器</a></div>
                 @*</form>*@
             </div>
         
@@ -187,5 +187,10 @@
             }
         })
 
+        //Demo鍵
+        $("#btnDemo").click(function () {
+            $("#FHeight").val("171");
+            $("#FWeight").val("85");
+        })
     </script>
 }
