@@ -202,7 +202,7 @@
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg" id="bannerTop">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -210,13 +210,12 @@
                     @*h2內容請自行更換*@
                     <h2 class="reveal_t1">我的飲食日誌</h2>
                     <div class="breadcrumb__option reveal_t1">
-                        @*<a href="./index.html">Home</a>
-                            <span>Shop</span>*@
-                        <br />
+                        <a href="~/Member/Edit">Home</a>
+                        <span>Member</span>
                     </div>
                 </div>
             </div>
-
+            
         </div>
     </div>
 </section>
@@ -230,16 +229,18 @@
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
-                            <li><a href="#">個人資料</a></li>
+
+                            <li><a href="~/member/edit">個人資料</a></li>
                             <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
                             <li><a href="~/Member/OrderList">訂單查詢</a></li>
                             <li><a href="~/Student/CandidateList">候選教練</a></li>
                             <li><a href="~/Student/CourseList">課程列表</a></li>
                             <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
                             <li><a href="~/Problem/CheckReply">客服記錄</a></li>
+
                         </ul>
                         <br />
-                        <a href="~/Home/教練專區ViewDemo" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
+                        <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
                     </div>
                 </div>
             </div>
@@ -818,6 +819,7 @@
                     $("#inpFoodId").val(data.fFoodId);
                     $("#inpFoodName").val(data.fFoodName);
                     $("#spnUnit").text(data.fUnit);
+                    $("#inpSearchFood").keyup();
                 })
                 $('#addFoodModal').modal('hide');
                 $('#addRecordModal').modal('show');

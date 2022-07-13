@@ -66,14 +66,15 @@
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     <h2 class="reveal_t1">TDEE計算器</h2>
-                    <div class="breadcrumb__option">
-                        <br />
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Body/BodyCalculatorMain">Home</a>
+                        <span>Body Calculator</span>
                     </div>
                 </div>
             </div>
@@ -102,13 +103,13 @@
             
             @*計算器*@
             <div class="col-lg-6 leftdiv reveal_b2">
-                @*<form method="post">*@
+                <form method="post" id="frmBMI">
                 <br />
-                <div class="form-group" style="width:50%;float:left;">
-                    <label class="control-label">性別</label><span class="text-danger"></span>
+                <div style="width:50%;float:left;">
+                    <label class="control-label" style="margin-left:1vw">性別</label><span class="text-danger"></span>
                     <br />
-                    <input id="inpGender" name="inpGender" type="radio" value="1" checked />男
-                    <input id="inpGender" name="inpGender" type="radio" value="0" />女
+                    <input style="width:auto;height:auto" id="inpGender" name="Gender" type="radio" value="1" checked />男
+                    <input style="width:auto;height:auto" id="inpGender" name="Gender" type="radio" value="0" />女
                 </div>
                 <div class="form-group" id="divWorkload" style="width:50%;float:left;">
                     @*<label class="control-label">活動量</label><span class="text-danger"></span>
@@ -123,22 +124,22 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">年齡</label><span class="text-danger"></span>
-                    <input class="form-control" id="inpAge" type="number" placeholder="請輸入年齡" required />
+                    <input class="form-control" name="Age" id="inpAge" type="number" placeholder="請輸入年齡" required />
                 </div>
                 <div class="form-group">
                     <label class="control-label">身高(cm)</label><span class="text-danger"></span>
-                    <input class="form-control" id="inpHeight" type="number" pattern="^[0-9]+(.[0-9])?$$" placeholder="請輸入身高(cm)" required />
+                    <input class="form-control" name="FHeight" id="inpHeight" type="number" pattern="^[0-9]+(.[0-9])?$$" placeholder="請輸入身高(cm)" required />
                 </div>
                 <div class="form-group">
                     <label class="control-label">體重(kg)</label><span class="text-danger"></span>
-                    <input class="form-control" id="inpWeight" type="number" pattern="^[0-9]+(.[0-9])?$" placeholder="請輸入體重(kg)" required />
+                    <input class="form-control" name="FWeight" id="inpWeight" type="number" pattern="^[0-9]+(.[0-9])?$" placeholder="請輸入體重(kg)" required />
                 </div>
 
-                <div class="section-title product__discount__title">
-                    <button class="site-btn" id="btnGetTDEE" style="margin:40px 40px 0px 40px">開始計算!</button>
+                <div class="section-title product__discount__title" style="margin-bottom:2vh">
+                    <button type="button" class="site-btn" id="btnGetTDEE" style="margin:0px 40px 0px 40px">開始計算!</button>
                     <h2 style="font-size:25px;margin-left:40px" id="hResult">您的TDEE為：</h2>
                 </div>
-                @*</form>*@
+                </form>
             </div>
 
             @*增肌減脂小筆記*@
@@ -173,7 +174,7 @@
 <script>
 
     //產生select
-    $("#divWorkload").html('<label class="control-label">活動量</label><span class="text-danger"></span><br /><select id="selWorkload" required><option value="1.2">趨於靜態</option><option value="1.375">每周運動1~3天</option><option value="1.55">每周運動3~5天</option><option value="1.72">每周運動6~7天</option><option value="1.9">長時間運動或體力勞動工作者</option></select>');
+    $("#divWorkload").html('<label class="control-label">活動量</label><span class="text-danger"></span><br /><select name="FWorkload" id="selWorkload" required><option value="1.2">趨於靜態</option><option value="1.375">每周運動1~3天</option><option value="1.55">每周運動3~5天</option><option value="1.72">每周運動6~7天</option><option value="1.9">長時間運動或體力勞動工作者</option></select>');
 
     //驗證空值+數字
         $("input").blur(function () {
@@ -193,26 +194,27 @@
 
     //計算TDEE
     $("#btnGetTDEE").click(function () {
+        event.preventDefault();
         $("input").blur();
         if ($(".text-danger").text() == "") {
-            let w = $("#inpWeight").val();
-            let h = $("#inpHeight").val();
-            let age = $("#inpAge").val();
-            let gender = $("input[name='inpGender']:checked").val();
-            let workload = $("#selWorkload").val();
-            let numTDEE = 0;
-            if (gender == 1) {
-                numTDEE = Math.round((((10 * w) + (6.25 * h) - (5 * age) + 5) * workload), 0);
-            }
-            else {
-                numTDEE = Math.round((((10 * w) + (6.25 * h) - (5 * age) - 161) * workload), 0);
-            }
-            $("#hResult").text("您的TDEE為：" + numTDEE.toString()+"大卡");
+            //let w = $("#inpWeight").val();
+            //let h = $("#inpHeight").val();
+            //let age = $("#inpAge").val();
+            //let gender = $("input[name='inpGender']:checked").val();
+            //let workload = $("#selWorkload").val();
+            //let numTDEE = 0;
+            //if (gender == 1) {
+            //    numTDEE = Math.round((((10 * w) + (6.25 * h) - (5 * age) + 5) * workload), 0);
+            //}
+            //else {
+            //    numTDEE = Math.round((((10 * w) + (6.25 * h) - (5 * age) - 161) * workload), 0);
+            //}
+            //$("#hResult").text("您的TDEE為：" + numTDEE.toString()+"大卡");
 
-            @*錯誤訊息: Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR
-                $.get("@Url.Content("~/Body/getTDEE")", { "FHeight": $("#inpHeight").val(), "FWeight": $("#inpWeight").val(), "Age": $("#inpAge").val(), "Gender": $("input[name='inpGender']:checked").val(), "FWorkload": $("#selWorkload").val() }, function (numTDEE) {
-                $("#hResult").text("您的TDEE為：" + numTDEE);
-                }) *@
+            @*錯誤訊息: Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR*@
+            $.post("@Url.Content("~/Body/getTDEE")", $("#frmBMI").serialize(), function (numTDEE) {
+                $("#hResult").text("您的TDEE為：" + numTDEE + "大卡");
+            })
         }
     })
 

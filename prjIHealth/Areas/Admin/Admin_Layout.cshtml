@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>IHealth後臺管理頁</title>
+    <title>後臺管理頁</title>
     <!-- css連結 -->
     <!--<link rel="stylesheet" href="style.css">-->
     <!-- JQuery連結 -->
@@ -37,6 +37,9 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
 
     <style>
+        body {
+            background-color: #F0FFF0;
+        }
             .container-all {
                 display: flex;
                 align-items: stretch;
@@ -57,7 +60,7 @@
         .container-right {
             background-color: #F0FFF0;
             width: 100%;
-            min-height:100vh;
+            height:100vh;
             text-align: center;
             padding: 30px;
         }
@@ -147,25 +150,21 @@
                     <i class="fas fa-align-left"></i>
                 </button>
                 <!-- List 列表 -->
-
-                <ul class="list-unstyled">
-                    @*<a href="~/Home/Index">返回首頁</a>*@
+                <ul>
+                    <p>iHealth管理區</p>
                     <li>
                         <a href="~/Home/Index">返回首頁<i class="far fas fa-home"></i></a>
-
                     </li>
-                    <!-- 會員管理後臺-->
                     <li>
                         <a href="#memberList" data-bs-toggle="collapse" id="dropdown">會員管理<i class="far fas fa-address-card"></i></a>
-
                         <ul id="memberList" class="list-unstyled collapse">
                             <li>
-                                <a class="collapse-item" href="~/Admin/MemberManage/Index">會員資料管理<i class="far fas fa-user-edit"></i></a>
+                                <a class="collapse-item" href="~/Admin/MemberManage/Index">-會員資料管理<i class="far fas fa-user-edit"></i></a>
                             </li>
                             <li>
-                                <a class="collapse-item" href="~/Admin/Authorities/Index">會員權限管理<i class="far fas fa-user-shield"></i></a>
+                                <a class="collapse-item" href="~/Admin/Authorities/Index">-會員權限管理<i class="far fas fa-user-shield"></i></a>
                             </li>
-                         </ul>
+                        </ul>
                     </li>
                     <li>
                         <a href="~/Admin/NewsManage/List">專欄管理<i class="fab fa fa-newspaper-o"></i> </a>
@@ -187,7 +186,7 @@
                         <!-- 子連結列表  -->
                         <ul id="ShoppingList" class="list-unstyled collapse">
                             <li>
-                                <a href="~/Admin/ProductManage/Product">-產品上架<i class="far fa fa-cart-plus" aria-hidden="true"></i></a>
+                                <a href="~/Admin/ProductManage/Product">-產品管理<i class="far fa fa-cart-plus" aria-hidden="true"></i></a>
                             </li>
                             <li>
                                 <a href="~/Admin/OrderManage/order">-訂單管理<i class="far fa fa-list-ol" aria-hidden="true"></i></a>
@@ -197,7 +196,6 @@
                     <li>
                         <a href="~/Admin/Reply/ProblemReplyList">客服回覆<i class="far fa fa-comments"></i></a>
                     </li>
-
                 </ul>
             </nav>
         </div>
@@ -210,11 +208,8 @@
     </div>
 
     <script>
-
-        $(document).ready(function ()
-        {
-            $("#collapse").on("click", function ()
-            {
+        $(document).ready(function () {
+            $("#collapse").on("click", function () {
                 $("#sidebar").toggleClass("active");
                 $(".fa-align-left").toggleClass("fa-chevron-circle-right");
             })

@@ -12,7 +12,7 @@
         }
 
         .details {
-            text-align: right
+            text-align: right;
         }
 
         .divBar {
@@ -40,6 +40,7 @@
             background-color: #A9B6A8;
             border: none;
         }
+
         .btnClose {
             background-color: #4F534A;
             border: none;
@@ -85,9 +86,11 @@
                 .divUrl a:hover {
                     color: #5F822B;
                 }
-        .tdBtns{
-            text-align:right;
+
+        .tdBtns {
+            text-align: right;
         }
+
         .blog__btn {
             display: inline-block;
             font-size: 14px;
@@ -126,16 +129,16 @@
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     @*h2內容請自行更換*@
-                    <h2>會員專區Demo</h2>
-                    <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Shop</span>
+                    <h2 class="reveal_t1">教練專區</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Student/CoachMainPage">Home</a>
+                        <span>Coach</span>
                     </div>
                 </div>
             </div>
@@ -157,7 +160,7 @@
                             <li><a href="~/Coach/TeachingList">教課列表</a></li>
                         </ul>
                         <br />
-                        <a href="~/Home/會員專區ViewDemo" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
+                        <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
                     </div>
                 </div>
             </div>
@@ -283,10 +286,10 @@
                         @*}*@
                     </tbody>
                 </table>
-                <div class="divCreate">
+                <div class="divCreate reveal_b1">
                     <button class="btn btn-success" data-toggle="modal" data-target="#addModal1">新增課程</button>
                 </div>
-                <div class="divLink">
+                <div class="divLink reveal_b2">
                     <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span><b>&nbsp;&nbsp;想一覽所有課程？</b></span></div>
                     <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Student/ViewCourseCalendar">&nbsp;&nbsp;前往<b>課程行事曆</b></a></div>
                 </div>
@@ -379,7 +382,7 @@
                                     <td class="tdBtns">
                                         <button type="button" class="btn btn-light">完成</button>
                                         @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
                                         @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定刪除該次排課？')", @class = "btn btn-secondary" })
                                     </td>
                                 </tr>
@@ -399,7 +402,7 @@
                                     <td class="tdBtns">
                                         <button type="button" class="btn btn-light">完成</button>
                                         @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
                                         @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定刪除該次排課？')", @class = "btn btn-secondary" })
                                     </td>
                                 </tr>
@@ -419,7 +422,7 @@
                                     <td class="tdBtns">
                                         <button type="button" class="btn btn-light">完成</button>
                                         @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
                                         @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定刪除該次排課？')", @class = "btn btn-secondary" })
                                     </td>
                                 </tr>
@@ -428,17 +431,40 @@
                         </table>
                     </div>
                     @*<div class="divCreateRecords">
-                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增排課</button>
-                    </div>*@
+                            <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增排課</button>
+                        </div>*@
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">關閉</button>
-                <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增排課</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#addModal3">新增排課</button>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal --新增排課-->
+<div class="modal fade" id="addModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">新增排課<span></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>請選擇日期與時間</label>
+                <input type="datetime-local" class="form-control" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">關閉</button>
+                <button class="btn btn-success" @*data-toggle="modal" data-target="#addModal3"*@>新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @*<table class="table">
         <thead>
             <tr>

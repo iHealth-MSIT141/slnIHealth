@@ -13,12 +13,31 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 
 }
+
+<style>
+    https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css
+    https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css
+</style>
+<script>
+    https://code.jquery.com/jquery-3.5.1.js
+    https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js
+    https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js
+</script>
+
 @section Styles{
-
-    <link href="/css/PagedList.css" rel="stylesheet" type="text/css" />
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+         <link href="/css/PagedList.css" rel="stylesheet" type="text/css" />
+    </style>
 }
+<h2 id="title">會員資料管理列表</h2>
+<hr />
 
-<h1>會員資料管理列表</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">會員資料新增</a>
@@ -119,11 +138,15 @@
         }
     </tbody>
 </table>
+
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-@section Scripts{
+
+@section Scripts{ 
     <script>
-        https://code.jquery.com/jquery-3.5.1.js
-        https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js
-        https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
     </script>
 }
+
+

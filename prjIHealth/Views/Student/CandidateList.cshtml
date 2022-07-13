@@ -73,10 +73,12 @@
                 background-color: #4F6C24;
                 border: none;
             }
-        .divLink{
-            display:flex;
-            justify-items:center;
-            height:70px;
+        .divLink {
+            display: flex;
+            justify-items: center;
+            margin-top: 20px;
+            margin-left: 30px;
+            height: 70px;
         }
         .divOther {
             padding: 0px;
@@ -208,16 +210,16 @@
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     @*h2內容請自行更換*@
-                    <h2>會員專區Demo</h2>
-                    <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Shop</span>
+                    <h2 class="reveal_t1">候選教練</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Member/Edit">Home</a>
+                        <span>Member</span>
                     </div>
                 </div>
             </div>
@@ -234,13 +236,15 @@
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
-                            <li><a href="#">個人資料</a></li>
+
+                            <li><a href="~/member/edit">個人資料</a></li>
                             <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
                             <li><a href="~/Member/OrderList">訂單查詢</a></li>
                             <li><a href="~/Student/CandidateList">候選教練</a></li>
                             <li><a href="~/Student/CourseList">課程列表</a></li>
                             <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
                             <li><a href="~/Problem/CheckReply">客服記錄</a></li>
+
                         </ul>
                         <br />
                         <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
@@ -250,16 +254,10 @@
             <div class="col-lg-9 col-md-7">
                 @*※※※會員專區View內容請從此開始※※※*@
                 <div>
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="divTopic1 reveal_t1"><h3><b>候選教練</b></h3></div>
-                            <div class="divBar1 reveal_r1"></div>
-                        </div>
-                        <div class="col-8 divLink reveal_t1">
-                            <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span><b>&nbsp;&nbsp;想多看看其他教練？</b></span></div>
-                            <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Student/CoachMainPage">&nbsp;&nbsp;前往<b>私人教練專區</b></a></div>
-                        </div>
-                    </div>                    
+                    <div>
+                        <div class="divTopic1 reveal_t1"><h3><b>候選教練</b></h3></div>
+                        <div class="divBar1 reveal_r1"></div>
+                    </div>
                     <div class="row divCards">
                         <div class="card col-3 divCard reveal_b1">
                             <div class="divCandImg">
@@ -332,6 +330,10 @@
                             </div>
                         </div>
                     </div>
+                    <div class="reveal_b1 divLink">
+                        <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span><b>&nbsp;&nbsp;想多看看其他教練？</b></span></div>
+                        <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Student/CoachMainPage">&nbsp;&nbsp;前往<b>私人教練專區</b></a></div>
+                    </div>
                     <div>
                         <div class="divTopic2 reveal_t1"><h3><b>通知發送紀錄</b></h3></div>
                         <div class="divBar2 reveal_r1"></div>
@@ -356,7 +358,7 @@
                                     <th class="thTime">
                                         @*@Html.DisplayNameFor(model => model.FContactDate)*@
                                         發送時間
-                                    </th>                                                                   
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -384,10 +386,10 @@
                                         <td>
                                             @*@Html.DisplayFor(modelItem => item.FContactDate)*@
                                             2022-07-09 23:27:04
-                                        </td>                                        
+                                        </td>
                                         @*<td class="tdBtns">
-                                            <button class="btn btn-light">取消</button>
-                                        </td>*@
+                                <button class="btn btn-light">取消</button>
+                            </td>*@
                                     </tr>
                                     <tr>
                                         <td>
@@ -408,7 +410,7 @@
                                         <td>
                                             @*@Html.DisplayFor(modelItem => item.FContactDate)*@
                                             2022-06-20 17:54:15
-                                        </td>                                                                        
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -429,7 +431,7 @@
                                         <td>
                                             @*@Html.DisplayFor(modelItem => item.FContactDate)*@
                                             2022-06-28 17:54:15
-                                        </td>                                                                              
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -450,7 +452,7 @@
                                         <td>
                                             @*@Html.DisplayFor(modelItem => item.FContactDate)*@
                                             2022-07-08 17:54:15
-                                        </td>                                                                            
+                                        </td>
                                     </tr>
                                 }
                                 @*}*@

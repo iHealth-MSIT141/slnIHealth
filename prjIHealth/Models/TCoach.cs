@@ -19,19 +19,18 @@ namespace prjIHealth.Models
 
         public int FCoachId { get; set; }
         public int? FMemberId { get; set; }
-        public int? FRegionId { get; set; }
+        public int? FCityId { get; set; }
         public string FCoachImage { get; set; }
-        public string FExperience { get; set; }
-        public string FLicense { get; set; }
         public string FCoachFee { get; set; }
         public string FCoachDescription { get; set; }
         public string FApplyDate { get; set; }
         public int? FStatusNumber { get; set; }
         public bool? FVisible { get; set; }
         public int? FCourseCount { get; set; }
+        public string FSlogan { get; set; }
 
+        public virtual TRegion FCity { get; set; }
         public virtual TMember FMember { get; set; }
-        public virtual TRegion FRegion { get; set; }
         public virtual TStatus FStatusNumberNavigation { get; set; }
         public virtual ICollection<TCandidate> TCandidates { get; set; }
         public virtual ICollection<TCoachAvailableTime> TCoachAvailableTimes { get; set; }

@@ -17,39 +17,42 @@ namespace prjiHealth.ViewModels
         public double? FHeight { get; set; }
         public double? FWeight { get; set; }
         public virtual TMember FMember { get; set; }
-        public int? Age 
+        private int? age;
+        public int? Age
         {
-            get 
+            get
             {
-                var theMember = db.TMembers.FirstOrDefault(m => m.FMemberId == FMemberId);
-                if (theMember != null)
+                if (FMemberId != null)
                 {
-                    DateTime bday = DateTime.Parse(theMember.FBirthday);
+                    var theMember = db.TMembers.FirstOrDefault(m => m.FMemberId == FMemberId);
+                    string theBirthday = $"{theMember.FBirthday.Substring(0, 4)}/{theMember.FBirthday.Substring(4, 2)}/{theMember.FBirthday.Substring(6, 2)}";
+                    DateTime bday = DateTime.Parse(theBirthday);
                     return (bday > DateTime.Today.AddYears(-(DateTime.Today.Year - bday.Year))) ? DateTime.Today.Year - bday.Year - 1 : DateTime.Today.Year - bday.Year;
                 }
                 else
-                    return Age;
+                    return age;
             }
-            set 
+            set
             {
-                Age = value;
-            } 
+                age = value;
+            }
         }
+        private int? gender;
         public int? Gender 
         { 
             get 
             {
-                var theMember = db.TMembers.FirstOrDefault(m => m.FMemberId == FMemberId);
-                if (theMember != null)
+                if (FMemberId != null)
                 {
+                    var theMember = db.TMembers.FirstOrDefault(m => m.FMemberId == FMemberId);
                     return ((bool)(theMember.FGender))?1:0;
                 }
                 else
-                    return Gender;
+                    return gender;
             }
             set
             {
-                Gender = value;
+                gender = value;
             } 
         }
         public double NumBMI

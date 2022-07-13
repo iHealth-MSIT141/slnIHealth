@@ -7,18 +7,20 @@
 @{ ViewData["Title"] = "Blog"; }
 
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/blog/details/details-hero.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>BlogDemo</h2>
-                    <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>專欄一覽</span>
+                    @*h2內容請自行更換*@
+                    <h2 class="reveal_t1">健康資訊</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/News/Blog">Home</a>
+                        <span>News</span>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
@@ -51,10 +53,28 @@
                         <div class="blog__sidebar__recent">
                             <a href="#" class="blog__sidebar__recent__item">
                                 <div class="blog__sidebar__recent__item__pic">
-                                    <img src="img/blog/sidebar/sr-1.jpg" alt="">
+                                    <img src="/img/blog/sidebar/sr-1.jpg" alt="">
                                 </div>
                                 <div class="blog__sidebar__recent__item__text">
-                                    <h6>09 Kinds Of Vegetables<br /> Protect The Liver</h6>
+                                    <h6>九種不同的蔬菜<br /> 保護你的肝</h6>
+                                    <span>MAR 05, 2019</span>
+                                </div>
+                            </a>
+                            <a href="#" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img src="/img/blog/sidebar/sr-2.jpg" alt="">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h6>平衡你飲食影養<br /> 的小提示</h6>
+                                    <span>MAR 05, 2019</span>
+                                </div>
+                            </a>
+                            <a href="#" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img src="/img/blog/sidebar/sr-3.jpg" alt="">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h6>四個原則幫助你 <br />用蔬食減重</h6>
                                     <span>MAR 05, 2019</span>
                                 </div>
                             </a>
@@ -77,32 +97,36 @@
             <div class="col-lg-8 col-md-7">
                 <div class="row">
                     @{ //測試迴圈顯示
-                                    foreach (var item in Model)
-                                    {
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="blog__item">
-                                <div class="blog__item__pic">
-                                    <img src="~/img/blog/@item.FThumbnailPath" />@*圖片路徑*@
+                        foreach (var item in Model)
+                        {
+                            <a href="~/News/BlogDetail?id=@item.FNewsId">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="blog__item">
+                                        <div class="blog__item__pic">
+                                            <img src="~/img/blog/@item.FThumbnailPath" />@*圖片路徑*@
+                                        </div>
+                                        <div class="blog__item__text">
+                                            <ul>
+                                                <li><i class="fa fa-calendar-o"></i>@item.FNewsDate</li>
+                                                @*日期*@
+                                                <li><i class="fa fa-comment-o"></i> 5</li>
+                                            </ul>
+                                            <h5><a href="~/News/BlogDetail?id=@item.FNewsId">@Html.DisplayFor(modelItem => item.FTitle)</a></h5>
+                                            <p>
+                                                @*@Html.DisplayFor(modelItem => item.FNewsContent.Substring(0,29))*@
+                                                @*@item.FNewsContent.Substring(0, item.FNewsContent.Length > 20 ? 20 : item.FNewsContent.Length)*@
+                                                @item.FContent.Substring(0, Math.Min(item.FContent.Length, 30)).Replace("<p>","").Replace("<strong>","").Replace("<br/>","").Replace("</p>","")
+                                            </p>
+                                            <a href="~/News/BlogDetail?id=@item.FNewsId" class="blog__btn">READ MORE <span class="arrow_right"></span></a>
+                                            @*<a @Html.ActionLink("READ MORE", "BlogDetail", new { id = item.FNewsId }, new { @class = "blog__btn" })></a>*@
+                                            @*<span class="arrow_right"></span>*@
+                                            @* //<a asp-action="BlogDetail" class="blog__btn"></a> *@
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="blog__item__text">
-                                    <ul>
-                                        <li><i class="fa fa-calendar-o"></i>@item.FNewsDate</li>
-                                        @*日期*@
-                                        <li><i class="fa fa-comment-o"></i> 5</li>
-                                    </ul>
-                                    <h5><a href="#">@Html.DisplayFor(modelItem => item.FTitle)</a></h5>
-                                    <p>
-                                        @*@Html.DisplayFor(modelItem => item.FNewsContent.Substring(0,29))*@
-                                        @*@item.FNewsContent.Substring(0, item.FNewsContent.Length > 20 ? 20 : item.FNewsContent.Length)*@
-                                        @item.FContent.Substring(0, Math.Min(item.FContent.Length, 30))
-                                    </p>
-                                    <a href="~/News/BlogDetail?id=@item.FNewsId" class="blog__btn" >READ MORE <span class="arrow_right"></span></a>
-                                    @*<a @Html.ActionLink("READ MORE", "BlogDetail", new { id = item.FNewsId }, new { @class = "blog__btn" })></a>*@
-                                    @*<span class="arrow_right"></span>*@
-                                    @* //<a asp-action="BlogDetail" class="blog__btn"></a> *@
-                                </div>
-                            </div>
-                        </div> } }
+                            </a>
+                        }
+                    }
                     @*BLOG專欄一覽位置*@
                     <div class="col-lg-12">
                         <div class="product__pagination blog__pagination">

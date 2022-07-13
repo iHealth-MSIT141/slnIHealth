@@ -6,19 +6,55 @@
 
 
 @section Styles{
+    <style>
+        .blog__btn {
+            display: inline-block;
+            font-size: 14px;
+            color: #1c1c1c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #b2b2b2;
+            padding: 14px 20px 12px;
+            border-radius: 25px;
+        }
 
+            .blog__btn:visited {
+                color: #1c1c1c;
+            }
+
+            .blog__btn:hover {
+                color: black;
+                font-weight: 800;
+            }
+
+            .blog__btn:active {
+                color: black;
+                font-weight: 800;
+            }
+
+        .sidebar__item ul li a {
+            border: dashed 2px #7fad39;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            padding-left: 1vw;
+            margin-right: 8vw;
+            margin-bottom: 1vh;
+        }
+    </style>
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                                 <h2 class="reveal_t1">會員專區Demo</h2>
+                    @*h2內容請自行更換*@
+                    <h2 class="reveal_t1">個人資料</h2>
                     <div class="breadcrumb__option reveal_t1">
-                        <a href="./index.html">Home</a>
-                        <span>Shop</span>
+                        <a href="~/Member/Edit">Home</a>
+                        <span>Member</span>
                     </div>
                 </div>
             </div>
@@ -35,80 +71,75 @@
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
+
                             <li><a href="~/member/edit">個人資料</a></li>
-                            <li><a href="#">訂單查詢</a></li>
-                            <li><a href="#">飲食日誌</a></li>
-                            <li><a href="#">客服記錄</a></li>
-                        </ul>
-                        <br />
-                        <br />
-                        <br />
-                        <h4>預約平台</h4>
-                        <ul>
-                            <li><a href="#">履歷管理</a></li>
-                            <li><a href="#">教練連繫記錄</a></li>
-                            <li><a href="#">課程列表</a></li>
-                            <li><a href="#">課程行事曆</a></li>
-                            <li><a href="#">候選教練</a></li>
+                            <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
+                            <li><a href="~/Member/OrderList">訂單查詢</a></li>
+                            <li><a href="~/Student/CandidateList">候選教練</a></li>
+                            <li><a href="~/Student/CourseList">課程列表</a></li>
+                            <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
+                            <li><a href="~/Problem/CheckReply">客服記錄</a></li>
 
                         </ul>
+                        <br />
+                        <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
                     </div>
                 </div>
             </div>
             <div class="col-lg-9 col-md-7" style="height:400px">
-    <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="FMemberId" />
-            <div class="form-group row">
-                 <label asp-for="FMemberName" class="control-label"></label>
-               
-                    <input asp-for="FMemberName" class="form-control" value="charles" />
-                    <span asp-validation-for="FMemberName" class="text-danger"></span>
-                
-            </div>
-            <div class="form-group row">
-              
-                    <label asp-for="FPassword" class="control-label"></label>
-            
-                    <input asp-for="FPassword" class="form-control" value="123" />
-              
-            </div>
-            <div class="form-group row">
-               
-                    <label asp-for="FBirthday" class="control-label"></label>
-              
-                    <input asp-for="FBirthday" class="form-control" value="20200202" />
-          
-            </div>
-            <div class="form-group row">
-              
-                    <label asp-for="FAddress" class="control-label"></label>
-             
-                    <input asp-for="FAddress" class="form-control" value="新北市新店區" />
-                    <span asp-validation-for="FAddress" class="text-danger"></span>
-             
-            </div>
-            <div class="form-group row">
-                    <label asp-for="FPhone" class="control-label"></label>
-            
-                    <input asp-for="FPhone" class="form-control" value="0900000000" />
-                    <span asp-validation-for="FPhone" class="text-danger"></span>
-            </div>
-            <div class="form-group row">
-                    <label asp-for="FEmail" class="control-label"></label>
-                    <input asp-for="FEmail" class="form-control" value="charles.chou570114@gmail.com" />
-                    <span asp-validation-for="FEmail" class="text-danger"></span>
-            </div>
-     
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="FMemberId" />
+                            <div class="form-group row">
+                                <label asp-for="FMemberName" class="control-label"></label>
 
-            <div class="form-group">
-                <input type="submit" value="送出" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+                                <input asp-for="FMemberName" class="form-control" value="charles" />
+                                <span asp-validation-for="FMemberName" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group row">
+
+                                <label asp-for="FPassword" class="control-label"></label>
+
+                                <input asp-for="FPassword" class="form-control" value="123" />
+
+                            </div>
+                            <div class="form-group row">
+
+                                <label asp-for="FBirthday" class="control-label"></label>
+
+                                <input asp-for="FBirthday" class="form-control" value="20200202" />
+
+                            </div>
+                            <div class="form-group row">
+
+                                <label asp-for="FAddress" class="control-label"></label>
+
+                                <input asp-for="FAddress" class="form-control" value="新北市新店區" />
+                                <span asp-validation-for="FAddress" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="FPhone" class="control-label"></label>
+
+                                <input asp-for="FPhone" class="form-control" value="0900000000" />
+                                <span asp-validation-for="FPhone" class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="FEmail" class="control-label"></label>
+                                <input asp-for="FEmail" class="form-control" value="charles.chou570114@gmail.com" />
+                                <span asp-validation-for="FEmail" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group">
+                                <input type="submit" value="送出" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
