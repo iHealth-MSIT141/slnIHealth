@@ -64,10 +64,13 @@ namespace prjIHealth.Areas.Admin.Controllers
             IHealthContext db = new IHealthContext();
             int currentPage = page < 1 ? 1 : page;
             // Trace.WriteLine(db.TNews);
-
             var news = db.TNews.OrderBy(n => n.FNewsId).ToList();
-            var result = news.ToPagedList(currentPage, pageListSize);
-            return View(result);
+            if (news != null)
+            {
+                var result = news.ToPagedList(currentPage, pageListSize);
+                return View(result);
+            }
+            return View();
         }
 
         //public IActionResult Blog(CNewsViewModel vModel)
@@ -108,10 +111,26 @@ namespace prjIHealth.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(TNews n)
+        public IActionResult Create(CNewsViewModel news)
         {
             IHealthContext db = new IHealthContext();
-            db.TNews.Add(n);
+            TNews neew = new TNews();
+            neew.FTitle = news.FTitle;
+            neew.FContent = news.FContent;
+            neew.FNewsDate = news.FNewsDate;
+            neew.FNewsCategoryId = news.FNewsCategoryId;
+            neew.FVideoUrl = news.FVideoUrl;
+            neew.FViews = news.FViews;
+            neew.FMemberId = news.FMemberId;
+
+            if (news.photo != null)
+            {
+                string nName = Guid.NewGuid().ToString() + ".jpg";
+                news.photo.CopyTo(new FileStream(
+                    _enviroment.WebRootPath + "/img/blog/" + nName, FileMode.Create));
+                neew.FThumbnailPath = nName;
+            }
+            db.Add(neew);
             db.SaveChanges();
 
             return RedirectToAction("List");
