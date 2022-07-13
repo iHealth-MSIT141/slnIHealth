@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using prjiHealth.ViewModels;
-using prjIHealth.Models;
 
 namespace prjIHealth.Controllers
 {
@@ -88,9 +87,9 @@ namespace prjIHealth.Controllers
         
         public IActionResult ForgotPassword()
         {
-
             return View();
         }
+
         [HttpPost]
         public IActionResult ForgotPassword(CLoginViewModel vModel)
         {

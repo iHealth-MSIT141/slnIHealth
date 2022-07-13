@@ -7,7 +7,7 @@
 @{ ViewData["Title"] = "Blog"; }
 
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="/img/details_hero.jpg" id="bannerTop">
+<section class="breadcrumb-section set-bg" data-setbg="/img/blog/details/details-hero.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -53,10 +53,28 @@
                         <div class="blog__sidebar__recent">
                             <a href="#" class="blog__sidebar__recent__item">
                                 <div class="blog__sidebar__recent__item__pic">
-                                    <img src="img/blog/sidebar/sr-1.jpg" alt="">
+                                    <img src="/img/blog/sidebar/sr-1.jpg" alt="">
                                 </div>
                                 <div class="blog__sidebar__recent__item__text">
-                                    <h6>09 Kinds Of Vegetables<br /> Protect The Liver</h6>
+                                    <h6>九種不同的蔬菜<br /> 保護你的肝</h6>
+                                    <span>MAR 05, 2019</span>
+                                </div>
+                            </a>
+                            <a href="#" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img src="/img/blog/sidebar/sr-2.jpg" alt="">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h6>平衡你飲食影養<br /> 的小提示</h6>
+                                    <span>MAR 05, 2019</span>
+                                </div>
+                            </a>
+                            <a href="#" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img src="/img/blog/sidebar/sr-3.jpg" alt="">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h6>四個原則幫助你 <br />用蔬食減重</h6>
                                     <span>MAR 05, 2019</span>
                                 </div>
                             </a>
@@ -97,7 +115,7 @@
                                             <p>
                                                 @*@Html.DisplayFor(modelItem => item.FNewsContent.Substring(0,29))*@
                                                 @*@item.FNewsContent.Substring(0, item.FNewsContent.Length > 20 ? 20 : item.FNewsContent.Length)*@
-                                                @item.FContent.Substring(0, Math.Min(item.FContent.Length, 30))
+                                                @item.FContent.Substring(0, Math.Min(item.FContent.Length, 30)).Replace("<p>","").Replace("<strong>","").Replace("<br/>","").Replace("</p>","")
                                             </p>
                                             <a href="~/News/BlogDetail?id=@item.FNewsId" class="blog__btn">READ MORE <span class="arrow_right"></span></a>
                                             @*<a @Html.ActionLink("READ MORE", "BlogDetail", new { id = item.FNewsId }, new { @class = "blog__btn" })></a>*@
