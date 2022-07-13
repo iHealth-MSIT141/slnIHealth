@@ -66,7 +66,7 @@
                     text-decoration: none;
                 }
     .divNewCoach{
-        margin-top:60px;
+        margin:60px 0px;
     }
     .divNewTopic{
         font-size:30px;
@@ -91,7 +91,10 @@
         .divNewCoachImg > h5 {
             padding: 0px;
         }
-
+    .divAllTopic {
+        font-size: 30px;
+        margin-top: 70px;
+    }
     .divCoachList{
         width:80%;
         margin:60px auto;
@@ -203,7 +206,7 @@
                 </div>
                 
                 <div class="divApply col-lg-2">
-                    <button class="btn btn-light" type="button">成為教練</button>
+                    @Html.ActionLink("成為教練", "ManageResume", "Coach", new { }, new { @class= "btn btn-light" })
                 </div>
             </div>
             <div class="divCategory">
@@ -272,6 +275,8 @@
                         </div>
                     </div>
                 </div>
+                <div class="divAllTopic"><b>所有教練</b></div>
+                <div class="divBar"></div>
                 <div class="divCoachList">
                     <div class="divCoachCard row reveal_b1">
                         <div class="col-3">

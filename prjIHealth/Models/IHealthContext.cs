@@ -205,6 +205,8 @@ namespace prjIHealth.Models
                     .HasMaxLength(50)
                     .HasColumnName("fApplyDate");
 
+                entity.Property(e => e.FCityId).HasColumnName("fCityID");
+
                 entity.Property(e => e.FCoachDescription).HasColumnName("fCoachDescription");
 
                 entity.Property(e => e.FCoachFee)
@@ -217,27 +219,25 @@ namespace prjIHealth.Models
 
                 entity.Property(e => e.FCourseCount).HasColumnName("fCourseCount");
 
-                entity.Property(e => e.FExperience).HasColumnName("fExperience");
-
-                entity.Property(e => e.FLicense).HasColumnName("fLicense");
-
                 entity.Property(e => e.FMemberId).HasColumnName("fMemberID");
 
-                entity.Property(e => e.FRegionId).HasColumnName("fRegionID");
+                entity.Property(e => e.FSlogan)
+                    .HasColumnName("fSlogan")
+                    .HasComment("教練口號");
 
                 entity.Property(e => e.FStatusNumber).HasColumnName("fStatusNumber");
 
                 entity.Property(e => e.FVisible).HasColumnName("fVisible");
 
+                entity.HasOne(d => d.FCity)
+                    .WithMany(p => p.TCoaches)
+                    .HasForeignKey(d => d.FCityId)
+                    .HasConstraintName("FK_tCoaches_tRegions");
+
                 entity.HasOne(d => d.FMember)
                     .WithMany(p => p.TCoaches)
                     .HasForeignKey(d => d.FMemberId)
                     .HasConstraintName("FK_tCoaches_tMember");
-
-                entity.HasOne(d => d.FRegion)
-                    .WithMany(p => p.TCoaches)
-                    .HasForeignKey(d => d.FRegionId)
-                    .HasConstraintName("FK_tCoaches_tRegions");
 
                 entity.HasOne(d => d.FStatusNumberNavigation)
                     .WithMany(p => p.TCoaches)
@@ -953,7 +953,7 @@ namespace prjIHealth.Models
                     .IsUnique();
 
                 entity.Property(e => e.FStatusId)
-                    .ValueGeneratedOnAdd()
+                    .ValueGeneratedNever()
                     .HasColumnName("fStatusID");
 
                 entity.Property(e => e.FStatus)
