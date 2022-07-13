@@ -5,9 +5,19 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 
 }
-
-<h2>會員資料新增</h2>
-
+@section Styles{
+    <style>
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+        /*        <h2 id="title">管理頁Demo</h2>*/
+    </style>
+}
+<h2 id="title">會員資料新增</h2>
+<hr/>
 @*<h4>TMember</h4>*@
 <hr />
 <div class="row justify-content-center ">
@@ -136,7 +146,7 @@
                 <span asp-validation-for="FRemarks" class="text-danger"></span>
 
             </div>
-       
+
             <div class="form-group row justify-content-center">
                 <div class="col-md-3 ">
                     <input type="submit" value="送出" class="btn btn-primary" />
