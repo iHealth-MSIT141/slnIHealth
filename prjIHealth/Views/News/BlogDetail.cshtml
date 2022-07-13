@@ -9,27 +9,24 @@
 
 <!-- Blog Details Hero Begin -->
 
-<section class="blog-details-hero set-bg" data-setbg="/img/blog/details/details-hero.jpg">
 
+<section class="breadcrumb-section set-bg" data-setbg="/img/blog/details/details-hero.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="blog__details__hero__text">
-                    @*文章標題*@
-<h2>@Model.FTitle</h2>
-<ul>
-    @*文章作者*@
-    <li>By @Model.FMemberId</li>
-    <li>@Model.FNewsDate.Substring(0, Math.Min(Model.FNewsDate.Length, 10))</li>
-    @*文章日期*@
-    <li>8 Comments</li>
-</ul>
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2 class="reveal_t1">@Model.FTitle</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/News/Blog">By @Model.FMemberId</a>
+                        <span>@Model.FNewsDate.Substring(0, Math.Min(Model.FNewsDate.Length, 10)) 8 Comments</span>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
-
 
 
 <!--<section class="blog-details-hero set-bg" data-setbg="img/blog/details/details-hero.jpg">
@@ -184,7 +181,7 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="blog__item">
                     <div class="blog__item__pic">
-                        <img src="img/blog/blog-1.jpg" alt="">
+                        <img src="/img/blog/blog-1.jpg" alt="">
                     </div>
                     <div class="blog__item__text">
                         <ul>
@@ -199,7 +196,7 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="blog__item">
                     <div class="blog__item__pic">
-                        <img src="img/blog/blog-2.jpg" alt="">
+                        <img src="/img/blog/blog-2.jpg" alt="">
                     </div>
                     <div class="blog__item__text">
                         <ul>
@@ -214,7 +211,7 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="blog__item">
                     <div class="blog__item__pic">
-                        <img src="img/blog/blog-3.jpg" alt="">
+                        <img src="/img/blog/blog-3.jpg" alt="">
                     </div>
                     <div class="blog__item__text">
                         <ul>
