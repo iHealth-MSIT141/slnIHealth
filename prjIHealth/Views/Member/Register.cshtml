@@ -16,19 +16,19 @@
                                 <h3 class="mb-5 text-uppercase">歡迎加入IHealth會員!</h3>
                                 <form asp-action="Register">
                                     <div class="form-outline mb-4">
-                                        <input asp-for="FUserName" class="form-control" placeholder="帳號,至少需二個字(含)以上" autocomplete="off" />
+                                        <input asp-for="FUserName" class="form-control" placeholder="帳號,至少需二個字(含)以上" autocomplete="off"  pattern=".{2,}"/>
                                     </div>
                                     <div class="form-outline mb-4">
                                         <input asp-for="FMemberName" class="form-control" placeholder="姓名" autocomplete="off" />
                                     </div>
                                     <div class="form-outline mb-4">
-                                        <input asp-for="FPassword" class="form-control" placeholder="密碼需含數字, 大,小寫英文字母" autocomplete="off" />
+                                        <input asp-for="FPassword" class="form-control" placeholder="密碼需含數字, 大,小寫英文字母,需六碼" autocomplete="off" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6}"/>
                                     </div>
                                     <div class="form-outline mb-4">
                                         <input asp-for="FAddress" class="form-control " placeholder="地址" autocomplete="off" />
                                     </div>
                                     <div class="form-outline mb-4">
-                                        <input asp-for="FPhone" class="form-control" placeholder="電話" autocomplete="off" />
+                                        <input asp-for="FPhone" class="form-control" placeholder="電話" autocomplete="off" patern="[0][0-9].{8}"/>
                                     </div>
                                     <div class="form-outline mb-4">
                                         <input asp-for="FBirthday" class="form-control" placeholder="生日,請依格式19991231輸入" autocomplete="off" />
