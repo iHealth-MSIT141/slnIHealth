@@ -30,7 +30,11 @@ namespace prjIHealth
                 options.UseSqlServer(Configuration.GetConnectionString("IHealthConnection"));
             });
             services.AddControllersWithViews();
-            services.AddSession();
+            //services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

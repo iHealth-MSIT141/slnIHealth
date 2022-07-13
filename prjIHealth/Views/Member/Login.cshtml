@@ -2,6 +2,8 @@
 @{ ViewData["Title"] = "Login"; }
 
 @section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
 
 }
 
@@ -33,7 +35,7 @@
                         </div>*@
                     @using (Html.BeginForm())
                     {
-        @Html.AntiForgeryToken()
+                        @Html.AntiForgeryToken()
 
                         <div class="form-horizontal">
                             <hr />
@@ -42,7 +44,7 @@
                             <input type="hidden" name="fAuthorityId" id="fAuthorityId">
                             <div class="form-outline mb-4">
                                 <div class="col-md-12 mb-3">
-                                    @Html.TextBox("fUserName", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入帳號" })
+                                    @Html.TextBox("fUserName", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入帳號" }) 
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     @Html.TextBox("fPassword", "", new { htmlAttributes = new { @class = "form-control form-control-user" }, placeholder = "請輸入密碼" })
@@ -103,7 +105,7 @@
                                                     </div>
                                                     @using (Html.BeginForm())
                                                     {
-                                        @Html.AntiForgeryToken()
+                                                        @Html.AntiForgeryToken()
 
                                                         <div class="form-horizontal">
                                                             <hr />
