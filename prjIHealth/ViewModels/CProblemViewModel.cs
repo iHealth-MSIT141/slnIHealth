@@ -1,4 +1,5 @@
-﻿using prjiHealth.Models;
+﻿using Microsoft.AspNetCore.Http;
+using prjiHealth.Models;
 using prjIHealth.Models;
 using System;
 using System.Collections.Generic;
@@ -86,7 +87,7 @@ namespace prjiHealth.ViewModels
       
         public TStatus Status { get; set; }
 
-
+        public IFormFile photo { get; set; }
 
         //reply用屬性
         public int FReplyId { get; set; }

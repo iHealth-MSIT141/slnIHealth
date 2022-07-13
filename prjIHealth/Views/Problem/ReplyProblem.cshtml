@@ -87,7 +87,7 @@
                             </div>
                         </div>
                     </div>
-                    <form asp-action="ReplyProblem" id="problemform">
+                    <form asp-action="ReplyProblem" id="problemform" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-lg-6 col-md-6">
                                 <select name="qtype" id="qtype" class="qa-select">
@@ -120,8 +120,8 @@
 
                             <div class="col-lg-12 text-center">
                                 <textarea asp-for="FProblemContent" placeholder="問題描述" id="FProblemContent"></textarea>
-                                <input asp-for="FPicturePath" type="file" id="attachment" name="attachment" onchange="attachsuccess(this.value.replace(/^.*[\/]/));" style="padding-top:10px">
-                                <label class="input-file" id="forattachment" title="" for="attachment"></label>
+                                <input type="file" id="photo" name="photo" style="padding-top:10px" class="form-control">
+                                @*<label class="file" name="photo" id="photo" title="" for="attachment"></label>*@
                                 <button type="submit" class="site-btn" id="submitproblem">送出訊息</button>
 
                             </div>

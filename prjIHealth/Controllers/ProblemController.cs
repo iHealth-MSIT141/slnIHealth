@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using prjiHealth.ViewModels;
 using prjIHealth.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +12,12 @@ namespace prjiHealth.Controllers
 {
     public class ProblemController : Controller
     {
+        private IWebHostEnvironment _enviroment;
+
+        public ProblemController(IWebHostEnvironment p)
+        {
+            _enviroment = p;
+        }
         public IActionResult ReplyProblem()
         {
             DateTime date = DateTime.Now;
@@ -17,7 +25,7 @@ namespace prjiHealth.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult ReplyProblem(TProblem p)
+        public IActionResult ReplyProblem(CProblemViewModel p)
         {
             DateTime date = DateTime.Now;
             ViewBag.Time = date.ToString("yyyy/MM/dd HH:mm:ss");
@@ -35,8 +43,23 @@ namespace prjiHealth.Controllers
             }
             else
             {
+                TProblem prob = new TProblem();
                 IHealthContext db = new IHealthContext();
-                db.TProblems.Add(p);
+                if (p.photo != null)
+                {
+                    string pName = Guid.NewGuid().ToString() + ".jpg";
+                    p.photo.CopyTo(new FileStream(_enviroment.WebRootPath + "/img/problem/" + pName, FileMode.Create));
+                    prob.FFilePath = pName;
+                }
+                prob.FProblemTime = p.FProblemTime;
+                prob.FProblemCategoryId = p.FProblemCategoryId;
+                prob.FProblemContent = p.FProblemContent;
+                prob.FMemberId = p.FMemberId;
+                prob.FOrderId = p.FOrderId;
+                prob.FEmail = p.FEmail;
+                prob.FContactPhone = p.FContactPhone;
+                prob.FStatusNumber = p.FStatusNumber;
+                db.TProblems.Add(prob);
                 db.SaveChanges();
                 ViewBag.Message_SUCCESS = "Problem reply Success";
             }
@@ -63,7 +86,7 @@ namespace prjiHealth.Controllers
                                FOrderId = t.FOrderId,
                                FEmail = t.FEmail,
                                FContactPhone = t.FContactPhone,
-                               Status=t.FStatusNumberNavigation
+                               Status = t.FStatusNumberNavigation
                            }).ToList();
             return View(datafix);
         }
