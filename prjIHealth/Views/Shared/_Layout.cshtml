@@ -150,6 +150,7 @@
                                 <li>
                                     <div class="header__top__right__auth">
                                         <a href="~/Member/Login"><i class="fa fa-user"></i>登入</a>
+                                        <span id="sessionTest"></span>
                                         <ul class="header__menu__dropdown">
                                             <li><a href="~/Member/Edit">會員專區</a></li>
                                             <li><a href="~/Coach/ManageResume">教練專區</a></li>
@@ -283,6 +284,9 @@
         $(function () {
             onResize();
         });
+    </script>
+    <script>
+
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 

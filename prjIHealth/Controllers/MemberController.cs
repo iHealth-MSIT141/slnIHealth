@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using prjiHealth.ViewModels;
 using HealthyLifeApp;
 using Microsoft.AspNetCore.Http;
+using prjiHealth.Models;
 
 namespace prjIHealth.Controllers
 {
@@ -33,8 +34,8 @@ namespace prjIHealth.Controllers
             {
                 if (q.FPassword == vModel.fPassword)
                 {
-                    HttpContext.Session.SetString("SK_Logined_User",q.FUserName);
-
+                    HttpContext.Session.SetString(CDictionary.SK_Logined_User, q.FUserName);
+                    //Console.WriteLine(SK_Logined_User);
                     return RedirectToRoute(new { controller = "Home", action = "會員專區ViewDemo" });
                 }
             }
@@ -98,7 +99,11 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult ForgotPassword([Bind("fEmail")]CLoginViewModel vModel)
         {
+            //var exists = _context.Members.Any(m => m.Name == name);
+            //return Content(exists.ToString(), "text/plain");
+            //var q = _context.TMembers.Any(m => m.FEmail == vModel.fEmail);
             var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
+
             if (q != null)
             {
                 utilities.sendMail(q.FUserName, q.FEmail);
