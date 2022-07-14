@@ -93,5 +93,55 @@ namespace prjIHealth.Areas.Admin.Controllers
             //}
             return RedirectToAction("ProblemReplyList");
         }
+        public IActionResult SelectByProblemCategoryID(int id)
+        {
+            IHealthContext db = new IHealthContext();
+
+            var cid = (from t in db.TProblems
+                       join p in db.TProblemCategroies
+                       on t.FProblemCategoryId equals p.FProblemCategoryId
+                       join s in db.TStatuses
+                       on t.FStatusNumber equals s.FStatusNumber
+                       where t.FProblemCategoryId==id
+                       select new CProblemViewModel()
+                       {
+                           FProblemId = t.FProblemId,
+                           FProblemTime = t.FProblemTime,
+                           FProblemCategory = t.FProblemCategory,
+                           FProblemContent = t.FProblemContent,
+                           FMemberId = t.FMemberId,
+                           FOrderId = t.FOrderId,
+                           FEmail = t.FEmail,
+                           FContactPhone = t.FContactPhone,
+                           Status = t.FStatusNumberNavigation,
+                           FFilePath = t.FFilePath
+                       }).ToList();
+            return Json(cid);
+        }
+        public IActionResult SelectByStatus(int id)
+        {
+            IHealthContext db = new IHealthContext();
+
+            var cid = (from t in db.TProblems
+                       join p in db.TProblemCategroies
+                       on t.FProblemCategoryId equals p.FProblemCategoryId
+                       join s in db.TStatuses
+                       on t.FStatusNumber equals s.FStatusNumber
+                       where t.FStatusNumber == id
+                       select new CProblemViewModel()
+                       {
+                           FProblemId = t.FProblemId,
+                           FProblemTime = t.FProblemTime,
+                           FProblemCategory = t.FProblemCategory,
+                           FProblemContent = t.FProblemContent,
+                           FMemberId = t.FMemberId,
+                           FOrderId = t.FOrderId,
+                           FEmail = t.FEmail,
+                           FContactPhone = t.FContactPhone,
+                           Status = t.FStatusNumberNavigation,
+                           FFilePath = t.FFilePath
+                       }).ToList();
+            return Json(cid);
+        }
     }
 }
