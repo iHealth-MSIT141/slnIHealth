@@ -11,12 +11,15 @@ using prjiHealth.ViewModels;
 using HealthyLifeApp;
 using Microsoft.AspNetCore.Http;
 using prjiHealth.Models;
+using System.Text.Json;
 
 namespace prjIHealth.Controllers
 {
     public class MemberController : Controller
     {
         utilities ul = new utilities();
+        public static TMember loginUser = null; 
+        public static string userName = "登入";
         private readonly IHealthContext _context;
         public MemberController(IHealthContext context)
         {
@@ -27,19 +30,29 @@ namespace prjIHealth.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(CLoginViewModel vModel)
+        public IActionResult Login(CLoginViewModel vModel,string ReturnUrl)
         {
             var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
             if (q != null)
             {
                 if (q.FPassword == vModel.fPassword)
                 {
-                    HttpContext.Session.SetString(CDictionary.SK_Logined_User, q.FUserName);
-                    //Console.WriteLine(SK_Logined_User);
-                    return RedirectToRoute(new { controller = "Home", action = "會員專區ViewDemo" });
+                    string loginSession = JsonSerializer.Serialize(q);
+                    HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
+                    loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
+                    userName = $"{loginUser.FUserName}";
+                    if (!string.IsNullOrEmpty(ReturnUrl))
+                    { return LocalRedirect(ReturnUrl); }
+                   return RedirectToAction( "會員專區ViewDemo","Home" );
                 }
             }
             return View();
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove(CDictionary.SK_Logined_User);
+            userName = "登入";
+            return RedirectToAction("Index","Home");
         }
         public IActionResult Edit(int ? id) {
           

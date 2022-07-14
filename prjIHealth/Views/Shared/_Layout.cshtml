@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using prjIHealth.Controllers
+
+<!DOCTYPE html>
 <html lang="zxx">
 
 <head>
@@ -45,7 +47,7 @@
             <ul>
                 <li><a href="/member/showtracklist"><i class="fa fa-heart"></i> <span></span></a></li>
                 <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
-                <li class="header__top__right__auth"><a href="~/Home/會員專區ViewDemo"><i class="fa fa-user"></i> 登入</a></li>
+                <li class="header__top__right__auth"><a href="~/Home/會員專區ViewDemo"><i class="fa fa-user"></i>Login</a></li>
             </ul>
         </div>
         @*<div class="humberger__menu__widget">
@@ -147,9 +149,21 @@
                             <ul>
                                 @*<li><a href="#"><i class="fa fa-heart"></i> <span></span></a></li>
                                     <li><a href="#"><i class="fa fa-shopping-bag"></i> <span></span></a></li>*@
+
                                 <li>
                                     <div class="header__top__right__auth">
-                                        <a href="~/Member/Login"><i class="fa fa-user"></i>登入</a>
+                                        @if (@MemberController.userName == "登入")
+                                        {
+                                            <a href="~/Member/Login"><i class="fa fa-user"></i>@MemberController.userName</a>
+                                        }
+
+                                        else
+                                        {
+                                           <ul>
+                                               <li><span>@MemberController.userName</span></li>
+                                               <li>   <a href="~/Member/Logout"><i class="fa fa-user"></i>登出</a></li>
+                                        </ul> 
+                                    }
                                         <span id="sessionTest"></span>
                                         <ul class="header__menu__dropdown">
                                             <li><a href="~/Member/Edit">會員專區</a></li>
@@ -277,16 +291,15 @@
         ScrollReveal().reveal('.reveal_b3', { duration: 1100, origin: 'bottom', distance: '500px', delay: 200 });
         ScrollReveal().reveal('.reveal_l1', { duration: 1100, origin: 'left', distance: '500px' });
         ScrollReveal().reveal('.reveal_r1', { duration: 1100, origin: 'right', distance: '500px' });
-        var onResize = function () {
+        var onResize = function ()
+        {
             $("body").css("padding-top", $(".fixed-top").height());
         };
         $(window).resize(onResize);
-        $(function () {
+        $(function ()
+        {
             onResize();
         });
-    </script>
-    <script>
-
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 
