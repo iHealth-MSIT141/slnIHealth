@@ -96,11 +96,11 @@
                         <li>可依處理狀態進行篩選</li>
                     </ul>
                 </div>
-                <form asp-action="" style=" margin:10px">
+              
                     <div class="row">
                         <div class="col-lg-2 col-md-2 " style="padding:0px 0px 0px 0px ">
                             <select name="stype" id="stype" class="qa-select">
-                                @*<option value="999" disabled selected hidden>依處理狀態篩選</option>*@
+                                <option value="999" disabled selected hidden>依狀態篩選</option>
                                 <option value="未處理">未處理</option>
                                 <option value="處理中">處理中</option>
                                 <option value="已完成">已完成</option>
@@ -108,7 +108,7 @@
                             <br>
                         </div>
                     </div>
-                </form>
+            
                 <table class="table" style="table-layout: fixed">
                     <thead>
                         <tr>
@@ -133,7 +133,7 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="changezoon">
                         @foreach (var item in Model)
                         {
                             <tr>
@@ -162,18 +162,18 @@
                         }
                     </tbody>
                 </table>
-                <div class="product__pagination">
+                @*<div class="product__pagination">
                     <a href="#">1</a>
                     <a href="#">2</a>
                     <a href="#">3</a>
                     <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                </div>
+                </div>*@
             </div>
         </div>
     </div>
 
 </section>
-<!-- Modal -->
+<!-- Modal查看回覆內容彈跳視窗 -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -187,8 +187,7 @@
             <div class="modal-body">
                 <label class="control-label">問題內容</label>
                 <textarea readonly="readonly" style="resize: none; width: 100%; height: 200px " id="problem"></textarea>
-                @*</div>
-                    <div class="modal-body">*@
+         
                 <label class="control-label">回覆內容</label>
                 <textarea readonly="readonly" style="resize: none; width: 100%; height: 250px " id="problemreply" placeholder="客服人員未回覆"></textarea>
             </div>
@@ -202,10 +201,10 @@
 
 @section Scripts{
     <script>
-        let button = document.querySelectorAll('#buttonLoad')
+        let button = document.querySelectorAll('#buttonLoad')  /*動態產生的按鈕需動態繫結事件*/
+
         button.forEach(function (data) {
             data.addEventListener('click', function () {
-                // alert('編輯')
                 const problemId = ($(this).parents('tr').find('td:nth-child(1)').text()).trim()
                 const problem = ($(this).parents('tr').find('td:nth-child(4)').text()).trim()
                 GetReply()
@@ -216,7 +215,53 @@
                      $('#problemreply').val(datas)
             }
             })
-    })
+        })
+
+         let StatusID = 0;
+        function SelectedStatusID() {          /*判斷所選狀態對應的ID*/
+            if ($('#stype').val() == "未處理")
+                StatusID = 80;
+            if ($('#stype').val() == "處理中")
+                StatusID = 81;
+            if ($('#stype').val() == "已完成")
+                StatusID = 82;
+        };
+        async  function ChangeBySatusID() {         /*依處理狀態篩選*/
+            $('#changezoon>tr').remove();
+            SelectedStatusID();
+            const response = await fetch('@Url.Content("~/Admin/Reply/SelectByStatus")' + `?id=${StatusID}`);
+            const datas = await response.json();
+            let tr = '';
+            for (i = 0; i < datas.length; i++) {    
+                let fixOrderId = '';                 /*處理篩選資料後，空值會顯示null字樣問題*/
+                if (datas[i].fOrderId == null) {
+                    fixOrderId = ''
+                }
+                else {
+                    fixOrderId = datas[i].fOrderId
+                }
+                tr = `<tr><td>${datas[i].fProblemId}</td><td>${datas[i].fProblemTime}</td><td style="white-space:nowrap">${datas[i].fProblemCategory.fProblemCategory}</td>
+                      <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${datas[i].fProblemContent}</td>
+                      <td>${fixOrderId}</td><td>${datas[i].status.fStatus}</td><td><button id="buttonLoadselected" class="site-btn" data-toggle="modal" data-target="#addModal">查看</button></td></tr>`;
+                $('#changezoon').append(tr);
+            }
+            let buttonselected = document.querySelectorAll('#buttonLoadselected')  /*因篩選後按鈕重新產生，重新繫結事件*/
+            buttonselected.forEach(function (data) {
+                data.addEventListener('click', function () {
+                    const problemId = ($(this).parents('tr').find('td:nth-child(1)').text()).trim()
+                    const problem = ($(this).parents('tr').find('td:nth-child(4)').text()).trim()
+                    GetReply()
+                    $('#problem').val(problem)
+                    async function GetReply() {
+                        const response = await fetch('@Url.Content("~/Problem/LoadReply")' + `?id=${problemId}`);
+                        const datas = await response.json();
+                        $('#problemreply').val(datas)
+                    }
+                })
+            })
+        };
+        $('#stype').on('change', ChangeBySatusID);
+
     </script>
 }
 
