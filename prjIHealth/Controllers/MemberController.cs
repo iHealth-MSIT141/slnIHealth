@@ -12,6 +12,8 @@ using HealthyLifeApp;
 using Microsoft.AspNetCore.Http;
 using prjiHealth.Models;
 using System.Text.Json;
+using System.IO;
+using Microsoft.Extensions.Hosting;
 
 namespace prjIHealth.Controllers
 {
@@ -55,12 +57,34 @@ namespace prjIHealth.Controllers
             return RedirectToAction("Index","Home");
         }
         public IActionResult Edit(int ? id) {
-          
-            return View();
+            var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+            loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+           var q=_context.TMembers.FirstOrDefault(m => m.FMemberId == loginUser.FMemberId);
+            return View(q);
         
         }
-        //[HttpPost]
-        //public IActionResult Edit(){ }
+        [HttpPost]
+        //public IActionResult Edit(CLoginViewModel vModel)
+        //{
+        //    var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+        //    loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+        //    var q = _context.TMembers.FirstOrDefault(m=>m.FMemberId == loginUser.FMemberId);
+        //    if (q != null)
+        //    {
+        //        //    if (vModel.photo != null)
+        //        //    {
+        //        //        string pName = Guid.NewGuid().ToString() + ".jpg";
+        //        //        vModel.photo.CopyTo(new FileStream(Environments.WebRootPath + "/Images/" + pName, FileMode.Create));
+        //        //        q.FImagePath = pName;
+        //        //    }
+        //        //    q.FName = cp.FName;
+        //        //    q.FCost = cp.FCost;
+        //        //    q.FPrice = cp.FPrice;
+        //        //    q.FQty = cp.FQty;
+        //    }
+        //    //db.SaveChanges();
+        //    //return RedirectToAction("List");
+        //}
         // GET: Member
         public IActionResult Register()
         {
