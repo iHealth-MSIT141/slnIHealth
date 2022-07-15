@@ -66,7 +66,32 @@ namespace prjiHealth.Controllers
 
             return View();
         }
+        //依狀態篩選內容
+        public IActionResult SelectByStatus(int id)
+        {
+            IHealthContext db = new IHealthContext();
 
+            var sid = (from t in db.TProblems
+                       join p in db.TProblemCategroies
+                       on t.FProblemCategoryId equals p.FProblemCategoryId
+                       join s in db.TStatuses
+                       on t.FStatusNumber equals s.FStatusNumber
+                       where t.FStatusNumber == id
+                       select new CProblemViewModel()
+                       {
+                           FProblemId = t.FProblemId,
+                           FProblemTime = t.FProblemTime,
+                           FProblemCategory = t.FProblemCategory,
+                           FProblemContent = t.FProblemContent,
+                           FMemberId = t.FMemberId,
+                           FOrderId = t.FOrderId,
+                           FEmail = t.FEmail,
+                           FContactPhone = t.FContactPhone,
+                           Status = t.FStatusNumberNavigation,
+                           FFilePath = t.FFilePath
+                       }).ToList();
+            return Json(sid);
+        }
 
         public IActionResult CheckReply()
         {
@@ -90,7 +115,7 @@ namespace prjiHealth.Controllers
                            }).ToList();
             return View(datafix);
         }
-
+        //讀取客服回覆內容
         public IActionResult LoadReply(int id)
         {
             IHealthContext db = new IHealthContext();
