@@ -14,6 +14,11 @@ namespace prjiHealth.Controllers
 {
     public class ShoppingController : Controller
     {
+        private readonly IHealthContext dblIHealth;
+        public ShoppingController(IHealthContext db)
+        {
+            dblIHealth = db;
+        }
         public IActionResult ShoppingCartList()
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_Shopped_Items))
@@ -33,81 +38,106 @@ namespace prjiHealth.Controllers
             return View();
         }
 
-        public IActionResult ShowShoppingMall(CKeywordViewModel vModel, int? id)
+        //商城主頁界面
+        public IActionResult ShowShoppingMall()
         {
-            IHealthContext dblIHealth = new IHealthContext();
+            return View();
+        }
+
+        //商城搜尋功能
+        public IActionResult SearchProduct(string keyword)
+        {
             IEnumerable<TProduct> dataShoppingItems = null;
-            //dataShoppingItems = from t in dblIHealth.TProducts
-            //                    select t;
-
-            //TODO 
-            if (string.IsNullOrEmpty(vModel.txtKeyword))
+            if (!string.IsNullOrEmpty(keyword))
             {
-                if (id == null)
-                {
-                    dataShoppingItems = from t in dblIHealth.TProducts
-                                        select t;
+                dataShoppingItems = from t in dblIHealth.TProducts
+                                    where t.FProductName.Contains(keyword)
+                                    select t;
+            }
+            return Json(dataShoppingItems);
+        }
 
-
-                }
-                else
-                {
-                    dataShoppingItems = from t in dblIHealth.TProducts
-                                        where t.FCategoryId == id
-                                        select t;
-                }
+        //在商城主頁顯示各個產品
+        public IActionResult ShowProduct(int? id)
+        {
+            IEnumerable<TProduct> dataShoppingItems = null;
+            //TODO           
+            if (id == null)
+            {
+                dataShoppingItems = from t in dblIHealth.TProducts
+                                    select t;
             }
             else
             {
                 dataShoppingItems = from t in dblIHealth.TProducts
-                                    where t.FProductName.Contains(vModel.txtKeyword)
+                                    where t.FCategoryId == id
                                     select t;
             }
-
-            return View(dataShoppingItems);
+            return Json(dataShoppingItems);
         }
 
+        //傳入產品、會員ID 把商品加入到資料庫當中
         public IActionResult AddToTrack(int? id)
         {
-            IHealthContext dblIHealth = new IHealthContext();
-            TProduct prod = dblIHealth.TProducts.FirstOrDefault(t => t.FProductId == id);
-            if (prod == null)
+            var p = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
+            if (p != null)
             {
-                return RedirectToAction("ShowShoppingMall");
+                TTrackList trackList = new TTrackList()
+                {
+                    FMemberId = 1,
+                    //TODO GET member id
+                    FProductId = Convert.ToInt32(id)
+                };
+                dblIHealth.TTrackLists.Add(trackList);
+                dblIHealth.SaveChanges();
             }
-            return View(prod);
+            return Json(p);
         }
 
-        [HttpPost]
-        public ActionResult AddToTrack(CAddToTrackViewModel vModel)
+        //價格由大到小排序
+        public IActionResult DescProduct(int? id)
         {
-            IHealthContext dblIHealth = new IHealthContext();
-            TTrackList TableTrackList = new TTrackList();
-
-            vModel.MemberFid = 1;
-            vModel.txtFid = 1;
-            TableTrackList.FMemberId = vModel.MemberFid;
-            TableTrackList.FProductId = vModel.txtFid;
-            dblIHealth.TTrackLists.Add(TableTrackList);
-            dblIHealth.SaveChanges();
-            return RedirectToAction("ShowShoppingMall");
-
-        }
-
-        public IActionResult DescProduct()
-        {
-            IHealthContext dblIHealth = new IHealthContext();
             IEnumerable<TProduct> dataShoppingItems = null;
-            dataShoppingItems = from t in dblIHealth.TProducts
-                                orderby t.FUnitprice descending
-                                select t;
-
-            return View(dataShoppingItems);
+            if (id == null || id == 0)
+            {
+                dataShoppingItems = from t in dblIHealth.TProducts
+                                    orderby t.FUnitprice descending
+                                    select t;
+            }
+            else
+            {
+                dataShoppingItems = from t in dblIHealth.TProducts
+                                    where t.FCategoryId == id
+                                    orderby t.FUnitprice descending
+                                    select t;
+            }
+            return Json(dataShoppingItems);
         }
 
+        //價格由小到大排序
+        public IActionResult AscProduct(int? id)
+        {
+            IEnumerable<TProduct> dataShoppingItems = null;
+            if (id == null || id == 0)
+            {
+                dataShoppingItems = from t in dblIHealth.TProducts
+                                    orderby t.FUnitprice ascending
+                                    select t;
+            }
+            else
+            {
+                dataShoppingItems = from t in dblIHealth.TProducts
+                                    where t.FCategoryId == id
+                                    orderby t.FUnitprice ascending
+                                    select t;
+            }
+            return Json(dataShoppingItems);
+        }
+
+        //產品明細界面
         public ActionResult ShowProductDetail(int? id)
         {
-            return View();
+            return View(id);
         }
         [HttpPost]
         public ActionResult ShowProductDetail(CAddToCartViewModel vModel)
