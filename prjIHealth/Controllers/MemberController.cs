@@ -63,7 +63,7 @@ namespace prjIHealth.Controllers
             return View(q);
         
         }
-        [HttpPost]
+        //[HttpPost]
         //public IActionResult Edit(CLoginViewModel vModel)
         //{
         //    var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
@@ -94,10 +94,9 @@ namespace prjIHealth.Controllers
         public IActionResult Register(TMember tm)
         {
             _context.TMembers.Add(tm);
-
             _context.SaveChanges();
             //return RedirectToRoute(new { controller = "Member", action = "Login" });
-            return RedirectToAction("Login","member");
+            return RedirectToAction("Login", "Member");
         }
 
 
@@ -146,7 +145,7 @@ namespace prjIHealth.Controllers
                 utilities.sendMail(q.FUserName, q.FEmail);
                 return RedirectToRoute(new { controller = "Member", action = "Login" });
             }
-            else { return RedirectToRoute(new { controller = "Home", action = "一般ViewDemo" }); }
+            else { return RedirectToRoute(new { controller = "Home", action = "Index" }); }
 
 
 

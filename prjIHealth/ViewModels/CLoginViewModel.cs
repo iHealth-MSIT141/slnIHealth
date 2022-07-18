@@ -11,13 +11,14 @@ namespace prjiHealth.ViewModels
     public class CLoginViewModel
     {
         private  TMember _tmember;
-        public CLoginViewModel(TMember member) { _tmember = member; }
-        public string fUserName { get; set; }
+        public CLoginViewModel() { _tmember = new TMember(); }
+        public TMember Member { get { return _tmember; } set {_tmember=value; } }
+        public string fUserName { get { return _tmember.FUserName; } set { _tmember.FUserName = value; } }
         [DataType(DataType.Password)]
-        public string fPassword { get; set; }
-        public string fEmail { get; set; }
-        public int fAuthorityId { get; set; }
-        [Display(Name = "Remember Me")]
+        public string fPassword { get { return _tmember.FPassword; } set { _tmember.FPassword = value; } }
+        public string fEmail { get { return _tmember.FEmail; } set { _tmember.FEmail = value; } }
+        public int fAuthorityId {  get; set; }
+            [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
         public string ReturnUrl { get; set; }
         public int MyProperty { get; set; }

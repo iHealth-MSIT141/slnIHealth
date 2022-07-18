@@ -16,19 +16,19 @@
                                 <h3 class="mb-5 text-uppercase">歡迎加入IHealth會員!</h3>
                                 <form asp-action="Register">
                                     <div class="form-outline mb-4">
-                                        <input asp-for="FUserName" class="form-control" placeholder="帳號,至少需二個字(含)以上" autocomplete="off"  pattern=".{2,}"/>
+                                        <input asp-for="FUserName" class="form-control" placeholder="帳號,至少需二個字(含)以上" autocomplete="off" />
                                     </div>
                                     <div class="form-outline mb-4">
                                         <input asp-for="FMemberName" class="form-control" placeholder="姓名" autocomplete="off" />
                                     </div>
                                     <div class="form-outline mb-4">
-                                        <input asp-for="FPassword" class="form-control" placeholder="密碼需含數字, 大,小寫英文字母,需六碼" autocomplete="off" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6}"/>
+                                        <input asp-for="FPassword" class="form-control" placeholder="密碼需含數字, 大,小寫英文字母" autocomplete="off" />
                                     </div>
                                     <div class="form-outline mb-4">
                                         <input asp-for="FAddress" class="form-control " placeholder="地址" autocomplete="off" />
                                     </div>
                                     <div class="form-outline mb-4">
-                                        <input asp-for="FPhone" class="form-control" placeholder="電話" autocomplete="off" patern="[0][0-9].{8}"/>
+                                        <input asp-for="FPhone" class="form-control" placeholder="電話" autocomplete="off" />
                                     </div>
                                     <div class="form-outline mb-4">
                                         <input asp-for="FBirthday" class="form-control" placeholder="生日,請依格式19991231輸入" autocomplete="off" />
@@ -73,7 +73,7 @@
     </div>
 </section>
 @*會員登入Modal*@
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+@*<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -109,7 +109,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 <body class="bg-gradient-primary">
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -133,8 +133,7 @@
 </section>
 
 @section Scripts{
-    <script>
-        var registerD = new Date();
+    <script>var registerD = new Date();
         var year = registerD.getFullYear().toString();
         var month = (registerD.getMonth() + 101).toString().substring(1);
         var day = (registerD.getDate() + 100).toString().substring(1);
@@ -143,4 +142,3 @@
         $("#registerDate").val(str);
     </script>
 }
-
