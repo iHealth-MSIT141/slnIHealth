@@ -1,4 +1,4 @@
-﻿@model IEnumerable<prjIHealth.Models.TProduct>
+﻿@model IEnumerable<prjIHealth.ViewModels.CProductViewModel>
 @using Microsoft.EntityFrameworkCore;
 
 @section Styles{
@@ -344,11 +344,18 @@
             let firstURL = "@Url.Content("~/Shopping/ShowProduct")";
             AllProducts(firstURL);
 
-                //按品片會彈出相對應商品明細
+                //按品名會彈出相對應商品明細
                 $("#showProduct").delegate("#showProductDetail", "click", function () {
                     id = $(this).attr("data-id");
                     location.href = `/Shopping/ShowProductDetail/${id}`;
                 })
+                async function showProductDetail(id) {
+                    //TODO
+                    var data = {};
+                    data.FProductId = id;
+                    data.FProductName = 1;
+                    $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
+                }
 
                 //按心心會加入追蹤清單
                 $("#showProduct").delegate(".addToTrack", "click", function (event) {
@@ -375,10 +382,10 @@
                 })
                 async function addCart(id) {
                     //TODO
-                    url = "@Url.Content("~/Shopping/AddoTrack/")" + id;
-                    let response = await fetch(url);
-                    let datas = await response.json();
-                    console.log(datas);
+                    var data = {};
+                    data.txtFid = id;
+                    data.txtCount = 1;
+                    $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
                 }
 
                 //以類別搜產品
