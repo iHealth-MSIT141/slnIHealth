@@ -17,12 +17,17 @@ namespace prjiHealth.ViewModels
         [DataType(DataType.Password)]
         public string fPassword { get { return _tmember.FPassword; } set { _tmember.FPassword = value; } }
         public string fEmail { get { return _tmember.FEmail; } set { _tmember.FEmail = value; } }
+        public string fPhone { get { return _tmember.FPhone; } set { _tmember.FPhone = value; } }
+        public string fMemberName { get { return _tmember.FMemberName; } set { _tmember.FMemberName = value; } }
+        public string fPicturePath { get { return _tmember.FPicturePath; } set { _tmember.FPicturePath = value; } }
+        public IFormFile photo { get; set; }
+
         public int fAuthorityId {  get; set; }
-            [Display(Name = "Remember Me")]
+        [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
         public string ReturnUrl { get; set; }
-        public int MyProperty { get; set; }
-        public IFormFile photo { get; set; }
+        public string firstPassword { get; set; }
+        public string  confirmPassword { get; set; }
 
     }
 }

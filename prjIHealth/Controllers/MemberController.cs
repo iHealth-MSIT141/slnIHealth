@@ -14,6 +14,7 @@ using prjiHealth.Models;
 using System.Text.Json;
 using System.IO;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
 
 namespace prjIHealth.Controllers
 {
@@ -23,9 +24,12 @@ namespace prjIHealth.Controllers
         public static TMember loginUser = null; 
         public static string userName = "登入";
         private readonly IHealthContext _context;
-        public MemberController(IHealthContext context)
+        private IWebHostEnvironment _environment;
+
+        public MemberController(IHealthContext context, IWebHostEnvironment iwhe)
         {
             _context = context;
+            _environment=iwhe;
         }
         public IActionResult Login()
         {
@@ -48,7 +52,7 @@ namespace prjIHealth.Controllers
                    return RedirectToAction( "會員專區ViewDemo","Home" );
                 }
             }
-            return View();
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Logout()
         {
@@ -56,35 +60,38 @@ namespace prjIHealth.Controllers
             userName = "登入";
             return RedirectToAction("Index","Home");
         }
-        public IActionResult Edit(int ? id) {
+        public IActionResult Edit(int? id)
+        {
             var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
             loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
-           var q=_context.TMembers.FirstOrDefault(m => m.FMemberId == loginUser.FMemberId);
+            var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == loginUser.FMemberId);
             return View(q);
-        
+
         }
-        //[HttpPost]
-        //public IActionResult Edit(CLoginViewModel vModel)
-        //{
-        //    var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-        //    loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
-        //    var q = _context.TMembers.FirstOrDefault(m=>m.FMemberId == loginUser.FMemberId);
-        //    if (q != null)
-        //    {
-        //        //    if (vModel.photo != null)
-        //        //    {
-        //        //        string pName = Guid.NewGuid().ToString() + ".jpg";
-        //        //        vModel.photo.CopyTo(new FileStream(Environments.WebRootPath + "/Images/" + pName, FileMode.Create));
-        //        //        q.FImagePath = pName;
-        //        //    }
-        //        //    q.FName = cp.FName;
-        //        //    q.FCost = cp.FCost;
-        //        //    q.FPrice = cp.FPrice;
-        //        //    q.FQty = cp.FQty;
-        //    }
-        //    //db.SaveChanges();
-        //    //return RedirectToAction("List");
-        //}
+        [HttpPost]
+        public IActionResult Edit(CLoginViewModel vModel)
+        {
+            //var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+            //loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+            var q = _context.TMembers.FirstOrDefault(m => m.FUserName == vModel.fUserName);
+            if (q != null)
+            {
+                if (vModel.photo!= null)
+                {
+                    string pName = Guid.NewGuid().ToString() + ".jpg";
+                    vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
+                    q.FPicturePath = pName;
+                }
+                q.FPassword = vModel.fPassword;
+                q.FPhone = vModel.fPhone;
+                q.FMemberName = vModel.fMemberName;
+               
+
+            }       
+            _context.SaveChanges();
+            return RedirectToAction("Login","Member");
+         
+        }
         // GET: Member
         public IActionResult Register()
         {
@@ -93,10 +100,15 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(TMember tm)
         {
-            _context.TMembers.Add(tm);
-            _context.SaveChanges();
-            //return RedirectToRoute(new { controller = "Member", action = "Login" });
-            return RedirectToAction("Login", "Member");
+            var q = _context.TMembers.FirstOrDefault(m => m.FUserName == tm.FUserName);
+            if (q == null)
+            {
+                _context.TMembers.Add(tm);
+                _context.SaveChanges();
+                //return RedirectToRoute(new { controller = "Member", action = "Login" });
+                return RedirectToAction("Login", "Member");
+            }
+            else { return RedirectToAction("Index", "Home"); }
         }
 
 
@@ -133,7 +145,7 @@ namespace prjIHealth.Controllers
         }
 
         [HttpPost]
-        public IActionResult ForgotPassword([Bind("fEmail")]CLoginViewModel vModel)
+        public IActionResult ForgotPassword([Bind("fEmail,")]CLoginViewModel vModel)
         {
             //var exists = _context.Members.Any(m => m.Name == name);
             //return Content(exists.ToString(), "text/plain");
@@ -143,12 +155,10 @@ namespace prjIHealth.Controllers
             if (q != null)
             {
                 utilities.sendMail(q.FUserName, q.FEmail);
-                return RedirectToRoute(new { controller = "Member", action = "Login" });
+                return RedirectToAction("Login","Member" );
             }
-            else { return RedirectToRoute(new { controller = "Home", action = "Index" }); }
-
-
-
+            else { return RedirectToAction("Index","Home");
+            }
             //labForgotPWD.BackColor = Color.AliceBlue;
             //if (string.IsNullOrEmpty(txtAccountName.Text)) { MessageBox.Show("請輸入使用者名稱!"); labForgotPWD.BackColor = Color.Transparent; }
             //var q = this.dbContext.Members.AsEnumerable().Where(m => m.AccountName == txtAccountName.Text).FirstOrDefault();
@@ -169,6 +179,20 @@ namespace prjIHealth.Controllers
             //    }
             //}
         }
+        public IActionResult ResetPassword() { return View(); }
+        [HttpPost]
+        public IActionResult ResetPassword(CLoginViewModel vmodel) {
+            var q = _context.TMembers.FirstOrDefault(m => m.FEmail ==vmodel.fEmail&& m.FPassword==vmodel.fPassword);
+            if (q != null) {
+                if (vmodel.firstPassword == vmodel.confirmPassword) {
+                    q.FPassword = vmodel.firstPassword;
+                    _context.SaveChanges();
+                    return RedirectToAction("Login", "Member");
+                }
+            } 
+                        return RedirectToAction("Index", "Home");
+        }
+
     }
 }
 

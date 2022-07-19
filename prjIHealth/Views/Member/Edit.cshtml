@@ -89,49 +89,47 @@
             <div class="col-lg-9 col-md-7" style="height:400px">
                 <div class="row">
                     <div class="col-md-4">
-                        <form asp-action="Edit">
+                        <form asp-action="Edit" asp-controller="Member" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="FMemberId" />
+                            <input type="hidden" asp-for="FUserName" />
+
                             <div class="form-group row">
                                 <label asp-for="FMemberName" class="control-label"></label>
-
-                                <input asp-for="FMemberName" class="form-control"  />
+                                <input asp-for="FMemberName" class="form-control" />
                                 <span asp-validation-for="FMemberName" class="text-danger"></span>
-
                             </div>
                             <div class="form-group row">
-
                                 <label asp-for="FPassword" class="control-label"></label>
-
-                                <input asp-for="FPassword" class="form-control"  />
-
+                                <input asp-for="FPassword" class="form-control" />
                             </div>
                             <div class="form-group row">
-
                                 <label asp-for="FBirthday" class="control-label"></label>
-
-                                <input asp-for="FBirthday" class="form-control"  />
-
+                                <input asp-for="FBirthday" class="form-control" />
                             </div>
                             <div class="form-group row">
-
                                 <label asp-for="FAddress" class="control-label"></label>
-
                                 <input asp-for="FAddress" class="form-control" />
                                 <span asp-validation-for="FAddress" class="text-danger"></span>
 
                             </div>
                             <div class="form-group row">
                                 <label asp-for="FPhone" class="control-label"></label>
-
-                                <input asp-for="FPhone" class="form-control"  />
+                                <input asp-for="FPhone" class="form-control" />
                                 <span asp-validation-for="FPhone" class="text-danger"></span>
                             </div>
                             <div class="form-group row">
                                 <label asp-for="FEmail" class="control-label"></label>
-                                <input asp-for="FEmail" class="form-control"  />
+                                <input asp-for="FEmail" class="form-control" />
                                 <span asp-validation-for="FEmail" class="text-danger"></span>
                             </div>
+                            <div class="form-group row">
+                                    <div class="form-group">
+                                    <label class="control-label">產品照片</label>
+                                    <input type="file" name="photo" class="form-control" />
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <input type="submit" value="送出" class="btn btn-primary" />
                             </div>

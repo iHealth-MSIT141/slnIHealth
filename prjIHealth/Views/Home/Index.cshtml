@@ -93,7 +93,11 @@
                         <h2>iHEALTH </h2>
                         <h3 style="font-weight:800;">一手包辦您的體態、運動、飲食計畫</h3>
                         <p></p>
-                        <a href="/Member/Register" class="primary-btn">加入會員</a>
+                        <div class="text-center col-md-4">
+                            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">
+                                加入會員 <i class="fa fa-user"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -453,42 +457,120 @@
         </div>
     </div>
 </section>
-@*加入會員*@
+@*加入會員Modal*@
 <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel">歡迎加入IHealth! <span></span></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="addForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
-                        <div class="form-group">
-                            <label for="fUserName">UserName</label>
-                            <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號">
-                        </div>
-                        <div class="form-group">
-                            <label for="fPassword">密碼</label>
-                            <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼">
-                        </div>
-
-                    </form>
-
-                </div>
-                <div class="modal-footer row">
-                    <div>
-                        <input id="btnLogin1" type="submit" value="會員註冊" class="btn btn-primary ">
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100" id="exampleModalLabel">歡迎加入IHealth會員! <span></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Register" asp-controller="Member">
+                    <div class="form-group">
+                        <label for="fUserName">使用者帳號</label>
+                        <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號,至少需二個字(含)以上">
+                    </div>
+                    <div class="form-group">
+                        <label for="fMemberName">姓名</label>
+                        <input type="text" class="form-control" id="fMemberName" name="fMemberName" placeholder="姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="fPassword">密碼</label>
+                        <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母">
+                    </div>
+                    <div class="form-group">
+                        <label for="fAddress">地址</label>
+                        <input type="text" class="form-control" id="fAddress" name="fAddress" placeholder="地址">
+                    </div>
+                    <div class="form-group">
+                        <label for="fPhone">電話</label>
+                        <input type="text" class="form-control" id="fPhone" name="fPhone" placeholder="電話">
+                    </div>
+                    <div class="form-group">
+                        <label for="fBirthday">生日</label>
+                        <input type="text" class="form-control" id="fBirthday" name="fBirthday" placeholder="生日,請依格式19991231輸入">
+                    </div>
+                    <div class="form-group">
+                        <label for="fEmail">電子郵件信箱</label>
+                        <input type="text" class="form-control" id="fEmail" name="fEmail" placeholder="電子郵件信箱">
                     </div>
 
+                    <div class="d-md-flex justify-content-start align-items-center mb-4 py-2" id="divGender">
+                        <h6 class="mb-0 me-4">生理性別: </h6>
+                        <div class="form-check form-check-inline mb-0 me-4">
+                            <input type="radio" class="form-check-input" id="femalGender" name="fGender" value="false">
+                            <label class="form-check-label" for="fGender">生理女性</label>
+                        </div>
+                        <div class="form-check form-check-inline mb-0 me-4">
+                            <input type="radio" class="form-check-input" id="maleGender" name="fGender" value="true">
+                            <label class="form-check-label" for="fGender">生理男性</label>
+                        </div>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="hidden" class="form-check-input" id="fAuthorityId" name="fAuthorityId" value="5">
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="hidden" class="form-check-input" id="fRegisterDate" name="fRegisterDate">
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="hidden" value="false" name="fDisabled" class="form-control" id="fDisabled" />
+                    </div>
+                    <div class="form-group col-md-8 col-md-4-offset">
+                        <input id="btnSubmit" type="submit" value="送出" class="btn btn-primary" />
+                        <input type="reset" value="重設" class="btn btn-danger" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@*會員登入Modal*@
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">歡迎登入IHealth會員! <span></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="~/Member/Login" id="addForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                    <div class="form-group">
+                        <label for="fUserName">使用者帳號</label>
+                        <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號">
+                    </div>
+                    <div class="form-group">
+                        <label for="fPassword">密碼</label>
+                        <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼">
+                    </div>
+                    <div>
+                        <input id="btnLogin1" type="submit" value="會員登入" class="btn btn-primary "><i class="fa fa-sign-in"></i>
+                    </div>
 
+                </form>
+
+            </div>
+            <div class="modal-footer row">
+                <div class="text-center col-md-4">
+                    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal">
+                        忘記密碼? <i class="fa fa-key"></i>
+                    </button>
+                </div>
+                <div class="text-center col-md-4">
+                    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">
+                        加入會員 <i class="fa fa-user"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 @section Scripts{
     <script>
         $(".divOption").hover(function ()
