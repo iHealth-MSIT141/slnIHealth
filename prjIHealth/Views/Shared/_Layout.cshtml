@@ -133,13 +133,15 @@
                                 <li>
                                     <a href="~/shopping/ShowShoppingMall">周邊商城</a>
                                     @*<ul class="header__menu__dropdown">
-                                            <li><a href="./shop-details">Shop Details</a></li>
-                                            <li><a href="./shoping-cart">Shoping Cart</a></li>
-                                            <li><a href="./checkout">Check Out</a></li>
-                                            <li><a href="./blog-details">Blog Details</a></li>
-                                        </ul>*@
+                <li><a href="./shop-details">Shop Details</a></li>
+                <li><a href="./shoping-cart">Shoping Cart</a></li>
+                <li><a href="./checkout">Check Out</a></li>
+                <li><a href="./blog-details">Blog Details</a></li>
+            </ul>*@
                                 </li>
                                 <li><a href="~/Body/BodyCalculatorMain">BODY計算器</a></li>
+                                <li><a href="~/Home/signalRChat"><i class="fal fa-comment-lines"></i> <span>SignalRChat</span></a></li>
+
 
                             </ul>
                         </nav>
@@ -147,9 +149,8 @@
                     <div class="col-lg-2">
                         <div class="header__menu">
                             <ul>
-                                @*<li><a href="#"><i class="fa fa-heart"></i> <span></span></a></li>
-                                    <li><a href="#"><i class="fa fa-shopping-bag"></i> <span></span></a></li>*@
 
+                                
                                 <li>
                                     <div class="header__top__right__auth">
                                         @if (@MemberController.userName == "登入")
@@ -512,6 +513,7 @@
         var str = year + month + day;
         $("#fRegisterDate").val(str);
     </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
 
