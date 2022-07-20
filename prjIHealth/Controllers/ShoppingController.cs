@@ -28,12 +28,12 @@ namespace prjiHealth.Controllers
                 return View(cart);
             }
             //待有資料後改回以下兩行
-            //else
-            //    return RedirectToAction("ShowShoppingMall");
-            return View();
+            else
+                return RedirectToAction("ShowShoppingMall");
+            //return View();
         }
 
-        public IActionResult CheckOut() 
+        public IActionResult CheckOut()
         {
             return View();
         }
@@ -80,18 +80,32 @@ namespace prjiHealth.Controllers
         public IActionResult AddToTrack(int? id)
         {
             var p = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
-            if (p != null)
+
+            //判定產品有沒有曾出現於該會員的追蹤清單內
+            var q = from a in dblIHealth.TTrackLists
+                    where a.FMemberId == 1 && a.FProductId == id
+                    select a;
+            bool result = Convert.ToBoolean(q);
+
+            if (result)
             {
-                TTrackList trackList = new TTrackList()
-                {
-                    FMemberId = 1,
-                    //TODO GET member id
-                    FProductId = Convert.ToInt32(id)
-                };
-                dblIHealth.TTrackLists.Add(trackList);
-                dblIHealth.SaveChanges();
+                return Content("你已加入追蹤清單");
             }
-            return Json(p);
+            else
+            {
+                if (p != null)
+                {
+                    TTrackList trackList = new TTrackList()
+                    {
+                        FMemberId = 1,
+                        //TODO GET member id
+                        FProductId = Convert.ToInt32(id)
+                    };
+                    dblIHealth.TTrackLists.Add(trackList);
+                    dblIHealth.SaveChanges();
+                }
+                return Json(p);
+            }
         }
 
         //價格由大到小排序
@@ -149,7 +163,7 @@ namespace prjiHealth.Controllers
         [HttpPost]
         public ActionResult ShowProductDetail(CAddToCartViewModel vModel)
         {
-            IHealthContext db= new IHealthContext();
+            IHealthContext db = new IHealthContext();
             //TDiscount discount = db.TDiscounts.FirstOrDefault(t => t.FDiscountCode == vModel.discountCode);
             TProduct prod = db.TProducts.FirstOrDefault(t => t.FProductId == vModel.txtFid);
             if (prod == null)
@@ -201,5 +215,23 @@ namespace prjiHealth.Controllers
             HttpContext.Session.SetString(CDictionary.SK_Shopped_Items, jsonCart);
             return RedirectToAction("ShowShoppingMall");
         }
+
+        //以ProductID搜對應的圖片
+        public ActionResult ShowProductImages(int? id)
+        {
+            var images = from p in dblIHealth.TProducts
+                         join i in dblIHealth.TProductsImages
+                         on p.FProductId equals i.FProductId
+                         where p.FProductId == id
+                         select i.FImage;
+            return Json(images);
+        }
+
+        //public ActionResult SuggestProduct()
+        //{
+        //    Random rd = new Random(Guid.NewGuid().GetHashCode());
+        //    int count = dblIHealth.TProducts.Count();
+        //    int num = rd.Next(1,count);
+        //}
     }
 }

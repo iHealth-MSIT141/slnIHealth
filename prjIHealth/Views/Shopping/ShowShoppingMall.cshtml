@@ -348,6 +348,7 @@
                 $("#showProduct").delegate("#showProductDetail", "click", function () {
                     id = $(this).attr("data-id");
                     location.href = `/Shopping/ShowProductDetail/${id}`;
+                    showProductDetail(id);
                 })
                 async function showProductDetail(id) {
                     //TODO
@@ -429,11 +430,6 @@
                 $(".sort-desc").click(function () {
                     desc();
                 })
-
-            //$(".sort").click(function () {
-            //    $(".sort").toggleClass("sort-desc");
-            //})
-
         }
         showProduct();
     </script>
