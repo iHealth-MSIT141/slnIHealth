@@ -31,10 +31,7 @@ namespace prjIHealth
             });
             services.AddControllersWithViews();
             services.AddSession();
-            //services.AddSession(options =>
-            //{
-            //    options.IdleTimeout = TimeSpan.FromMinutes(30);
-            //});
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +49,7 @@ namespace prjIHealth
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            //object p = app.UseSignalR(router => {route.MapHub<ChatHub>("/Home/Index") });
             app.UseRouting();
             app.UseSession();
             app.UseAuthorization();
