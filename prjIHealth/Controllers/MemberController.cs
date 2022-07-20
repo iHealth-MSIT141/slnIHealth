@@ -8,42 +8,90 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using prjiHealth.ViewModels;
+using HealthyLifeApp;
+using Microsoft.AspNetCore.Http;
+using prjiHealth.Models;
+using System.Text.Json;
+using System.IO;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
 
 namespace prjIHealth.Controllers
 {
     public class MemberController : Controller
     {
+        utilities ul = new utilities();
+        public static TMember loginUser = null; 
+        public static string userName = "登入";
         private readonly IHealthContext _context;
+        private IWebHostEnvironment _environment;
 
-
-        public MemberController(IHealthContext context)
+        public MemberController(IHealthContext context, IWebHostEnvironment iwhe)
         {
             _context = context;
+            _environment=iwhe;
         }
         public IActionResult Login()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Login(CLoginViewModel vModel)
+        public IActionResult Login(CLoginViewModel vModel,string ReturnUrl)
         {
             var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
             if (q != null)
             {
                 if (q.FPassword == vModel.fPassword)
                 {
-                    return RedirectToRoute(new { controller = "Home", action = "會員專區ViewDemo" });
+                    string loginSession = JsonSerializer.Serialize(q);
+                    HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
+                    loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
+                    userName = $"{loginUser.FUserName}";
+                    if (!string.IsNullOrEmpty(ReturnUrl))
+                    { return LocalRedirect(ReturnUrl); }
+                   return RedirectToAction( "會員專區ViewDemo","Home" );
                 }
             }
-            return View();
+            return RedirectToAction("Index", "Home");
         }
-        public IActionResult Edit(int ? id) {
-          
-            return View();
-        
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove(CDictionary.SK_Logined_User);
+            userName = "登入";
+            return RedirectToAction("Index","Home");
         }
-        //[HttpPost]
-        //public IActionResult Edit(){ }
+        public IActionResult Edit(int? id)
+        {
+            var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+            loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+            var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == loginUser.FMemberId);
+            return View(q);
+
+        }
+        [HttpPost]
+        public IActionResult Edit(CLoginViewModel vModel)
+        {
+            //var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+            //loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+            var q = _context.TMembers.FirstOrDefault(m => m.FUserName == vModel.fUserName);
+            if (q != null)
+            {
+                if (vModel.photo!= null)
+                {
+                    string pName = Guid.NewGuid().ToString() + ".jpg";
+                    vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
+                    q.FPicturePath = pName;
+                }
+                q.FPassword = vModel.fPassword;
+                q.FPhone = vModel.fPhone;
+                q.FMemberName = vModel.fMemberName;
+               
+
+            }       
+            _context.SaveChanges();
+            return RedirectToAction("Login","Member");
+         
+        }
         // GET: Member
         public IActionResult Register()
         {
@@ -52,15 +100,17 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(TMember tm)
         {
-            _context.TMembers.Add(tm);
-
-            _context.SaveChanges();
-            //return RedirectToRoute(new { controller = "Member", action = "Login" });
-            return RedirectToAction("Login","member");
+            var q = _context.TMembers.FirstOrDefault(m => m.FUserName == tm.FUserName);
+            if (q == null)
+            {
+                _context.TMembers.Add(tm);
+                _context.SaveChanges();
+                //return RedirectToRoute(new { controller = "Member", action = "Login" });
+                return RedirectToAction("Login", "Member");
+            }
+            else { return RedirectToAction("Index", "Home"); }
         }
 
-
-        
         public IActionResult ShowTrackList()
         {
             return View();
@@ -93,15 +143,54 @@ namespace prjIHealth.Controllers
         }
 
         [HttpPost]
-        public IActionResult ForgotPassword([Bind("fEmail")]CLoginViewModel vModel)
+        public IActionResult ForgotPassword([Bind("fEmail,")]CLoginViewModel vModel)
         {
+            //var exists = _context.Members.Any(m => m.Name == name);
+            //return Content(exists.ToString(), "text/plain");
+            //var q = _context.TMembers.Any(m => m.FEmail == vModel.fEmail);
             var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
+
             if (q != null)
             {
-                return RedirectToRoute(new { controller = "Member", action = "Login" });
+                utilities.sendMail(q.FUserName, q.FEmail);
+                return RedirectToAction("Login","Member" );
             }
-            else { return RedirectToRoute(new { controller = "Home", action = "一般ViewDemo" }); }
+            else { return RedirectToAction("Index","Home");
+            }
+            //labForgotPWD.BackColor = Color.AliceBlue;
+            //if (string.IsNullOrEmpty(txtAccountName.Text)) { MessageBox.Show("請輸入使用者名稱!"); labForgotPWD.BackColor = Color.Transparent; }
+            //var q = this.dbContext.Members.AsEnumerable().Where(m => m.AccountName == txtAccountName.Text).FirstOrDefault();
+            //if (q != null)
+            //{
+            //    if (string.IsNullOrEmpty(q.Email))
+            //    {
+            //        MessageBox.Show("電子信箱錯誤或註冊時未輸入電子信箱地址 !");
+            //        return;
+            //    }
+            //    else
+            //    {
+            //        q.Password = utilities.getCryptPWD(txtAccountName.Text, txtAccountName.Text, q.Birthday.ToString());
+            //        dbContext.SaveChanges();
+            //        utilities.sendMail(txtAccountName.Text, q.Email);
+            //        MessageBox.Show($"{txtAccountName.Text}, 您密碼已重設成功, 敬請到您的註冊信箱收取,使用新的密碼登入後, 並修改您的密碼,以確保資安!!");
+            //        labForgotPWD.BackColor = Color.Transparent;
+            //    }
+            //}
         }
+        public IActionResult ResetPassword() { return View(); }
+        [HttpPost]
+        public IActionResult ResetPassword(CLoginViewModel vmodel) {
+            var q = _context.TMembers.FirstOrDefault(m => m.FEmail ==vmodel.fEmail&& m.FPassword==vmodel.fPassword);
+            if (q != null) {
+                if (vmodel.firstPassword == vmodel.confirmPassword) {
+                    q.FPassword = vmodel.firstPassword;
+                    _context.SaveChanges();
+                    return RedirectToAction("Login", "Member");
+                }
+            } 
+                        return RedirectToAction("Index", "Home");
+        }
+
     }
 }
 

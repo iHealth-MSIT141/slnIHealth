@@ -14,7 +14,5 @@ namespace prjiHealth.Models
         public static readonly string SK_Shopped_Items = "SK_Shopped_Items";
         //追蹤商品的SessionKey
         public static readonly string SK_Product_TrackedItems = "SK_Product_TrackedItems";
-        //辨別權限的SessionKey
-        public static readonly string SK_Logined_Authority = "SK_Logined_Authority";
     }
 }

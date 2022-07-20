@@ -14,16 +14,7 @@
 
 }
 
-<style>
-    https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css
-    https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css
-</style>
-<script>
-    https://code.jquery.com/jquery-3.5.1.js
-    https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js
-    https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js
-</script>
-
+<link href="/css/PagedList.css" rel="stylesheet" type="text/css" />
 @section Styles{
     <style>
         #title {
@@ -32,7 +23,6 @@
             margin-left: 20vw;
             margin-right: 20vw;
         }
-         <link href="/css/PagedList.css" rel="stylesheet" type="text/css" />
     </style>
 }
 <h2 id="title">會員資料管理列表</h2>
@@ -46,11 +36,12 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().FMemberId)
+
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FMemberName)
             </th>
             @*<th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().FPassword)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().FPassword)
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FBirthday)
             </th>
@@ -79,8 +70,8 @@
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FDisabled)
             </th>
             @*<th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().FRemarks)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().FRemarks)
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FAuthority.FAuthorityName)
             </th>
@@ -95,8 +86,8 @@
                     @Html.DisplayFor(modelItem => item.FMemberName)
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.FPassword)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.FPassword)
+                    </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.FBirthday)
                 </td>
@@ -125,8 +116,8 @@
                     @Html.DisplayFor(modelItem => item.FDisabled)
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.FRemarks)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.FRemarks)
+                    </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.FAuthority.FAuthorityName)
                 </td>
@@ -141,11 +132,12 @@
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 
-@section Scripts{ 
+@section Scripts{
     <script>
-        $(document).ready(function () {
-            $('#example').DataTable();
-        });
+        //$(document).ready(function ()
+        //{
+        //    $('#example').DataTable();
+        //});
     </script>
 }
 
