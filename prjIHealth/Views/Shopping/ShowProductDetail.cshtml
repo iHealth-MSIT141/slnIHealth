@@ -1,4 +1,5 @@
-﻿@section Styles{
+﻿@model  prjIHealth.Models.TProduct
+@section Styles{
 
 }
 
@@ -28,70 +29,41 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
-                        <div class="product__details__pic">
+                        <div class="product__details__pic" id="showProductPic">
+                            @*TODO生成圖片*@
                             <div class="product__details__pic__item">
-                                <img class="product__details__pic__item--large" src="/img/prjproduct/f1.jpg" alt="">
+                                <img class="product__details__pic__item--large"
+                                     src="/img/product/details/product-details-1.jpg" alt="">
                             </div>
-                            <div class="product__details__pic__slider owl-carousel owl-loaded owl-drag">
-                                <div class="owl-stage-outer">
-                                    <div class="owl-stage" style="transform: translate3d(-587px, 0px, 0px); transition: all 1.2s ease 0s; width: 1410px;">
-                                        @*<div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                                <img data-imgbigurl="/img/prjproduct/f1.jpg" src="/img/prjproduct/f1.jpg" alt="">
-                                            </div><div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                                <img data-imgbigurl="/img/prjproduct/f2.jpg" src="/img/prjproduct/f2.jpg" alt="">
-                                            </div>
-                                            <div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                                <img data-imgbigurl="/img/prjproduct/f3.jpg" src="/img/prjproduct/f3.jpg" alt="">
-                                            </div>
-                                            <div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                                <img data-imgbigurl="/img/prjproduct/f4.jpg" src="/img/prjproduct/f4.jpg" alt="">
-                                            </div>
-                                            <div class="owl-item" style="width: 97.5px; margin-right: 20px;">
-                                                <img data-imgbigurl="/img/prjproduct/f5.jpg" src="/img/prjproduct/f5.jpg" alt="">
-                                            </div>*@
-                                        <div class="owl-item active" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f1.jpg" src="/img/prjproduct/f1.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item active" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f2.jpg" src="/img/prjproduct/f2.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item active" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f3.jpg" src="/img/prjproduct/f3.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item cloned active" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f4.jpg" src="/img/prjproduct/f4.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f5.jpg" src="/img/prjproduct/f5.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f6.jpg" src="/img/prjproduct/f6.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f7.jpg" src="/img/prjproduct/f8.jpg" alt="">
-                                        </div>
-                                    </div>
-                                </div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><span aria-label="Previous">‹</span></button><button type="button" role="presentation" class="owl-next"><span aria-label="Next">›</span></button></div><div class="owl-dots disabled"><button role="button" class="owl-dot active"><span></span></button></div>
+                            <div class="product__details__pic__slider owl-carousel">
+                                <img data-imgbigurl="/img/product/details/product-details-2.jpg"
+                                     src="/img/product/details/thumb-1.jpg" alt="">
+                                <img data-imgbigurl="/img/product/details/product-details-3.jpg"
+                                     src="/img/product/details/thumb-2.jpg" alt="">
+                                <img data-imgbigurl="/img/product/details/product-details-5.jpg"
+                                     src="/img/product/details/thumb-3.jpg" alt="">
+                                <img data-imgbigurl="img/product/details/product-details-4.jpg"
+                                     src="/img/product/details/thumb-4.jpg" alt="">
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="product__details__text">
-                            <h3>金牌巧克力乳清蛋白</h3>
-                            <div class="product__details__price">$1999</div>
+                            <h3>@Model.FProductName</h3>
+                            <div class="product__details__price">@Model.FUnitprice.ToString("C0")</div>
                             <p style="height:345px">
-                                蟬聯十年"最好喝"乳清蛋白，網友一致極推。
+                                @Model.FDescription
                             </p>
                             <div class="product__details__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
                                         @*<span class="dec qtybtn">-</span>*@
-                                        <input type="text" value="1">
+                                        <input type="text" value="1" id="ProductCount">
                                         @*<span class="inc qtybtn">+</span>*@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="primary-btn">加到購物車</a>
+                            <a href="#" class="primary-btn" id="addToCart" data-id="@Model.FProductId">加到購物車</a>
                             <a href="/Shopping/AddToTrack" class="heart-icon"><span class="icon_heart_alt"></span></a>
 
                         </div>
@@ -179,5 +151,23 @@
 </section>
 
 @section Scripts{
+    <script>
 
+        $("#addToCart").click(function (event) {
+            event.preventDefault();          
+            let id = $(this).attr("data-id");
+            let count = $("#ProductCount").val();
+            var data = {};
+            data.txtFid = id;
+            data.txtCount = count;
+
+            $.ajax({
+                type: "POST",
+                url:"@Url.Action("ShowProductDetail")",
+                data:data
+            })
+            alert("已加入購物車");
+        })
+        
+    </script>
 }

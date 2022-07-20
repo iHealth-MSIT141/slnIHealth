@@ -137,13 +137,20 @@ namespace prjiHealth.Controllers
         //產品明細界面
         public ActionResult ShowProductDetail(int? id)
         {
-            return View(id);
+            //var prod = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
+            TProduct prod = dblIHealth.TProducts.FirstOrDefault(t => t.FProductId == id);
+            if (prod == null)
+            {
+                return RedirectToAction("ShowShoppingMall");
+            }
+            return View(prod);
         }
+
         [HttpPost]
         public ActionResult ShowProductDetail(CAddToCartViewModel vModel)
         {
             IHealthContext db= new IHealthContext();
-            TDiscount discount = db.TDiscounts.FirstOrDefault(t => t.FDiscountCode == vModel.discountCode);
+            //TDiscount discount = db.TDiscounts.FirstOrDefault(t => t.FDiscountCode == vModel.discountCode);
             TProduct prod = db.TProducts.FirstOrDefault(t => t.FProductId == vModel.txtFid);
             if (prod == null)
             {
@@ -160,14 +167,16 @@ namespace prjiHealth.Controllers
                 jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
                 list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
             }
+
             CShoppingCartItem item = new CShoppingCartItem()
             {
                 count = vModel.txtCount,
-                discount=Convert.ToDecimal(discount.FDiscountValue),
+                //discount=Convert.ToDecimal(discount.FDiscountValue),
                 price = (decimal)prod.FUnitprice,
                 productId = vModel.txtFid,
                 product = prod
             };
+
             if (list.Count == 0)
             {
                 list.Add(item);
