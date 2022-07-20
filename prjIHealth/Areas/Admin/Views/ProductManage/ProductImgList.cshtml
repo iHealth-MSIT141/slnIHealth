@@ -1,0 +1,53 @@
+﻿@model IEnumerable<prjIHealth.ViewModels.CProductImageViewModel>
+@{
+    ViewData["Title"] = "ProductImgList";
+    Layout = "~/Areas/Admin/Admin_Layout.cshtml";
+}
+
+<h1>圖片檢視</h1>
+<hr />
+
+<div class="col-lg-8 col-md-7" style="margin-left:15%">
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg">
+                        <img src="~/img/product/@item.FImage" style="width:250px;height:250px;" />
+                    </div>
+                    @Html.ActionLink("", "ProductImgDelete", new { id = item.FProductImageId },
+                     new { @class = "icon_close", onclick = "return confirm('確認要刪除嗎?')" })
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<form asp-action="ProductImgList" style="margin-left:20%" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @foreach (var item in Model)
+    {
+        <input type="hidden" name="FProductId" id="FProductId" value=" @Html.DisplayFor(modelItem => item.FProductId)" />
+        <input type="hidden" name="FProductImageId" id="FProductImageId" value=" @Html.DisplayFor(modelItem => item.FProductImageId)" />
+    }
+    <div class="custom-file  col-md-7" style="margin-right:60%;">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="file" class="custom-file-input" id="customFile" name="photo">
+            </div>
+            <div class="col-md-8">
+                <label class="custom-file-label" for="customFile">新增圖片</label>
+            </div>
+        </div><br />
+    </div>
+    <div style="margin-right:25%;">
+        <input type="submit" value="確定新增" class="btn btn-primary" />
+        <a asp-action="ProductList" class="btn btn-primary">返回清單</a>
+    </div>
+</form>
+
+
+
+

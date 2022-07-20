@@ -1,4 +1,4 @@
-﻿
+﻿@model  IEnumerable<prjIHealth.ViewModels.CShoppingCartItem>
 @{
     ViewData["Title"] = "ShoppingCartList";
 }
@@ -38,31 +38,35 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach (var item in Model)
+                            {
                             <tr>
                                 <td class="shoping__cart__item">
-                                    <img src="/img/prjproduct/f1.jpg" alt="" style="width:30%;height:30%">
-                                    <h5>金牌巧克力乳清蛋白</h5>
+                                    <img src="/img/prjproduct/@item.product.TProductsImages" alt="" style="width:10%;height:10%">
+                                    <h5>@item.product.FProductName</h5>
                                 </td>
                                 <td class="shoping__cart__price">
-                                    $1999.00
+                                    @Html.DisplayFor(modelItem => item.price)
                                 </td>
                                 <td class="shoping__cart__quantity">
                                     <div class="quantity">
                                         <div class="pro-qty">
-                                            <input type="text" value="1">
+                                            <input type="text" value="@Html.DisplayFor(modelItem => item.count)">
                                         </div>
                                     </div>
                                 </td>
                                 <td class="shoping__cart__total">
-                                    $1999
+                                    @Html.DisplayFor(modelItem => item.price)
                                 </td>
                                 <td class="shoping__cart__item__close">
                                     <span class="icon_close"></span>
                                 </td>
                             </tr>
+                            }
+                            
                             <tr>
                                 <td class="shoping__cart__item">
-                                    <img src="/img/prjproduct/f2.jpg" alt="" style="width:30%;height:30%">
+                                    <img src="/img/prjproduct/f2.jpg" alt="" style="width:10%;height:10%">
                                     <h5>MUSCLETECH™ WHEY GOLD耐如鐵</h5>
                                 </td>
                                 <td class="shoping__cart__price">
@@ -84,7 +88,7 @@
                             </tr>
                             <tr>
                                 <td class="shoping__cart__item">
-                                    <img src="/img/prjproduct/f6.jpg" alt="" style="width:30%;height:30%">
+                                    <img src="/img/prjproduct/f6.jpg" alt="" style="width:10%;height:10%">
                                     <h5>【加拿大ALLMAX】奧美仕經典乳清蛋白</h5>
                                 </td>
                                 <td class="shoping__cart__price">

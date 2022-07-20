@@ -111,8 +111,6 @@ namespace prjIHealth.Controllers
             else { return RedirectToAction("Index", "Home"); }
         }
 
-
-       
         public IActionResult ShowTrackList()
         {
             return View();
@@ -195,5 +193,4 @@ namespace prjIHealth.Controllers
 
     }
 }
-
 

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using prjiHealth.ViewModels;
 using prjIHealth.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +12,12 @@ namespace prjiHealth.Controllers
 {
     public class ProblemController : Controller
     {
+        private IWebHostEnvironment _enviroment;
+
+        public ProblemController(IWebHostEnvironment p)
+        {
+            _enviroment = p;
+        }
         public IActionResult ReplyProblem()
         {
             DateTime date = DateTime.Now;
@@ -17,7 +25,7 @@ namespace prjiHealth.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult ReplyProblem(TProblem p)
+        public IActionResult ReplyProblem(CProblemViewModel p)
         {
             DateTime date = DateTime.Now;
             ViewBag.Time = date.ToString("yyyy/MM/dd HH:mm:ss");
@@ -35,15 +43,55 @@ namespace prjiHealth.Controllers
             }
             else
             {
+                TProblem prob = new TProblem();
                 IHealthContext db = new IHealthContext();
-                db.TProblems.Add(p);
+                if (p.photo != null)
+                {
+                    string pName = Guid.NewGuid().ToString() + ".jpg";
+                    p.photo.CopyTo(new FileStream(_enviroment.WebRootPath + "/img/problem/" + pName, FileMode.Create));
+                    prob.FFilePath = pName;
+                }
+                prob.FProblemTime = p.FProblemTime;
+                prob.FProblemCategoryId = p.FProblemCategoryId;
+                prob.FProblemContent = p.FProblemContent;
+                prob.FMemberId = p.FMemberId;
+                prob.FOrderId = p.FOrderId;
+                prob.FEmail = p.FEmail;
+                prob.FContactPhone = p.FContactPhone;
+                prob.FStatusNumber = p.FStatusNumber;
+                db.TProblems.Add(prob);
                 db.SaveChanges();
                 ViewBag.Message_SUCCESS = "Problem reply Success";
             }
 
             return View();
         }
+        //依狀態篩選內容
+        public IActionResult SelectByStatus(int id)
+        {
+            IHealthContext db = new IHealthContext();
 
+            var sid = (from t in db.TProblems
+                       join p in db.TProblemCategroies
+                       on t.FProblemCategoryId equals p.FProblemCategoryId
+                       join s in db.TStatuses
+                       on t.FStatusNumber equals s.FStatusNumber
+                       where t.FStatusNumber == id
+                       select new CProblemViewModel()
+                       {
+                           FProblemId = t.FProblemId,
+                           FProblemTime = t.FProblemTime,
+                           FProblemCategory = t.FProblemCategory,
+                           FProblemContent = t.FProblemContent,
+                           FMemberId = t.FMemberId,
+                           FOrderId = t.FOrderId,
+                           FEmail = t.FEmail,
+                           FContactPhone = t.FContactPhone,
+                           Status = t.FStatusNumberNavigation,
+                           FFilePath = t.FFilePath
+                       }).ToList();
+            return Json(sid);
+        }
 
         public IActionResult CheckReply()
         {
@@ -63,11 +111,11 @@ namespace prjiHealth.Controllers
                                FOrderId = t.FOrderId,
                                FEmail = t.FEmail,
                                FContactPhone = t.FContactPhone,
-                               Status=t.FStatusNumberNavigation
+                               Status = t.FStatusNumberNavigation
                            }).ToList();
             return View(datafix);
         }
-
+        //讀取客服回覆內容
         public IActionResult LoadReply(int id)
         {
             IHealthContext db = new IHealthContext();
