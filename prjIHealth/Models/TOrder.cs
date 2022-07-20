@@ -18,7 +18,7 @@ namespace prjIHealth.Models
         public int FMemberId { get; set; }
         public string FAddress { get; set; }
         public string FContact { get; set; }
-        public int FPhone { get; set; }
+        public string FPhone { get; set; }
         public string FRemarks { get; set; }
         public int FStatusNumber { get; set; }
 
