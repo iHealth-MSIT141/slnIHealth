@@ -9,12 +9,14 @@ namespace prjIHealth.Models
     {
         public TCity()
         {
+            TCoaches = new HashSet<TCoach>();
             TRegions = new HashSet<TRegion>();
         }
 
         public int FCityId { get; set; }
         public string FCityName { get; set; }
 
+        public virtual ICollection<TCoach> TCoaches { get; set; }
         public virtual ICollection<TRegion> TRegions { get; set; }
     }
 }

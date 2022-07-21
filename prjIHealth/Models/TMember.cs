@@ -16,7 +16,6 @@ namespace prjIHealth.Models
             TCoachContacts = new HashSet<TCoachContact>();
             TCoachRates = new HashSet<TCoachRate>();
             TCoaches = new HashSet<TCoach>();
-            TCourses = new HashSet<TCourse>();
             TNews = new HashSet<TNews>();
             TOrders = new HashSet<TOrder>();
             TProblems = new HashSet<TProblem>();
@@ -59,7 +58,6 @@ namespace prjIHealth.Models
         public virtual ICollection<TCoachContact> TCoachContacts { get; set; }
         public virtual ICollection<TCoachRate> TCoachRates { get; set; }
         public virtual ICollection<TCoach> TCoaches { get; set; }
-        public virtual ICollection<TCourse> TCourses { get; set; }
         public virtual ICollection<TNews> TNews { get; set; }
         public virtual ICollection<TOrder> TOrders { get; set; }
         public virtual ICollection<TProblem> TProblems { get; set; }
