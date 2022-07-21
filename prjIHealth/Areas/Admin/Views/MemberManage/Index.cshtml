@@ -15,8 +15,10 @@
 }
 
 <link href="/css/PagedList.css" rel="stylesheet" type="text/css" />
+
 @section Styles{
     <style>
+
         #title {
             font-weight: 800;
             color: #599e32;
@@ -26,12 +28,27 @@
     </style>
 }
 <h2 id="title">會員資料管理列表</h2>
+
 <hr />
 
+<div class="row d-inline-flex">
+    <div>
+        <p>
+            <a asp-action="Create" class="btn btn-primary">會員資料新增</a>
+        </p>
+    </div>
+    <div>
+        <form asp-action="Index" method="get">
+            @using (@Html.BeginForm())
+            {
+                @:關鍵字 @Html.TextBox("txtKeyword")
+             <input type="submit" value="查詢" class="btn btn-success" />}
+        </form>
+    </div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">會員資料新增</a>
-</p>
+
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -134,10 +151,10 @@
 
 @section Scripts{
     <script>
-        //$(document).ready(function ()
-        //{
-        //    $('#example').DataTable();
-        //});
+                //$(document).ready(function ()
+                //{
+                //    $('#example').DataTable();
+                //});
     </script>
 }
 

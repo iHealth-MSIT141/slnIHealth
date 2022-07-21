@@ -26,13 +26,26 @@ namespace prjIHealth.Areas.Admin.Controllers
         }
 
         // GET: Admin/MemberManage
-        public IActionResult Index(int?  page)
+        public IActionResult Index(int? page, CKeywordViewModel vModel)
         {
+            IEnumerable<TMember> q = null;
+            if (string.IsNullOrEmpty(vModel.txtKeyword))
+            {
+                q = _context.TMembers.Include(t => t.FAuthority).ToList();
+
+                //q = _context.TMembers.Include(t => t.FAuthority);
+            }
+            else
+            {
+                q = _context.TMembers.Include(t => t.FAuthority).Where(m => m.FUserName.Contains(vModel.txtKeyword)
+                   || m.FMemberName.Contains(vModel.txtKeyword) || m.FEmail.Contains(vModel.txtKeyword)).ToList();
+            }
+
             var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
-            var iHealthContext = _context.TMembers.Include(t => t.FAuthority).ToList();
-            var onePageOfMembers =iHealthContext.ToPagedList(pageNumber,6); // will only contain 6 items max because of the pageSize
+            var onePageOfMembers = q.ToPagedList(pageNumber, 6); // will only contain 6 items max because of the pageSize
             ViewBag.onePageOfMembers = onePageOfMembers;
             return View(onePageOfMembers);
+
         }
 
         // GET: Admin/MemberManage/Details/5
