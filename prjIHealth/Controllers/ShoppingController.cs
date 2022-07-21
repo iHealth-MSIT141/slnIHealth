@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using prjiHealth.Models;
 using prjiHealth.ViewModels;
 using prjIHealth.Models;
 using prjIHealth.ViewModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -82,12 +84,11 @@ namespace prjiHealth.Controllers
             var p = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
 
             //判定產品有沒有曾出現於該會員的追蹤清單內
-            var q = from a in dblIHealth.TTrackLists
-                    where a.FMemberId == 1 && a.FProductId == id
-                    select a;
-            bool result = Convert.ToBoolean(q);
+            var q = (from a in dblIHealth.TTrackLists
+                     where a.FMemberId == 1 && a.FProductId == id
+                     select a).Count();
 
-            if (result)
+            if (q != 0)
             {
                 return Content("你已加入追蹤清單");
             }
@@ -152,6 +153,7 @@ namespace prjiHealth.Controllers
         public ActionResult ShowProductDetail(int? id)
         {
             //var prod = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
+            //var profinclude = dblIHealth.TProducts.Include(p => p.TProductsImages).Where(t => t.FProductId == id).AsEnumerable();
             TProduct prod = dblIHealth.TProducts.FirstOrDefault(t => t.FProductId == id);
             if (prod == null)
             {
@@ -227,6 +229,33 @@ namespace prjiHealth.Controllers
             return Json(images);
         }
 
+        //顯示各類別前3名圖片
+        public ActionResult ShowTop3Product(int? id)
+        {
+            // var top3PopularProduct = null;
+            ArrayList list = new ArrayList();
+            var top3PopularProduct = (from od in dblIHealth.TOrderDetails.Include(od => od.FProduct).ThenInclude(p => p.FCategory).AsEnumerable()
+                                      where od.FProduct.FCategoryId == id
+                                      group od by new
+                                      {
+                                          od.FProductId,
+                                          od.FProduct.FProductName,
+                                          od.FProduct.FCoverImage,
+                                          od.FProduct.FUnitprice
+                                      }
+                                      into g
+                                      select new
+                                      {
+                                          Key = g.Key, 
+                                          Count = g.Sum(od => od.FQuantity),
+                                          Photo = g.Key.FCoverImage,
+                                          UnitPrice = g.Key.FUnitprice
+                                      }).OrderByDescending(p => p.Count).Take(3).ToList();
+
+            list.Add(top3PopularProduct);
+
+            return Json(list);
+        }
         //public ActionResult SuggestProduct()
         //{
         //    Random rd = new Random(Guid.NewGuid().GetHashCode());
