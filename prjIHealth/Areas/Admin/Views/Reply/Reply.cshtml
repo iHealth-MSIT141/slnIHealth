@@ -19,13 +19,6 @@
 <hr />
 @*<section class="product spad">*@
 <div class="container">
-    @*<div class="row">
-        <div class="col-lg-12">
-            <div class="contact__form__title">
-                <h2>意見回覆</h2>
-            </div>
-        </div>
-    </div>*@
     @foreach (var item in Model)
     {
         <div class="row">
@@ -33,62 +26,40 @@
             <div class="col-4" id="divLeft">
                 <form asp-action="Reply">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    @*<div class="form-group">
-                            <label asp-for="FProblemId" class="control-label"></label>
-                            <input asp-for="FProblemId" class="form-control" />
-                            <span asp-validation-for="FProblemId" class="text-danger"></span>
-                        </div>*@
                     <div class="form-group">
                         <label class="control-label">問題時間</label>
                         <input class="form-control" readonly="readonly" value="@Html.DisplayFor(modelItem => item.FProblemTime)" />
-                        @*<span asp-validation-for="FProblemTime" class="text-danger"></span>*@
                     </div>
                     <div class="form-group">
                         <label class="control-label">類別</label>
                         <input class="form-control" readonly="readonly" value="@Html.DisplayFor(modelItem => item.FProblemCategory.FProblemCategory)" />
-                        @*<span asp-validation-for="FProblemCategoryId" class="text-danger"></span>*@
                     </div>
-
-                    @*<div class="form-group">
-                            <label asp-for="FFilePath" class="control-label"></label>
-                            <input asp-for="FFilePath" class="form-control" />
-                            <span asp-validation-for="FFilePath" class="text-danger"></span>
-                        </div>*@
                     <div class="form-group">
                         <label class="control-label">會員編號</label>
                         <input class="form-control" readonly="readonly" value="@Html.DisplayFor(modelItem => item.FMemberId)" />
-                        @*<span asp-validation-for="FMemberId" class="text-danger"></span>*@
                     </div>
                     <div class="form-group">
                         <label class="control-label">訂單編號</label>
                         <input class="form-control" readonly="readonly" value="@Html.DisplayFor(modelItem => item.FOrderId)" />
-                        @*<span asp-validation-for="FOrderId" class="text-danger"></span>*@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Email</label>
                         <input class="form-control" value="@Html.DisplayFor(modelItem => item.FEmail)" />
-                        @*<span asp-validation-for="FEmail" class="text-danger"></span>*@
                     </div>
                     <div class="form-group">
                         <label class="control-label">連絡電話</label>
                         <input class="form-control" value="@Html.DisplayFor(modelItem => item.FContactPhone)" />
-                        @*<span asp-validation-for="FContactPhone" class="text-danger"></span>*@
                     </div>
-
-                    @*<div class="form-group">
-                            <label asp-for="FPicturePath" class="control-label"></label>
-                            <input asp-for="FPicturePath" class="form-control" />
-                            <span asp-validation-for="FPicturePath" class="text-danger"></span>
-                        </div>*@
-
                 </form>
-
+                <div class="col-lg-12 text-center">
+                    <button id="buttonAdd" class="site-btn" data-toggle="modal" data-target="#bModal">讀取附件</button>
+                    <input type="button" value="DEMO" class="site-btn" style="margin-right: 10px;margin-top:20px" />
+                </div>
             </div>
             <div class="col-8">
                 <label class="control-label">問題內容</label>
                 <div class="form-group">
                     <textarea readonly="readonly" style="resize: none; width: 100%; height: 220px ">@Html.DisplayFor(modelItem => item.FProblemContent)</textarea>
-                    @*<span asp-validation-for="FProblemContent" class="text-danger"></span>*@
                 </div>
                 <form asp-action="Reply">
                     <div class="form-group">
@@ -102,7 +73,6 @@
                             <option value="處理中">處理中</option>
                             <option value="已完成">已完成</option>
                         </select>
-                        @*<span asp-validation-for="FStatusId" class="text-danger"></span>*@
                     </div>
                     <div class="col-lg-6 col-md-6" style="float:right">
                         <label class="control-label">回覆方式</label>
@@ -111,7 +81,6 @@
                             <option value="Email">Email</option>
                             <option value="電話聯絡">電話聯絡</option>
                         </select>
-                        @*<span asp-validation-for="FStatusId" class="text-danger"></span>*@
                     </div>
 
                     @*隱藏寫入資料庫不可NULL欄位，時間，處理狀態，會員ID，問題類別
@@ -123,11 +92,7 @@
                     <input type="hidden" value=1 name="FReplierId" id="FReplierId" />
                     <input type="hidden" value=@Html.DisplayFor(modelItem => item.FProblemId) name="FProblemId" id="FProblemId" />
                     <div class="col-lg-12 text-center">
-                        <input type="submit" value="回覆儲存" class="site-btn" style="float: right; margin-top: 20px" />
-
-                        <input type="button" value="讀取附件" class="site-btn" style="float: right; margin-right: 10px; margin-top: 20px" />
-
-                        <input type="button" value="DEMO" class="site-btn" style="float: right; margin-right: 10px;margin-top:20px" />
+                        <input type="submit" value="回覆儲存" class="site-btn" style="float: right; margin-top: 20px" onclick="return confirm('1.請確認回覆內容已填2.請確認處理狀態與回覆方式已選')" />
                     </div>
                 </form>
             </div>
@@ -136,8 +101,41 @@
         <div class="blog__item__text">
             <a asp-action="ProblemReplyList" class="blog__btn">返回問題回覆<span class="arrow_right"></span></a>
         </div>
+
     }
 </div>
+<!-- Modal 讀取附件彈跳視窗-->
+<div class="modal fade" id="bModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">附件內容 <span></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @foreach (var item in Model)
+                {
+                    if (@item.FFilePath == null)
+                    {
+                        <img src="~/img/problem/nopic.jpg" width="400" height="300" />
+                    }
+                    else
+                    {
+                        <img src="~/img/problem/@item.FFilePath" width="400" height="300" />
+                    }
+
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="site-btn" data-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @*</section>*@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -168,6 +166,6 @@
             $('#AddFReplyType').append(input)   /*change事件發生時才產生存放資料的input*/
         };
         $('#rtype').on("change", SelectedFReplyType) /*選擇類別時會產生寫入資料庫所需的FReplyType*/
-    </script>
 
+    </script>
 }
