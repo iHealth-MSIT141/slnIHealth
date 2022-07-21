@@ -21,6 +21,7 @@ namespace prjiHealth.Controllers
         {
             dblIHealth = db;
         }
+
         public IActionResult ShoppingCartList()
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_Shopped_Items))
@@ -44,6 +45,16 @@ namespace prjiHealth.Controllers
         public IActionResult ShowShoppingMall()
         {
             return View();
+        }
+
+        int userID = 0;
+        public void TakeMemberID(CLoginViewModel vModel)
+        {
+            var q = dblIHealth.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
+            string loginSession = JsonSerializer.Serialize(q);
+            HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
+            TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
+            userID = loginUser.FMemberId;
         }
 
         //商城搜尋功能
@@ -98,7 +109,7 @@ namespace prjiHealth.Controllers
                 {
                     TTrackList trackList = new TTrackList()
                     {
-                        FMemberId = 1,
+                        FMemberId = 1/*userID*/,
                         //TODO GET member id
                         FProductId = Convert.ToInt32(id)
                     };
@@ -256,11 +267,21 @@ namespace prjiHealth.Controllers
 
             return Json(list);
         }
-        //public ActionResult SuggestProduct()
-        //{
-        //    Random rd = new Random(Guid.NewGuid().GetHashCode());
-        //    int count = dblIHealth.TProducts.Count();
-        //    int num = rd.Next(1,count);
-        //}
+        public ActionResult SuggestProduct()
+        {
+            ArrayList list = new ArrayList();
+            Random rd = new Random(Guid.NewGuid().GetHashCode());
+            int count = dblIHealth.TProducts.Count();
+            int num = rd.Next(1, count);
+
+            for (int i = 0; i < 4; i++)
+            {
+                TProduct rdProduct = (from t in dblIHealth.TProducts
+                                      where t.FProductId == num
+                                      select t).FirstOrDefault();
+                list.Add(rdProduct);
+            }
+            return Json(list);
+        }
     }
 }

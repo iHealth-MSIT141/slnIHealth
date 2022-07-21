@@ -1,4 +1,4 @@
-﻿
+﻿@model prjIHealth.Models.TProduct
 @section Styles{
 
     <style>
@@ -43,7 +43,7 @@
                                 <th class="col-lg-0"></th>
                             </tr>
                         </thead>
-                        <tbody id="test">
+                        <tbody id="showTrack">
                             @*<tr>
                                     <td class="shoping__cart__item">
                                         <img src="/img/prjproduct/f1.jpg" alt="" style="width:30%">
@@ -92,46 +92,86 @@
                                 </tr>*@
                         </tbody>
                     </table>
-                    </div>
                 </div>
-
             </div>
+
         </div>
+    </div>
 </section>
 @section Scripts{
     <script>
-        let data = [{ product_id: 1, product_name: "金牌巧克力乳清蛋白", product_de: "蟬聯十年最好喝乳清蛋白，網友一致極推" }, { product_id: 2, product_name: "MUSCLETECH™ WHEY GOLD耐如鐵",product_de:"美國先進製程技術，保留完整胺基酸，淡淡奶香，即溶型好沖泡，口感滑順"}];
-        let a = "";
-        for (let i = 0; i < data.length; i++) {
-            a += `<tr data-id="${data[i].product_id}" class="product_item">
-                        <td class="shoping__cart__item" style="col-lg-4" >
-                            <img src="/img/prjproduct/f${i + 1}.jpg" alt="" style="width:40%"><br><br><h5>${data[i].product_name}</h5>
-                        <td class="shoping__cart__price col-lg-4" id="word_wrap" style="margin:auto">
-                            <div style="width:400px">${data[i].product_de}</div>
-                        </td>
-                        <td style="col-lg-2">
-                            $55.00
-                        </td>
-                        <td class="shoping__cart__item__close" style="margin-left: auto">
-                            <span class="fa fa-shopping-bag"></span>
-                        </td>
-                        <td class="shoping__cart__item__close" style="margin-left: auto">
-                            <span class="icon_close" style="margin-left: auto"></span>
-                        </td>
-                   </tr>`
+        let MemberID = 1; //member id
+        function showTrackList(url) {
+            $.get(url, function (datas) {
+                console.log(datas);
+                let htmlShowProduct = "";
+                //顯示追蹤清單
+                $.each(datas, function (idx, list) {
+                    htmlShowProduct += `<tr class="product_item">
+                                         <td class="shoping__cart__item" style="col-lg-4" data-id="${list.fProductId}">
+                                            <img src="/img/product/${list.fCoverImage}" alt="" style="width:40%"><br><br><h5>${list.fProductName}</h5>
+                                         <td class="shoping__cart__price col-lg-4" id="word_wrap" style="margin:auto">
+                                            <div style="width:400px">${list.fDescription}</div>
+                                         </td>
+                                         <td style="col-lg-2">
+                                            ${list.fUnitprice}
+                                         </td>
+                                         <td class="shoping__cart__item__close" style="margin-left: auto">
+                                            <span class="fa fa-shopping-bag" data-id="${list.fProductId}"></span>
+                                         </td>
+                                         <td class="shoping__cart__item__close" style="margin-left: auto">
+                                            <span href="#" class="icon_close" style="margin-left:auto" data-id="${list.fProductId}"></span>
+                                         </td>
+                                       </tr>`
+                })
+                $("#showTrack").html(htmlShowProduct);
+             })
+         }
+
+        //以MemberID去找他所追蹤的商品
+        showTrackProduct();
+        function showTrackProduct() {
+            let url = "@Url.Content("~/Member/ShowTrackProduct/")" + MemberID;
+            showTrackList(url);
         }
-        let text = document.getElementById("test");
-        text.innerHTML = a;
-        $("#test").delegate(".product_item", "click", function () {
-            let a = $(this).attr("data-id");
-            let _this = $(this);
-            $(this).find(".icon_close").on("click", function () {
-                _this.remove();
-                let el = document.querySelector(`tr[data-id=${a}]`);
-                console.log(el);
-            })
-            //var el = document.querySelector("tr[data-id='1']");
-            //console.log(this);
+
+        //以ProductID刪除追蹤商品
+        $("#showTrack").delegate(".icon_close", "click", function (event) {
+            let productID = $(this).attr("data-id");
+            console.log($(this).parent().parent());
+            $(event.currentTarget).parent().parent().remove();
+            DeleteTrack(productID);
+            ($("#showTrack").delegate(".product_item")).remove();
         })
+         function DeleteTrack(id) {
+             url = "@Url.Content("~/Member/DeleteTrackList/")" + id;
+             console.log(url);
+             showTrackList(url);
+        }
+
+        //顯示商品詳情
+        $("#showTrack").delegate(".fa-shopping-bag", "click", function () {
+            let productID = $(this).attr("data-id");
+            location.href = `/Shopping/ShowProductDetail/${productID}`;
+            console.log(productID);
+            showProductDetail(productID);
+        })
+        $("#showTrack").delegate(".shoping__cart__item", "click", function () {
+            let productID = $(this).attr("data-id");
+            location.href = `/Shopping/ShowProductDetail/${productID}`;
+            console.log(productID);
+            showProductDetail(productID);
+        })
+        //$("#test").delegate(".product_item", "click", function () {
+        //    let a = $(this).attr("data-id");
+        //    let _this = $(this);
+        //    $(this).find(".icon_close").on("click", function () {
+        //        _this.remove();
+        //        let el = document.querySelector(`tr[data-id=${a}]`);
+        //        console.log(el);
+        //    })
+        //    //var el = document.querySelector("tr[data-id='1']");
+        //    //console.log(this);
+        //})
     </script>
 }

@@ -30,6 +30,8 @@ namespace prjIHealth.ViewModels
             }
         }
 
+        //public int MemberID { get; set; }
+
         public int FProductId
         {
             get { return _prod.FProductId; }
@@ -56,8 +58,8 @@ namespace prjIHealth.ViewModels
             set { _prod.FUnitprice = value; }
         }
 
-        [DisplayName("描述")]        
-        public string FDescription 
+        [DisplayName("描述")]
+        public string FDescription
         {
             get { return _prod.FDescription; }
             set { _prod.FDescription = value; }

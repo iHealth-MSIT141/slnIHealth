@@ -37,11 +37,11 @@
                             <div class="product__details__pic__slider owl-carousel">
                                 @{
                                     IHealthContext dblIHealth = new IHealthContext();
-                                    var images = from p in dblIHealth.TProducts
+                                    var images = (from p in dblIHealth.TProducts
                                                  join i in dblIHealth.TProductsImages
                                                  on p.FProductId equals i.FProductId
                                                  where p.FProductId == Model.FProductId
-                                                 select i;
+                                                 select i).Take(4);
                                     foreach (var item in images)
                                     {
                                         <img data-imgbigurl="/img/product/@item.FImage"
