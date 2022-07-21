@@ -9,7 +9,14 @@ namespace prjiHealth.ViewModels
 {
     public class CBodyRecordViewModel
     {
-        IHealthContext db = new IHealthContext();
+        public CBodyRecordViewModel() { }
+
+        private IHealthContext db;
+        public CBodyRecordViewModel(IHealthContext context)
+        {
+            db = context;
+        }
+
         public int FBodyRecordId { get; set; }
         public int? FMemberId { get; set; }
         public string FRecordDate { get; set; }
