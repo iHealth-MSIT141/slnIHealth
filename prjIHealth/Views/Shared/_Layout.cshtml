@@ -132,23 +132,28 @@
                                 <li><a href="~/Student/CoachMainPage">教練課程</a></li>
                                 <li>
                                     <a href="~/shopping/ShowShoppingMall">周邊商城</a>
-                                    @*<ul class="header__menu__dropdown">
-                                            <li><a href="./shop-details">Shop Details</a></li>
-                                            <li><a href="./shoping-cart">Shoping Cart</a></li>
-                                            <li><a href="./checkout">Check Out</a></li>
-                                            <li><a href="./blog-details">Blog Details</a></li>
-                                        </ul>*@
                                 </li>
-                                <li><a href="~/Body/BodyCalculatorMain">BODY計算器</a></li>
-
+                                    @*<ul class="header__menu__dropdown">
+                <li><a href="./shop-details">Shop Details</a></li>
+                <li><a href="./shoping-cart">Shoping Cart</a></li>
+                <li><a href="./checkout">Check Out</a></li>
+                <li><a href="./blog-details">Blog Details</a></li>
+            </ul>*@
+                               
+                                <li>
+                                <a href="~/Body/BodyCalculatorMain">BODY計算器</a>
+                                </li>
+                                <li>
+                                    <a href="~/Home/signalRChat">聊天室</a>
+                                </li>
                             </ul>
                         </nav>
                     </div>
                     <div class="col-lg-2">
+                        
                         <div class="header__menu">
                             <ul>
-                                @*<li><a href="#"><i class="fa fa-heart"></i> <span></span></a></li>
-                                    <li><a href="#"><i class="fa fa-shopping-bag"></i> <span></span></a></li>*@
+
 
                                 <li>
                                     <div class="header__top__right__auth">
@@ -280,8 +285,8 @@
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel">歡迎登入IHealth會員! <span></span></h4>
+                <div class="modal-content justify-content-center">
+                    <h4 class=" col-12 modal-title w-100 text-center" id="exampleModalLabel" >歡迎登入IHealth會員! </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -392,10 +397,10 @@
     @*忘記密碼*@
     <div class="modal fade" id="passwordForgotModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title w-100" id="exampleModalLabel">忘記密碼! <span></span></h4>
+                    <h4 class="modal-title w-100 " id="exampleModalLabel">忘記密碼!</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -512,6 +517,7 @@
         var str = year + month + day;
         $("#fRegisterDate").val(str);
     </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
 

@@ -85,12 +85,9 @@ namespace prjIHealth.Controllers
                 q.FPassword = vModel.fPassword;
                 q.FPhone = vModel.fPhone;
                 q.FMemberName = vModel.fMemberName;
-               
-
             }       
             _context.SaveChanges();
             return RedirectToAction("Login","Member");
-         
         }
         // GET: Member
         public IActionResult Register()
@@ -110,14 +107,10 @@ namespace prjIHealth.Controllers
             }
             else { return RedirectToAction("Index", "Home"); }
         }
-
-
-       
         public IActionResult ShowTrackList()
         {
             return View();
         }
-
         public IActionResult Delete(int? id)
         {
             IHealthContext dblIHealth = new IHealthContext();
@@ -143,7 +136,6 @@ namespace prjIHealth.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public IActionResult ForgotPassword([Bind("fEmail,")]CLoginViewModel vModel)
         {

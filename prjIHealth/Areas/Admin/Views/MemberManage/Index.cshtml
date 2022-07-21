@@ -36,7 +36,8 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().FMemberId)
+
+                @Html.DisplayNameFor(model => model.FirstOrDefault().FMemberName)
             </th>
             @*<th>
                     @Html.DisplayNameFor(model => model.FirstOrDefault().FPassword)
@@ -133,10 +134,10 @@
 
 @section Scripts{
     <script>
-        $(document).ready(function ()
-        {
-            $('#example').DataTable();
-        });
+        //$(document).ready(function ()
+        //{
+        //    $('#example').DataTable();
+        //});
     </script>
 }
 
