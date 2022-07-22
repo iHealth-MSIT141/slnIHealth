@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using prjiHealth.Models;
 using prjiHealth.ViewModels;
+using prjIHealth.Controllers;
 using prjIHealth.Models;
 using prjIHealth.ViewModels;
 using System;
@@ -47,15 +48,18 @@ namespace prjiHealth.Controllers
             return View();
         }
 
-        int userID = 0;
-        public void TakeMemberID(CLoginViewModel vModel)
+        public int TakeMemberID()
         {
-            var q = dblIHealth.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
-            string loginSession = JsonSerializer.Serialize(q);
-            HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
-            TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
-            userID = loginUser.FMemberId;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string loginSession = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
+                int userID = loginUser.FMemberId;
+                return userID;
+            }
+            return 0;
         }
+
 
         //商城搜尋功能
         public IActionResult SearchProduct(string keyword)
@@ -92,11 +96,12 @@ namespace prjiHealth.Controllers
         //傳入產品、會員ID 把商品加入到資料庫當中
         public IActionResult AddToTrack(int? id)
         {
+            int userID = TakeMemberID();
             var p = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
 
             //判定產品有沒有曾出現於該會員的追蹤清單內
             var q = (from a in dblIHealth.TTrackLists
-                     where a.FMemberId == 1 && a.FProductId == id
+                     where a.FMemberId == userID && a.FProductId == id
                      select a).Count();
 
             if (q != 0)
@@ -107,16 +112,20 @@ namespace prjiHealth.Controllers
             {
                 if (p != null)
                 {
-                    TTrackList trackList = new TTrackList()
+                    if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
                     {
-                        FMemberId = 1/*userID*/,
-                        //TODO GET member id
-                        FProductId = Convert.ToInt32(id)
-                    };
-                    dblIHealth.TTrackLists.Add(trackList);
-                    dblIHealth.SaveChanges();
+                        TTrackList trackList = new TTrackList()
+                        {
+                            FMemberId = userID,
+                            //TODO GET member id
+                            FProductId = Convert.ToInt32(id)
+                        };
+                        dblIHealth.TTrackLists.Add(trackList);
+                        dblIHealth.SaveChanges();
+                        return Json(p);
+                    }
                 }
-                return Json(p);
+                return RedirectToAction("ShowShoppingMall");
             }
         }
 
@@ -240,7 +249,7 @@ namespace prjiHealth.Controllers
             return Json(images);
         }
 
-        //顯示各類別前3名圖片
+        //顯示各類別前3名圖片(沒用到先放著)
         public ActionResult ShowTop3Product(int? id)
         {
             // var top3PopularProduct = null;
@@ -257,7 +266,7 @@ namespace prjiHealth.Controllers
                                       into g
                                       select new
                                       {
-                                          Key = g.Key, 
+                                          Key = g.Key,
                                           Count = g.Sum(od => od.FQuantity),
                                           Photo = g.Key.FCoverImage,
                                           UnitPrice = g.Key.FUnitprice
@@ -272,10 +281,10 @@ namespace prjiHealth.Controllers
             ArrayList list = new ArrayList();
             Random rd = new Random(Guid.NewGuid().GetHashCode());
             int count = dblIHealth.TProducts.Count();
-            int num = rd.Next(1, count);
-
+            int num = 0;
             for (int i = 0; i < 4; i++)
             {
+                num = rd.Next(1, count);
                 TProduct rdProduct = (from t in dblIHealth.TProducts
                                       where t.FProductId == num
                                       select t).FirstOrDefault();

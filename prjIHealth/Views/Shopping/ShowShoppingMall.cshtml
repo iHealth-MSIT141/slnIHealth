@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<prjIHealth.ViewModels.CProductViewModel>
-@using Microsoft.EntityFrameworkCore;
+@using Microsoft.EntityFrameworkCore
+@using prjIHealth.Controllers
 
 @section Styles{
 
@@ -49,7 +50,7 @@
                                 <h4>推薦商品</h4>
                                 <div class="latest-product__slider owl-carousel">
                                     <div class="latest-prdouct__slider__item">
-                                        @{  
+                                        @{
                                             IHealthContext dblIHealth = new IHealthContext();
                                             var top3PopularProduct = (from od in dblIHealth.TOrderDetails.Include(od => od.FProduct).ThenInclude(p => p.FCategory).AsEnumerable()
                                                                       where od.FProduct.FCategoryId == 1
@@ -85,24 +86,24 @@
                                         }
                                     </div>
                                     <div class="latest-prdouct__slider__item">
-                                        @{                                          
+                                        @{
                                             top3PopularProduct = (from od in dblIHealth.TOrderDetails.Include(od => od.FProduct).ThenInclude(p => p.FCategory).AsEnumerable()
-                                                                      where od.FProduct.FCategoryId == 2
-                                                                      group od by new
-                                                                      {
-                                                                          od.FProductId,
-                                                                          od.FProduct.FProductName,
-                                                                          od.FProduct.FCoverImage,
-                                                                          od.FProduct.FUnitprice
-                                                                      }
+                                                                  where od.FProduct.FCategoryId == 2
+                                                                  group od by new
+                                                                  {
+                                                                      od.FProductId,
+                                                                      od.FProduct.FProductName,
+                                                                      od.FProduct.FCoverImage,
+                                                                      od.FProduct.FUnitprice
+                                                                  }
                                                                       into g
-                                                                      select new
-                                                                      {
-                                                                          Key = g.Key,
-                                                                          Count = g.Sum(od => od.FQuantity),
-                                                                          Photo = g.Key.FCoverImage,
-                                                                          UnitPrice = g.Key.FUnitprice
-                                                                      }).OrderByDescending(p => p.Count).Take(3).ToList();
+                                                                  select new
+                                                                  {
+                                                                      Key = g.Key,
+                                                                      Count = g.Sum(od => od.FQuantity),
+                                                                      Photo = g.Key.FCoverImage,
+                                                                      UnitPrice = g.Key.FUnitprice
+                                                                  }).OrderByDescending(p => p.Count).Take(3).ToList();
 
                                             foreach (var item in top3PopularProduct)
                                             {
@@ -305,7 +306,6 @@
                     showProductDetail(id);
                 })
                 async function showProductDetail(id) {
-                    //TODO
                     var data = {};
                     data.FProductId = id;
                     data.FProductName = 1;
@@ -316,9 +316,15 @@
                 $("#showProduct").delegate(".addToTrack", "click", function (event) {
                     event.preventDefault();
                     id = $(this).attr("data-id");
-                    addTrack(id);
-                    alert("已成功加入追蹤清單");
-                    console.log("text");
+                    if (@MemberController.userID== 0) {
+                        alert("請先登入會員");
+                        $("#loginModal").modal("show");
+                    }
+                    else {
+                        alert("已成功加入追蹤清單");
+                        addTrack(id);
+                    }
+
                 })
                 async function addTrack(id) {
                     url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
@@ -331,9 +337,16 @@
                 $("#showProduct").delegate(".addToCart", "click", function (event) {
                     event.preventDefault();
                     id = $(this).attr("data-id");
-                    addCart(id);
-                    alert("已成功加入購物車");
-                    console.log("text");
+                    if (@MemberController.userID == 0) {
+                        alert("請先登入會員");
+                        $("#loginModal").modal("show");
+
+                    }
+                    else
+                    {
+                        addCart(id);
+                        alert("已成功加入購物車");
+                    }
                 })
                 async function addCart(id) {
                     //TODO

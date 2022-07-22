@@ -1,4 +1,6 @@
 ﻿@model prjIHealth.Models.TProduct
+@using prjIHealth.Controllers
+
 @section Styles{
 
 }
@@ -38,10 +40,10 @@
                                 @{
                                     IHealthContext dblIHealth = new IHealthContext();
                                     var images = (from p in dblIHealth.TProducts
-                                                 join i in dblIHealth.TProductsImages
-                                                 on p.FProductId equals i.FProductId
-                                                 where p.FProductId == Model.FProductId
-                                                 select i).Take(4);
+                                                  join i in dblIHealth.TProductsImages
+                                                  on p.FProductId equals i.FProductId
+                                                  where p.FProductId == Model.FProductId
+                                                  select i).Take(4);
                                     foreach (var item in images)
                                     {
                                         <img data-imgbigurl="/img/product/@item.FImage"
@@ -160,25 +162,37 @@
             event.preventDefault();
             let id = $(this).attr("data-id");
             let count = $("#ProductCount").val();
-            var data = {};
-            data.txtFid = id;
-            data.txtCount = count;
 
-            $.ajax({
-                type: "POST",
-                url:"@Url.Action("ShowProductDetail")",
-                data:data
-            })
-            alert("已加入購物車");
+            if (@MemberController.userID== 0) {
+                alert("請先登入會員");
+                $("#loginModal").modal("show");
+            }
+            else {
+                var data = {};
+                data.txtFid = id;
+                data.txtCount = count;
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("ShowProductDetail")",
+                    data: data
+                })
+                alert("已加入購物車");
+            }
         })
         //加入追蹤清單
         $("#addToTrack").click(function (event) {
-                    event.preventDefault();
-                    id = $(this).attr("data-id");
-                    addTrack(id);
-                    alert("已成功加入追蹤清單");
-                    console.log("text");
-                    $(this).prop("style", "background-color:#7fad39");
+            event.preventDefault();
+            id = $(this).attr("data-id");
+            if (@MemberController.userID== 0) {
+                alert("請先登入會員");
+                $("#loginModal").modal("show");
+            }
+            else {
+                addTrack(id);
+                alert("已成功加入追蹤清單");
+                console.log("text");
+                $(this).prop("style", "background-color:#7fad39");
+            }
         })
         async function addTrack(id) {
                     url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
@@ -186,6 +200,27 @@
                     let datas = await response.json();
                     console.log(datas);
         }
+
+        $.get("@Url.Content("~/Shopping/SuggestProduct")", function (datas) {
+            let htmlShowProduct = "";
+            $.each(datas, function (idx, product) {
+                htmlShowProduct += `<div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
+                                            <ul class="product__item__pic__hover">
+                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6><a href="#">${product.fProductName}</a></h6>
+                                            <h5>$${product.fUnitprice}</h5>
+                                        </div>
+                                    </div>
+                                </div>`
+            })
+            $("#suggestProduct").html(htmlShowProduct);
+        })
         @*//顯示商品圖片
         function showImages() {
             let url = "@Url.Content("~/Shopping/ShowProductImages/")" + @Model.FProductId;
