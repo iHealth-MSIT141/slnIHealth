@@ -76,7 +76,7 @@ namespace prjIHealth.Controllers
         {
             //var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
             //loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
-            var q = _context.TMembers.FirstOrDefault(m => m.FUserName == vModel.fUserName);
+            var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == vModel.fMemberId);
             if (q != null)
             {
                 if (vModel.photo!= null)
@@ -85,15 +85,18 @@ namespace prjIHealth.Controllers
                     vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
                     q.FPicturePath = pName;
                 }
-                q.FPassword = vModel.fPassword;
-                q.FPhone = vModel.fPhone;
                 q.FMemberName = vModel.fMemberName;
-               
+                q.FPassword = vModel.fPassword;
+                q.FBirthday = vModel.fBirthday;
+                q.FAddress = vModel.fAddress;
+                q.FPhone = vModel.fPhone;
+                q.FEmail = vModel.fEmail;
+                q.FRemarks = vModel.fRemarks;
+                q.FPhone = vModel.fPhone;
 
             }       
             _context.SaveChanges();
             return RedirectToAction("Login","Member");
-         
         }
         // GET: Member
         public IActionResult Register()
@@ -132,7 +135,6 @@ namespace prjIHealth.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public IActionResult ForgotPassword([Bind("fEmail,")]CLoginViewModel vModel)
         {
