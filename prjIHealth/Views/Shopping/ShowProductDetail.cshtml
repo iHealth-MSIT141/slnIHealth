@@ -1,4 +1,4 @@
-﻿@model  prjIHealth.Models.TProduct
+﻿@model prjIHealth.Models.TProduct
 @section Styles{
 
 }
@@ -29,21 +29,25 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
-                        <div class="product__details__pic" id="showProductPic">
-                            @*TODO生成圖片*@
+                        <div class="product__details__pic">
                             <div class="product__details__pic__item">
                                 <img class="product__details__pic__item--large"
-                                     src="/img/product/details/product-details-1.jpg" alt="">
+                                     src="/img/product/@Model.FCoverImage" alt="" style="height:575px;width:555px">
                             </div>
                             <div class="product__details__pic__slider owl-carousel">
-                                <img data-imgbigurl="/img/product/details/product-details-2.jpg"
-                                     src="/img/product/details/thumb-1.jpg" alt="">
-                                <img data-imgbigurl="/img/product/details/product-details-3.jpg"
-                                     src="/img/product/details/thumb-2.jpg" alt="">
-                                <img data-imgbigurl="/img/product/details/product-details-5.jpg"
-                                     src="/img/product/details/thumb-3.jpg" alt="">
-                                <img data-imgbigurl="img/product/details/product-details-4.jpg"
-                                     src="/img/product/details/thumb-4.jpg" alt="">
+                                @{
+                                    IHealthContext dblIHealth = new IHealthContext();
+                                    var images = (from p in dblIHealth.TProducts
+                                                 join i in dblIHealth.TProductsImages
+                                                 on p.FProductId equals i.FProductId
+                                                 where p.FProductId == Model.FProductId
+                                                 select i).Take(4);
+                                    foreach (var item in images)
+                                    {
+                                        <img data-imgbigurl="/img/product/@item.FImage"
+                                             src="/img/product/@item.FImage" alt="">
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
@@ -64,8 +68,7 @@
                                 </div>
                             </div>
                             <a href="#" class="primary-btn" id="addToCart" data-id="@Model.FProductId">加到購物車</a>
-                            <a href="/Shopping/AddToTrack" class="heart-icon"><span class="icon_heart_alt"></span></a>
-
+                            <a href="#" class="heart-icon" id="addToTrack" data-id="@Model.FProductId"><span class="icon_heart_alt"></span></a>
                         </div>
                     </div>
 
@@ -82,66 +85,66 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="product__item">
-                                    <div onclick="location.href='/Shopping/ShowProductDetail';" class="product__item__pic set-bg" data-setbg="/img/prjproduct/f2.jpg" style="background-image: url(&quot;img/product/product-1.jpg&quot;);">
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                        <div class="row" id="suggestProduct">
+                            @*<div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="product__item">
+                                        <div onclick="location.href='/Shopping/ShowProductDetail';" class="product__item__pic set-bg" data-setbg="/img/prjproduct/f2.jpg" style="background-image: url(&quot;img/product/product-1.jpg&quot;);">
+                                            <ul class="product__item__pic__hover">
+                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
 
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6><a href="#">Crab Pool Security</a></h6>
-                                        <h5>$30.00</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f3.jpg" style="background-image: url(&quot;img/product/product-2.jpg&quot;);">
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6><a href="#">Crab Pool Security</a></h6>
-                                        <h5>$40.00</h5>
+                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6><a href="#">Crab Pool Security</a></h6>
+                                            <h5>$30.00</h5>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f4.jpg" style="background-image: url(&quot;img/product/product-3.jpg&quot;);">
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f3.jpg" style="background-image: url(&quot;img/product/product-2.jpg&quot;);">
+                                            <ul class="product__item__pic__hover">
+                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6><a href="#">Crab Pool Security</a></h6>
+                                            <h5>$40.00</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f4.jpg" style="background-image: url(&quot;img/product/product-3.jpg&quot;);">
+                                            <ul class="product__item__pic__hover">
+                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
 
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6><a href="#">Crab Pool Security</a></h6>
-                                        <h5>$50.00</h5>
+                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6><a href="#">Crab Pool Security</a></h6>
+                                            <h5>$50.00</h5>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f5.jpg" style="background-image: url(&quot;img/product/product-7.jpg&quot;);">
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f5.jpg" style="background-image: url(&quot;img/product/product-7.jpg&quot;);">
+                                            <ul class="product__item__pic__hover">
+                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
 
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
+                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6><a href="#">Crab Pool Security</a></h6>
+                                            <h5>$60.00</h5>
+                                        </div>
                                     </div>
-                                    <div class="product__item__text">
-                                        <h6><a href="#">Crab Pool Security</a></h6>
-                                        <h5>$60.00</h5>
-                                    </div>
-                                </div>
-                            </div>
+                                </div>*@
                         </div>
                     </div>
                 </section>
@@ -152,9 +155,9 @@
 
 @section Scripts{
     <script>
-
+        //加進購物車
         $("#addToCart").click(function (event) {
-            event.preventDefault();          
+            event.preventDefault();
             let id = $(this).attr("data-id");
             let count = $("#ProductCount").val();
             var data = {};
@@ -168,6 +171,48 @@
             })
             alert("已加入購物車");
         })
-        
+        //加入追蹤清單
+        $("#addToTrack").click(function (event) {
+                    event.preventDefault();
+                    id = $(this).attr("data-id");
+                    addTrack(id);
+                    alert("已成功加入追蹤清單");
+                    console.log("text");
+                    $(this).prop("style", "background-color:#7fad39");
+        })
+        async function addTrack(id) {
+                    url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
+                    let response = await fetch(url);
+                    let datas = await response.json();
+                    console.log(datas);
+        }
+        @*//顯示商品圖片
+        function showImages() {
+            let url = "@Url.Content("~/Shopping/ShowProductImages/")" + @Model.FProductId;
+            console.log(url);
+            $.get(url, function (datas) {
+                console.log(datas);
+                let htmlProductImages = "";
+                $.each(datas, function (idx, images) {
+                    console.log(images);
+                    //htmlProductImages += `<div class="owl-item cloned" style="width: 67.5px; margin-right: 20px;">
+                    //                        <img data-imgbigurl="/img/product/${images}" src="/img/product/${images}" alt="">
+                    //                      </div>
+                    //                      <div class="owl-item active" style="width: 67.5px; margin-right: 20px;">
+                    //                        <img data-imgbigurl="/img/product/${images}" src="/img/product/${images}" alt="">
+                    //                      </div>
+                    //                      <div class="owl-item cloned " style="width: 67.5px; margin-right: 20px;">
+                    //                        <img data-imgbigurl="/img/product/${images}" src="/img/product/${images}" alt="">
+                    //                      </div>`
+                    htmlProductImages += `<img data-imgbigurl="/img/product/${images}"
+                                           src="/img/product/${images}" alt="">`
+                })
+                $(".product__details__pic__slider owl-carousel").html(htmlProductImages);
+            })*@
+        /*}*/
+
+
+
+
     </script>
 }

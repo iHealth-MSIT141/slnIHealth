@@ -61,54 +61,44 @@
                     <div class="blog__sidebar__item">
                         <h4>專欄分類</h4>
                         <ul>
-                            <li><a href="#">所有顯示 (55)</a></li>
-                            <li><a href="#">運動健身 (20)</a></li>
-                            <li><a href="#">食物營養 (15)</a></li>
-                            <li><a href="#">新冠疫情 (10)</a></li>
-                            <li><a href="#">教練專欄 (10)</a></li>
+                            <li><a href="#">所有顯示 (@ViewBag.Category0Count)</a></li>
+                            <li><a href="#">運動健身 (@ViewBag.Category1Count)</a></li>
+                            <li><a href="#">食物營養 (@ViewBag.Category2Count)</a></li>
+                            <li><a href="#">新冠疫情 (@ViewBag.Category3Count)</a></li>
+                            <li><a href="#">教練專欄 (@ViewBag.Category4Count)</a></li>
                             <!--專欄分類使用處-->
                         </ul>
                     </div>
                     <div class="blog__sidebar__item">
                         <h4>近期專欄</h4>
-                        <div class="blog__sidebar__recent">
-                            <a href="#" class="blog__sidebar__recent__item">
-                                <div class="blog__sidebar__recent__item__pic">
-                                    <img src="/img/blog/sidebar/sr-1.jpg" alt="">
-                                </div>
-                                <div class="blog__sidebar__recent__item__text">
-                                    <h6>九種不同的蔬菜<br /> 保護你的肝</h6>
-                                    <span>MAR 05, 2019</span>
-                                </div>
-                            </a>
-                            <a href="#" class="blog__sidebar__recent__item">
-                                <div class="blog__sidebar__recent__item__pic">
-                                    <img src="/img/blog/sidebar/sr-2.jpg" alt="">
-                                </div>
-                                <div class="blog__sidebar__recent__item__text">
-                                    <h6>平衡你飲食影養<br /> 的小提示</h6>
-                                    <span>MAR 05, 2019</span>
-                                </div>
-                            </a>
-                            <a href="#" class="blog__sidebar__recent__item">
-                                <div class="blog__sidebar__recent__item__pic">
-                                    <img src="/img/blog/sidebar/sr-3.jpg" alt="">
-                                </div>
-                                <div class="blog__sidebar__recent__item__text">
-                                    <h6>四個原則幫助你 <br />用蔬食減重</h6>
-                                    <span>MAR 05, 2019</span>
-                                </div>
-                            </a>
-                        </div>
+                        @{
+                            IHealthContext db = new IHealthContext();
+                            foreach (var item in db.TNews.OrderByDescending(t => t.FNewsDate).Take(3))
+                            {
+                                <a href="~/News/BlogDetail?id=@item.FNewsId" class="blog__sidebar__recent__item">
+                                    <div class="blog__sidebar__recent__item__pic">
+                                        <img src="~/img/blog/@item.FThumbnailPath" alt="" style="width:40px;height:40px">
+                                    </div>
+                                    <div class="blog__sidebar__recent__item__text">
+                                        <h6>
+                                            @item.FTitle.Substring(0, Math.Min(item.FContent.Length, 18)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")
+                                            <br />
+                                            @*@item.FTitle.Substring(20, Math.Min(item.FContent.Length, 30)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")*@
+                                        </h6>
+                                        <span>@item.FNewsDate.Substring(0, Math.Min(item.FNewsDate.Length, 10))</span>
+                                    </div>
+                                </a>
+                            }
+                        }
                     </div>
                     <div class="blog__sidebar__item">
                         <h4>快速搜尋</h4>
                         <div class="blog__sidebar__item__tags">
-                            <a href="#">Fitness</a>
-                            <a href="#">Eat</a>
-                            <a href="#">COVID</a>
-                            <a href="#">Fit</a>
-                            <a href="#">Diet</a>
+                            <a href="#">健身</a>
+                            <a href="#">飲食</a>
+                            <a href="#">新冠</a>
+                            <a href="#">健康</a>
+                            <a href="#">食譜</a>
                             <!--插入快速搜尋標籤-->
                         </div>
                     </div>

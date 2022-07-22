@@ -13,19 +13,13 @@ namespace prjIHealth.ViewModels
         public CProductViewModel()
         {
             _prod = new TProduct();
-            TOrderDetails = new HashSet<TOrderDetail>();
-            TProductsImages = new HashSet<TProductsImage>();
-            TTrackLists = new HashSet<TTrackList>();
+            //TOrderDetails = new HashSet<TOrderDetail>();
+            //TProductsImages = new HashSet<TProductsImage>();
+            //TTrackLists = new HashSet<TTrackList>();
         }
         private TProduct _prod;
 
         IHealthContext db = new IHealthContext();
-
-        public TProduct product
-        {
-            get { return _prod; }
-            set { _prod = value; }
-        }
 
         public IEnumerable<TProduct> ProductList
         {
@@ -35,6 +29,8 @@ namespace prjIHealth.ViewModels
                 return pList;
             }
         }
+
+        //public int MemberID { get; set; }
 
         public int FProductId
         {
@@ -62,8 +58,8 @@ namespace prjIHealth.ViewModels
             set { _prod.FUnitprice = value; }
         }
 
-        [DisplayName("描述")]        
-        public string FDescription 
+        [DisplayName("描述")]
+        public string FDescription
         {
             get { return _prod.FDescription; }
             set { _prod.FDescription = value; }

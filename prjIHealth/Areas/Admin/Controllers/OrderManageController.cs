@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace prjIHealth.Areas.Admin.Controllers
 {
@@ -17,7 +18,7 @@ namespace prjIHealth.Areas.Admin.Controllers
         {
             return View();
         }
-          public IActionResult OrderList()
+          public IActionResult OrderList(int? page)
         {
             var pro = (from o in db.TOrders
                        join p in db.TPaymentCategories
@@ -41,9 +42,9 @@ namespace prjIHealth.Areas.Admin.Controllers
                            FStatusNumber = o.FStatusNumber,
                            fstatus = o.FStatusNumberNavigation
                        }).ToList();
-            //var pageNumber = page ?? 1;
-            //var onePageOfOrder = pro.ToPagedList(pageNumber, 2);
-            //ViewBag.OnePageOfOrder = onePageOfOrder;
+            var pageNumber = page ?? 1;
+            var onePageOfPro = pro.ToPagedList(pageNumber, 10);
+            ViewBag.onePageOfPro = onePageOfPro;
             return View(pro);          
         }
         public IActionResult OrderDetailList(int? id)
@@ -127,6 +128,34 @@ namespace prjIHealth.Areas.Admin.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("OrderList");
+        }
+        public IActionResult Statusselect(int id)
+        {
+            IHealthContext db = new IHealthContext();
+            var pro = (from o in db.TOrders
+                       join p in db.TPaymentCategories
+                       on o.FPaymentCategoryId equals p.FPaymentCategoryId
+                       join s in db.TStatuses
+                       on o.FStatusNumber equals s.FStatusNumber
+                       where o.FStatusNumber == id
+                       join m in db.TMembers
+                       on o.FMemberId equals m.FMemberId
+                       select new COrderViewModel()
+                       {
+                           FOrderId = o.FOrderId,
+                           FPaymentCategoryId = o.FPaymentCategoryId,
+                           fPayment = o.FPaymentCategory,
+                           FDate = o.FDate,
+                           FAddress = o.FAddress,
+                           FMemberId = o.FMemberId,
+                           fmember = o.FMember,
+                           FContact = o.FContact,
+                           FPhone = o.FPhone,
+                           FRemarks = o.FRemarks,
+                           FStatusNumber = o.FStatusNumber,
+                           fstatus = o.FStatusNumberNavigation
+                       }).ToList();
+            return Json(pro);
         }
     }
 }

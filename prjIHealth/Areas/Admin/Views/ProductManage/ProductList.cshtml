@@ -1,12 +1,14 @@
 ﻿@model IEnumerable<prjIHealth.ViewModels.CProductViewModel>
-
+@*@model IEnumerable<prjIHealth.Models.TProduct>*@
+@using X.PagedList.Mvc.Core
+@using X.PagedList
 
 @{
     ViewData["Title"] = "ProductList";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
-@section styles{
-
+@section Styles{
+    <link href="/css//PagedList.css" rel="stylesheet" />
 }
 
 <h1>商品管理</h1>
@@ -17,8 +19,17 @@
 
     <div class="col-lg-12">
         <div class="shoping__cart__table">
-
-            <table class="table">
+            <div class="col-lg-4">
+                <select id="catrgorysearch" name="catrgorysearch" class="custom-select">
+                    <option disabled selected hidden>依類別篩選</option>
+                    <option value="1">乳清蛋白</option>
+                    <option value="2">健康食品</option>
+                    <option value="3">運動用品</option>
+                    <option value="4">男裝</option>
+                    <option value="5">女裝</option>
+                </select>
+            </div>
+            <table class="table" style="table-layout: fixed">
                 <thead>
                     <tr>
                         <th class="shoping__product col-lg-3" style="text-align: left; margin-left: auto">
@@ -39,21 +50,21 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="ListPro">
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td class="shoping__cart__item" style="margin-left: auto; text-align: left;">
+                            <td class="shoping__cart__item" style="margin-left: auto; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                 <img src="~/img/product/@item.FCoverImage" style="width:30%;height:30%;" /> <span>@Html.DisplayFor(modelItem => item.FProductName)</span>
                             </td>
-                            <td style="margin-left:auto">
+                            <td style="margin-left:auto; text-align:center;">
                                 <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FCategoryId)" id="FCategoryId" name="FCategoryId" />
                                 @Html.DisplayFor(modelItem => item.FCategoryName.FCategoryName)
                             </td>
                             <td style="margin-left:auto">
                                 @Html.DisplayFor(modelItem => item.FUnitprice)
                             </td>
-                            <td style="margin-left:auto">
+                            <td style="margin-left: auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
                                 @*@Html.DisplayFor(modelItem => item.FDescription)*@
                                 @item.FDescription.Substring(0, Math.Min(item.FDescription.Length, 20))
                             </td>
@@ -76,10 +87,8 @@
                     <div class="col-lg-2">
                         <a asp-action="ProductCreate" class="primary-btn cart-btn">新增產品</a>
                     </div>
-                    <div class="product__pagination" style="text-align:center">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
+                    <div @*class="product__pagination"*@ style="text-align:center">
+                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfPro, page => Url.Action("ProductList", new { page }))
                     </div>
                 </div>
             </div>
@@ -87,6 +96,50 @@
     </div>
 </div>
 @section Scripts{
+    <script>
+        $('#catrgorysearch').on('change', Catrgorychange);
 
+        async function Catrgorychange() {
+            $('#ListPro>tr').remove();
+            const changecat = catrgorysearch.options[catrgorysearch.selectedIndex].value;
+            const response = await fetch("@Url.Content("~/Admin/ProductManage/Categoryselect")" + `?id=${changecat}`);
+            const datas = await response.json();
+           /* console.log(datas);*/
+            let tr = '';
+            for (i = 0; i < datas.length; i++) {
+                let fixdesr = '';
+                let fixcat = '';
+                if (datas[i].fDescription != null) {
+                    fixdesr = datas[i].fDescription.substr(0,10);
+                }
+                if (datas[i].FCategoryName != null) {
+                    fixcat = datas[i].FCategoryName;
+                }
+                tr = `<tr>
+                        <td class="shoping__cart__item" style="margin-left: auto; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <img src="/img/product/${datas[i].fCoverImage}" style="width:30%;height:30%;" /> <span>${datas[i].fProductName}</span>
+                            </td>
+                            <td style="margin-left:auto; text-align:center;">
+                                <input type="hidden" value=" ${datas[i].fCategoryID})" id="fCategoryID" name="fCategoryID" />
+                                <input type="hidden" value=" ${datas[i].fProductID})" id="fProductID" name="fProductID" />
+                                ${fixcat}
+                            </td>
+                            <td style="margin-left:auto">
+                               ${datas[i].fUnitprice}
+                            </td>
+                            <td style="margin-left: auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
+                              ${fixdesr}
+                            </td>
+                            <td style="margin-left:auto">
+                               ${datas[i].fVisible}
+                            </td>
+                            <td style="margin-left:auto">
+                               <a class="primary-btn cart-btn" href="/Admin/ProductManage/ProductEdit/${datas[i].fProductId}">修改產品</a>
+                               <a class="primary-btn cart-btn" href="/Admin/ProductManage/ProductImgList/${datas[i].fProductId}">檢視圖片</a>
+                            </td>
+                        </tr> `
+                $('#ListPro').append(tr);
+            }
+        }
+    </script>
 }
-

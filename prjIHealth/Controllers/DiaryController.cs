@@ -21,7 +21,25 @@ namespace prjIHealth.Controllers
         //Diary主頁View
         public IActionResult DiaryMain()
         {
-            return View();
+            string now = DateTime.Now.ToString("yyyyMM"+"32000000");
+            double date = double.Parse(now);
+            double[] bmis = new double[12];
+            for(int i = 0; i < 12; i++)
+            {
+                CBodyRecordViewModel bodyRecordsViewModel = new CDiaryViewModel(db).BodyRecords.FirstOrDefault(b => double.Parse(b.FRecordDate) < date);
+                bmis[i] = bodyRecordsViewModel.NumBMI;
+                if (date.ToString().Substring(4, 2) == "01")
+                {
+                    date = date - 8900000000;
+                }
+                else
+                {
+                    date = date - 100000000;
+                }
+            }
+            return View(bmis);
+
+            //return View();
         }     
         
         //取得選取日期最接近的身體數據
@@ -30,7 +48,7 @@ namespace prjIHealth.Controllers
             //TODO 沒有資料時顯示最舊一筆
             date = date.Replace("-", "");
             date = date + "235959";
-            CBodyRecordViewModel bodyRecordsViewModel = new CDiaryViewModel().BodyRecords.FirstOrDefault(b => double.Parse(b.FRecordDate) < double.Parse(date));
+            CBodyRecordViewModel bodyRecordsViewModel = new CDiaryViewModel(db).BodyRecords.FirstOrDefault(b => double.Parse(b.FRecordDate) < double.Parse(date));
             return Json(bodyRecordsViewModel);
         }
 
@@ -41,7 +59,7 @@ namespace prjIHealth.Controllers
             {
                 //TODO tryparse
                 string date = body.FRecordDate.Replace("-", "");
-                int count = (new CDiaryViewModel()).BodyRecords.Where(b => b.FRecordDate.Substring(0, 8) == date).Count();
+                int count = (new CDiaryViewModel(db)).BodyRecords.Where(b => b.FRecordDate.Substring(0, 8) == date).Count();
                 double recordDate = double.Parse($"{date}000000") + count;
                 TBodyRecord bodyRecord = new TBodyRecord()
                 {
@@ -61,7 +79,7 @@ namespace prjIHealth.Controllers
         //載入食物列表
         public IActionResult loadAllFoods()
         {
-            return Json(new CDiaryViewModel().AllFoods);
+            return Json(new CDiaryViewModel(db).AllFoods);
         }
 
         //新增飲食紀錄
@@ -89,14 +107,14 @@ namespace prjIHealth.Controllers
         //搜尋食物
         public IActionResult searchFood(CKeywordViewModel keywordViewModel)
         {
-            var foods = new CDiaryViewModel().AllFoods.Where(f => f.FFoodName.Contains(keywordViewModel.txtKeyword));
+            var foods = new CDiaryViewModel(db).AllFoods.Where(f => f.FFoodName.Contains(keywordViewModel.txtKeyword));
             return Json(foods);
         }   
         
         //驗證食物名是否重複
         public IActionResult checkFoodName(CKeywordViewModel keywordViewModel)
         {
-            var foods = new CDiaryViewModel().AllFoods.Where(f => f.FFoodName==keywordViewModel.txtKeyword);
+            var foods = new CDiaryViewModel(db).AllFoods.Where(f => f.FFoodName==keywordViewModel.txtKeyword);
             return Json(foods);
         }
 
@@ -122,7 +140,7 @@ namespace prjIHealth.Controllers
         public IActionResult getIntakeRecords(string date)
         {
             date = date.Replace("-", "");
-            var intakeRecords = new CDiaryViewModel().CalorieIntakes.Where(c => c.FIntakeTime.Substring(0, 8) == date).Select(c=>new {
+            var intakeRecords = new CDiaryViewModel(db).CalorieIntakes.Where(c => c.FIntakeTime.Substring(0, 8) == date).Select(c=>new {
                 fMeal=c.FMeal,
                 fCalorieIntakeId = c.FCalorieIntakeId,
                 fFoodName = db.TFoodCalories.FirstOrDefault(f=>f.FFoodId==c.FFoodId).FFoodName,

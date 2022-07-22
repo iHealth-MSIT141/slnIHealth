@@ -12,12 +12,12 @@ namespace prjIHealth.ViewModels
 {
     public class CDiaryViewModel
     {
-        //private readonly IHealthContext db;
-        //public CDiaryViewModel(IHealthContext context)
-        //{
-        //    db = context;
-        //}
-        IHealthContext db = new IHealthContext();
+        private readonly IHealthContext db;
+        public CDiaryViewModel(IHealthContext context)
+        {
+            db = context;
+        }
+        //IHealthContext db = new IHealthContext();
 
         //載入全部食物列表
         public IEnumerable<TFoodCalory> AllFoods
@@ -51,7 +51,7 @@ namespace prjIHealth.ViewModels
                 List<CBodyRecordViewModel> bodyRecords = new List<CBodyRecordViewModel>();
                 foreach(var b in q)
                 {
-                    CBodyRecordViewModel bodyRecord = new CBodyRecordViewModel()
+                    CBodyRecordViewModel bodyRecord = new CBodyRecordViewModel(db)
                     {
                         FBodyRecordId = b.FBodyRecordId,
                         FMemberId = b.FMemberId,
