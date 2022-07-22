@@ -295,6 +295,7 @@
                 </div>
                 <div class="modal-body">
                     <form action="~/Member/Login" id="addForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                        <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
                         <div class="form-group">
                             <label for="fUserName">使用者帳號</label>
                             <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號">
