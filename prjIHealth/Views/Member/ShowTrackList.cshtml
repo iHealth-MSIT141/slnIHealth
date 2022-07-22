@@ -1,4 +1,6 @@
 ﻿@model prjIHealth.Models.TProduct
+@using prjIHealth.Controllers
+
 @section Styles{
 
     <style>
@@ -100,7 +102,7 @@
 </section>
 @section Scripts{
     <script>
-        let MemberID = 1; //member id
+        let MemberID = @MemberController.loginUser.FMemberId; //member id
         function showTrackList(url) {
             $.get(url, function (datas) {
                 console.log(datas);

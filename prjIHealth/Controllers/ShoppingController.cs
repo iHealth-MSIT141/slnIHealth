@@ -23,8 +23,6 @@ namespace prjiHealth.Controllers
             dblIHealth = db;
         }
 
-        int userID = MemberController.userID;
-
         public IActionResult ShoppingCartList()
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_Shopped_Items))
@@ -47,17 +45,25 @@ namespace prjiHealth.Controllers
         //商城主頁界面
         public IActionResult ShowShoppingMall()
         {
-            return View();
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                return View();
+            }  
+            return RedirectToAction("Index", "Home");
         }
 
-        //public void TakeMemberID(CLoginViewModel vModel)
-        //{
-        //    var q = dblIHealth.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
-        //    string loginSession = JsonSerializer.Serialize(q);
-        //    HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
-        //    TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
-        //    userID = loginUser.FMemberId;
-        //}
+        public int TakeMemberID()
+        {
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string loginSession = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
+                int userID = loginUser.FMemberId;
+                return userID;
+            }
+            return 0;
+        }
+            
 
         //商城搜尋功能
         public IActionResult SearchProduct(string keyword)
@@ -94,11 +100,12 @@ namespace prjiHealth.Controllers
         //傳入產品、會員ID 把商品加入到資料庫當中
         public IActionResult AddToTrack(int? id)
         {
+            int userID = TakeMemberID();
             var p = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
 
             //判定產品有沒有曾出現於該會員的追蹤清單內
             var q = (from a in dblIHealth.TTrackLists
-                     where a.FMemberId == 8 && a.FProductId == id
+                     where a.FMemberId == userID && a.FProductId == id
                      select a).Count();
 
             if (q != 0)

@@ -45,7 +45,7 @@
         </div>
         <div class="humberger__menu__cart">
             <ul>
-                <li><a href="/member/showtracklist/@MemberController.userID"><i class="fa fa-heart"></i> <span></span></a></li>
+                <li><a href="/member/showtracklist/"><i class="fa fa-heart"></i> <span></span></a></li>
                 <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
                 <li class="header__top__right__auth"><a href="~/Home/會員專區ViewDemo"><i class="fa fa-user"></i>Login</a></li>
             </ul>
@@ -103,7 +103,7 @@
                                 <div class="header__cart" style="padding:0;">
                                     <ul>
                                         @*<a href="#"><i class="fa fa-user"></i> Login</a>*@
-                                        <li><a href="/member/showtracklist"><i class="fa fa-heart"></i> <span></span></a></li>
+                                        <li><a href="" id="fa-heart"><i class="fa fa-heart"></i> <span></span></a></li>
                                         <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
 
                                     </ul>
@@ -513,6 +513,18 @@
         var str = year + month + day;
         $("#fRegisterDate").val(str);
     </script>
+
+    @*商城部份*@
+<script>
+    $(".fa-heart").click(function () {
+        if (@MemberController.userID == 0) {
+                alert("請先登入帳號");
+            }
+            else {
+                $("#fa-heart").attr("href","/member/ShowTrackList/")
+            }
+        })
+</script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

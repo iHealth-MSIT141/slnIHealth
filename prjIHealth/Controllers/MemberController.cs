@@ -187,19 +187,29 @@ namespace prjIHealth.Controllers
  
         public IActionResult ShowTrackList()
         {
-            CProductViewModel ProductvModel = new CProductViewModel();
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
         public IActionResult ShowTrackProduct(int? id)//MemberID
         {
-            id = userID;
-            var showProducts = from a in _context.TTrackLists
-                               join b in _context.TProducts
-                               on a.FProductId equals b.FProductId
-                               where a.FMemberId == id
-                               select b;
-            return Json(showProducts);
+            //id = loginUser.FMemberId;
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                var showProducts = from a in _context.TTrackLists
+                                   join b in _context.TProducts
+                                   on a.FProductId equals b.FProductId
+                                   where a.FMemberId == id
+                                   select b;
+                return Json(showProducts);
+            }
         }
 
         public IActionResult DeleteTrackList(int? id) //ProductID
