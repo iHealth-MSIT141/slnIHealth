@@ -189,10 +189,6 @@ namespace prjIHealth.Controllers
  
         public IActionResult ShowTrackList()
         {
-            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
-            {
-                return RedirectToAction("Index", "Home");
-            }
             return View();
         }
 
