@@ -25,6 +25,7 @@ namespace prjIHealth.Controllers
         utilities ul = new utilities();
         public static TMember loginUser = null; 
         public static string userName = "登入";
+        public static int userID = 0;
         private readonly IHealthContext _context;
         private IWebHostEnvironment _environment;
 
@@ -49,7 +50,7 @@ namespace prjIHealth.Controllers
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
                     userName = $"{loginUser.FUserName}";
-                    //userID = loginUser.FMemberId;
+                    userID = loginUser.FMemberId;
                     if (!string.IsNullOrEmpty(ReturnUrl))
                     { return LocalRedirect(ReturnUrl); }
                    return RedirectToAction( "會員專區ViewDemo","Home" );
@@ -182,20 +183,17 @@ namespace prjIHealth.Controllers
                         return RedirectToAction("Index", "Home");
         }
 
-        //========================追蹤清單===========================
-
-        int userID = 0;
+        //========================追蹤清單===========================    
  
         public IActionResult ShowTrackList()
         {
             CProductViewModel ProductvModel = new CProductViewModel();
             return View();
-            //ProductvModel.MemberID = userID;
         }
 
         public IActionResult ShowTrackProduct(int? id)//MemberID
         {
-            id = 1/*userID*/;
+            id = userID;
             var showProducts = from a in _context.TTrackLists
                                join b in _context.TProducts
                                on a.FProductId equals b.FProductId
@@ -207,7 +205,7 @@ namespace prjIHealth.Controllers
         public IActionResult DeleteTrackList(int? id) //ProductID
         {
             var trackList = (from t in _context.TTrackLists
-                             where t.FMemberId == 1/*userID*/ && t.FProductId == id
+                             where t.FMemberId == /*1*/userID && t.FProductId == id
                              select t).FirstOrDefault();
             if (trackList != null)
             {

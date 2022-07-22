@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using prjiHealth.Models;
 using prjiHealth.ViewModels;
+using prjIHealth.Controllers;
 using prjIHealth.Models;
 using prjIHealth.ViewModels;
 using System;
@@ -21,6 +22,8 @@ namespace prjiHealth.Controllers
         {
             dblIHealth = db;
         }
+
+        int userID = MemberController.userID;
 
         public IActionResult ShoppingCartList()
         {
@@ -47,15 +50,14 @@ namespace prjiHealth.Controllers
             return View();
         }
 
-        int userID = 0;
-        public void TakeMemberID(CLoginViewModel vModel)
-        {
-            var q = dblIHealth.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
-            string loginSession = JsonSerializer.Serialize(q);
-            HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
-            TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
-            userID = loginUser.FMemberId;
-        }
+        //public void TakeMemberID(CLoginViewModel vModel)
+        //{
+        //    var q = dblIHealth.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
+        //    string loginSession = JsonSerializer.Serialize(q);
+        //    HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
+        //    TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
+        //    userID = loginUser.FMemberId;
+        //}
 
         //商城搜尋功能
         public IActionResult SearchProduct(string keyword)
@@ -96,7 +98,7 @@ namespace prjiHealth.Controllers
 
             //判定產品有沒有曾出現於該會員的追蹤清單內
             var q = (from a in dblIHealth.TTrackLists
-                     where a.FMemberId == 1 && a.FProductId == id
+                     where a.FMemberId == 8 && a.FProductId == id
                      select a).Count();
 
             if (q != 0)
@@ -107,9 +109,11 @@ namespace prjiHealth.Controllers
             {
                 if (p != null)
                 {
+                    
                     TTrackList trackList = new TTrackList()
                     {
-                        FMemberId = 1/*userID*/,
+                        
+                        FMemberId = userID, 
                         //TODO GET member id
                         FProductId = Convert.ToInt32(id)
                     };
