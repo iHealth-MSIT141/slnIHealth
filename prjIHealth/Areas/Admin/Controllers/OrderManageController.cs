@@ -45,7 +45,7 @@ namespace prjIHealth.Areas.Admin.Controllers
             var pageNumber = page ?? 1;
             var onePageOfPro = pro.ToPagedList(pageNumber, 10);
             ViewBag.onePageOfPro = onePageOfPro;
-            return View(pro);          
+            return View(onePageOfPro);          
         }
         public IActionResult OrderDetailList(int? id)
         {
@@ -155,6 +155,42 @@ namespace prjIHealth.Areas.Admin.Controllers
                            FStatusNumber = o.FStatusNumber,
                            fstatus = o.FStatusNumberNavigation
                        }).ToList();
+            return Json(pro);
+        }
+        public IActionResult Statusselectall()
+        {
+            IHealthContext db = new IHealthContext();
+            var pro = (from o in db.TOrders
+                       join p in db.TPaymentCategories
+                       on o.FPaymentCategoryId equals p.FPaymentCategoryId
+                       join s in db.TStatuses
+                       on o.FStatusNumber equals s.FStatusNumber
+                       join m in db.TMembers
+                       on o.FMemberId equals m.FMemberId
+                       select new COrderViewModel()
+                       {
+                           FOrderId = o.FOrderId,
+                           FPaymentCategoryId = o.FPaymentCategoryId,
+                           fPayment = o.FPaymentCategory,
+                           FDate = o.FDate,
+                           FAddress = o.FAddress,
+                           FMemberId = o.FMemberId,
+                           fmember = o.FMember,
+                           FContact = o.FContact,
+                           FPhone = o.FPhone,
+                           FRemarks = o.FRemarks,
+                           FStatusNumber = o.FStatusNumber,
+                           fstatus = o.FStatusNumberNavigation
+                       }).ToList();
+            return Json(pro);
+        }
+        public IActionResult Pricechange(int id)
+        {
+            IHealthContext db = new IHealthContext();
+            var pro = (from p in db.TProducts
+                       where p.FProductId == id
+                       select p).FirstOrDefault();
+
             return Json(pro);
         }
     }
