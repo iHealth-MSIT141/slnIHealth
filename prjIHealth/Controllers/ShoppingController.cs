@@ -45,11 +45,7 @@ namespace prjiHealth.Controllers
         //商城主頁界面
         public IActionResult ShowShoppingMall()
         {
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
-            {
-                return View();
-            }  
-            return RedirectToAction("Index", "Home");
+            return View();
         }
 
         public int TakeMemberID()
@@ -63,7 +59,7 @@ namespace prjiHealth.Controllers
             }
             return 0;
         }
-            
+
 
         //商城搜尋功能
         public IActionResult SearchProduct(string keyword)
@@ -116,18 +112,20 @@ namespace prjiHealth.Controllers
             {
                 if (p != null)
                 {
-                    
-                    TTrackList trackList = new TTrackList()
+                    if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
                     {
-                        
-                        FMemberId = userID, 
-                        //TODO GET member id
-                        FProductId = Convert.ToInt32(id)
-                    };
-                    dblIHealth.TTrackLists.Add(trackList);
-                    dblIHealth.SaveChanges();
+                        TTrackList trackList = new TTrackList()
+                        {
+                            FMemberId = userID,
+                            //TODO GET member id
+                            FProductId = Convert.ToInt32(id)
+                        };
+                        dblIHealth.TTrackLists.Add(trackList);
+                        dblIHealth.SaveChanges();
+                        return Json(p);
+                    }
                 }
-                return Json(p);
+                return RedirectToAction("ShowShoppingMall");
             }
         }
 
@@ -251,7 +249,7 @@ namespace prjiHealth.Controllers
             return Json(images);
         }
 
-        //顯示各類別前3名圖片
+        //顯示各類別前3名圖片(沒用到先放著)
         public ActionResult ShowTop3Product(int? id)
         {
             // var top3PopularProduct = null;
@@ -268,7 +266,7 @@ namespace prjiHealth.Controllers
                                       into g
                                       select new
                                       {
-                                          Key = g.Key, 
+                                          Key = g.Key,
                                           Count = g.Sum(od => od.FQuantity),
                                           Photo = g.Key.FCoverImage,
                                           UnitPrice = g.Key.FUnitprice
@@ -283,10 +281,10 @@ namespace prjiHealth.Controllers
             ArrayList list = new ArrayList();
             Random rd = new Random(Guid.NewGuid().GetHashCode());
             int count = dblIHealth.TProducts.Count();
-            int num = rd.Next(1, count);
-
+            int num = 0;
             for (int i = 0; i < 4; i++)
             {
+                num = rd.Next(1, count);
                 TProduct rdProduct = (from t in dblIHealth.TProducts
                                       where t.FProductId == num
                                       select t).FirstOrDefault();

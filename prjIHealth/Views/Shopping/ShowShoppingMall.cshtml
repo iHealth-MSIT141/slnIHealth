@@ -306,7 +306,6 @@
                     showProductDetail(id);
                 })
                 async function showProductDetail(id) {
-                    //TODO
                     var data = {};
                     data.FProductId = id;
                     data.FProductName = 1;
@@ -317,9 +316,15 @@
                 $("#showProduct").delegate(".addToTrack", "click", function (event) {
                     event.preventDefault();
                     id = $(this).attr("data-id");
-                    addTrack(id);
-                    alert("已成功加入追蹤清單");
-                    console.log("text");
+                    if (@MemberController.userID== 0) {
+                        alert("請先登入會員");
+                        $("#loginModal").modal("show");
+                    }
+                    else {
+                        alert("已成功加入追蹤清單");
+                        addTrack(id);
+                    }
+
                 })
                 async function addTrack(id) {
                     url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
@@ -332,9 +337,16 @@
                 $("#showProduct").delegate(".addToCart", "click", function (event) {
                     event.preventDefault();
                     id = $(this).attr("data-id");
-                    addCart(id);
-                    alert("已成功加入購物車");
-                    console.log("text");
+                    if (@MemberController.userID == 0) {
+                        alert("請先登入會員");
+                        $("#loginModal").modal("show");
+
+                    }
+                    else
+                    {
+                        addCart(id);
+                        alert("已成功加入購物車");
+                    }
                 })
                 async function addCart(id) {
                     //TODO

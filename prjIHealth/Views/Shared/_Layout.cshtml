@@ -45,7 +45,7 @@
         </div>
         <div class="humberger__menu__cart">
             <ul>
-                <li><a href="/member/showtracklist/"><i class="fa fa-heart"></i> <span></span></a></li>
+                <li><a href="" id="fa-heart"><i class="fa fa-heart"></i> <span></span></a></li>
                 <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
                 <li class="header__top__right__auth"><a href="~/Home/會員專區ViewDemo"><i class="fa fa-user"></i>Login</a></li>
             </ul>
@@ -105,7 +105,6 @@
                                         @*<a href="#"><i class="fa fa-user"></i> Login</a>*@
                                         <li><a href="" id="fa-heart"><i class="fa fa-heart"></i> <span></span></a></li>
                                         <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
-
                                     </ul>
                                 </div>
                             </div>
@@ -133,15 +132,15 @@
                                 <li>
                                     <a href="~/shopping/ShowShoppingMall">周邊商城</a>
                                 </li>
-                                    @*<ul class="header__menu__dropdown">
-                <li><a href="./shop-details">Shop Details</a></li>
-                <li><a href="./shoping-cart">Shoping Cart</a></li>
-                <li><a href="./checkout">Check Out</a></li>
-                <li><a href="./blog-details">Blog Details</a></li>
-            </ul>*@
-                               
+                                @*<ul class="header__menu__dropdown">
+                                        <li><a href="./shop-details">Shop Details</a></li>
+                                        <li><a href="./shoping-cart">Shoping Cart</a></li>
+                                        <li><a href="./checkout">Check Out</a></li>
+                                        <li><a href="./blog-details">Blog Details</a></li>
+                                    </ul>*@
+
                                 <li>
-                                <a href="~/Body/BodyCalculatorMain">BODY計算器</a>
+                                    <a href="~/Body/BodyCalculatorMain">BODY計算器</a>
                                 </li>
                                 <li>
                                     <a href="~/Home/signalRChat">聊天室</a>
@@ -150,7 +149,7 @@
                         </nav>
                     </div>
                     <div class="col-lg-2">
-                        
+
                         <div class="header__menu">
                             <ul>
 
@@ -168,7 +167,7 @@
                                         {
                                             <ul>
                                                 <li><span>@MemberController.userName</span></li>
-                                                <li>   <a href="~/Member/Logout"><i class="fa fa-user"></i>登出</a></li>
+                                                <li><a href="~/Member/Logout"><i class="fa fa-user"></i>登出</a></li>
                                             </ul>
                                         }
                                         <span id="sessionTest"></span>
@@ -286,7 +285,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-content justify-content-center">
-                    <h4 class=" col-12 modal-title w-100 text-center" id="exampleModalLabel" >歡迎登入IHealth會員! </h4>
+                    <h4 class=" col-12 modal-title w-100 text-center" id="exampleModalLabel">歡迎登入IHealth會員! </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -364,11 +363,11 @@
                             <label for="fEmail">電子郵件信箱</label>
                             <input type="text" class="form-control" id="fEmail" name="fEmail" placeholder="電子郵件信箱">
                         </div>
-                   
+
                         <div class="d-md-flex justify-content-start align-items-center mb-4 py-2" id="divGender">
                             <h6 class="mb-0 me-4">生理性別: </h6>
                             <div class="form-check form-check-inline mb-0 me-4">
-                                <input type="radio" class="form-check-input" id="femalGender" name="fGender" value="false" >
+                                <input type="radio" class="form-check-input" id="femalGender" name="fGender" value="false">
                                 <label class="form-check-label" for="fGender">生理女性</label>
                             </div>
                             <div class="form-check form-check-inline mb-0 me-4">
@@ -479,7 +478,7 @@
                         </div>
                     </form>
                 </div>
-              
+
             </div>
         </div>
     </div>
@@ -501,13 +500,11 @@
         ScrollReveal().reveal('.reveal_b3', { duration: 1100, origin: 'bottom', distance: '500px', delay: 200 });
         ScrollReveal().reveal('.reveal_l1', { duration: 1100, origin: 'left', distance: '500px' });
         ScrollReveal().reveal('.reveal_r1', { duration: 1100, origin: 'right', distance: '500px' });
-        var onResize = function ()
-        {
+        var onResize = function () {
             $("body").css("padding-top", $(".fixed-top").height());
         };
         $(window).resize(onResize);
-        $(function ()
-        {
+        $(function () {
             onResize();
         });
         var registerD = new Date();
@@ -519,16 +516,16 @@
     </script>
 
     @*商城部份*@
-<script>
+    <script>
     $(".fa-heart").click(function () {
         if (@MemberController.userID == 0) {
                 alert("請先登入帳號");
             }
-            else {
+        else{
                 $("#fa-heart").attr("href","/member/ShowTrackList/")
             }
         })
-</script>
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
