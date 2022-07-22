@@ -12,154 +12,176 @@
             margin-left: 20vw;
             margin-right: 20vw;
         }
-        /*        <h2 id="title">管理頁Demo</h2>*/
+
     </style>
 }
 <h2 id="title">會員資料編輯</h2>
 <hr />
 @*<h4>TMember</h4>*@
 <hr />
-<div class="row justify-content-center ">
-    <div class="col-md-4 border border-primary mt-md-8">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="FMemberId" />
-            <div class="form-group">
+<form asp-action="Edit" enctype="multipart/form-data">
+    <div class="container">
+        <div class="row">
+            <div class="col-4 ">
+                <div class="col-md-12" style="padding-left: 0px;  padding-right: 0px;">
+                    <div class="form-group row justify-content-center">
+                        <img src="~/img/member/@Model.FPicturePath"  onerror="this.src='/img/member/defaultImage.jpg'" alt=" " class="rounded-circle img-responsive  border border-ligt" id="imgShow" />
+                    </div>
+
+                </div>
+                <div class="form-group  justify-content-center">
+                        <div class="col">
+                        <label id="lblPicture"
+                               class="col-form-label col-form-label-lg">
+                            <input id="imgLoad" type="file" name="photo" class="form-control" style="display:none;"/>
+                            <i class="fa fa-photo"></i> 上傳圖片
+                       </label>
+                        
+                    </div>
+                </div>
             </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FMemberName" class="control-label"></label>
+            <div class="col border border-primary mt-md-8">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="FMemberId" />
+                <div class="form-group">
                 </div>
-                <div class="col-md-7">
-                    <input asp-for="FMemberName" class="form-control" />
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FMemberName" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FMemberName" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FMemberName" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="FMemberName" class="text-danger"></span>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FPassword" class="control-label"></label>
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FPassword" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FPassword" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FPassword" class="text-danger"></span>
                 </div>
-                <div class="col-md-7">
-                    <input asp-for="FPassword" class="form-control" />
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FBirthday" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FBirthday" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FBirthday" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="FPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FBirthday" class="control-label"></label>
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FGender" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FGender" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FGender" class="text-danger"></span>
                 </div>
-                <div class="col-md-7">
-                    <input asp-for="FBirthday" class="form-control" />
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FUserName" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FUserName" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FUserName" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="FBirthday" class="text-danger"></span>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FGender" class="control-label"></label>
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FAddress" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FAddress" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FAddress" class="text-danger"></span>
                 </div>
-                <div class="col-md-7">
-                    <input asp-for="FGender" class="form-control" />
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FPhone" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FPhone" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FPhone" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="FGender" class="text-danger"></span>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FPicturePath" class="control-label"></label>
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FEmail" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FEmail" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FEmail" class="text-danger"></span>
                 </div>
-                <div class="col-md-7">
-                    <input asp-for="FPicturePath" class="form-control" />
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FRegisterDate" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FRegisterDate" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FRegisterDate" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="FPicturePath" class="text-danger"></span>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FUserName" class="control-label"></label>
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FAuthorityId" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <select asp-for="FAuthorityId" class="form-control" asp-items="ViewBag.FAuthorityId"></select>
+                    </div>
+                    <span asp-validation-for="FAuthorityId" class="text-danger"></span>
+
                 </div>
-                <div class="col-md-7">
-                    <input asp-for="FUserName" class="form-control" />
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FDisabled" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FDisabled" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FDisabled" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="FUserName" class="text-danger"></span>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FAddress" class="control-label"></label>
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <label asp-for="FRemarks" class="control-label"></label>
+                    </div>
+                    <div class="col-md-7">
+                        <input asp-for="FRemarks" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FRemarks" class="text-danger"></span>
                 </div>
-                <div class="col-md-7">
-                    <input asp-for="FAddress" class="form-control" />
+       
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-3">
+                        <input type="submit" value="存檔" class="btn btn-primary" onclick="history.back()"/>
+                    </div>
+                    <div class="col-md-7">
+                        <input type="button" value="回上一頁" onclick="history.back()">
+
+                        @*<a asp-action="Index" class="btn btn-success">回會員資料管理列表</a>*@
+                    </div>
                 </div>
-                <span asp-validation-for="FAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FPhone" class="control-label"></label>
-                </div>
-                <div class="col-md-7">
-                    <input asp-for="FPhone" class="form-control" />
-                </div>
-                <span asp-validation-for="FPhone" class="text-danger"></span>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FEmail" class="control-label"></label>
-                </div>
-                <div class="col-md-7">
-                    <input asp-for="FEmail" class="form-control" />
-                </div>
-                <span asp-validation-for="FEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FRegisterDate" class="control-label"></label>
-                </div>
-                <div class="col-md-7">
-                    <input asp-for="FRegisterDate" class="form-control" />
-                </div>
-                <span asp-validation-for="FRegisterDate" class="text-danger"></span>
 
             </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FAuthorityId" class="control-label"></label>
-                </div>
-                <div class="col-md-7">
-                    <select asp-for="FAuthorityId" class="form-control" asp-items="ViewBag.FAuthorityId"></select>
-                </div>
-                <span asp-validation-for="FAuthorityId" class="text-danger"></span>
-
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FDisabled" class="control-label"></label>
-                </div>
-                <div class="col-md-7">
-                    <input asp-for="FDisabled" class="form-control" />
-                </div>
-                <span asp-validation-for="FDisabled" class="text-danger"></span>
-
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <label asp-for="FRemarks" class="control-label"></label>
-                </div>
-                <div class="col-md-7">
-                    <input asp-for="FRemarks" class="form-control" />
-                </div>
-                <span asp-validation-for="FRemarks" class="text-danger"></span>
-
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-md-3">
-                    <input type="submit" value="存檔" class="btn btn-primary" />
-                </div>
-                <div class="col-md-7">
-                    <a asp-action="Index" class="btn btn-success">回會員資料管理列表</a>
-                </div>
-
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
+</form>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    $('#lblPicture').mouseover(function ()
+    {
+        $(this).css('cursor', 'pointer');
+    });
+  $()
+   document.querySelector('#imgLoad').addEventListener("change", function ()
+   {
+       document.getElementById('imgShow').src = window.URL.createObjectURL(this.files[0]);
+       });
+</script>
 }

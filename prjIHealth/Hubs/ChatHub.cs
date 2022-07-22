@@ -1,39 +1,73 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNet.SignalR.Hubs;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using prjiHealth.Models;
+using prjIHealth.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace CoreMVC_SignalR_Chat.Hubs
 {
     public class ChatHub : Hub
     {
         // 用戶連線 ID 列表
-        public static List<string> ConnIDList = new List<string>();
-
+        //public static List<string> ConnIDList = new List<string>();
         /// <summary>
         /// 連線事件
         /// </summary>
-        /// <returns></returns>
-        public override async Task OnConnectedAsync()
+        /// <returns></returns>    
+        /// 
+        class ChatUser
         {
+            public string ConnectionId { get; set; }
+            public string userName { get; set; }
+        }
 
-            if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)
+        private static readonly List<ChatUser> chatUsers = new List<ChatUser>();
+
+        //then you do inside your class:
+
+     
+ 
+           public override async Task OnConnectedAsync()
+        {
+            if (chatUsers.Where(p => p.ConnectionId == Context.ConnectionId).FirstOrDefault() == null)
             {
-                ConnIDList.Add(Context.ConnectionId);
+                chatUsers.Add(new ChatUser { ConnectionId=Context.ConnectionId, userName="user" });
             }
             // 更新連線 ID 列表
-            string jsonString = JsonConvert.SerializeObject(ConnIDList);
+
+            string jsonString = JsonConvert.SerializeObject(chatUsers);
             await Clients.All.SendAsync("UpdList", jsonString);
 
             // 更新個人 ID
-            await Clients.Client(Context.ConnectionId).SendAsync("UpdSelfID", Context.ConnectionId);
+     
+            await Clients.Client(chatUsers[0].ConnectionId).SendAsync("UpdSelfID", chatUsers[0].ConnectionId);
 
             // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", "新連線 ID: " + Context.ConnectionId);
-
+            //await Clients.All.SendAsync("UpdContent", "新連線 ID: " + chatUsers[0].ConnectionId);
+            await Clients.All.SendAsync("UpdContent");
             await base.OnConnectedAsync();
+
+
+
+            //if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)
+            //{
+            //    ConnIDList.Add(Context.ConnectionId);
+            //}
+            // 更新連線 ID 列表
+            //string jsonString = JsonConvert.SerializeObject(ConnIDList);
+            //await Clients.All.SendAsync("UpdList", jsonString);
+
+            //// 更新個人 ID
+            //await Clients.Client(Context.ConnectionId).SendAsync("UpdSelfID", Context.ConnectionId);
+
+            //// 更新聊天內容
+            //await Clients.All.SendAsync("UpdContent", "新連線 ID: " + Context.ConnectionId);
+
+            //await base.OnConnectedAsync();
         }
 
         /// <summary>
@@ -41,22 +75,22 @@ namespace CoreMVC_SignalR_Chat.Hubs
         /// </summary>
         /// <param name="ex"></param>
         /// <returns></returns>
-        public override async Task OnDisconnectedAsync(Exception ex)
-        {
-            string id = ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault();
-            if (id != null)
-            {
-                ConnIDList.Remove(id);
-            }
-            // 更新連線 ID 列表
-            string jsonString = JsonConvert.SerializeObject(ConnIDList);
-            await Clients.All.SendAsync("UpdList", jsonString);
+        //public override async Task OnDisconnectedAsync(Exception ex)
+        //{
+        //    string id = ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault();
+        //    if (id != null)
+        //    {
+        //        ConnIDList.Remove(id);
+        //    }
+        //    // 更新連線 ID 列表
+        //    string jsonString = JsonConvert.SerializeObject(ConnIDList);
+        //    await Clients.All.SendAsync("UpdList", jsonString);
 
-            // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", "已離線 ID: " + Context.ConnectionId);
+        //    // 更新聊天內容
+        //    await Clients.All.SendAsync("UpdContent", "已離線 ID: " + Context.ConnectionId);
 
-            await base.OnDisconnectedAsync(ex);
-        }
+        //    await base.OnDisconnectedAsync(ex);
+        //}
 
         /// <summary>
         /// 傳遞訊息
@@ -81,4 +115,5 @@ namespace CoreMVC_SignalR_Chat.Hubs
             }
         }
     }
+
 }

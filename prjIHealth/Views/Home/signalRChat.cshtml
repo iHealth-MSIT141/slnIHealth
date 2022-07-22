@@ -39,13 +39,13 @@
     </style>
 }
 
-@*banner大圖*@
+banner大圖
 <section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    @*h2內容請自行更換*@
+                    h2內容請自行更換
                     <h2 class="reveal_t1">會員專區Demo</h2>
                     <div class="breadcrumb__option reveal_t1">
                         <a href="./index.html">Home</a>
@@ -82,17 +82,21 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-7" style="height:400px">
-                <h1>即時聊天範例</h1>
+                <h3>會員聊天室</h3>
 
                 <div class="row">
                     <div class="col-8">
                         <h4>個人 ID: <span id="SelfID"></span></h4>
                         <div class="mb-3">
+                            <label for="userName" class="form-label">userName</label>
+                            <input type="text" class="form-control" id="userName" placeholder="Input your name?">
+                        </div>
+                        <div class="mb-3">
                             <label for="message" class="form-label">發送訊息</label>
                             <input type="text" class="form-control" id="message">
                         </div>
                         <div class="mb-3">
-                            <label for="sendToID" class="form-label">指定 ID</label>
+                            <label for="sendToID" class="form-label">指定 ID(私訊)</label>
                             <input type="text" class="form-control" id="sendToID">
                         </div>
                         <button type="button" class="btn btn-primary" id="sendButton">傳送訊息</button>
@@ -111,9 +115,6 @@
                         </ul>
                     </div>
                 </div>
-
-      
-                }
             </div>
         </div>
     </div>
@@ -123,7 +124,6 @@
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script>
         var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-
         //與Server建立連線
         connection.start().then(function ()
         {
@@ -137,10 +137,12 @@
         connection.on("UpdList", function (jsonList)
         {
             var list = JSON.parse(jsonList);
+          /*  console.log(list[0].ConnectionId);*/
             $("#IDList li").remove();
             for (i = 0; i < list.length; i++)
             {
-                $("#IDList").append($("<li></li>").attr("class", "list-group-item").text(list[i]));
+                console.log(list.length);
+                $("#IDList").append($("<li></li>").attr("class", "list-group-item").text(list[i].ConnectionId));
             }
         });
 
@@ -153,13 +155,18 @@
         // 更新聊天內容事件
         connection.on("UpdContent", function (msg)
         {
+           /* $("#Content").empty();*/
+        //    console.log(msg);
             $("#Content").append($("<li></li>").attr("class", "list-group-item").text(msg));
+          /*  $("#Content").append($("<li></li>").text(msg));*/
+
         });
 
-        //傳送訊息
+        /*傳送訊息*/
         $('#sendButton').on('click', function ()
         {
-            let selfID = $('#SelfID').html();
+             let selfID=$("#userName").val();
+         /*   let selfID = $('#SelfID').html();*/
             let message = $('#message').val();
             let sendToID = $('#sendToID').val();
             connection.invoke("SendMessage", selfID, message, sendToID).catch(function (err)
