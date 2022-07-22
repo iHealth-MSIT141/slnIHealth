@@ -53,7 +53,7 @@ namespace prjIHealth.Controllers
                     userID = loginUser.FMemberId;
                     if (!string.IsNullOrEmpty(ReturnUrl))
                     { return LocalRedirect(ReturnUrl); }
-                   return RedirectToAction( "會員專區ViewDemo","Home" );
+                   return RedirectToAction( "Edit","Member" );
                 }
             }
             return RedirectToAction("Index", "Home");

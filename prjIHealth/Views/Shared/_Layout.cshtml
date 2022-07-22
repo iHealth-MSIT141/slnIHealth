@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
-
+    <link href="~/css/sweetalert2.css" rel="stylesheet" />
     <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
 
     @await RenderSectionAsync("Styles", required: false)
@@ -93,7 +93,14 @@
                         <div class="header__top__left">
                             <ul>
                                 <li><a href="~/problem/ReplyProblem" style="color:black;"><i class="fa fa-envelope"></i>聯絡我們</a></li>
-                                <li>歡迎加入會員 和我們一起迎向健康新生活！</li>
+                                @if (@MemberController.userName == "登入")
+                                {
+                                    <li>歡迎<a href="" data-toggle="modal" data-target="#register1Modal" data-dismiss="modal" style="color:#7fad39;font-weight:600">加入會員</a>和我們一起迎向健康新生活！</li>
+                                }
+                                else
+                                {
+                                    <li>歡迎來到 iHEALTH健康生活平台！線上商城全面9折優惠中～輸入折扣碼>><span style="color:#7fad39;font-weight:600">q9o2K33</span></li>
+                                }
                             </ul>
                         </div>
                     </div>
@@ -158,23 +165,19 @@
                                     <div class="header__top__right__auth">
                                         @if (@MemberController.userName == "登入")
                                         {
-                                            <button type="button" id="btnLogin" class="btn btn-primary mb-3" data-toggle="modal" data-target="#loginModal">
-                                                @MemberController.userName <i class="fa fa-user"></i>
-                                            </button>
-                                            @*<a href="~/Member/Login"><i class="fa fa-user"></i>@MemberController.userName</a>*@
+                                            <a id="btnLogin" data-toggle="modal" data-target="#loginModal" href="">
+                                                <i class="fa fa-user"></i>@MemberController.userName
+                                            </a>
                                         }
                                         else
                                         {
-                                            <ul>
-                                                <li><span>@MemberController.userName</span></li>
-                                                <li><a href="~/Member/Logout"><i class="fa fa-user"></i>登出</a></li>
+                                            <a href="~/Member/Edit"><i class="fa fa-user"></i>Hi~@MemberController.userName</a>
+                                            <ul class="header__menu__dropdown">
+                                                <li><a href="~/Member/Edit">會員專區</a></li>
+                                                <li><a href="~/Coach/ManageResume">教練專區</a></li>
+                                                <li><a href="~/Member/Logout">登出<i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
                                             </ul>
                                         }
-                                        <span id="sessionTest"></span>
-                                        <ul class="header__menu__dropdown">
-                                            <li><a href="~/Member/Edit">會員專區</a></li>
-                                            <li><a href="~/Coach/ManageResume">教練專區</a></li>
-                                        </ul>
                                     </div>
                                 </li>
                             </ul>
@@ -198,7 +201,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="~/Admin/Admin/管理頁Demo"><h3>iHealth</h3></a>
+                            <a href="~/Admin/Admin/AdminHome"><h3>iHealth</h3></a>
                         </div>
                         <ul>
                             <li>Address: 台北市大安區復興南路一段390號2樓</li>
@@ -292,6 +295,7 @@
                 </div>
                 <div class="modal-body">
                     <form action="~/Member/Login" id="addForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                        <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
                         <div class="form-group">
                             <label for="fUserName">使用者帳號</label>
                             <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號">
@@ -335,6 +339,7 @@
                 </div>
                 <div class="modal-body">
                     <form asp-action="Register" asp-controller="Member">
+                        <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
                         <div class="form-group">
                             <label for="fUserName">使用者帳號</label>
                             <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號,至少需二個字(含)以上">
@@ -492,8 +497,40 @@
     <script src="/js/mixitup.min.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
     <script src="/js/main.js"></script>
-    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="~/js/ScrollReveal.js"></script>
+    <script src="~/js/sweetalert2.js"></script>
     <script>
+        //SweetAlert Button樣式調整
+        const SwalGreen = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false
+        })
+
+        //需登入的頁面去登入
+        function pleaseLogin() {
+            $("#inpReturnUrl").val($(event.target).attr("data-nexthref"));
+            console.log($("#inpReturnUrl").val());
+            SwalGreen.fire({
+                title: `您尚未登入`,
+                showDenyButton: false,
+                showCancelButton: false,
+                confirmButtonText: '前往登入',
+                icon: 'warning'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#loginModal").modal("show");
+                }
+            })
+        }
+        $("btnLogin").click(function () {
+            $("#inpReturnUrl").val("");
+        })
+
+        //動畫
+
         ScrollReveal().reveal('.reveal_t1', { duration: 1000, origin: 'top', distance: '100px' });
         ScrollReveal().reveal('.reveal_b1', { duration: 1100, origin: 'bottom', distance: '500px' });
         ScrollReveal().reveal('.reveal_b2', { duration: 1100, origin: 'bottom', distance: '500px', delay: 100 });
