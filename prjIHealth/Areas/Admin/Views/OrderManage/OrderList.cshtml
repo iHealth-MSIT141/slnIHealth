@@ -18,6 +18,7 @@
 
             <div class="col-lg-12">
                 <div class="shoping__cart__table">
+
                     <div class="col-lg-4">
                         <select id="Statussearch" name="Statussearch" class="custom-select">
                             <option disabled selected hidden>依狀態篩選</option>
@@ -28,6 +29,10 @@
                             <option value="74">交易完成</option>
                         </select>
                     </div>
+                    <div class="col-lg-2" style="margin-left:0%;padding:20px">
+                        <button class="primary-btn " name="btnreset" id="btnreset">清空篩選</button>
+                    </div>
+
                     <table style="table-layout:fixed">
                         <thead>
                             <tr>
@@ -120,6 +125,7 @@
 @section Scripts{
     <script>
         $('#Statussearch').on('change', Catrgorychange);
+        $('#btnreset').on('click', resetclick);
 
         async function Catrgorychange() {
             $('#ListPro>tr').remove();
@@ -127,6 +133,65 @@
             const response = await fetch("@Url.Content("~/Admin/OrderManage/Statusselect")" + `?id=${changecat}`);
             const datas = await response.json();
             console.log(datas);
+            let tr = '';
+
+            for (i = 0; i < datas.length; i++) {
+                let fixrem = '';
+                let fixadr = '';
+                let fixpho = '';
+                if (datas[i].fRemarks != null) {
+                    fixrem = datas[i].fRemarks.substr(0,10);
+                }
+                if (datas[i].fAddress != null) {
+                    fixadr = datas[i].fAddress.substr(0, 5);
+                }
+                if (datas[i].fPhone != null) {
+                    fixpho = datas[i].fPhone.substr(0, 6);
+                }
+                tr = `<tr>
+                                        <td style="margin-left: auto;text-align:center;">
+                                            <input type="hidden" value="${datas[i].fOrderId}" id="FOrderId" name="FOrderId" />
+                                            <input type="hidden" value="${datas[i].fMemberId}" id="FMemberId" name="FMemberId" />
+                                            <input type="hidden" value="${datas[i].fStatusNumber}" id="FStatusNumber" name="FStatusNumber" />
+                                            <input type="hidden" value="${datas[i].fstatus.fStatusNumber}" id="fstatus.FStatusNumber" name="fstatus.FStatusNumber" />
+                                            <input type="hidden" value="${datas[i].fPayment.fPaymentCategoryId}" id="fPayment.FPaymentCategoryId" name="fPayment.FPaymentCategoryId" />
+                                           ${datas[i].fmember.fMemberName}
+                                        </td>
+                                        <td style="margin-left: auto;text-align:center;">
+                                           ${datas[i].fContact}
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
+                                           ${fixpho}...
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center; ">
+                                           ${fixadr}...
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;">
+                                           ${datas[i].fDate}
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;">
+                                           <input type="hidden" value="${datas[i].fPaymentCategoryId}" id="FPaymentCategoryId" name="FPaymentCategoryId" />
+                                           ${datas[i].fPayment.fPaymentCategory}
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;">
+                                          ${datas[i].fstatus.fStatus}
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;">
+                                           ${fixrem}
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;">
+                                           <a class="primary-btn cart-btn " href="/Admin/OrderManage/OrderEdit/${datas[i].fOrderId}">修改訂單</a><br />
+                                           <a class="primary-btn cart-btn" href="/Admin/OrderManage/OrderdetailList/${datas[i].fOrderId}">訂單明細</a>
+                                        </td>
+                                    </tr>`
+                $('#ListPro').append(tr);
+            }
+        }
+         //=======================================================================================================================================
+         async function resetclick() {
+            $('#ListPro>tr').remove();
+            const response = await fetch("@Url.Content("~/Admin/OrderManage/Statusselectall")" );
+            const datas = await response.json();
             let tr = '';
 
             for (i = 0; i < datas.length; i++) {

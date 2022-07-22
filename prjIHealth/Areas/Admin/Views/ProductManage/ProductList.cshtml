@@ -107,14 +107,11 @@
            /* console.log(datas);*/
             let tr = '';
             for (i = 0; i < datas.length; i++) {
-                let fixdesr = '';
-                let fixcat = '';
+                let fixdesr = '';           
                 if (datas[i].fDescription != null) {
                     fixdesr = datas[i].fDescription.substr(0,10);
                 }
-                if (datas[i].FCategoryName != null) {
-                    fixcat = datas[i].FCategoryName;
-                }
+                
                 tr = `<tr>
                         <td class="shoping__cart__item" style="margin-left: auto; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                 <img src="/img/product/${datas[i].fCoverImage}" style="width:30%;height:30%;" /> <span>${datas[i].fProductName}</span>
@@ -122,7 +119,7 @@
                             <td style="margin-left:auto; text-align:center;">
                                 <input type="hidden" value=" ${datas[i].fCategoryID})" id="fCategoryID" name="fCategoryID" />
                                 <input type="hidden" value=" ${datas[i].fProductID})" id="fProductID" name="fProductID" />
-                                ${fixcat}
+                                ${datas[i].fCategoryName.fCategoryName}
                             </td>
                             <td style="margin-left:auto">
                                ${datas[i].fUnitprice}
