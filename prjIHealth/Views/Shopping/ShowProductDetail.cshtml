@@ -38,6 +38,7 @@
                             </div>
                             <div class="product__details__pic__slider owl-carousel">
                                 @{
+                                    //由於CSS關係 只取4張或以下圖片
                                     IHealthContext dblIHealth = new IHealthContext();
                                     var images = (from p in dblIHealth.TProducts
                                                   join i in dblIHealth.TProductsImages
@@ -88,65 +89,7 @@
                             </div>
                         </div>
                         <div class="row" id="suggestProduct">
-                            @*<div class="col-lg-3 col-md-4 col-sm-6">
-                                    <div class="product__item">
-                                        <div onclick="location.href='/Shopping/ShowProductDetail';" class="product__item__pic set-bg" data-setbg="/img/prjproduct/f2.jpg" style="background-image: url(&quot;img/product/product-1.jpg&quot;);">
-                                            <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__item__text">
-                                            <h6><a href="#">Crab Pool Security</a></h6>
-                                            <h5>$30.00</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6">
-                                    <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f3.jpg" style="background-image: url(&quot;img/product/product-2.jpg&quot;);">
-                                            <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__item__text">
-                                            <h6><a href="#">Crab Pool Security</a></h6>
-                                            <h5>$40.00</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6">
-                                    <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f4.jpg" style="background-image: url(&quot;img/product/product-3.jpg&quot;);">
-                                            <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__item__text">
-                                            <h6><a href="#">Crab Pool Security</a></h6>
-                                            <h5>$50.00</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6">
-                                    <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f5.jpg" style="background-image: url(&quot;img/product/product-7.jpg&quot;);">
-                                            <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__item__text">
-                                            <h6><a href="#">Crab Pool Security</a></h6>
-                                            <h5>$60.00</h5>
-                                        </div>
-                                    </div>
-                                </div>*@
+                           @*動態生成*@
                         </div>
                     </div>
                 </section>
@@ -208,12 +151,12 @@
                                     <div class="product__item">
                                         <div class="product__item__pic set-bg" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
                                             <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                                <li><a href="#" data-id="${product.fProductId}" class="addToTrackInDetail"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#" data-id="${product.fProductId}" class="addToCartInDetail"><i class="fa fa-shopping-cart"></i></a></li>
                                             </ul>
                                         </div>
                                         <div class="product__item__text">
-                                            <h6><a href="#">${product.fProductName}</a></h6>
+                                            <h6 id="showProductDetailInDetail" data-id="${product.fProductId}">${product.fProductName}</h6>
                                             <h5>$${product.fUnitprice}</h5>
                                         </div>
                                     </div>
@@ -221,6 +164,65 @@
             })
             $("#suggestProduct").html(htmlShowProduct);
         })
+
+        //推薦商品的部份
+        //按品名會彈出相對應商品明細
+                $("#suggestProduct").delegate("#showProductDetailInDetail", "click", function () {
+                    id = $(this).attr("data-id");
+                    location.href = `/Shopping/ShowProductDetail/${id}`;
+                    showProductDetail(id);
+                })
+                async function showProductDetail(id) {
+                    var data = {};
+                    data.FProductId = id;
+                    data.FProductName = 1;
+                    $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
+                }
+
+                //按心心會加入追蹤清單
+                $("#suggestProduct").delegate(".addToTrackInDetail", "click", function (event) {
+                    event.preventDefault();
+                    id = $(this).attr("data-id");
+                    if (@MemberController.userID== 0) {
+                        alert("請先登入會員");
+                        $("#loginModal").modal("show");
+                    }
+                    else {
+                        alert("已成功加入追蹤清單");
+                        addTrack(id);
+                    }
+
+                })
+                async function addTrack(id) {
+                    url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
+                    let response = await fetch(url);
+                    let datas = await response.json();
+                    console.log(datas);
+                }
+
+                //按購物車會加入到購物車
+                $("#suggestProduct").delegate(".addToCartInDetail", "click", function (event) {
+                    event.preventDefault();
+                    id = $(this).attr("data-id");
+                    if (@MemberController.userID == 0) {
+                        alert("請先登入會員");
+                        $("#loginModal").modal("show");
+
+                    }
+                    else
+                    {
+                        addCart(id);
+                        alert("已成功加入購物車");
+                    }
+                })
+                async function addCart(id) {
+                    //TODO
+                    var data = {};
+                    data.txtFid = id;
+                    data.txtCount = 1;
+                    $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
+                }
+
         @*//顯示商品圖片
         function showImages() {
             let url = "@Url.Content("~/Shopping/ShowProductImages/")" + @Model.FProductId;
