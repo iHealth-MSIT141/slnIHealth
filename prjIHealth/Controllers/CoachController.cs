@@ -48,13 +48,13 @@ namespace prjiHealth.Controllers
             }
 
             return View(contactViewModels);
-        }
+        } //教練專區-招生紀錄
         public IActionResult changeContactStatus(TCoachContact contact)
         {
             db.TCoachContacts.FirstOrDefault(c => c.FCoachContactId == contact.FCoachContactId).FStatusNumber = contact.FStatusNumber;
             db.SaveChanges();
             return Content("");
-        }
+        } //教練專區-招生紀錄:改變聯繫狀態
 
         public IActionResult showMember(int? memberId)
         {
@@ -64,16 +64,80 @@ namespace prjiHealth.Controllers
             };
 
             return Json(member);
-        }
+        } //教練專區-招生紀錄:顯示學員資料
         public IActionResult createCourse(TCourse course)
         {
+            //加入課程
             course.FStatusNumber = 55;
             course.FVisible = true;
             db.TCourses.Add(course);
+
+            //改變聯繫狀態
+            db.TCoachContacts.FirstOrDefault(c => c.FCoachContactId == course.FCoachContactId).FStatusNumber = 52;
+
+            db.SaveChanges(); 
+
+            //計算排課起始日
+            int day = 0;
+            switch (DateTime.Now.DayOfWeek.ToString())
+            {
+                case "Monday":
+                    day = 1;
+                    break;
+                case "Tuesday":
+                    day = 2;
+                    break;
+                case "Wednesday":
+                    day = 3;
+                    break;
+                case "Thursday":
+                    day = 4;
+                    break;
+                case "Friday":
+                    day = 5;
+                    break;
+                case "Saturday":
+                    day = 6;
+                    break;
+                case "Sunday":
+                    day = 7;
+                    break;
+            }
+            int courseDay = int.Parse(course.FAvailableTimeNum.ToString().Substring(0, 1));
+            DateTime date;
+            if ((courseDay - day) > 0)
+            {
+                int interval = 7 - (courseDay - day);
+                date = DateTime.Now.AddDays(interval);
+            }
+            else
+            {
+                int interval = 7 - (day - courseDay);
+                date = DateTime.Now.AddDays(interval);
+            }
+            //計算上課時間
+            string courseTime = course.FAvailableTimeNum.ToString().Substring(1, course.FAvailableTimeNum.ToString().Length - 1);
+            if (courseTime.Length < 2)
+                courseTime = $"0{courseTime}00";
+            else
+                courseTime = $"{courseTime}00";
+
+            //加入排課
+            for(int i = 0; i < course.FCourseTotal; i++)
+            {
+                TReservation reservation = new TReservation()
+                {
+                    FCourseId=course.FCourseId,
+                    FCourseTime=date.ToString("yyyyMMdd")+courseTime,
+                    FStatusNumber=60
+                };
+                db.TReservations.Add(reservation);
+                date = date.AddDays(7);
+            }
             db.SaveChanges();
 
             return Content("");
-        }
+        } //教練專區-招生紀錄:新增課程&排課
         public IActionResult loadContact(int? flag, int? statusNum)    //教練專區-招生紀錄:依聯繫時間排序
         {
             //TODO抓登入會員ID
