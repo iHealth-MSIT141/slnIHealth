@@ -7,6 +7,11 @@ namespace prjIHealth.Models
 {
     public partial class TCoachContact
     {
+        public TCoachContact()
+        {
+            TCourses = new HashSet<TCourse>();
+        }
+
         public int FCoachContactId { get; set; }
         public int? FMemberId { get; set; }
         public int? FCoachId { get; set; }
@@ -16,5 +21,6 @@ namespace prjIHealth.Models
         public virtual TCoach FCoach { get; set; }
         public virtual TMember FMember { get; set; }
         public virtual TStatus FStatusNumberNavigation { get; set; }
+        public virtual ICollection<TCourse> TCourses { get; set; }
     }
 }

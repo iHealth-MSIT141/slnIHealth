@@ -60,7 +60,7 @@ namespace prjIHealth
                    pattern: "{area:exists}/{controller=Admin}/{action=�޲z��Demo}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Student}/{action=CoachList}/{id?}");
             });
         }
     }

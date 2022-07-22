@@ -26,6 +26,8 @@ namespace prjIHealth.Models
         public virtual DbSet<TCoach> TCoaches { get; set; }
         public virtual DbSet<TCoachAvailableTime> TCoachAvailableTimes { get; set; }
         public virtual DbSet<TCoachContact> TCoachContacts { get; set; }
+        public virtual DbSet<TCoachExperience> TCoachExperiences { get; set; }
+        public virtual DbSet<TCoachLicense> TCoachLicenses { get; set; }
         public virtual DbSet<TCoachRate> TCoachRates { get; set; }
         public virtual DbSet<TCoachSkill> TCoachSkills { get; set; }
         public virtual DbSet<TCourse> TCourses { get; set; }
@@ -209,21 +211,21 @@ namespace prjIHealth.Models
 
                 entity.Property(e => e.FCoachDescription).HasColumnName("fCoachDescription");
 
-                entity.Property(e => e.FCoachFee)
-                    .HasMaxLength(50)
-                    .HasColumnName("fCoachFee");
+                entity.Property(e => e.FCoachFee).HasColumnName("fCoachFee");
 
                 entity.Property(e => e.FCoachImage)
                     .HasMaxLength(50)
                     .HasColumnName("fCoachImage");
 
+                entity.Property(e => e.FCoachName)
+                    .HasMaxLength(50)
+                    .HasColumnName("fCoachName");
+
                 entity.Property(e => e.FCourseCount).HasColumnName("fCourseCount");
 
                 entity.Property(e => e.FMemberId).HasColumnName("fMemberID");
 
-                entity.Property(e => e.FSlogan)
-                    .HasColumnName("fSlogan")
-                    .HasComment("教練口號");
+                entity.Property(e => e.FSlogan).HasColumnName("fSlogan");
 
                 entity.Property(e => e.FStatusNumber).HasColumnName("fStatusNumber");
 
@@ -232,7 +234,7 @@ namespace prjIHealth.Models
                 entity.HasOne(d => d.FCity)
                     .WithMany(p => p.TCoaches)
                     .HasForeignKey(d => d.FCityId)
-                    .HasConstraintName("FK_tCoaches_tRegions");
+                    .HasConstraintName("FK_tCoaches_tCities");
 
                 entity.HasOne(d => d.FMember)
                     .WithMany(p => p.TCoaches)
@@ -304,6 +306,43 @@ namespace prjIHealth.Models
                     .HasConstraintName("FK_tCoachContacts_tStatus");
             });
 
+            modelBuilder.Entity<TCoachExperience>(entity =>
+            {
+                entity.HasKey(e => e.FExperienceId)
+                    .HasName("PK_tExperience");
+
+                entity.ToTable("tCoachExperience");
+
+                entity.Property(e => e.FExperienceId).HasColumnName("fExperienceID");
+
+                entity.Property(e => e.FCoachId).HasColumnName("fCoachID");
+
+                entity.Property(e => e.FExperience).HasColumnName("fExperience");
+
+                entity.HasOne(d => d.FCoach)
+                    .WithMany(p => p.TCoachExperiences)
+                    .HasForeignKey(d => d.FCoachId)
+                    .HasConstraintName("FK_tCoachExperience_tCoaches");
+            });
+
+            modelBuilder.Entity<TCoachLicense>(entity =>
+            {
+                entity.HasKey(e => e.FLicenseId);
+
+                entity.ToTable("tCoachLicense");
+
+                entity.Property(e => e.FLicenseId).HasColumnName("fLicenseID");
+
+                entity.Property(e => e.FCoachId).HasColumnName("fCoachID");
+
+                entity.Property(e => e.FLicense).HasColumnName("fLicense");
+
+                entity.HasOne(d => d.FCoach)
+                    .WithMany(p => p.TCoachLicenses)
+                    .HasForeignKey(d => d.FCoachId)
+                    .HasConstraintName("FK_tCoachLicense_tCoaches");
+            });
+
             modelBuilder.Entity<TCoachRate>(entity =>
             {
                 entity.HasKey(e => e.FRateId);
@@ -322,9 +361,7 @@ namespace prjIHealth.Models
 
                 entity.Property(e => e.FRateStar).HasColumnName("fRateStar");
 
-                entity.Property(e => e.FRateText)
-                    .HasMaxLength(50)
-                    .HasColumnName("fRateText");
+                entity.Property(e => e.FRateText).HasColumnName("fRateText");
 
                 entity.Property(e => e.FVisible).HasColumnName("fVisible");
 
@@ -370,9 +407,7 @@ namespace prjIHealth.Models
 
                 entity.Property(e => e.FCourseId).HasColumnName("fCourseID");
 
-                entity.Property(e => e.FCoachId).HasColumnName("fCoachID");
-
-                entity.Property(e => e.FMemberId).HasColumnName("fMemberID");
+                entity.Property(e => e.FCoachContactId).HasColumnName("fCoachContactID");
 
                 entity.Property(e => e.FRemainingCourse).HasColumnName("fRemainingCourse");
 
@@ -380,15 +415,10 @@ namespace prjIHealth.Models
 
                 entity.Property(e => e.FVisible).HasColumnName("fVisible");
 
-                entity.HasOne(d => d.FCoach)
+                entity.HasOne(d => d.FCoachContact)
                     .WithMany(p => p.TCourses)
-                    .HasForeignKey(d => d.FCoachId)
-                    .HasConstraintName("FK_tCourses_tCoaches");
-
-                entity.HasOne(d => d.FMember)
-                    .WithMany(p => p.TCourses)
-                    .HasForeignKey(d => d.FMemberId)
-                    .HasConstraintName("FK_tCourses_tMember");
+                    .HasForeignKey(d => d.FCoachContactId)
+                    .HasConstraintName("FK_tCourses_tCoachContacts");
 
                 entity.HasOne(d => d.FStatusNumberNavigation)
                     .WithMany(p => p.TCourses)
@@ -604,7 +634,10 @@ namespace prjIHealth.Models
 
                 entity.Property(e => e.FPaymentCategoryId).HasColumnName("fPaymentCategoryID");
 
-                entity.Property(e => e.FPhone).HasColumnName("fPhone");
+                entity.Property(e => e.FPhone)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("fPhone");
 
                 entity.Property(e => e.FRemarks).HasColumnName("fRemarks");
 
@@ -952,9 +985,7 @@ namespace prjIHealth.Models
                 entity.HasIndex(e => e.FStatusNumber, "IX_tStatus")
                     .IsUnique();
 
-                entity.Property(e => e.FStatusId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("fStatusID");
+                entity.Property(e => e.FStatusId).HasColumnName("fStatusID");
 
                 entity.Property(e => e.FStatus)
                     .IsRequired()
