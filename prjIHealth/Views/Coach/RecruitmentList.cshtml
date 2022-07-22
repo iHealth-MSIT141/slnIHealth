@@ -411,8 +411,10 @@
 
         //彈出新增排課視窗
         var theMemberName;
+        var selStatus;
         $(".btnCreateCourse").on("click", btnCreateCourseClick);
         function btnCreateCourseClick() {
+            selStatus = $(event.target).parents("tr").find(".selStatus");
             theMemberName = $(event.target).parents("tr").find("a").text();
             theMemberId = $(event.target).parents("tr").find(".inpTheMemberID").val();
             theContactId = $(event.target).prev("input").val();
@@ -426,6 +428,7 @@
 
         //新增課程(排課)
         $("#btnSendCourse").click(function () {
+            
             if ($("#inpCourseName").val() == "" || $("#inpTotal").val() == "") {
                 SwalWithGreen.fire(
                     '請勿空白',
@@ -447,6 +450,7 @@
                         let time = `${$(".selTime1").val()}${$(".selTime2").val()}`;
                         $.post("@Url.Content("~/Coach/createCourse")", { FCoachContactId: $("#inpContactId").val(), FCourseName: $("#inpCourseName").val(), FCourseTotal: $("#inpTotal").val(), FAvailableTimeNum: time }, function () {
                             SwalWithGreen.fire('新增成功', '', 'success')
+                            selStatus.val(52);
                             $("#modalCreateCourse").modal("hide");
                         })
                     }

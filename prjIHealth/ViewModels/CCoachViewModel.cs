@@ -14,13 +14,24 @@ namespace prjIHealth.ViewModels
         {
             db = context;
         }
-        public TCoach Coach { get; set; }
+        public int FCoachId { get; set; }
+        public string FCoachName { get; set; }
+        public int? FMemberId { get; set; }
+        public int? FCityId { get; set; }
+        public string FCoachImage { get; set; }
+        public int? FCoachFee { get; set; }
+        public string FCoachDescription { get; set; }
+        public string FApplyDate { get; set; }
+        public int? FStatusNumber { get; set; }
+        public bool? FVisible { get; set; }
+        //public int? FCourseCount { get; set; }
+        public string FSlogan { get; set; }
         public string CityName
         {
             get
             {
-                if (Coach.FCityId != null)
-                    return db.TCities.FirstOrDefault(c => c.FCityId == Coach.FCityId).FCityName;
+                if (FCityId != null)
+                    return db.TCities.FirstOrDefault(c => c.FCityId == FCityId).FCityName;
                 else
                     return null;
                 
@@ -30,9 +41,9 @@ namespace prjIHealth.ViewModels
         {
             get
             {
-                if (!String.IsNullOrEmpty(Coach.FApplyDate))
+                if (!String.IsNullOrEmpty(FApplyDate))
                 {
-                    string fApplyDate = Coach.FApplyDate;
+                    string fApplyDate = FApplyDate;
                     string yyyy = fApplyDate.Substring(0, 4);
                     string MM = fApplyDate.Substring(4, 2);
                     string dd = fApplyDate.Substring(6, 2);
@@ -48,8 +59,8 @@ namespace prjIHealth.ViewModels
         {
             get
             {
-                if (Coach.FStatusNumber != null)
-                    return db.TStatuses.FirstOrDefault(s => s.FStatusNumber == Coach.FStatusNumber).FStatus;
+                if (FStatusNumber != null)
+                    return db.TStatuses.FirstOrDefault(s => s.FStatusNumber == FStatusNumber).FStatus;
                 else
                     return null;
             }
@@ -58,9 +69,9 @@ namespace prjIHealth.ViewModels
         {
             get
             {
-                if (Coach.FVisible != null)
+                if (FVisible != null)
                 {
-                    if ((bool)(Coach.FVisible))
+                    if ((bool)(FVisible))
                         return "公開";
                     else
                         return "未公開";
@@ -74,8 +85,8 @@ namespace prjIHealth.ViewModels
         {
             get
             {
-                if (Coach.FCoachId != null && Coach.FCoachId != 0)
-                    return db.TCoachSkills.Where(cs => cs.FCoachId == Coach.FCoachId).Include(cs => cs.FSkill).Select(cs => cs.FSkill.FSkillName);
+                if (FCoachId != null && FCoachId != 0)
+                    return db.TCoachSkills.Where(cs => cs.FCoachId == FCoachId).Include(cs => cs.FSkill).Select(cs => cs.FSkill.FSkillName);
                 else
                     return null;
             }
@@ -84,8 +95,8 @@ namespace prjIHealth.ViewModels
         {
             get
             {
-                if (Coach.FCoachId != null && Coach.FCoachId != 0)
-                    return db.TCoachExperiences.Where(e => e.FCoachId == Coach.FCoachId).Select(e => e.FExperience);
+                if (FCoachId != null && FCoachId != 0)
+                    return db.TCoachExperiences.Where(e => e.FCoachId == FCoachId).Select(e => e.FExperience);
                 else
                     return null;
             }
@@ -94,8 +105,8 @@ namespace prjIHealth.ViewModels
         {
             get
             {
-                if (Coach.FCoachId != null && Coach.FCoachId != 0)
-                    return db.TCoachLicenses.Where(l => l.FCoachId == Coach.FCoachId).Select(l => l.FLicense);
+                if (FCoachId != null && FCoachId != 0)
+                    return db.TCoachLicenses.Where(l => l.FCoachId == FCoachId).Select(l => l.FLicense);
                 else
                     return null;
             }

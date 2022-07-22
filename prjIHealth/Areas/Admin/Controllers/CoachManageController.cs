@@ -27,7 +27,17 @@ namespace prjIHealth.Areas.Admin.Controllers
             {
                 CCoachViewModel coachViewModel = new CCoachViewModel(db)
                 {
-                    Coach = c
+                    FCoachId=c.FCoachId,
+                    FCoachName=c.FCoachName,
+                    FMemberId=c.FMemberId,
+                    FCityId=c.FCityId,
+                    FCoachImage=c.FCoachImage,
+                    FCoachFee=c.FCoachFee,
+                    FCoachDescription=c.FCoachDescription,
+                    FApplyDate=c.FApplyDate,
+                    FStatusNumber=c.FStatusNumber,
+                    FVisible=c.FVisible,
+                    FSlogan=c.FSlogan
                 };
                 coaches.Add(coachViewModel);
             }
@@ -35,8 +45,21 @@ namespace prjIHealth.Areas.Admin.Controllers
         }
         public IActionResult getCoach(int? id)
         {
-            CCoachViewModel coachViewModel = new CCoachViewModel(db);
-            coachViewModel.Coach = db.TCoaches.FirstOrDefault(c => c.FCoachId == id);
+            var c = db.TCoaches.FirstOrDefault(c => c.FCoachId == id);
+            CCoachViewModel coachViewModel = new CCoachViewModel(db)
+            {
+                FCoachId = c.FCoachId,
+                FCoachName = c.FCoachName,
+                FMemberId = c.FMemberId,
+                FCityId = c.FCityId,
+                FCoachImage = c.FCoachImage,
+                FCoachFee = c.FCoachFee,
+                FCoachDescription = c.FCoachDescription,
+                FApplyDate = c.FApplyDate,
+                FStatusNumber = c.FStatusNumber,
+                FVisible = c.FVisible,
+                FSlogan = c.FSlogan
+            };
 
             return Json(coachViewModel);
         }
@@ -85,7 +108,17 @@ namespace prjIHealth.Areas.Admin.Controllers
                 {
                     CCoachViewModel coachViewModel = new CCoachViewModel(db)
                     {
-                        Coach = c
+                        FCoachId = c.FCoachId,
+                        FCoachName = c.FCoachName,
+                        FMemberId = c.FMemberId,
+                        FCityId = c.FCityId,
+                        FCoachImage = c.FCoachImage,
+                        FCoachFee = c.FCoachFee,
+                        FCoachDescription = c.FCoachDescription,
+                        FApplyDate = c.FApplyDate,
+                        FStatusNumber = c.FStatusNumber,
+                        FVisible = c.FVisible,
+                        FSlogan = c.FSlogan
                     };
                     coaches.Add(coachViewModel);
                 }
