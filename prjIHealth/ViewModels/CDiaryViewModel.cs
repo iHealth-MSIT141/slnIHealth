@@ -28,19 +28,7 @@ namespace prjIHealth.ViewModels
             }
         }
 
-        //TODO 抓User的ID:  if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))...
-        //public IActionResult CartView()
-        //{
-        //    if (HttpContext.Session.Keys.Contains(CDictionary.SK_已經購買的_商品們_列表))
-        //    {
-        //        string jsonCart = HttpContext.Session.GetString(CDictionary.SK_已經購買的_商品們_列表);
-        //        List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
-        //        return View(cart);
-        //    }
-        //    else
-        //        return RedirectToAction("List");
-        //}
-        int userId = 8;
+        public int userId = 8;
 
         //登入會員的身體數據
         public IEnumerable<CBodyRecordViewModel> BodyRecords

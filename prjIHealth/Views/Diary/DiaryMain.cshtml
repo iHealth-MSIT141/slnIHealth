@@ -6,7 +6,7 @@
 
 
 @section Styles{
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="~/css/Chart.css" rel="stylesheet" />
     <style>
 
         /*個人身體數據檔案樣式*/
@@ -51,18 +51,17 @@
             background-color: indianred;
         }
         /*飲食日誌樣式*/
-        .fa-circle-plus {
+        .fa-plus-circle {
             padding: 0;
             border: none;
-            margin-right: 30px;
-            font-size: 22px;
+            margin-right: 10px;
+            font-size: 26px;
             color: #7fad39;
             background-color: transparent;
             transition: 0.5s;
         }
 
-            .fa-circle-plus:hover {
-                font-size: 26px;
+            .fa-plus-circle:hover {
                 -moz-transform: rotate(180deg);
                 -webkit-transform: rotate(180deg);
                 -o-transform: rotate(180deg);
@@ -305,15 +304,10 @@
 
                     </div>
 
-                    @*圖表*@
-                    <div class="col-lg-12 reveal_b1">
-
-                    </div>
-
                     @*飲食日誌*@
                     <div class="col-lg-8 reveal_b2">
                         <div class="section-title product__discount__title">
-                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
+                            <button class="fa fa-plus-circle" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>早餐</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -332,7 +326,7 @@
                         </div>
 
                         <div class="section-title product__discount__title">
-                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
+                            <button class="fa fa-plus-circle" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>午餐</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -351,7 +345,7 @@
                         </div>
 
                         <div class="section-title product__discount__title">
-                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
+                            <button class="fa fa-plus-circle" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>晚餐</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -370,7 +364,7 @@
                         </div>
 
                         <div class="section-title product__discount__title">
-                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
+                            <button class="fa fa-plus-circle" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>其他</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -493,9 +487,9 @@
                     <div class="col-lg-4 reveal_b3">
                         <div class="checkout__order" style="text-align:center;position:sticky;top:150px;" id="divDateTake">
                             <div id="divDatepicker">
-                                <button class="fa-solid fa-caret-left" id="btnPrevDate"></button>
+                                <button class="fa fa-caret-left" id="btnPrevDate"></button>
                                 <input type="date" id="inpDatepicker" />
-                                <button class="fa-solid fa-caret-right" id="btnNextDate"></button>
+                                <button class="fa fa-caret-right" id="btnNextDate"></button>
                             </div>
                             <div class="section-title">
                                 <h2 style="font-size:30px">當日攝取</h2>
@@ -518,9 +512,7 @@
 </section>
 
 @section Scripts{
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
-            integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg=="
-            crossorigin="anonymous"></script>
+    <script src="~/js/Chart.js"></script>
     <script>
 
         var theTDEE;

@@ -77,7 +77,7 @@
 <section>
     @*篩選*@
     <div class="divSearch row">
-        <div class="col-lg-3">
+        <div class="col-lg-2">
             <select class="custom-select" id="selCity">
                 <option value="0" selected>所有城市</option>
                 <option value="2">臺北市</option>
@@ -105,8 +105,11 @@
         <div class="col-lg-1" style="padding-right:0">
             <label class="col-form-label" style="float:right;font-weight:600">搜尋:</label>
         </div>
-        <div class="col-lg-5 divKeyword">
+        <div class="col-lg-4 divKeyword">
             <input type="text" class="form-control" id="inpKeyword" placeholder="請輸入教練編號或教練姓名">
+        </div>
+        <div class="col-lg-2" style="padding-right:0">
+            <button class="btn btn-success" id="btnReset">清除篩選條件</button>
         </div>
     </div>
     <div>
@@ -144,22 +147,22 @@
                 </tr>
             </thead>
             @*教練列表*@
-            <tbody>
+            <tbody id="tbdCoachList">
                 @{
                     foreach (var c in Model)
                     {
                         <tr>
                             <td>
-                                @c.Coach.FCoachId
+                                @c.FCoachId
                             </td>
                             <td>
-                                @c.Coach.FCoachName
+                                @c.FCoachName
                             </td>
                             <td>
                                 @c.CityName
                             </td>
                             <td>
-                                @c.Coach.FCoachFee
+                                @c.FCoachFee
                             </td>
                             <td>
                                 @c.ApplyDate
@@ -274,7 +277,6 @@
 
 
 @section Scripts{
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         //SweetAlert Button樣式調整
         const SwalGreen = Swal.mixin({
@@ -306,18 +308,18 @@
                     license += "<br />";
                 })
                 $("#ddImg").html(`<div class="ddImg" style="background-image: url(/img/coach/coachImage/Alisa.jpg);" />`)
-                $("#ddCoachId").html(c.coach.fCoachId);
+                $("#ddCoachId").html(c.fCoachId);
                 $("#ddStatus").html(c.status);
-                $("#ddMemberId").html(c.coach.fMemberId);
+                $("#ddMemberId").html(c.fMemberId);
                 $("#ddVisible").html(c.visible);
-                $("#ddCoachName").html(c.coach.fCoachName);
+                $("#ddCoachName").html(c.fCoachName);
                 $("#ddApplyDate").html(c.applyDate);
                 $("#ddCityName").html(c.cityName);
-                $("#ddFee").html(c.coach.fCoachFee);
+                $("#ddFee").html(c.fCoachFee);
                 $("#ddSkills").html(skill);
                 $("#ddExperiences").html(experience);
                 $("#ddLicenses").html(license);
-                $("#ddSlogan").html(c.coach.fSlogan);
+                $("#ddSlogan").html(c.fSlogan);
             })
         }
         $(".btnViewResume").on("click", viewResume);
@@ -379,14 +381,28 @@
             else {//orderby
                 isDesc = 0;
             }
-            //let keyword = "null";
-            //if ($("#inpKeyword").val()) {
-            //    keyword = $("#inpKeyword").val();
-            //}
             $.post("@Url.Content("~/Admin/CoachManage/loadCoach")", { "CityId": $("#selCity").val(), "SkillId": $("#selSkill").val(), "KeyWord": $("#inpKeyword").val(), "Sort": isDesc, "StatusNum": $("#selStatus").val() }, function (coaches) {
-                console.log(coaches);
+                let html = "";
+                $.each(coaches, function (idx, val) {
+                    html += `<tr><td>${val.fCoachId}</td>`;
+                    html += `<td>${val.fCoachName}</td>`;
+                    html += `<td>${val.cityName}</td>`;
+                    html += `<td>${val.fCoachFee}</td>`;
+                    html += `<td>${val.applyDate}</td>`;
+                    html += `<td>${val.status}</td>`;
+                    html += `<td>${val.visible}</td>`;
+                    html += `<td class="details">`;
+                    html += `<button class="btn btn-light btnViewResume" data-toggle="modal" data-target="#modalResume" onclick="viewResume();">查看履歷</button>`;
+                    html += `<button type="button" class="btn btn-success btnPass" onclick="passResume();">審核通過</button>`;
+                    html += `<button type="button" class="btn btn-secondary btnReturn" onclick="returnResume();">退回申請</button></td></tr>`;
+                })
+                $("#tbdCoachList").html(html);
             })
         };
+        $("#selCity").on("change", loadCoach);
+        $("#selSkill").on("change", loadCoach);
+        $("#inpKeyword").on("keyup", loadCoach);
+        $("#selStatus").on("change", loadCoach);
 
         //依時間排序
         $(".thTime").click(function () {
@@ -399,6 +415,14 @@
             loadCoach();
         });
 
+        //清除篩選條件
+        $("#btnReset").click(function () {
+            $("#selCity").val(0);
+            $("#selSkill").val(0);
+            $("#inpKeyword").val("");
+            $("#selStatus").val(0);
+            loadCoach();
+        })
 
     </script>
 }

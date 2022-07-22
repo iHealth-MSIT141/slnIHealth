@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using prjiHealth.Models;
+using prjIHealth.Controllers;
 using prjIHealth.Models;
 using prjIHealth.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace prjiHealth.Controllers
@@ -30,8 +34,18 @@ namespace prjiHealth.Controllers
         }
         public IActionResult RecruitmentList()
         {
-            //TODO 拿登入會員的ID
-            int theMemberId = 11;
+            //取得登入者ID
+            int theMemberId = 8; //TODO:改為演示用教練MemberID
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                theMemberId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
+            else
+            {
+                MemberController.loginUser = null;
+                MemberController.userName = "登入";
+            }
 
             var contacts = db.TCoachContacts.Where(c =>c.FCoach.FMemberId==theMemberId);
             List<CContactViewModel> contactViewModels = new List<CContactViewModel>();
@@ -55,7 +69,6 @@ namespace prjiHealth.Controllers
             db.SaveChanges();
             return Content("");
         } //教練專區-招生紀錄:改變聯繫狀態
-
         public IActionResult showMember(int? memberId)
         {
             CContactViewModel member = new CContactViewModel(db)
@@ -140,8 +153,13 @@ namespace prjiHealth.Controllers
         } //教練專區-招生紀錄:新增課程&排課
         public IActionResult loadContact(int? flag, int? statusNum)    //教練專區-招生紀錄:依聯繫時間排序
         {
-            //TODO抓登入會員ID
-            int theCoachMemberId = 11;
+            //取得登入者ID
+            int theCoachMemberId = 8; //TODO:改為演示用教練MemberID
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                theCoachMemberId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
 
             IEnumerable<TCoachContact> contacts = null;
             if (statusNum == 0)
@@ -180,8 +198,6 @@ namespace prjiHealth.Controllers
             }
             return Json(contactViewModels);
         }
-
-
 
     }
 }

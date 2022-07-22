@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using prjiHealth.Models;
+using prjIHealth.Controllers;
 using prjIHealth.Models;
 using prjIHealth.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace prjiHealth.Controllers
@@ -30,17 +34,18 @@ namespace prjiHealth.Controllers
         }                      
         public IActionResult CourseList()   //會員專區--課程列表
         {
-            //TODO抓登入會員ID
-            int theMemberId = 8;
-
-            //var contacts = db.TCoachContacts.Where(c => c.FMemberId == theMemberId);
-            //List<TCourse> tcourses = new List<TCourse>();
-            //foreach (var con in contacts)
-            //{
-            //    var tcourse = db.TCourses.FirstOrDefault(c => c.FCoachContactId == con.FCoachContactId);
-            //    if(tcourse!=null)
-            //        tcourses.Add(tcourse);
-            //}
+            //取得登入者ID
+            int theMemberId = 8; 
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                theMemberId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
+            else
+            {
+                MemberController.loginUser = null;
+                MemberController.userName = "登入";
+            }
 
             var tcourses = db.TCourses.Where(c => c.FCoachContact.FMemberId == theMemberId && c.FVisible == true);
 
@@ -62,8 +67,13 @@ namespace prjiHealth.Controllers
         }               
         public IActionResult createRate(TCoachRate rate) //會員專區--課程列表:儲存評價教練
         {
-            //TODO抓登入會員ID
+            //取得登入者ID
             int theMemberId = 8;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                theMemberId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
 
             var theRate = db.TCoachRates.Where(r => r.FCoachId == rate.FCoachId && r.FMemberId == theMemberId);
             if (theRate.Count() > 0)
@@ -86,8 +96,13 @@ namespace prjiHealth.Controllers
         }      
         public IActionResult viewRate(int? theCoachId)//會員專區--課程列表:顯示評價教練
         {
-            //TODO抓登入會員ID
+            //取得登入者ID
             int theMemberId = 8;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                theMemberId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
 
             var rate = db.TCoachRates.Where(r => r.FCoachId == theCoachId && r.FMemberId == theMemberId);
             if (rate.Count() > 0)
@@ -101,8 +116,18 @@ namespace prjiHealth.Controllers
         }
         public IActionResult CandidateList()    //會員專區--候選教練
         {
-            //TODO抓登入會員ID
+            //取得登入者ID
             int theMemberId = 8;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                theMemberId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
+            else
+            {
+                MemberController.loginUser = null;
+                MemberController.userName = "登入";
+            }
 
             //載入候選教練
             var candidates = db.TCandidates.Where(c => c.FMemberId == theMemberId);
@@ -148,8 +173,13 @@ namespace prjiHealth.Controllers
         }
         public IActionResult loadContact(int? flag,int? statusNum)    //會員專區--候選教練:依聯繫時間排序
         {
-            //TODO抓登入會員ID
+            //取得登入者ID
             int theMemberId = 8;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                theMemberId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
 
             IEnumerable<TCoachContact> contacts = null;
             if (statusNum == 0)

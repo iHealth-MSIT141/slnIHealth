@@ -9,7 +9,7 @@ namespace prjIHealth.Areas.Admin.Controllers
     [Area(areaName:"Admin")]
     public class AdminController : Controller
     {
-        public IActionResult 管理頁Demo()
+        public IActionResult AdminHome()
         {
             return View();
         }
