@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<prjIHealth.ViewModels.COrderViewModel>
-@*@using X.PagedList.Mvc.Core;
-    @using X.PagedList;*@
+@using X.PagedList.Mvc.Core
+@using X.PagedList
 
 @{
     ViewData["Title"] = "OrderList";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 
 }
-
+@section Styles{
+    <link href="/css//PagedList.css" rel="stylesheet" />
+}
 <h1>訂單管理</h1>
 
 <section class="product spad">
@@ -16,12 +18,20 @@
 
             <div class="col-lg-12">
                 <div class="shoping__cart__table">
-                    <table class="table">
+                    <div class="col-lg-4">
+                        <select id="Statussearch" name="Statussearch" class="custom-select">
+                            <option disabled selected hidden>依狀態篩選</option>
+                            <option value="70">等待賣家確認訂單</option>
+                            <option value="71">已確認訂單，待出貨</option>
+                            <option value="72">已出貨</option>
+                            <option value="73">待收貨</option>
+                            <option value="74">交易完成</option>
+                        </select>
+                    </div>
+                    <table style="table-layout:fixed">
                         <thead>
                             <tr>
-                                <th style="margin-left:auto">
-                                    編號
-                                </th>
+
                                 <th style="margin-left:auto">
                                     @Html.DisplayNameFor(model => model.FMemberId)
                                 </th>
@@ -49,32 +59,29 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="ListPro">
                             @{
-                                int count = 0;
+
                                 foreach (var item in Model)
                                 {
-                                    count++;
                                     <tr>
-                                        <td style="margin-left:auto;text-align:center;">
-                                            @count
+
+                                        <td style="margin-left: auto;text-align:center;">
                                             <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FOrderId)" id="FOrderId" name="FOrderId" />
                                             <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FMemberId)" id="FMemberId" name="FMemberId" />
                                             <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FStatusNumber)" id="FStatusNumber" name="FStatusNumber" />
                                             <input type="hidden" value=" @Html.DisplayFor(modelItem => item.fstatus.FStatusNumber)" id="fstatus.FStatusNumber" name="fstatus.FStatusNumber" />
                                             <input type="hidden" value=" @Html.DisplayFor(modelItem => item.fPayment.FPaymentCategoryId)" id="fPayment.FPaymentCategoryId" name="fPayment.FPaymentCategoryId" />
-                                        </td>
-                                        <td style="margin-left: auto;text-align:center;">
                                             @Html.DisplayFor(modelItem => item.fmember.FMemberName)
                                         </td>
                                         <td style="margin-left: auto;text-align:center;">
                                             @Html.DisplayFor(modelItem => item.FContact)
                                         </td>
-                                        <td style="margin-left: auto; text-align: center;">
-                                            @Html.DisplayFor(modelItem => item.FPhone)
+                                        <td style="margin-left: auto; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
+                                            @item.FPhone.Substring(0, Math.Min(item.FPhone.Length, 6))...
                                         </td>
-                                        <td style="margin-left: auto; text-align: center;">
-                                            @Html.DisplayFor(modelItem => item.FAddress)
+                                        <td style="margin-left: auto; text-align: center; ">
+                                            @item.FAddress.Substring(0, Math.Min(item.FAddress.Length, 5))...
                                         </td>
                                         <td style="margin-left: auto; text-align: center;">
                                             @Html.DisplayFor(modelItem => item.FDate)
@@ -87,12 +94,12 @@
                                             @Html.DisplayFor(modelItem => item.fstatus.FStatus)
                                         </td>
                                         <td style="margin-left: auto; text-align: center;">
-                                            @item.FRemarks.Substring(0, Math.Min(item.FRemarks.Length, 10))<br />
-                                            @item.FRemarks.Substring(10, Math.Min(item.FRemarks.Length, 10))
+                                            @item.FRemarks.Substring(0, Math.Min(item.FRemarks.Length, 10))
+
                                         </td>
                                         <td style="margin-left: auto; text-align: center;">
                                             @Html.ActionLink("修改訂單", "OrderEdit", new { id = item.FOrderId },
-                                              new { @class = "primary-btn cart-btn" })<br />
+                                              new { @class = "primary-btn cart-btn " })<br />
                                             @Html.ActionLink("訂單明細", "OrderdetailList", new { id = item.FOrderId },
                                               new { @class = "primary-btn cart-btn" })
                                         </td>
@@ -101,7 +108,9 @@
                             }
                         </tbody>
                     </table>
-                    @*@Html.PagedListPager((IPagedList)ViewBag.OnePageOfOrder, page => Url.Action("OrderList", new { page }));*@
+                    <div style="text-align:center">
+                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfPro, page => Url.Action("OrderList", new { page }))
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,6 +118,68 @@
 </section>
 
 @section Scripts{
+    <script>
+        $('#Statussearch').on('change', Catrgorychange);
 
+        async function Catrgorychange() {
+            $('#ListPro>tr').remove();
+            const changecat = Statussearch.options[Statussearch.selectedIndex].value;
+            const response = await fetch("@Url.Content("~/Admin/OrderManage/Statusselect")" + `?id=${changecat}`);
+            const datas = await response.json();
+            console.log(datas);
+            let tr = '';
+
+            for (i = 0; i < datas.length; i++) {
+                let fixrem = '';
+                let fixadr = '';
+                let fixpho = '';
+                if (datas[i].fRemarks != null) {
+                    fixrem = datas[i].fRemarks.substr(0,10);
+                }
+                if (datas[i].fAddress != null) {
+                    fixadr = datas[i].fAddress.substr(0, 5);
+                }
+                if (datas[i].fPhone != null) {
+                    fixpho = datas[i].fPhone.substr(0, 6);
+                }
+                tr = `<tr>
+                                        <td style="margin-left: auto;text-align:center;">
+                                            <input type="hidden" value="${datas[i].fOrderId}" id="FOrderId" name="FOrderId" />
+                                            <input type="hidden" value="${datas[i].fMemberId}" id="FMemberId" name="FMemberId" />
+                                            <input type="hidden" value="${datas[i].fStatusNumber}" id="FStatusNumber" name="FStatusNumber" />
+                                            <input type="hidden" value="${datas[i].fstatus.fStatusNumber}" id="fstatus.FStatusNumber" name="fstatus.FStatusNumber" />
+                                            <input type="hidden" value="${datas[i].fPayment.fPaymentCategoryId}" id="fPayment.FPaymentCategoryId" name="fPayment.FPaymentCategoryId" />
+                                           ${datas[i].fmember.fMemberName}
+                                        </td>
+                                        <td style="margin-left: auto;text-align:center;">
+                                           ${datas[i].fContact}
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
+                                           ${fixpho}...
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center; ">
+                                           ${fixadr}...
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;">
+                                           ${datas[i].fDate}
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;">
+                                           <input type="hidden" value="${datas[i].fPaymentCategoryId}" id="FPaymentCategoryId" name="FPaymentCategoryId" />
+                                           ${datas[i].fPayment.fPaymentCategory}
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;">
+                                          ${datas[i].fstatus.fStatus}
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;">
+                                           ${fixrem}
+                                        </td>
+                                        <td style="margin-left: auto; text-align: center;">
+                                           <a class="primary-btn cart-btn " href="/Admin/OrderManage/OrderEdit/${datas[i].fOrderId}">修改訂單</a><br />
+                                           <a class="primary-btn cart-btn" href="/Admin/OrderManage/OrderdetailList/${datas[i].fOrderId}">訂單明細</a>
+                                        </td>
+                                    </tr>`
+                $('#ListPro').append(tr);
+            }
+        }
+    </script>
 }
-

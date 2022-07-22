@@ -16,6 +16,7 @@ using System.IO;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using prjIHealth.ViewModels;
+using X.PagedList;
 
 namespace prjIHealth.Controllers
 {
@@ -48,7 +49,7 @@ namespace prjIHealth.Controllers
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
                     userName = $"{loginUser.FUserName}";
-                    userID = loginUser.FMemberId;
+                    //userID = loginUser.FMemberId;
                     if (!string.IsNullOrEmpty(ReturnUrl))
                     { return LocalRedirect(ReturnUrl); }
                    return RedirectToAction( "會員專區ViewDemo","Home" );
@@ -125,14 +126,7 @@ namespace prjIHealth.Controllers
             return RedirectToAction("ShowTrackList");
         }
 
-        public IActionResult OrderList()
-        {
-            return View();
-        }
-        public IActionResult OrderdetailList()
-        {
-            return View();
-        }
+     
 
         public IActionResult ForgotPassword()
         {
@@ -196,7 +190,7 @@ namespace prjIHealth.Controllers
         {
             CProductViewModel ProductvModel = new CProductViewModel();
             return View();
-            ProductvModel.MemberID = userID;
+            //ProductvModel.MemberID = userID;
         }
 
         public IActionResult ShowTrackProduct(int? id)//MemberID
@@ -222,6 +216,67 @@ namespace prjIHealth.Controllers
             }
             return RedirectToAction("ShowTrackList");
         }
+
+        //===================購買紀錄=============================
+        public IActionResult OrderList(int? page)
+        {
+            var pro = (from o in _context.TOrders
+                       join p in _context.TPaymentCategories
+                       on o.FPaymentCategoryId equals p.FPaymentCategoryId
+                       join s in _context.TStatuses
+                       on o.FStatusNumber equals s.FStatusNumber
+                       join m in _context.TMembers
+                       on o.FMemberId equals m.FMemberId
+                       select new COrderViewModel()
+                       {
+                           FOrderId = o.FOrderId,
+                           FPaymentCategoryId = o.FPaymentCategoryId,
+                           fPayment = o.FPaymentCategory,
+                           FDate = o.FDate,
+                           FAddress = o.FAddress,
+                           FMemberId = o.FMemberId,
+                           fmember = o.FMember,
+                           FContact = o.FContact,
+                           FPhone = o.FPhone,
+                           FRemarks = o.FRemarks,
+                           FStatusNumber = o.FStatusNumber,
+                           fstatus = o.FStatusNumberNavigation
+                       }).ToList();
+            var pageNumber = page ?? 1;
+            var onePageOfPro = pro.ToPagedList(pageNumber, 3);
+            ViewBag.onePageOfPro = onePageOfPro;
+            return View(onePageOfPro);
+        }
+        public IActionResult OrderDetailList(int? id)
+        {
+            IHealthContext db = new IHealthContext();
+            var odt = (from o in db.TOrderDetails
+                       where o.FOrderId == id
+                       //where o.FOrderDetailsId == id
+                       join or in db.TOrders
+                       on o.FOrderId equals or.FOrderId
+                       join d in db.TDiscounts
+                       on o.FDiscountId equals d.FDiscountId
+                       join p in db.TProducts
+                       on o.FProductId equals p.FProductId
+                       select new COrderDetailViewModel()
+                       {
+                           FOrderId = o.FOrderId,
+                           FOrderDetailsId = o.FOrderDetailsId,
+                           FQuantity = o.FQuantity,
+                           FUnitprice = o.FUnitprice,
+                           fdiscount = o.FDiscount,
+                           FDiscountId = o.FDiscountId,
+                           FProductId = o.FProductId,
+                           fproduct = o.FProduct
+                       }).ToList();
+            if (odt == null)
+            {
+                return RedirectToAction("OrderList");
+            }
+            return View(odt);
+        }
+
     }
 }
 

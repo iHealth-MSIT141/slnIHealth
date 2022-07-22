@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace prjIHealth.Areas.Admin.Controllers
 {
@@ -23,8 +24,12 @@ namespace prjIHealth.Areas.Admin.Controllers
         {
             return View();
         }
-        public IActionResult ProductList()
+        public IActionResult ProductList(int? page)
         {
+            var pageNumber = page ?? 1;
+            var proid = db.TProducts.OrderBy(n => n.FProductId).ToList();
+            //var pro = db.TProducts.Include(p => p.FCategory).ToList();        
+            //IEnumerable<TProduct> datas = null;*/
             var pro = (from p in db.TProducts
                        join c in db.TProductCategories
                        on p.FCategoryId equals c.FCategoryId
@@ -39,9 +44,12 @@ namespace prjIHealth.Areas.Admin.Controllers
                            FVisible = p.FVisible,
                            FCoverImage = p.FCoverImage
                        }).ToList();
-            return View(pro);
+
+            var onePageOfPro = pro.ToPagedList(pageNumber, 10);
+            ViewBag.onePageOfPro = onePageOfPro;
+            return View(onePageOfPro);
         }
-        
+
         public IActionResult ProductEdit(int? id)
         {
             var pro = (from p in db.TProducts
@@ -58,7 +66,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                            FDescription = p.FDescription,
                            FVisible = p.FVisible,
                            FCoverImage = p.FCoverImage
-                       }).ToList();           
+                       }).ToList();
             if (pro == null)
             {
                 return RedirectToAction("ProductList");
@@ -168,7 +176,7 @@ namespace prjIHealth.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult ProductImgList(CProductImageViewModel p)
         {
-            IHealthContext db = new IHealthContext();        
+            IHealthContext db = new IHealthContext();
             var pro = (from n in db.TProductsImages
                        where n.FProductId == p.FProductId
                        join Tp in db.TProducts
@@ -208,8 +216,28 @@ namespace prjIHealth.Areas.Admin.Controllers
                 db.TProductsImages.Remove(prod);
                 db.SaveChanges();
             }
-            return RedirectToAction("ProductList");
+            return RedirectToAction("ProductImgList");
         }
-
+        //AJAX
+        public IActionResult Categoryselect(int id)
+        {
+            IHealthContext db = new IHealthContext();
+            var pro = (from p in db.TProducts
+                       join c in db.TProductCategories
+                       on p.FCategoryId equals c.FCategoryId
+                       where p.FCategoryId == id
+                       select new CProductViewModel()
+                       {
+                           FProductId = p.FProductId,
+                           FProductName = p.FProductName,
+                           FUnitprice = p.FUnitprice,
+                           FDescription = p.FDescription,
+                           FVisible = p.FVisible,
+                           FCoverImage = p.FCoverImage,
+                           FCategoryId = p.FCategoryId,
+                           FCategoryName = p.FCategory
+                       }).ToList();
+            return Json(pro);
+        }
     }
 }
