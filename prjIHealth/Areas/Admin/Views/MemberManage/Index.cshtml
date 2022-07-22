@@ -29,24 +29,22 @@
 }
 <h2 id="title">會員資料管理列表</h2>
 
+ 
 <hr />
 
-<div class="row d-inline-flex">
-    <div>
-        <p>
-            <a asp-action="Create" class="btn btn-primary">會員資料新增</a>
-        </p>
-    </div>
-    <div>
+<div class="row ">
+    <div class="col">
         <form asp-action="Index" method="get">
             @using (@Html.BeginForm())
             {
                 @:關鍵字 @Html.TextBox("txtKeyword")
-             <input type="submit" value="查詢" class="btn btn-success" />}
+                <input type="submit" value="查詢" class="btn btn-success" />}
+
         </form>
     </div>
-
-
+    <div class="col">
+        <a asp-action="Create" class="btn btn-primary">會員資料新增</a>
+    </div>
 </div>
 
 <table class="table">
@@ -151,10 +149,10 @@
 
 @section Scripts{
     <script>
-                //$(document).ready(function ()
-                //{
-                //    $('#example').DataTable();
-                //});
+                        //$(document).ready(function ()
+                        //{
+                        //    $('#example').DataTable();
+                        //});
     </script>
 }
 

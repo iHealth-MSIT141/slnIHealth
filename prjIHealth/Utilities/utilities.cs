@@ -30,7 +30,9 @@ namespace HealthyLifeApp
             char[] passwordChar = pwd.ToCharArray();//string convert to char
             string str1 = new string(passwordChar);//convert char to string 
             //==================================================
-            byte[] passwordAscii = Encoding.ASCII.GetBytes(pwd);//convert string to ascii
+            //byte[] passwordAscii = Encoding.ASCII.GetBytes(pwd);//convert string to ascii
+            byte[] passwordAscii = Encoding.Unicode.GetBytes(pwd);//convert string to ascii
+
             string str_password = "";
             for (int i = 0; i < passwordAscii.Length; i++)//pwd convert to char add( i+1)*2  salt define
             {
@@ -39,7 +41,7 @@ namespace HealthyLifeApp
                 str_password += cha1.ToString() + cha.ToString();
             }
             //==================================================
-            byte[] userNameAscii = Encoding.ASCII.GetBytes(userName);//userName
+            byte[] userNameAscii = Encoding.Unicode.GetBytes(userName);//userName
             string str_userName = "";
             for (int j = 0; j < userName.Length; j++)
             {
@@ -48,7 +50,7 @@ namespace HealthyLifeApp
                 str_userName += cha_userName + cha_userNameSalt;
             }
             //==================================================
-            byte[] birthdayAscii = Encoding.ASCII.GetBytes(birthday);//userName
+            byte[] birthdayAscii = Encoding.Unicode.GetBytes(birthday);//userName
             string str_birthday = "";
             for (int k = 0; k < birthday.Length; k++)
             {

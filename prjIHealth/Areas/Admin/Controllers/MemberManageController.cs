@@ -38,7 +38,7 @@ namespace prjIHealth.Areas.Admin.Controllers
             else
             {
                 q = _context.TMembers.Include(t => t.FAuthority).Where(m => m.FUserName.Contains(vModel.txtKeyword)
-                   || m.FMemberName.Contains(vModel.txtKeyword) || m.FEmail.Contains(vModel.txtKeyword)).ToList();
+                   || m.FMemberName.Contains(vModel.txtKeyword) || m.FEmail.Contains(vModel.txtKeyword)||m.FPhone.Contains(vModel.txtKeyword)).ToList();
             }
 
             var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
@@ -97,7 +97,6 @@ namespace prjIHealth.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             var tMember = await _context.TMembers.FindAsync(id);
             if (tMember == null)
             {
@@ -124,9 +123,18 @@ namespace prjIHealth.Areas.Admin.Controllers
                     vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
                     q.FPicturePath = pName;
                 }
-                q.FPassword = vModel.fPassword;
-                q.FPhone = vModel.fPhone;
                 q.FMemberName = vModel.fMemberName;
+                q.FPassword = vModel.fPassword;
+                q.FBirthday = vModel.fBirthday;
+                q.FAddress = vModel.fAddress;
+                q.FPhone = vModel.fPhone;
+                q.FEmail = vModel.fEmail;
+                q.FRemarks = vModel.fRemarks;
+                q.FPhone = vModel.fPhone;
+                q.FGender = vModel.FGender;
+                q.FDisabled = vModel.FDisabled;
+                q.FAuthorityId = vModel.FAuthorityId;
+                
             }
             _context.SaveChanges();
             return RedirectToAction("Index", "MemberManage");
