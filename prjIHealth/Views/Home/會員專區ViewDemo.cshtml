@@ -60,13 +60,14 @@
 <section class="product spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-5">
-                <div class="sidebar">
+            @*會員專區垂直導覽列*@
+            <div class="col-lg-3 col-md-5 reveal_b1">
+                <div class="sidebar" style="position:sticky;top:150px;">
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
 
-                            <li><a href="~/Member/Edit">個人資料</a></li>
+                            <li><a href="~/member/edit">個人資料</a></li>
                             <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
                             <li><a href="~/Member/OrderList">訂單查詢</a></li>
                             <li><a href="~/Student/CandidateList">候選教練</a></li>
@@ -76,11 +77,11 @@
 
                         </ul>
                         <br />
-                        <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
+                        <a href="~/Coach/CreateResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-9 col-md-7" style="height:400px" >
+            <div class="col-lg-9 col-md-7" style="height:400px">
                 @*※※※會員專區View內容請從此開始※※※*@
             </div>
         </div>
