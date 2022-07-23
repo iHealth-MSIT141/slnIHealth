@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace prjIHealth.ViewModels
 {
-    public class CCoachViewModel
+    public class CCoachResumeViewModel
     {
         private IHealthContext db;
-        public CCoachViewModel(IHealthContext context)
+        public CCoachResumeViewModel(IHealthContext context)
         {
             db = context;
         }
