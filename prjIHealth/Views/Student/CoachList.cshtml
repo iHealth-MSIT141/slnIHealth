@@ -1,139 +1,165 @@
 ﻿@model List<prjIHealth.ViewModels.CCoachViewModel>
-
+@{
+    IHealthContext db = new IHealthContext();
+}
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<style>
-    .divSearch {
-        display: flex;
-        justify-content: center;
-        padding: 0px 20px;
-    }
+    <style>
+        .divSearch {
+            display: flex;
+            justify-content: center;
+            padding: 0px 20px;
+        }
 
-    .divSelCity {
-        padding-left: 10px;
-        text-align: right;
-    }
+        .divSelCity {
+            padding-left: 10px;
+            text-align: right;
+        }
 
-        .divSelCity > div {
+            .divSelCity > div {
+                width: 180px;
+            }
+
+        #selCity {
+            display: inline !important;
+        }
+
+        .nice-select {
+            display: none;
+        }
+
+        .divKeyword {
+            display: flex;
+        }
+
+        .divSubmit {
+            height: 38px;
+            padding: 0px;
+            margin: 0px;
+            text-align: center;
+        }
+
+        .hero__search__form, .divCoachList {
+            width: 100%;
+        }
+
+        .filter {
+            margin: 30px 0px;
+        }
+
+        .divCoachCount {
+            text-align: right;
+        }
+
+        .divCoachCard {
+            display: flex;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 2px solid lightgray;
+            box-shadow: 2px 2px 5px lightgray;
+        }
+
+        .imgCoach {
+            border-radius: 10px;
+            border: 3px solid white;
             width: 180px;
+            height: 200px;
+            transition: .3s;
         }
 
-    #selCity{
-        display:inline !important;
-    }
-    .nice-select{
-        display:none;
-    }
-    .divKeyword {
-        display: flex;
-    }
+            .imgCoach:hover {
+                border: 3px solid gray;
+            }
 
-    .divSubmit {
-        height: 38px;
-        padding: 0px;
-        margin: 0px;
-        text-align: center;
-    }
-    .hero__search__form, .divCoachList {
-        width: 100%;
-    }       
-    .filter{
-        margin:30px 0px;
-    }    
-    .divCoachCount {
-        text-align: right;
-    }
-    .divCoachCard {
-        display: flex;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 30px;
-        border: 2px solid lightgray;
-        box-shadow: 2px 2px 5px lightgray;
-    }
-    .imgCoach {
-        border-radius: 10px;
-        border: 3px solid white;
-        width: 180px;
-        height: 200px;
-        transition: .3s;
-    }
-        .imgCoach:hover {            
-            border: 3px solid gray;
+        .divCoachInfo {
+            padding: 20px;
         }
-    .divCoachInfo{
-        padding:20px;
-    }
-    .imgIcon {
-        height: 20px;
-    }
-    .li{
-        margin:5px 0px;
-    }
-    .liCoachName {
-        margin-bottom: 10px;
-    }
-    .liSlogan{
-        margin-top:18px;
-    }    
-    .liSlogan b{
-        font-size:16px;
-        line-height:28px;
-    }
-    .divPage{
-        text-align:right;
-    }
-    .btn-success {
-        background-color: #7fad39;
-        border:none;
-    }
-    .btn-light {
-        background-color: #4F6C24;
-        color: white;
-    }
-        .btn-light:hover {
-            background-color: #304115;
+
+        .imgIcon {
+            height: 20px;
+        }
+
+        .li {
+            margin: 5px 0px;
+        }
+
+        .liCoachName {
+            margin-bottom: 10px;
+        }
+
+        .liSlogan {
+            margin-top: 18px;
+        }
+
+            .liSlogan b {
+                font-size: 16px;
+                line-height: 28px;
+            }
+
+        .divPage {
+            text-align: right;
+        }
+
+        .btn-success {
+            background-color: #7fad39;
+            border: none;
+        }
+
+        .btn-light {
+            background-color: #4F6C24;
             color: white;
-        }      
-    .inKeyword {
-        border-bottom-right-radius: 0px;
-        border-top-right-radius: 0px;
-    }
-
-    .btnSearch {
-        height: 38px;
-        border-bottom-left-radius: 0px;
-        border-top-left-radius: 0px;
-    }
-    .divFilter{
-        padding-right:40px;
-    }
-    .divfilterTopic {
-        
-        margin-bottom:15px;
-    }
-        .divfilterTopic b {
-            color: #7fad39;
         }
 
-    .keyTopic{
-        margin-bottom:10px;
-        padding:10px 0px;
-        border-bottom:1px solid lightgray;
-    }
-    .filterCard{
-        margin-bottom:25px;
-    }
-    #btnSubmit {
-        display: block;
-        width: 100%;
-        border-color: #7fad39;
-    }
-    .skillCount {
-        font-weight: 600;
-        color: gray;
-    }
-</style>
+            .btn-light:hover {
+                background-color: #304115;
+                color: white;
+            }
+
+        .inKeyword {
+            border-bottom-right-radius: 0px;
+            border-top-right-radius: 0px;
+        }
+
+        .btnSearch {
+            height: 38px;
+            border-bottom-left-radius: 0px;
+            border-top-left-radius: 0px;
+        }
+
+        .divFilter {
+            padding-right: 40px;
+        }
+
+        .divfilterTopic {
+            margin-bottom: 15px;
+        }
+
+            .divfilterTopic b {
+                color: #7fad39;
+            }
+
+        .keyTopic {
+            margin-bottom: 10px;
+            padding: 10px 0px;
+            border-bottom: 1px solid lightgray;
+        }
+
+        .filterCard {
+            margin-bottom: 25px;
+        }
+
+        #btnSubmit {
+            display: block;
+            width: 100%;
+            border-color: #7fad39;
+        }
+
+        .skillCount {
+            font-weight: 600;
+            color: gray;
+        }
+    </style>
 }
 
 @*banner大圖*@
@@ -174,7 +200,7 @@
                                     <select class="custom-select" id="selCity" name="FCityId">
                                         <option selected disabled>請選擇地區</option>
                                         @{
-                                            foreach (var c in Model[0]._context.TCities.ToList())
+                                            foreach (var c in db.TCities.ToList())
                                             {
                                                 <option value="@c.FCityId" id="@c.FCityId">@c.FCityName</option>
                                             }
@@ -197,11 +223,12 @@
                                 </div>
                                 <div>
                                     @{
-                                        foreach (var s in Model[0]._context.TSkills.ToList())
+                                        foreach (var s in db.TSkills.ToList())
                                         {
                                             <input type="checkbox" value="@s.FSkillId" name="fCoachSkill[]" />
-                                            <label>&nbsp;@s.FSkillName 
-                                                <span class="skillCount">(@Model[0]._context.TCoachSkills.Where(cs=>cs.FSkillId==s.FSkillId).Distinct().Count())</span>
+                                            <label>
+                                                &nbsp;@s.FSkillName
+                                                <span class="skillCount">(@db.TCoachSkills.Where(cs => cs.FSkillId == s.FSkillId).Count())</span>
                                             </label><br />
                                         }
                                     }
@@ -213,21 +240,13 @@
                                 </div>
                                 <div>
                                     @{
-                                        foreach (var t in Model[0]._context.TAvailableTimes.ToList())
+                                        foreach (var t in db.TAvailableTimes.ToList())
                                         {
                                             <input type="checkbox" value="@t.FAvailableTimeId" name="fCoachTime[]" /><label>&nbsp;@t.FAvailableTime</label><br />
                                         }
                                     }
                                 </div>
-                            </div>
-                            @*<div class="filterCard">
-                                <div class="keyTopic">
-                                    <h6><b>價格區間</b></h6>
-                                </div>
-                                <div class="multi-range-field my-5 pb-5">
-                                    <input id="multi7" class="multi-range" type="range"/>
-                                </div>
-                            </div>*@
+                            </div>                           
                             <div class="form-group filterSubmit">
                                 <input type="submit" value="篩選" id="btnSubmit" class="btn btn-success" />
                             </div>
@@ -246,8 +265,8 @@
                         </div>
                     </form>
                     @*<div class="divApply col-lg-2">
-                    @Html.ActionLink("重設條件", "CoachList",new { id=0} ,new {  @CityId = null , @Keyword = null}, new { @class = "btn btn-dark" })
-                </div>*@
+                            @Html.ActionLink("重設條件", "CoachList",new { id=0} ,new {  @CityId = null , @Keyword = null}, new { @class = "btn btn-dark" })
+                        </div>*@
                     <div class="divApply col-lg-2">
                         @Html.ActionLink("成為教練", "CreateResume", "Coach", new { }, new { @class = "btn btn-light" })
                     </div>
@@ -264,7 +283,7 @@
                         </div>
                     </div>
                     <div class="col-lg-8 col-md-4">
-                        <div class="filter__found divCoachCount">         
+                        <div class="filter__found divCoachCount">
                             <h6>搜尋結果：<span id=""></span>，共  <span>@Model.ToArray().Length</span> 位私人教練</h6>
                         </div>
                     </div>
@@ -274,37 +293,39 @@
                         foreach (var coach in Model)
                         {
                             <div class="divCoachCard row reveal_b1">
-                                <label hidden>@coach._coach.FCoachId</label>
-                                <label hidden>@coach._context.TMembers.FirstOrDefault(m => m.FMemberId == coach._coach.FMemberId).FGender</label>
+                                <label hidden>@coach.FCoachId</label>
+                                <label hidden>@coach.Gender @*_context.TMembers.FirstOrDefault(m => m.FMemberId == coach._coach.FMemberId).FGender*@</label>
                                 <div class="col-3">
-                                    <a href="/Student/ViewCoachDetails/@coach._coach.FCoachId">
-                                        <img src="/img/coach/coachImage/@coach._coach.FCoachImage" class="imgCoach">
-                                    </a>                                    
+                                    <a href="/Student/ViewCoachDetails/@coach.FCoachId">
+                                        <img src="/img/coach/coachImage/@coach.FCoachImage" class="imgCoach">
+                                    </a>
                                 </div>
                                 <div class="col-9 divCoachInfo">
                                     <ul>
-                                        <li style="list-style:none" class="liCoachName"><h3><b>@coach._coach.FCoachName</b></h3></li>
+                                        <li style="list-style:none" class="liCoachName"><h3><b>@coach.FCoachName</b></h3></li>
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/location.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
-                                            <span>@coach._coach.FCity.FCityName</span>
+                                            <span>@coach.CityName</span>
                                         </li>
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/skill.png" class="imgIcon" />
                                             <b>&nbsp;&nbsp;&nbsp;專長項目： </b>
-                                                @{ 
-                                                    string s = "";
-                                                    foreach (var c in coach._coach.TCoachSkills)
-                                                    {
-                                                        string skillName =c.FSkill.FSkillName;
-                                                        s += skillName;
-                                                        s += "、";
-                                                    }
-                                                    if (s.Length != 0)
-                                                        s = s.Substring(0, s.Length - 1);
-                                                    <span class="spSkill">@s</span>
+                                            @{
+                                                string s = "";
+                                                foreach (var c in coach.Coach.TCoachSkills)
+                                                {
+                                                    string skillName = c.FSkill.FSkillName;
+                                                    s += skillName;
+                                                    s += "、";
                                                 }
+                                                if (s.Length != 0)
+                                                {
+                                                    s = s.Substring(0, s.Length - 1);
+                                                }
+                                                <span class="spSkill">@s</span>
+                                            }
                                         </li>
-                                        <li style="list-style:none" class="liSlogan"><h5><b>@coach._coach.FSlogan</b></h5></li>
+                                        <li style="list-style:none" class="liSlogan"><h5><b>@coach.FSlogan</b></h5></li>
                                     </ul>
                                 </div>
                             </div>
@@ -323,7 +344,8 @@
 </section>
 
 @section Scripts{
-    <script>       
+    <script>
+
         //const formData = new FormData(document.frmFilter);
         //$("#selCity").change(() => {
         //    //if ($(this).find("input[type=checkbox]:checked").val() != undefined) {
@@ -340,7 +362,7 @@
         //            console.log(data);
         //        })
         //})
-       
+
         //TODO 畫面上保留搜尋條件
         //let city;
         //let keyword;

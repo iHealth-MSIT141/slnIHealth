@@ -34,9 +34,9 @@ namespace prjiHealth.Controllers
             TCoach c = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId);
             if (c != null)
                 return RedirectToAction("EditResume");
-            CCoachViewModel vModel = new CCoachViewModel(_context)
+            CCoachViewModel vModel = new CCoachViewModel
             {
-                _coach = new TCoach()
+                Coach = new TCoach()
             };
             return View(vModel);
         }
@@ -110,15 +110,15 @@ namespace prjiHealth.Controllers
             return Content("Success", "text/plain");
         }        
 
-        int userId = 127; //TODO 取登入者的MemberId
+        int userId = 126; //TODO 取登入者的MemberId
         //修改履歷
         public IActionResult EditResume()
         {
             TCoach data = _context.TCoaches.Include(c => c.TCoachSkills).Include(c => c.TCoachAvailableTimes).
                 Include(c => c.TCoachExperiences).Include(c => c.TCoachLicenses).FirstOrDefault(c => c.FMemberId == userId);           
-            CCoachViewModel vModel = new CCoachViewModel(_context)
+            CCoachViewModel vModel = new CCoachViewModel
             {
-                _coach = data
+                Coach = data
             };
             return View(vModel);
         }

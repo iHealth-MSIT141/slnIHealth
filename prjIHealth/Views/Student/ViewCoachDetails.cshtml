@@ -187,7 +187,10 @@
             }
         .divRecList{
             padding:10px 30px;
-        }        
+        }       
+        .recSkill{
+            line-height:30px;
+        }
         .icon {
             height: 16px;
         }
@@ -226,11 +229,11 @@
                 <div class="back reveal_t1"><a href="/Student/CoachList">< 返回教練列表</a></div>
                 <div class="row divUp">
                     <div class="col-md-5 reveal_t1 divLeft">
-                        <img src="~/img/Coach/coachImage/@Model._coach.FCoachImage" class="imgMain" />
+                        <img src="~/img/Coach/coachImage/@Model.FCoachImage" class="imgMain" />
                     </div>
                     <div class="col-md-7 divMainCoach reveal_r1">
                         <ul>
-                            <li style="list-style:none" class="name"><h3><b>@Model._coach.FCoachName</b></h3></li>
+                            <li style="list-style:none" class="name"><h3><b>@Model.FCoachName</b></h3></li>
                             <li style="list-style:none" class="li liAvgRate">
                                 <span id="avgRate"></span>&nbsp;&nbsp;&nbsp;
                                 <img class="star starOrig" src="~/img/coach/icon/star.png" id="star1" />
@@ -239,23 +242,25 @@
                                 <img class="star starOrig" src="~/img/coach/icon/star.png" id="star4" />
                                 <img class="star starOrig" src="~/img/coach/icon/star.png" id="star5" />&nbsp;&nbsp;&nbsp;
                                 <span id="rateCount"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span id="courseCount">@Model._coach.FCourseCount 次成交&nbsp;<i class="fa-regular fa-circle-check"></i></span>
+                                <span id="courseCount">@Model.FCourseCount 次成交&nbsp;<i class="fa-regular fa-circle-check"></i></span>
                             </li>
                             <li style="list-style:none" class="li">
                                 <img src="~/img/Coach/icon/location.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
-                                <span>@Model._coach.FCity.FCityName</span>
+                                <span>@Model.CityName</span>
                             </li>
                             <li style="list-style:none" class="li">
                                 <img src="~/img/Coach/icon/skill.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;專長項目： </b>
                                 @{
                                     string s = "";
-                                    foreach (var skill in Model._context.TCoachSkills.Where(cs => cs.FCoachId == Model._coach.FCoachId).Select(cs => cs.FSkill.FSkillName))
+                                    foreach (var skill in Model.Coach.TCoachSkills)
                                     {
-                                        s += skill;
+                                        s += skill.FSkill.FSkillName;
                                         s += "、";
                                     }
                                     if (s.Length != 0)
+                                    {
                                         s = s.Substring(0, s.Length - 1);
+                                    }
                                     <span class="spSkill">@s</span>
                                 }
                             </li>
@@ -263,9 +268,9 @@
                                 <img src="~/img/Coach/icon/time.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;可上課時段： </b>
                                 @{
                                     string times = "";
-                                    foreach (var t in Model._context.TCoachAvailableTimes.Where(c => c.FCoachId == Model._coach.FCoachId).Select(t => t.FAvailableTime.FAvailableTime))
+                                    foreach (var t in Model.Coach.TCoachAvailableTimes)
                                     {
-                                        times += t;
+                                        times += t.FAvailableTime.FAvailableTime;
                                         times += "、";
                                     }
                                     if (times.Length != 0)
@@ -274,7 +279,7 @@
                                 }
                             </li>
                             <li style="list-style:none" class="li">
-                                <img src="~/img/Coach/icon/fee.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;參考費用： $</b><span>@Model._coach.FCoachFee/時</span>
+                                <img src="~/img/Coach/icon/fee.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;參考費用： $</b><span>@Model.FCoachFee/時</span>
                             </li>
                         </ul>
                         <ul class="ServiceProfile__buttonList___27UCn ulBtns">
@@ -294,7 +299,7 @@
                     </div>
                     <div class="intro">
                         <div class="topic"><h5><b>教練介紹</b></h5></div>
-                        <h7>@Model._coach.FCoachDescription</h7>
+                        <h7>@Model.FCoachDescription</h7>
                     </div>
                 </div>
                 <div class="product__details__tab tabs">
@@ -314,7 +319,7 @@
                                 <div><h5 class="topic"><b>經歷</b></h5></div>
                                 <ul class="info_details_list ">
                                     @{
-                                        foreach (var exp in Model._coach.TCoachExperiences)
+                                        foreach (var exp in Model.Coach.TCoachExperiences)
                                         {
                                             <li><img src="~/img/Coach/icon/experience.png" class="icon" />&nbsp;&nbsp;@exp.FExperience</li>
                                         }
@@ -323,7 +328,7 @@
                                 <div><h5 class="topic"><b>專業證照</b></h5></div>
                                 <ul class="info_details_list">
                                     @{
-                                        foreach (var lic in Model._coach.TCoachLicenses)
+                                        foreach (var lic in Model.Coach.TCoachLicenses)
                                         {
                                             <li><img src="~/img/Coach/icon/license.png" class="icon" />&nbsp;&nbsp;@lic.FLicense</li>
                                         }
@@ -351,32 +356,34 @@
                     <div class="sidebar__item">
                         <div class="divRecContent">
                             <div class="divRecTopic reveal_t1">
-                                <span>在<b>&nbsp;@Model._coach.FCity.FCityName，&nbsp;</b><br></span>
+                                <span>在<b>&nbsp;@Model.CityName，&nbsp;</b><br></span>
                                 <span class="spTopic2">擁有相同專長的教練 —</span>
                             </div>
                             <div class="recBar reveal_r1"></div>
-                            <div class="row divRec reveal_b1">
-                                <div class="col-5">
-                                    <a href="/Student/ViewCoachDetails">
-                                        <img src="~/img/Coach/coachImage/Zac.jpg" class="coach_img">
-                                    </a>
+                            <div class="divCoaches">
+                                <div class="row divRec reveal_b1">
+                                    <div class="col-5"> @*d1*@
+                                        <a href="/Student/ViewCoachDetails">
+                                            <img src="~/img/Coach/coachImage/Zac.jpg" class="coach_img">
+                                        </a>
+                                    </div>
+                                    <div class="col-7 divRecCoach"> @*d2*@
+                                        <div class="divRecName"><h4><b>Zac</b></h4></div>
+                                        <div><span>夏天來臨前，跟著Zac一起打造完美body！</span></div>
+                                    </div>
+                                    <div class="divRecList"> @*d3*@
+                                        <ul class="ulRec">
+                                            <li style="list-style:none" class="li">
+                                                <img src="~/img/Coach/icon/location.png" class="icon" /><span><b>&nbsp;&nbsp;&nbsp;授課地區： </b>&nbsp;&nbsp;台北市</span>
+                                            </li>
+                                            <li style="list-style:none" class="li">
+                                                <img src="~/img/Coach/icon/skill.png" class="icon" /><span><b>&nbsp;&nbsp;&nbsp;專長項目： </b>&nbsp;&nbsp;肌肥大訓練、備賽指導</span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="col-7 divRecCoach">
-                                    <div class="divRecName"><h4><b>Zac</b></h4></div>
-                                    <div><span>夏天來臨前，跟著Zac一起打造完美body！</span></div>
-                                </div>
-                                <div class="divRecList">
-                                    <ul class="ulRec">
-                                        <li style="list-style:none" class="li">
-                                            <img src="~/img/Coach/icon/location.png" class="icon" /><span><b>&nbsp;&nbsp;&nbsp;授課地區： </b>&nbsp;&nbsp;台北市</span>
-                                        </li>
-                                        <li style="list-style:none" class="li">
-                                            <img src="~/img/Coach/icon/skill.png" class="icon" /><span><b>&nbsp;&nbsp;&nbsp;專長項目： </b>&nbsp;&nbsp;肌肥大訓練、備賽指導</span>
-                                        </li>
-                                    </ul>
-                                </div>                                
                             </div>
-                        </div>
+                        </div>                            
                     </div>
                 </div>
             </div>
@@ -388,7 +395,7 @@
     <script>
         //載入評價(上方+tabpage)
         $(document).ready(function () {
-            $.getJSON("@Url.Content("~/Student/GetCoachRate")", { "id": "@Model._coach.FCoachId" },
+            $.getJSON("@Url.Content("~/Student/GetCoachRate")", { "id": "@Model.FCoachId" },
                 function (data) {
                     let countSum=0;
                     $.each(data, function (index, rate) {
@@ -409,25 +416,25 @@
         $("#selSort").change(() => {
             let opt = $("#selSort option:selected").val();
             if (opt == 0) {
-                $.getJSON("@Url.Content("~/Student/GetCoachRate")", { "id": "@Model._coach.FCoachId" },
+                $.getJSON("@Url.Content("~/Student/GetCoachRate")", { "id": "@Model.FCoachId" },
                     function (data) {
                         displayRate(data);
                     })
             }
             else if (opt == 1) {
-                $.getJSON("@Url.Content("~/Student/GetNewRate")", { "id": "@Model._coach.FCoachId" },
+                $.getJSON("@Url.Content("~/Student/GetNewRate")", { "id": "@Model.FCoachId" },
                     function (data) {
                         displayRate(data);
                     })
             }
             else if (opt == 2) {
-                $.getJSON("@Url.Content("~/Student/GetDesRate")", { "id": "@Model._coach.FCoachId" },
+                $.getJSON("@Url.Content("~/Student/GetDesRate")", { "id": "@Model.FCoachId" },
                     function (data) {
                         displayRate(data);
                     })
             }
             else if (opt == 3) {
-                $.getJSON("@Url.Content("~/Student/GetAscRate")", { "id": "@Model._coach.FCoachId" },
+                $.getJSON("@Url.Content("~/Student/GetAscRate")", { "id": "@Model.FCoachId" },
                     function (data) {
                         displayRate(data);
                     })
@@ -456,11 +463,40 @@
 
         //推薦教練
         $(document).ready(function () {
-           $.getJSON("@Url.Content("~/Student/GetRecCoach")", { "id": "@Model._coach.FCoachId" },
-               function (data) {
-                   console.log(data);
+            $.getJSON("@Url.Content("~/Student/GetRecCoach")", { "id": "@Model.FCoachId" },
+                function (data) {
+                    console.log(data);
+                    $(".divCoaches").empty();
+                    $.each(data, function (index, item) {
+                        $(".divCoaches").append(`<div class="row divRec reveal_b1" id=rec${index}></div>`);
+                        $(`#rec${index}`).append(`<div class="col-5" id=d1${index}></div>`).append(`<div class="col-7 divRecCoach" id=d2${index}></div>`)
+                            .append(`<div class="divRecList" id=d3${index}></div>`);
+                        $(`#d1${index}`).append(`<a href="/Student/ViewCoachDetails/${item.fCoachId}" id=a${index}></a>`);
+                        $(`#a${index}`).append(`<img id=img${index} class="coach_img">`);
+                        $(`#img${index}`).attr("src", `../../img/Coach/coachImage/${item.fCoachImage}`);
+
+                        $(`#d2${index}`).append(`<div class="divRecName"><h4><b>${item.fCoachName}</b></h4></div>`).append(`<div><span>${item.fSlogan}</span></div>`);
+                        $(`#d3${index}`).append(`<ul class="ulRec" id=ul${index}>`);
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=l1${index}></li>`).append(`<li style="list-style:none" class="li" id=l2${index}></li>`);
+                        $(`#l1${index}`).append(`<img class="icon location"/><span><b>&nbsp;&nbsp;&nbsp;授課地區： </b>&nbsp;&nbsp;${item.cityName}</span>`);
+                        $(".location").attr("src", "@Url.Content("~/img/Coach/icon/location.png")");
+                        $(`#l2${index}`).append(`<img class="icon skill" /><span id=skill${index} class="recSkill"><b>&nbsp;&nbsp;&nbsp;專長項目： </b>&nbsp;&nbsp;</span>`)
+                        $(".skill").attr("src", "@Url.Content("~/img/Coach/icon/skill.png")");
+
+                        //取得專長項目
+                        $.getJSON("@Url.Content("~/Student/GetSkillName")", { "id": `${item.fCoachId}` },
+                            function (skills) {  
+                                let s = "";
+                                $.each(skills, function (index, skill) {                                    
+                                    s += skill;
+                                    s += "、";
+                                })
+                                s = s.substr(0, s.length - 1);     
+                                $(`#skill${index}`).append(`${s}`);
+                            }
+                        )                        
+                    })
                     })
         })
-
     </script>
 }

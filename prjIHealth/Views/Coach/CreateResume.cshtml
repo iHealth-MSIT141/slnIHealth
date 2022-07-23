@@ -161,7 +161,9 @@
         }
     </style>
 }
-
+@{
+    IHealthContext db = new IHealthContext();
+}
 @*banner大圖*@
 <section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
     <div class="container">
@@ -210,7 +212,7 @@
                                     <div class="form-group row divName">
                                         <label for="inName" class="col-sm-3 col-form-label">顯示名稱</label>
                                         <div class="col-sm-9">
-                                            <input value="@Model._coach.FCoachName" class="form-control" name="FCoachName" id="inName" />
+                                            <input class="form-control" name="FCoachName" id="inName" />
                                             &nbsp;<span class="text-danger" id="spName"></span>
                                         </div>
                                     </div>
@@ -220,7 +222,7 @@
                                             <select id="selCity" class="selCity" name="FCityId">
                                                 <option selected disabled>請選擇所在城市</option>
                                                 @{
-                                                    foreach (var c in Model._context.TCities.ToList())
+                                                    foreach (var c in db.TCities.ToList())
                                                     {
                                                         <option value="@c.FCityId" id="@c.FCityId">@c.FCityName</option>
                                                     }
@@ -233,7 +235,7 @@
                                         <div class="col-sm-9 row divSkill" id="divSkill">
                                             <div class="col-6">
                                                 @{
-                                                    foreach (var q in Model._context.TSkills.ToList().Take(5))
+                                                    foreach (var q in db.TSkills.ToList().Take(5))
                                                     {
 
                                                         <input type="checkbox" value="@q.FSkillId" name="fCoachSkill[]" /><label>&nbsp;@q.FSkillName</label><br />
@@ -242,7 +244,7 @@
                                             </div>
                                             <div class="col-6">
                                                 @{
-                                                    foreach (var q in Model._context.TSkills.ToList().TakeLast(4))
+                                                    foreach (var q in db.TSkills.ToList().TakeLast(4))
                                                     {
                                                         <input type="checkbox" value="@q.FSkillId" name="fCoachSkill[]" /><label>&nbsp;@q.FSkillName</label><br />
                                                     }
@@ -255,7 +257,7 @@
                                         <div class="col-sm-9 row divTime" id="divTime">
                                             <div class="col-6">
                                                 @{
-                                                    foreach (var q in Model._context.TAvailableTimes.ToList().Take(3))
+                                                    foreach (var q in db.TAvailableTimes.ToList().Take(3))
                                                     {
 
                                                         <input type="checkbox" value="@q.FAvailableTimeId" name="fCoachTime[]" /><label>&nbsp;@q.FAvailableTime</label><br />
@@ -264,7 +266,7 @@
                                             </div>
                                             <div class="col-6">
                                                 @{
-                                                    foreach (var q in Model._context.TAvailableTimes.ToList().TakeLast(3))
+                                                    foreach (var q in db.TAvailableTimes.ToList().TakeLast(3))
                                                     {
 
                                                         <input type="checkbox" value="@q.FAvailableTimeId" name="fCoachTime[]" /><label>&nbsp;@q.FAvailableTime</label><br />
@@ -285,7 +287,7 @@
                                     <div class="form-group">
                                         <label class="col-form-label">照片上傳</label><br />
                                         <div class="form-group divImg">
-                                            <img src="~/img/coach/NoImage.png" id="imgUploaded" />                                            
+                                            <img src="~/img/coach/NoImage.png" id="imgUploaded" />
                                             <div class="input-group divUpload custom-file">
                                                 <input type="file" name="File" class="inFile">
                                             </div>
@@ -321,7 +323,7 @@
                                     <span class="text-danger" id="spSlogan"></span>
                                 </div>
                             </div>
-                            <div class="form-group divSubmit">                               
+                            <div class="form-group divSubmit">
                                 <input type="submit" value="送出" id="btnSubmit" class="btn btn-success" />
                             </div>
                         </form>
@@ -340,7 +342,7 @@
     </div>
 </section>
 
-@section Scripts{    
+@section Scripts{
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         //對齊新增證照btn位置
@@ -351,7 +353,7 @@
         getBtnPosition();
 
         //新增Exp欄位
-        let expCount=1;        
+        let expCount = 1;
         $("#btnNewExp").click(() => {
             if (expCount >= 10) {
                 return confirm("經歷上限為10項");
@@ -368,7 +370,7 @@
         })
 
         //新增Lic欄位
-        let licCount =1;        
+        let licCount = 1;
         $("#btnNewLic").click(() => {
             if (licCount >= 10) {
                 return confirm("相關證照上限為10項");
@@ -443,7 +445,7 @@
                 return confirm("請至少選擇一個可上課時段");
 
             //希望待遇
-            if ($(".divFee input").val()=="")
+            if ($(".divFee input").val() == "")
                 return confirm("希望待遇為必填");
 
             //介紹
@@ -457,14 +459,14 @@
             //Ajax submit
             Swal.fire({
                 title: '確認送出履歷？',
-                text:'送出後將進入審核流程，待審核完成前，履歷將不提供修改。',
+                text: '送出後將進入審核流程，待審核完成前，履歷將不提供修改。',
                 icon: 'question',
                 confirmButtonText: '確定',
                 cancelButtonText: '取消',
                 showCancelButton: true,
                 showCloseButton: true
             }).then((result) => {
-                if (result.isConfirmed) {                    
+                if (result.isConfirmed) {
                     const formData = new FormData(document.Resume);
                     $.ajax({
                         url: "CreateResume",
@@ -482,8 +484,8 @@
                             }).then((result) => {
                                 if (result.isConfirmed)
                                     window.location.reload();
-                                })                                
-                        }                   
+                            })
+                        }
                     })
                 }
             })
