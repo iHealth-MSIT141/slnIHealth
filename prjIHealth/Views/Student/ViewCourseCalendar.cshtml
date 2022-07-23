@@ -143,21 +143,24 @@
 <section class="product spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-5">
-                <div class="sidebar">
+            @*會員專區垂直導覽列*@
+            <div class="col-lg-3 col-md-5 reveal_b1">
+                <div class="sidebar" style="position:sticky;top:150px;">
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
-                            <li><a href="#">個人資料</a></li>
+
+                            <li><a href="~/member/edit">個人資料</a></li>
                             <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
                             <li><a href="~/Member/OrderList">訂單查詢</a></li>
                             <li><a href="~/Student/CandidateList">候選教練</a></li>
                             <li><a href="~/Student/CourseList">課程列表</a></li>
                             <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
                             <li><a href="~/Problem/CheckReply">客服記錄</a></li>
+
                         </ul>
                         <br />
-                        <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
+                        <a href="~/Coach/CreateResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
                     </div>
                 </div>
             </div>
@@ -165,16 +168,16 @@
                 @*※※※會員專區View內容請從此開始※※※*@
                 <div class="divTopic reveal_t1"><h3><b>課程行事曆</b></h3></div>
                 <div class="divBar reveal_r1"></div>
-                <div >
-                    <div class="divDate reveal_t1">                        
+                <div>
+                    <div class="divDate reveal_t1">
                         <button id="btnPre"><i class="fa-solid fa-caret-left"></i></button>
-                        <input type="month" id="inputMon" class=""/>
+                        <input type="month" id="inputMon" class="" />
                         <button id="btnNext"><i class="fa-solid fa-caret-right"></i></button>
                     </div>
                     <div class="result reveal_b1">
                         <div class="divCal">
                             <div>
-                                <table id="tableCal" >
+                                <table id="tableCal">
                                     <thead>
                                         <tr>
                                             <th>Sun</th>
@@ -186,7 +189,7 @@
                                             <th>Sat</th>
                                         </tr>
                                     </thead>
-                                </table>                               
+                                </table>
                             </div>
                         </div>
                     </div>
