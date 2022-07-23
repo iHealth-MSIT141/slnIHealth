@@ -118,6 +118,7 @@
         .selStatus {
             display: inline !important;
         }
+
         #selStatus {
             display: inline !important;
             color: #fff;
@@ -125,6 +126,7 @@
             border-color: #454d55;
             font-weight: bold;
         }
+
         .selTime1, .selTime2 {
             display: inline !important;
             width: 48%;
@@ -273,7 +275,7 @@
                                     <td class="tdBtn">
                                         <input type="hidden" value="@c.FCoachContactId" />
                                         <button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse">排課</button>
-                                        <button class="btn btn-secondary">聯繫</button>
+                                        <button class="btn btn-secondary btnChat" data-coachid="@c.FMemberId">聯繫</button>
                                     </td>
                                 </tr>
                             }
@@ -370,7 +372,8 @@
 </div>
 
 @section Scripts{
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <script>
         //select樣式
         $(".nice-select").remove();
@@ -428,7 +431,7 @@
 
         //新增課程(排課)
         $("#btnSendCourse").click(function () {
-            
+
             if ($("#inpCourseName").val() == "" || $("#inpTotal").val() == "") {
                 SwalWithGreen.fire(
                     '請勿空白',
@@ -542,6 +545,11 @@
             loadContact();
         });
         $("#selStatus").on("change", loadContact);
+
+        //線上聯繫
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+        //connection.on("ReceiveMessage");
 
 
     </script>

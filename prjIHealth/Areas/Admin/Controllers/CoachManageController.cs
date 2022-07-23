@@ -22,10 +22,10 @@ namespace prjIHealth.Areas.Admin.Controllers
         }
         public IActionResult CoachList()
         {
-            List<CCoachViewModel> coaches = new List<CCoachViewModel>();
+            List<CCoachResumeViewModel> coaches = new List<CCoachResumeViewModel>();
             foreach(var c in db.TCoaches.OrderByDescending(c=>c.FApplyDate))
             {
-                CCoachViewModel coachViewModel = new CCoachViewModel(db)
+                CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
                 {
                     FCoachId=c.FCoachId,
                     FCoachName=c.FCoachName,
@@ -46,7 +46,7 @@ namespace prjIHealth.Areas.Admin.Controllers
         public IActionResult getCoach(int? id)
         {
             var c = db.TCoaches.FirstOrDefault(c => c.FCoachId == id);
-            CCoachViewModel coachViewModel = new CCoachViewModel(db)
+            CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
             {
                 FCoachId = c.FCoachId,
                 FCoachName = c.FCoachName,
@@ -100,13 +100,13 @@ namespace prjIHealth.Areas.Admin.Controllers
             if (searchCoachViewModel.StatusNum != 0)
                 tCoaches = tCoaches.Where(c => c.FStatusNumber == searchCoachViewModel.StatusNum);
 
-            List<CCoachViewModel> coaches = null;
+            List<CCoachResumeViewModel> coaches = null;
             if (tCoaches.Count() != 0)
             {
-                coaches = new List<CCoachViewModel>();
+                coaches = new List<CCoachResumeViewModel>();
                 foreach (var c in tCoaches)
                 {
-                    CCoachViewModel coachViewModel = new CCoachViewModel(db)
+                    CCoachResumeViewModel coachViewModel = new CCoachResumeViewModel(db)
                     {
                         FCoachId = c.FCoachId,
                         FCoachName = c.FCoachName,

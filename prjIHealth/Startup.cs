@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreMVC_SignalR_Chat.Hubs;
+
 namespace prjIHealth
 {
     public class Startup
@@ -30,6 +31,7 @@ namespace prjIHealth
                 options.UseSqlServer(Configuration.GetConnectionString("IHealthConnection"));
             });
             services.AddSignalR();
+            services.AddCors();
             services.AddControllersWithViews();
             services.AddSession();
        
@@ -50,11 +52,15 @@ namespace prjIHealth
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed(_ => true).AllowCredentials();
+            });
             //object p = app.UseSignalR(router => {route.MapHub<ChatHub>("/Home/Index") });
             app.UseRouting();
             app.UseSession();
             app.UseAuthorization();
-                       app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                    name: "areas",
