@@ -1,20 +1,22 @@
-﻿@model IEnumerable<prjIHealth.Models.TProduct>
+﻿@model IEnumerable<prjIHealth.ViewModels.CProductViewModel>
+@using Microsoft.EntityFrameworkCore
+@using prjIHealth.Controllers
 
 @section Styles{
 
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     @*h2內容請自行更換*@
-                    <h2>購物商城</h2>
-                    <div class="breadcrumb__option">
-                        @*<a href="./index.html">Home</a>
-                            <span>Shop</span>*@
+                    <h2 class="reveal_t1">周邊商城</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Shopping/ShowShoppingMall">Home</a>
+                        <span>Shopping</span>
                     </div>
                 </div>
             </div>
@@ -22,6 +24,7 @@
         </div>
     </div>
 </section>
+
 
 <section class="product spad">
     <div class="container">
@@ -30,13 +33,13 @@
                 <div class="sidebar">
                     <div class="sidebar__item">
                         <h4>商品類別</h4>
-                        <ul>
-                            <li><a href="/shopping/showshoppingmall">所有商品</a></li>
-                            <li><a href="/shopping/showshoppingmall/1">乳清蛋白</a></li>
-                            <li><a href="/shopping/showshoppingmall/2">健康食品</a></li>
-                            <li><a href="/shopping/showshoppingmall/3">運動用品</a></li>
-                            <li><a href="/shopping/showshoppingmall/4">男裝</a></li>
-                            <li><a href="/shopping/showshoppingmall/5">女裝</a></li>
+                        <ul id="showByCatergory">
+                            <li><a href="#" data-id="0">所有商品</a></li>
+                            <li><a href="#" data-id="1">乳清蛋白</a></li>
+                            <li><a href="#" data-id="2">健康食品</a></li>
+                            <li><a href="#" data-id="3">運動用品</a></li>
+                            <li><a href="#" data-id="4">男裝</a></li>
+                            <li><a href="#" data-id="5">女裝</a></li>
                         </ul>
                         <br />
                         <br />
@@ -45,192 +48,179 @@
                         <div class="sidebar__item">
                             <div class="latest-product__text">
                                 <h4>推薦商品</h4>
-                                <div class="latest-product__slider owl-carousel owl-loaded owl-drag">
-                                    <div class="owl-stage-outer">
-                                        <div class="owl-stage" style="transform: translate3d(-420px, 0px, 0px); transition: all 1.2s ease 0s; width: 1260px;">
-                                            <div class="owl-item cloned" style="width: 210px;">
-                                                <div class="latest-prdouct__slider__item">
-                                                    <a href="ShowProductDetail" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f1.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>金牌巧克力乳清蛋白</h6>
-                                                            <span>$1999</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f2.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>金牌草莓乳清蛋白</h6>
-                                                            <span>$1999</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f3.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>無添加濃縮乳清蛋白</h6>
-                                                            <span>$539</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item cloned" style="width: 210px;">
-                                                <div class="latest-prdouct__slider__item">
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f4.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>果果堅果乳清蛋白</h6>
-                                                            <span>$1380</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f5.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>無添加濃縮乳清蛋白</h6>
-                                                            <span>$539</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f6.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>果果堅果乳清蛋白</h6>
-                                                            <span>$1380</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item active" style="width: 210px;">
-                                                <div class="latest-prdouct__slider__item">
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f7.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>金牌草莓乳清蛋白</h6>
-                                                            <span>$1320</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f8.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>無添加濃縮乳清蛋白</h6>
-                                                            <span>$1380</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f1.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>BSIN Syntha-6乳清蛋白</h6>
-                                                            <span>$1899</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item" style="width: 210px;">
-                                                <div class="latest-prdouct__slider__item">
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f2.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>【加拿大ALLMAX】奧美仕經典乳清蛋白</h6>
-                                                            <span>$1380</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f3.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>多效乳清蛋白飲</h6>
-                                                            <span>$1380</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f4.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>無添加濃縮乳清蛋白</h6>
-                                                            <span>$539</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item cloned" style="width: 210px;">
-                                                <div class="latest-prdouct__slider__item">
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f5.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>多效乳清蛋白飲</h6>
-                                                            <span>$1380</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f6.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>金牌巧克力乳清蛋白</h6>
-                                                            <span>$1999</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f7.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>無添加濃縮乳清蛋白</h6>
-                                                            <span>$539</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item cloned" style="width: 210px;">
-                                                <div class="latest-prdouct__slider__item">
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f8.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>多效乳清蛋白飲</h6>
-                                                            <span>$1380</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f1.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>MUSCLETECH™ WHEY GOLD耐如鐵</h6>
-                                                            <span>$1999</span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/prjproduct/f2.jpg" alt="">
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>【加拿大ALLMAX】奧美仕經典乳清蛋白</h6>
-                                                            <span>$1880</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><div class="owl-nav"><button type="button" role="presentation" class="owl-prev"><span class="fa fa-angle-left"><span></span></span></button><button type="button" role="presentation" class="owl-next"><span class="fa fa-angle-right"><span></span></span></button></div><div class="owl-dots disabled"></div>
+                                <div class="latest-product__slider owl-carousel">
+                                    <div class="latest-prdouct__slider__item">
+                                        @{
+                                            IHealthContext dblIHealth = new IHealthContext();
+                                            var top3PopularProduct = (from od in dblIHealth.TOrderDetails.Include(od => od.FProduct).ThenInclude(p => p.FCategory).AsEnumerable()
+                                                                      where od.FProduct.FCategoryId == 1
+                                                                      group od by new
+                                                                      {
+                                                                          od.FProductId,
+                                                                          od.FProduct.FProductName,
+                                                                          od.FProduct.FCoverImage,
+                                                                          od.FProduct.FUnitprice
+                                                                      }
+                                                                      into g
+                                                                      select new
+                                                                      {
+                                                                          Key = g.Key,
+                                                                          Count = g.Sum(od => od.FQuantity),
+                                                                          Photo = g.Key.FCoverImage,
+                                                                          UnitPrice = g.Key.FUnitprice
+                                                                      }).OrderByDescending(p => p.Count).Take(3).ToList();
+
+                                            foreach (var item in top3PopularProduct)
+                                            {
+                                                <a href="/Shopping/ShowProductDetail/@item.Key.FProductId" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="/img/product/@item.Key.FCoverImage" alt="" style="width:110px;height:110px">
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        <h6>@item.Key.FProductName</h6>
+                                                        <span>@item.Key.FUnitprice.ToString("C0")</span>
+                                                    </div>
+                                                </a>
+                                            }
+
+                                        }
+                                    </div>
+                                    <div class="latest-prdouct__slider__item">
+                                        @{
+                                            top3PopularProduct = (from od in dblIHealth.TOrderDetails.Include(od => od.FProduct).ThenInclude(p => p.FCategory).AsEnumerable()
+                                                                  where od.FProduct.FCategoryId == 2
+                                                                  group od by new
+                                                                  {
+                                                                      od.FProductId,
+                                                                      od.FProduct.FProductName,
+                                                                      od.FProduct.FCoverImage,
+                                                                      od.FProduct.FUnitprice
+                                                                  }
+                                                                      into g
+                                                                  select new
+                                                                  {
+                                                                      Key = g.Key,
+                                                                      Count = g.Sum(od => od.FQuantity),
+                                                                      Photo = g.Key.FCoverImage,
+                                                                      UnitPrice = g.Key.FUnitprice
+                                                                  }).OrderByDescending(p => p.Count).Take(3).ToList();
+
+                                            foreach (var item in top3PopularProduct)
+                                            {
+                                                <a href="/Shopping/ShowProductDetail/@item.Key.FProductId" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="/img/product/@item.Key.FCoverImage" alt="" style="width:110px;height:110px">
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        <h6>@item.Key.FProductName</h6>
+                                                        <span>@item.Key.FUnitprice.ToString("C0")</span>
+                                                    </div>
+                                                </a>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="latest-prdouct__slider__item">
+                                        @{
+                                            top3PopularProduct = (from od in dblIHealth.TOrderDetails.Include(od => od.FProduct).ThenInclude(p => p.FCategory).AsEnumerable()
+                                                                  where od.FProduct.FCategoryId == 3
+                                                                  group od by new
+                                                                  {
+                                                                      od.FProductId,
+                                                                      od.FProduct.FProductName,
+                                                                      od.FProduct.FCoverImage,
+                                                                      od.FProduct.FUnitprice
+                                                                  }
+                                                                      into g
+                                                                  select new
+                                                                  {
+                                                                      Key = g.Key,
+                                                                      Count = g.Sum(od => od.FQuantity),
+                                                                      Photo = g.Key.FCoverImage,
+                                                                      UnitPrice = g.Key.FUnitprice
+                                                                  }).OrderByDescending(p => p.Count).Take(3).ToList();
+
+                                            foreach (var item in top3PopularProduct)
+                                            {
+                                                <a href="/Shopping/ShowProductDetail/@item.Key.FProductId" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="/img/product/@item.Key.FCoverImage" alt="" style="width:110px;height:110px">
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        <h6>@item.Key.FProductName</h6>
+                                                        <span>@item.Key.FUnitprice.ToString("C0")</span>
+                                                    </div>
+                                                </a>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="latest-prdouct__slider__item">
+                                        @{
+                                            top3PopularProduct = (from od in dblIHealth.TOrderDetails.Include(od => od.FProduct).ThenInclude(p => p.FCategory).AsEnumerable()
+                                                                  where od.FProduct.FCategoryId == 4
+                                                                  group od by new
+                                                                  {
+                                                                      od.FProductId,
+                                                                      od.FProduct.FProductName,
+                                                                      od.FProduct.FCoverImage,
+                                                                      od.FProduct.FUnitprice
+                                                                  }
+                                                                      into g
+                                                                  select new
+                                                                  {
+                                                                      Key = g.Key,
+                                                                      Count = g.Sum(od => od.FQuantity),
+                                                                      Photo = g.Key.FCoverImage,
+                                                                      UnitPrice = g.Key.FUnitprice
+                                                                  }).OrderByDescending(p => p.Count).Take(3).ToList();
+
+                                            foreach (var item in top3PopularProduct)
+                                            {
+                                                <a href="/Shopping/ShowProductDetail/@item.Key.FProductId" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="/img/product/@item.Key.FCoverImage" alt="" style="width:110px;height:110px">
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        <h6>@item.Key.FProductName</h6>
+                                                        <span>@item.Key.FUnitprice.ToString("C0")</span>
+                                                    </div>
+                                                </a>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="latest-prdouct__slider__item">
+                                        @{
+                                            top3PopularProduct = (from od in dblIHealth.TOrderDetails.Include(od => od.FProduct).ThenInclude(p => p.FCategory).AsEnumerable()
+                                                                  where od.FProduct.FCategoryId == 5
+                                                                  group od by new
+                                                                  {
+                                                                      od.FProductId,
+                                                                      od.FProduct.FProductName,
+                                                                      od.FProduct.FCoverImage,
+                                                                      od.FProduct.FUnitprice
+                                                                  }
+                                                                      into g
+                                                                  select new
+                                                                  {
+                                                                      Key = g.Key,
+                                                                      Count = g.Sum(od => od.FQuantity),
+                                                                      Photo = g.Key.FCoverImage,
+                                                                      UnitPrice = g.Key.FUnitprice
+                                                                  }).OrderByDescending(p => p.Count).Take(3).ToList();
+
+                                            foreach (var item in top3PopularProduct)
+                                            {
+                                                <a href="/Shopping/ShowProductDetail/@item.Key.FProductId" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="/img/product/@item.Key.FCoverImage" alt="" style="width:110px;height:110px">
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        <h6>@item.Key.FProductName</h6>
+                                                        <span>@item.Key.FUnitprice.ToString("C0")</span>
+                                                    </div>
+                                                </a>
+                                            }
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -238,164 +228,291 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
+
                 <div class="hero__search">
-                    <button class="hero__search__form site-btn" style="width:20%">按價格排序</button>
-                    <div class="hero__search__form " style="width:57.3%">
-                        @using (Html.BeginForm())
-                        {
-                            @Html.TextBox("txtKeyword")
-                            <button type="submit" class="site-btn">搜尋</button>
-                        }
+                    <button type="button" class="hero__search__form site-btn sort sort-asc" style="width:20%">按價格排序↕</button>
+                    <div class="hero__search__form " style="width:57.3%" id="search">
+                        <form method="post">
+                            <input style="width:392.1px;height:46px" id="txtKeyword" name="txtKeyword" type="text">
+                            <button type="button" class="site-btn" id="btnSearch" style="float:right">搜尋</button>
+                        </form>
                     </div>
                 </div>
-                <div class="row">
-                    @*@foreach (var item in Model)
-                        {
-                            <div class="col-lg-4 col-md-6 col-sm-6">
-                                <div id="header" style="cursor:pointer;" onclick="location.href='/Shopping/ShowProductDetail';">
-                                    <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/@item.FCoverImage" style="background-image: url(&quot;/img/product/product-1.jpg&quot;);">
-                                            <ul class="product__item__pic__hover">
-                                                <li><a href="/Shopping/AddToTrack"><i class="fa fa-heart" data-id="@item.FProductId"></i></a></li>
-                                                <li><a href="/Shopping/AddToTrack"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__item__text">
-                                            <h6><a href="/Shopping/ShowProductDetail">@item.FProductName</a></h6>
-                                            <h5>@item.FUnitprice.ToString("C0")</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }*@
+                <div class="row" id="showProduct">
 
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div id="header" style="cursor:pointer;" onclick="location.href='/Shopping/ShowProductDetail';">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f1.jpg" style="background-image: url(&quot;/img/product/product-1.jpg&quot;);">
-                                    <ul class="product__item__pic__hover">
-                                        <li><a href="/Shopping/AddToTrack"><i class="fa fa-heart" data-id=""></i></a></li>
-                                        <li><a href="/Shopping/AddToTrack"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6><a href="/Shopping/ShowProductDetail">金牌巧克力乳清蛋白</a></h6>
-                                    <h5>$1999</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f2.jpg" style="background-image: url(&quot;/img/product/product-2.jpg&quot;);">
-                                <a></a>
-                                <ul class="product__item__pic__hover">
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">金牌草莓乳清蛋白</a></h6>
-                                <h5>$1999</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f3.jpg" style="background-image: url(&quot;/img/product/product-3.jpg&quot;);">
-                                <ul class="product__item__pic__hover">
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">無添加濃縮乳清蛋白</a></h6>
-                                <h5>$539</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f4.jpg" style="background-image: url(&quot;/img/product/product-4.jpg&quot;);">
-                                <ul class="product__item__pic__hover">
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">多效乳清蛋白飲</a></h6>
-                                <h5>$1380</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f5.jpg" style="background-image: url(&quot;/img/product/product-5.jpg&quot;);">
-                                <ul class="product__item__pic__hover">
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">MUSCLETECH™ WHEY GOLD耐如鐵</a></h6>
-                                <h5>$1999</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f6.jpg" style="background-image: url(&quot;/img/product/product-6.jpg&quot;);">
-                                <ul class="product__item__pic__hover">
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">【加拿大ALLMAX】奧美仕經典乳清蛋白</a></h6>
-                                <h5>$1880</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f7.jpg" style="background-image: url(&quot;/img/product/product-7.jpg&quot;);">
-                                <ul class="product__item__pic__hover">
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">果果堅果乳清蛋白</a></h6>
-                                <h5>$360</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f8.jpg" style="background-image: url(&quot;/img/product/product-8.jpg&quot;);">
-                                <ul class="product__item__pic__hover">
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">BSIN Syntha-6乳清蛋白</a></h6>
-                                <h5>$1899</h5>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </section>
 
 @section Scripts{
+    <script>
 
+        //顯示商品
+        function AllProducts(url) {
+            $.get(url, function (datas) {
+                let htmlShowProduct = "";
+                $.each(datas, function (idx, product) {
+                    htmlShowProduct += `<div class="col-lg-4 col-md-6 col-sm-6" ><div id="header" style="cursor:pointer;">
+                                <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
+                                    <ul class="product__item__pic__hover">
+                                        <li><a href="#" data-id="${product.fProductId}" class="addToTrack"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#" data-id="${product.fProductId}" class="addToCart"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6 id="showProductDetail" data-id="${product.fProductId}">${product.fProductName}</h6>
+                                    <h5>$${product.fUnitprice}</h5>
+                                </div>
+                            </div>
+                            </div></div>`
+                })
+                $("#showProduct").html(htmlShowProduct);
+            })
+        }
+
+        //以價格排序
+        function asc(id) {
+            let url = "@Url.Content("~/Shopping/AscProduct/")" + id;
+            AllProducts(url);
+            $(".sort").text("按價格排序↑");
+            $(".sort").removeClass("sort-asc");
+            $(".sort").addClass("sort-desc");
+            $(".sort").unbind('click');
+            $(".sort-desc").on('click', desc);
+        }
+        function desc(id) {
+            let url = "@Url.Content("~/Shopping/DescProduct/")" +id;
+            AllProducts(url);
+            $(".sort").text("按價格排序↓");
+            $(".sort").removeClass("sort-desc");
+            $(".sort").addClass("sort-asc");
+            $(".sort").unbind('click');
+            $(".sort-asc").on('click',asc)
+        }
+
+        //在商城主頁執行所有function
+        function showProduct() {
+            let firstURL = "@Url.Content("~/Shopping/ShowProduct")";
+            AllProducts(firstURL);
+
+                //按品名會彈出相對應商品明細
+                $("#showProduct").delegate("#showProductDetail", "click", function () {
+                    id = $(this).attr("data-id");
+                    location.href = `/Shopping/ShowProductDetail/${id}`;
+                    showProductDetail(id);
+                })
+                async function showProductDetail(id) {
+                    var data = {};
+                    data.FProductId = id;
+                    data.FProductName = 1;
+                    $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
+                }
+
+                //按心心會加入追蹤清單
+                $("#showProduct").delegate(".addToTrack", "click", function (event) {
+                    event.preventDefault();
+                    id = $(this).attr("data-id");
+                    if (@MemberController.userID== 0) {
+                        alert("請先登入會員");
+                        $("#loginModal").modal("show");
+                    }
+                    else {
+                        alert("已成功加入追蹤清單");
+                        addTrack(id);
+                    }
+
+                })
+                async function addTrack(id) {
+                    url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
+                    let response = await fetch(url);
+                    let datas = await response.json();
+                    console.log(datas);
+                }
+
+                //按購物車會加入到購物車
+                $("#showProduct").delegate(".addToCart", "click", function (event) {
+                    event.preventDefault();
+                    id = $(this).attr("data-id");
+                    if (@MemberController.userID == 0) {
+                        alert("請先登入會員");
+                        $("#loginModal").modal("show");
+
+                    }
+                    else
+                    {
+                        addCart(id);
+                        alert("已成功加入購物車");
+                    }
+                })
+                async function addCart(id) {
+                    //TODO
+                    var data = {};
+                    data.txtFid = id;
+                    data.txtCount = 1;
+                    $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
+                }
+
+                //以類別搜產品
+                $("#showByCatergory").find("a").click(function (event) {
+                    event.preventDefault();
+                    id = $(this).attr("data-id");
+                    console.log(this);
+                    console.log(id);
+                    showProductByCategory(id);
+
+                     //TODO 商品以類別+價格排序
+                    $(".sort-asc").click(function () {
+                        asc(id);
+                    })
+                    $(".sort-desc").click(function () {
+                        desc(id);
+                    })
+                })
+                function showProductByCategory(id) {
+                    let url = "@Url.Content("~/Shopping/ShowProduct/")" + id;
+                    if (id == 0) {
+                        url = "@Url.Content("~/Shopping/ShowProduct")";
+                    }
+                    AllProducts(url);
+                }
+
+                //以輸入文字搜產品
+                $("#btnSearch").click(searchProductByKeyword);
+                function searchProductByKeyword() {
+                    let keyword = $("#txtKeyword").val();
+                    let url = "@Url.Content("~/Shopping/SearchProduct")" + `?keyword=${keyword}`;
+                    //console.log(url);
+                    AllProducts(url);
+                }
+
+                //所有商品排序
+                $(".sort-asc").click(function () {
+                    asc();
+                })
+
+                $(".sort-desc").click(function () {
+                    desc();
+                })
+
+                //顯示各類別前3名產品
+            function showTop3() {
+                MilkTop3();
+                function MilkTop3() {
+                    let url = "@Url.Content("~/Shopping/ShowTop3Product/1")";
+                    $.get(url, function (datas) {
+                    let htmlShowTop3 = "";
+                        datas.forEach(item => {
+                            item.forEach(i => {
+                                htmlShowTop3 += `<a href="#" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="/img/product/${i.photo}" alt=""/>
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        <h6>${i.key.fProductName}</h6>
+                                                        <span>${i.key.fUnitprice}</span>
+                                                    </div>
+                                                 </a>`
+                            })
+                        })
+                        $("#catergory1").append(htmlShowTop3);
+                    })
+                }
+                FoodTop3();
+                function FoodTop3() {
+                    let url = "@Url.Content("~/Shopping/ShowTop3Product/2")";
+                    $.get(url, function (datas) {
+                    let htmlShowTop3 = "";
+                        datas.forEach(item => {
+                            item.forEach(i => {
+                                htmlShowTop3 += `<a href="#" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="/img/product/${i.photo}" alt=""/>
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        <h6>${i.key.fProductName}</h6>
+                                                        <span>${i.key.fUnitprice}</span>
+                                                    </div>
+                                                 </a>`
+                            })
+                    })
+                        $("#Food2").append(htmlShowTop3);
+                    })
+                }
+                //SportTop3();
+                function SportTop3() {
+                    let url = "@Url.Content("~/Shopping/ShowTop3Product/3")";
+                    $.get(url, function (datas) {
+                    let htmlShowTop3 = "";
+                        datas.forEach(item => {
+                            item.forEach(i => {
+                                htmlShowTop3 += `<a href="#" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="/img/product/${i.photo}" alt=""/>
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        <h6>${i.key.fProductName}</h6>
+                                                        <span>${i.key.fUnitprice}</span>
+                                                    </div>
+                                                 </a>`
+                            })
+                    })
+                        $("#Sport3").html(htmlShowTop3);
+                    })
+                }
+               /* ManTop3();*/
+                function ManTop3() {
+                    let url = "@Url.Content("~/Shopping/ShowTop3Product/4")";
+                    $.get(url, function (datas) {
+                    let htmlShowTop3 = "";
+                        datas.forEach(item => {
+                            item.forEach(i => {
+                                htmlShowTop3 += `<a href="#" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="/img/product/${i.photo}" alt=""/>
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        <h6>${i.key.fProductName}</h6>
+                                                        <span>${i.key.fUnitprice}</span>
+                                                    </div>
+                                                 </a>`
+                            })
+                    })
+                        $("#Man4").html(htmlShowTop3);
+                    })
+                }
+                //WomanTop3();
+                function WomanTop3() {
+                    let url = "@Url.Content("~/Shopping/ShowTop3Product/5")";
+                    $.get(url, function (datas) {
+                    let htmlShowTop3 = "";
+                        datas.forEach(item => {
+                            item.forEach(i => {
+                                htmlShowTop3 += `<a href="#" class="latest-product__item">
+                                                    <div class="latest-product__item__pic">
+                                                        <img src="/img/product/${i.photo}" alt=""/>
+                                                    </div>
+                                                    <div class="latest-product__item__text">
+                                                        <h6>${i.key.fProductName}</h6>
+                                                        <span>${i.key.fUnitprice}</span>
+                                                    </div>
+                                                 </a>`
+                            })
+                    })
+                        $("#Woman5").html(htmlShowTop3);
+                    })
+                }
+
+
+
+            }
+            /*showTop3();*/
+        }
+        showProduct();
+
+    </script>
 }
 

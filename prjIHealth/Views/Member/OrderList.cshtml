@@ -1,25 +1,13 @@
-﻿
+﻿@model IEnumerable<prjIHealth.ViewModels.COrderViewModel>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
 @{
     ViewData["Title"] = "OrderList";
 }
-
-
-
 @section Styles{
-
+    <link href="/css//PagedList.css" rel="stylesheet" />
     <style>
-        table {
-            border-spacing: 0;
-            width: 100%;
-        }
-
-        tr {
-            text-align: center;
-        }
-
-        th {
-            padding: 10px;
-        }
         .blog__btn {
             display: inline-block;
             font-size: 14px;
@@ -54,15 +42,7 @@
             margin-right: 8vw;
             margin-bottom: 1vh;
         }
-         #title {
-            font-weight: 800;
-            color: #599e32;
-            margin-left: 20vw;
-            margin-right: 20vw;
-        }
-        
     </style>
-
 }
 
 @*banner大圖*@
@@ -72,8 +52,8 @@
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     @*h2內容請自行更換*@
-                    <h2>訂單查詢</h2>
-                    <div class="breadcrumb__option">
+                    <h2 class="reveal_t1">訂單檢視</h2>
+                    <div class="breadcrumb__option reveal_t1">
                         <a href="./index.html">Home</a>
                         <span>Shop</span>
                     </div>
@@ -92,13 +72,15 @@
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
-                            <li><a href="#">個人資料</a></li>
+
+                            <li><a href="~/member/edit">個人資料</a></li>
                             <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
                             <li><a href="~/Member/OrderList">訂單查詢</a></li>
                             <li><a href="~/Student/CandidateList">候選教練</a></li>
                             <li><a href="~/Student/CourseList">課程列表</a></li>
                             <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
                             <li><a href="~/Problem/CheckReply">客服記錄</a></li>
+
                         </ul>
                         <br />
                         <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
@@ -107,146 +89,91 @@
             </div>
             <div class="col-lg-9 col-md-7" style="height:400px">
                 @*※※※會員專區View內容請從此開始※※※*@
-
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
-                        <table class="table">
+
+                        <table style="table-layout:fixed">
                             <thead>
                                 <tr>
-                                    <th>
-                                        收件人
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FContact)
                                     </th>
-                                    <th>
-                                        電話
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FPhone)
                                     </th>
-                                    <th>
-                                        日期
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FAddress)
                                     </th>
-                                    <th>
-                                        地址
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FDate)
                                     </th>
-                                    <th>
-                                        付款方式
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FPaymentCategoryId)
                                     </th>
-                                    <th>
-                                        狀態
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FStatusNumber)
                                     </th>
-                                    <th>
-                                        備註
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FRemarks)
                                     </th>
+                                    <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td @*class="shoping__cart__item"*@>
-                                        邱景文<br />
-                                    </td>
-                                    <td>
-                                        0987878787<br />
-                                    </td>
-                                    <td>
-                                        2021/12/12<br />
-                                    </td>
-                                    <td>
-                                        台北市大安區<br />
-                                    </td>
-                                    <td>
-                                        貨到付款<br />
-                                    </td>
-                                    <td>
-                                        出貨中<br />
-                                    </td>
-                                    <td>
-                                        我是港仔
-                                    </td>
-                                    <td>
-                                        <a asp-action="OrderdetailList">檢示</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Leon<br />
-                                    </td>
+                            <tbody id="ListPro">
+                                @{
 
-
-                                    <td>
-                                        0900001111<br />
-                                    </td>
-
-
-                                    <td>
-                                        2021/12/12 <br />
-                                    </td>
-
-                                    <td>
-                                        台北市大同區<br />
-                                    </td>
-                                    <td>
-                                        支付保<br />
-                                    </td>
-
-                                    <td>
-                                        待出貨<br />
-                                    </td>
-                                    <td>
-                                        我是Leon
-                                    </td>
-                                    <td>
-                                        <a asp-action="OrderdetailList">檢示</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Jack<br />
-                                    </td>
-
-
-                                    <td>
-                                        0911112222<br />
-                                    </td>
-
-
-                                    <td>
-                                        2012/10/10<br />
-                                    </td>
-
-                                    <td>
-                                        台北市北投區<br />
-                                    </td>
-                                    <td>
-                                        支付寶<br />
-                                    </td>
-
-                                    <td>
-                                        已完成<br />
-                                    </td>
-                                    <td>
-                                        我是Jack<br />
-                                        不是Jacky
-                                    </td>
-                                    <td>
-                                        <a asp-action="OrderdetailList">檢示</a><br />
-
-                                    </td>
-                                </tr>
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="margin-left: auto;text-align:center;">
+                                                <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FOrderId)" id="FOrderId" name="FOrderId" />
+                                                <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FMemberId)" id="FMemberId" name="FMemberId" />
+                                                <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FStatusNumber)" id="FStatusNumber" name="FStatusNumber" />
+                                                <input type="hidden" value=" @Html.DisplayFor(modelItem => item.fstatus.FStatusNumber)" id="fstatus.FStatusNumber" name="fstatus.FStatusNumber" />
+                                                <input type="hidden" value=" @Html.DisplayFor(modelItem => item.fPayment.FPaymentCategoryId)" id="fPayment.FPaymentCategoryId" name="fPayment.FPaymentCategoryId" />
+                                                @Html.DisplayFor(modelItem => item.FContact)
+                                            </td>
+                                            <td style="margin-left: auto; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
+                                                @item.FPhone.Substring(0, Math.Min(item.FPhone.Length, 6))...
+                                            </td>
+                                            <td style="margin-left: auto; text-align: center; ">
+                                                @item.FAddress.Substring(0, Math.Min(item.FAddress.Length, 5))...
+                                            </td>
+                                            <td style="margin-left: auto; text-align: center;">
+                                                @Html.DisplayFor(modelItem => item.FDate)
+                                            </td>
+                                            <td style="margin-left: auto; text-align: center;">
+                                                <input type="hidden" value="@Html.DisplayFor(modelItem => item.FPaymentCategoryId)" id="FPaymentCategoryId" name="FPaymentCategoryId" />
+                                                @Html.DisplayFor(modelItem => item.fPayment.FPaymentCategory)
+                                            </td>
+                                            <td style="margin-left: auto; text-align: center;">
+                                                @Html.DisplayFor(modelItem => item.fstatus.FStatus)
+                                            </td>
+                                            <td style="margin-left: auto; text-align: center;">
+                                                @item.FRemarks.Substring(0, Math.Min(item.FRemarks.Length, 10))
+                                            </td>
+                                            <td style="margin-left: auto; text-align: center;">
+                                                @Html.ActionLink("訂單明細", "OrderdetailList", new { id = item.FOrderId },
+                                                  new { @class = "primary-btn cart-btn" })
+                                            </td>
+                                        </tr>
+                                    }
+                                }
                             </tbody>
                         </table>
-                        <div class="product__pagination">
-                            <a href="#">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
+                        <div style="text-align:center">
+                            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfPro, page => Url.Action("OrderList", new { page }))
                         </div>
-
-
                     </div>
+
                 </div>
+
             </div>
         </div>
     </div>
 </section>
 
-@section Scripts
-{
+@section Scripts{
 
 }
 

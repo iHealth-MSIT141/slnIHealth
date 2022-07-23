@@ -19,6 +19,7 @@ namespace prjIHealth.Models
         }
 
         public int FCoachId { get; set; }
+        public string FCoachName { get; set; }
         public int? FMemberId { get; set; }
         public int? FCityId { get; set; }
         public string FCoachImage { get; set; }

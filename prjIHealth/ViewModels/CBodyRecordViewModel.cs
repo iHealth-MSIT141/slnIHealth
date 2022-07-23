@@ -9,7 +9,14 @@ namespace prjiHealth.ViewModels
 {
     public class CBodyRecordViewModel
     {
-        IHealthContext db = new IHealthContext();
+        public CBodyRecordViewModel() { }
+
+        private IHealthContext db;
+        public CBodyRecordViewModel(IHealthContext context)
+        {
+            db = context;
+        }
+
         public int FBodyRecordId { get; set; }
         public int? FMemberId { get; set; }
         public string FRecordDate { get; set; }
@@ -25,7 +32,8 @@ namespace prjiHealth.ViewModels
                 if (FMemberId != null)
                 {
                     var theMember = db.TMembers.FirstOrDefault(m => m.FMemberId == FMemberId);
-                    DateTime bday = DateTime.Parse(theMember.FBirthday);
+                    string theBirthday = $"{theMember.FBirthday.Substring(0, 4)}/{theMember.FBirthday.Substring(4, 2)}/{theMember.FBirthday.Substring(6, 2)}";
+                    DateTime bday = DateTime.Parse(theBirthday);
                     return (bday > DateTime.Today.AddYears(-(DateTime.Today.Year - bday.Year))) ? DateTime.Today.Year - bday.Year - 1 : DateTime.Today.Year - bday.Year;
                 }
                 else

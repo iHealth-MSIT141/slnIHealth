@@ -1,4 +1,4 @@
-@*@model prjIHealth.ViewModels.CDiaryViewModel*@
+@model double[]
 @{
     ViewData["Title"] = "iHealth 我的飲食日誌";
 }
@@ -6,13 +6,12 @@
 
 
 @section Styles{
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="~/css/Chart.css" rel="stylesheet" />
     <style>
 
         /*個人身體數據檔案樣式*/
         .bodyForm {
             margin-bottom: 3vw;
-
         }
 
             .bodyForm fieldset {
@@ -51,19 +50,23 @@
         #btnQuitEdit {
             background-color: indianred;
         }
-
         /*飲食日誌樣式*/
-        .fa-circle-plus {
+        .fa-plus-circle {
             padding: 0;
             border: none;
-            margin-right: 30px;
-            font-size: 22px;
+            margin-right: 10px;
+            font-size: 26px;
             color: #7fad39;
             background-color: transparent;
+            transition: 0.5s;
         }
 
-            .fa-circle-plus:hover {
-                font-size: 26px;
+            .fa-plus-circle:hover {
+                -moz-transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+                -o-transform: rotate(180deg);
+                -ms-transform: rotate(180deg);
+                transform: rotate(180deg);
             }
 
         .shoping-cart {
@@ -202,7 +205,7 @@
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg" id="bannerTop">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -210,9 +213,8 @@
                     @*h2內容請自行更換*@
                     <h2 class="reveal_t1">我的飲食日誌</h2>
                     <div class="breadcrumb__option reveal_t1">
-                        @*<a href="./index.html">Home</a>
-                            <span>Shop</span>*@
-                        <br />
+                        <a href="~/Member/Edit">Home</a>
+                        <span>Member</span>
                     </div>
                 </div>
             </div>
@@ -225,21 +227,23 @@
     <div class="container">
         <div class="row">
             @*會員專區垂直導覽列*@
-            <div class="col-lg-3 col-md-5 reveal_b1" >
-                <div class="sidebar">
+            <div class="col-lg-3 col-md-5 reveal_b1">
+                <div class="sidebar" style="position:sticky;top:150px;">
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
-                            <li><a href="#">個人資料</a></li>
+
+                            <li><a href="~/member/edit">個人資料</a></li>
                             <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
                             <li><a href="~/Member/OrderList">訂單查詢</a></li>
                             <li><a href="~/Student/CandidateList">候選教練</a></li>
                             <li><a href="~/Student/CourseList">課程列表</a></li>
                             <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
                             <li><a href="~/Problem/CheckReply">客服記錄</a></li>
+
                         </ul>
                         <br />
-                        <a href="~/Home/教練專區ViewDemo" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
+                        <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
                     </div>
                 </div>
             </div>
@@ -252,6 +256,13 @@
                         <form id="frmMyBoby">
                             <fieldset class="row">
                                 <legend>我的身體數據</legend>
+                                <canvas id="myBodyChart" height="75"></canvas>
+                                @{
+                                    foreach (var b in Model)
+                                    {
+                                        <input value="@b" type="hidden" />
+                                    }
+                                }
                                 <div class="col-lg-5">
                                     <div class="form-group">
                                         <input class="form-control" id="inpHeight" type="text" pattern="^[0-9]+(.[0-9])?$$" placeholder="請輸入身高(cm)" required disabled />
@@ -261,13 +272,13 @@
                                     </div>
                                     <div class="form-group" id="divWorkload">
                                         @*<select id="selWorkload" required disabled>
-                                                <option value="" style="display: none">請選擇活動量</option>
-                                                <option value="1.2">趨於靜態</option>
-                                                <option value="1.375">每周運動1~3天</option>
-                                                <option value="1.55">每周運動3~5天</option>
-                                                <option value="1.72">每周運動6~7天</option>
-                                                <option value="1.9">長時間運動或體力勞動工作者</option>
-                                            </select>*@
+                    <option value="" style="display: none">請選擇活動量</option>
+                    <option value="1.2">趨於靜態</option>
+                    <option value="1.375">每周運動1~3天</option>
+                    <option value="1.55">每周運動3~5天</option>
+                    <option value="1.72">每周運動6~7天</option>
+                    <option value="1.9">長時間運動或體力勞動工作者</option>
+                </select>*@
                                     </div>
                                 </div>
                                 <div class="col-lg-5" id="divBodyNum">
@@ -283,20 +294,20 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <button type="button" class="site-btn" id="btnQuitEdit" hidden>放棄</button>
+                                    <button type="button" class="btn btn-info" id="btnDemo">Demo</button>
                                     <div class="divEditBody">
                                         <button type="button" class="site-btn" id="btnEditBody">修改</button>
                                     </div>
                                 </div>
                             </fieldset>
                         </form>
+
                     </div>
 
-
                     @*飲食日誌*@
-                    <div class="col-lg-8 reveal_b2" >
-
+                    <div class="col-lg-8 reveal_b2">
                         <div class="section-title product__discount__title">
-                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
+                            <button class="fa fa-plus-circle" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>早餐</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -305,19 +316,7 @@
                                             <div class="shoping__cart__table">
                                                 <table>
                                                     <tbody id="tbdBreakfast">
-                                                    <tr>
-                                                        <td hidden="">undefined</td>
-                                                        <td class="col-lg-4"><h5>蘋果</h5></td>
-                                                        <td class="col-lg-3">
-                                                            <div class="quantity">
-                                                                <div class="pro-qty">
-                                                                    <span class="dec qtybtn"></span>
-                                                                    <input type="text" value="1" readonly>
-                                                                    <span class="inc qtybtn"></span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="col-lg-2">顆</td><td class="col-lg-2">72<small> kcal</small></td><td class="col-lg-1"><button class="icon_close"></button></td></tr><tr><td hidden="">undefined</td><td class="col-lg-4"><h5>玉米</h5></td><td class="col-lg-3"><div class="quantity"><div class="pro-qty"><span class="dec qtybtn"></span><input type="text" value="1" readonly=""><span class="inc qtybtn"></span></div></div></td><td class="col-lg-2">碗</td><td class="col-lg-2">346<small> kcal</small></td><td class="col-lg-1"><button class="icon_close"></button></td></tr></tbody>
+                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -327,7 +326,7 @@
                         </div>
 
                         <div class="section-title product__discount__title">
-                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
+                            <button class="fa fa-plus-circle" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>午餐</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -346,7 +345,7 @@
                         </div>
 
                         <div class="section-title product__discount__title">
-                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
+                            <button class="fa fa-plus-circle" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>晚餐</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -365,7 +364,7 @@
                         </div>
 
                         <div class="section-title product__discount__title">
-                            <button class="fa-solid fa-circle-plus" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
+                            <button class="fa fa-plus-circle" data-toggle="modal" data-target="#addRecordModal" onclick="openRecordModal();"></button>
                             <h2>其他</h2>
                             <section class="shoping-cart">
                                 <div class="container">
@@ -383,6 +382,8 @@
                             </section>
                         </div>
 
+                        <hr />
+                        <div id="divChart"></div>
                     </div>
 
                     @*彈出視窗-新增紀錄*@
@@ -431,6 +432,7 @@
                                                 <label style="font-weight:800">食物列表</label>
                                                 <input type="text" id="inpSearchFood" placeholder="搜尋食物名稱">
                                                 <button id="btnAddFood" type="button" data-toggle="modal" data-target="#addFoodModal" data-dismiss="modal">新增</button>
+
                                                 <table class="table table-hover table-sm">
                                                     <tbody id="tbdFoodList">
                                                     </tbody>
@@ -475,6 +477,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="site-btn" id="btnSaveFood">新增</button>
+                                    <button type="button" class="btn btn-info" id="btnDemoFood">Demo</button>
                                 </div>
                             </div>
                         </div>
@@ -482,11 +485,11 @@
 
                     @*日期、攝取量計算*@
                     <div class="col-lg-4 reveal_b3">
-                        <div class="checkout__order" style="text-align:center;" id="divDateTake">
+                        <div class="checkout__order" style="text-align:center;position:sticky;top:150px;" id="divDateTake">
                             <div id="divDatepicker">
-                                <button class="fa-solid fa-caret-left" id="btnPrevDate"></button>
+                                <button class="fa fa-caret-left" id="btnPrevDate"></button>
                                 <input type="date" id="inpDatepicker" />
-                                <button class="fa-solid fa-caret-right" id="btnNextDate"></button>
+                                <button class="fa fa-caret-right" id="btnNextDate"></button>
                             </div>
                             <div class="section-title">
                                 <h2 style="font-size:30px">當日攝取</h2>
@@ -509,7 +512,7 @@
 </section>
 
 @section Scripts{
-
+    <script src="~/js/Chart.js"></script>
     <script>
 
         var theTDEE;
@@ -538,6 +541,7 @@
         function notEdit() {
             $("#divBodyNum").find("input").removeAttr("hidden");
             $("#btnQuitEdit").attr("hidden", "hidden");
+            $("#btnDemo").attr("hidden", "hidden");
             $("#inpHeight").attr("disabled", "disabled");
             $("#inpWeight").attr("disabled", "disabled");
             $("#selWorkload").attr("disabled", "disabled");
@@ -565,6 +569,7 @@
             if ($(this).text() == "修改") {
                 $("#frmMyBoby").find("input").val("");
                 $("#btnQuitEdit").removeAttr("hidden");
+                $("#btnDemo").removeAttr("hidden");
                 $("#inpHeight").removeAttr("disabled");
                 $("#inpWeight").removeAttr("disabled");
                 $("#selWorkload").removeAttr("disabled").val("");
@@ -582,10 +587,11 @@
                 else {
                     $("#divBodyNum").find("input").removeAttr("hidden");
                     $("#btnQuitEdit").attr("hidden", "hidden");
+                    $("#btnDemo").attr("hidden", "hidden");
                     $("#inpHeight").attr("disabled", "disabled");
                     $("#inpWeight").attr("disabled", "disabled");
                     $("#selWorkload").attr("disabled", "disabled");
-                    $.get("@Url.Content("~/Diary/addBodyRecord")", { "FHeight": $("#inpHeight").val(), "FWeight": $("#inpWeight").val(), "FWorkload": $("#selWorkload").val(), "FRecordDate": $("#inpDatepicker").val() }, function () {
+                    $.get("@Url.Content("~/Diary/addBodyRecord")", { "FHeight": $("#inpHeight").val(), "FWeight": $("#inpWeight").val() , "FWorkload": $("#selWorkload").val(), "FRecordDate": $("#inpDatepicker").val() }, function () {
                         showBodyRecord();
                     })
                     $(this).text("修改");
@@ -598,18 +604,35 @@
             showBodyRecord();
         })
 
+        //Demo鍵
+        $("#btnDemo").click(function () {
+            $("#inpHeight").val("171");
+            $("#inpWeight").val("85");
+            $("#selWorkload").val("1.375");
+        })
+
         //==========飲食日誌==========
         //載入飲食日誌 (在載入身體數據的函式中呼叫 for執行順序)
+        var breakfastTake = 0;
+        var lunchTake = 0;
+        var dinnerTake = 0;
+        var elseTake = 0;
+
         function loadDiary() {
             $.get("@Url.Content("~/Diary/getIntakeRecords")", { "date": $("#inpDatepicker").val() }, function (datas) {
+                breakfastTake = 0;
+                lunchTake = 0;
+                dinnerTake = 0;
+                elseTake = 0;
                 let htmlBreakfast = "";
                 let htmlLunch = "";
                 let htmlDinner = "";
                 let htmlElse = "";
-                let total=0
+                let total = 0;
                 $.each(datas, function (idx, record) {
                     total += record.subtotal;
                     if (record.fMeal == "早餐") {
+                        breakfastTake += record.subtotal;
                         htmlBreakfast += `<tr><td hidden>${record.fCalorieIntakeId}</td>`;
                         htmlBreakfast += `<td class="col-lg-4"><h5>${record.fFoodName}</h5></td>`;
                         htmlBreakfast += `<td class="col-lg-3"><div class="quantity"><div class="pro-qty diaryQty"><span class="dec qtybtn">-</span><span class="dec qtybtn"></span>`;
@@ -619,6 +642,7 @@
                         htmlBreakfast += `<td class="col-lg-1"><button class="icon_close"></button></td></tr>`;
                     }
                     else if (record.fMeal == "午餐") {
+                        lunchTake += record.subtotal;
                         htmlLunch += `<tr><td hidden>${record.fCalorieIntakeId}</td>`;
                         htmlLunch += `<td class="col-lg-4"><h5>${record.fFoodName}</h5></td>`;
                         htmlLunch += `<td class="col-lg-3"><div class="quantity"><div class="pro-qty diaryQty"><span class="dec qtybtn">-</span><span class="dec qtybtn"></span>`;
@@ -628,6 +652,7 @@
                         htmlLunch += `<td class="col-lg-1"><button class="icon_close"></button></td></tr>`;
                     }
                     else if (record.fMeal == "晚餐") {
+                        dinnerTake += record.subtotal;
                         htmlDinner += `<tr><td hidden>${record.fCalorieIntakeId}</td>`;
                         htmlDinner += `<td class="col-lg-4"><h5>${record.fFoodName}</h5></td>`;
                         htmlDinner += `<td class="col-lg-3"><div class="quantity"><div class="pro-qty diaryQty"><span class="dec qtybtn">-</span><span class="dec qtybtn"></span>`;
@@ -637,6 +662,7 @@
                         htmlDinner += `<td class="col-lg-1"><button class="icon_close"></button></td></tr>`;
                     }
                     else if (record.fMeal == "其他") {
+                        elseTake += record.subtotal;
                         htmlElse += `<tr><td hidden>${record.fCalorieIntakeId}</td>`;
                         htmlElse += `<td class="col-lg-4"><h5>${record.fFoodName}</h5></td>`;
                         htmlElse += `<td class="col-lg-3"><div class="quantity"><div class="pro-qty diaryQty"><span class="dec qtybtn">-</span><span class="dec qtybtn"></span>`;
@@ -646,6 +672,32 @@
                         htmlElse += `<td class="col-lg-1"><button class="icon_close"></button></td></tr>`;
                     }
                 })
+
+                $("#divChart").html(`<canvas id="myPieChart" style="width:40%;height:fit-content"></canvas>`);
+                const ctx = $('#myPieChart');
+                const myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: [
+                            '早餐',
+                            '午餐',
+                            '晚餐',
+                            '其他'
+                        ],
+                        datasets: [{
+                            label: 'My First Dataset',
+                            data: [breakfastTake, lunchTake, dinnerTake, elseTake],
+                            backgroundColor: [
+                                'rgba(255, 206, 86, 0.8)',
+                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(75, 192, 192, 0.8)',
+                                'rgba(255, 99, 132, 0.8)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    }
+                });
+
                 $("#tbdBreakfast").html(htmlBreakfast);
                 $("#tbdLunch").html(htmlLunch);
                 $("#tbdDinner").html(htmlDinner);
@@ -660,7 +712,7 @@
                     $("#hLave").text("尚可攝取");
                     $("#hTodayLave").text(lave.toString() + " 大卡");
                 }
-                
+
                 var proQty = $('.diaryQty');
                 proQty.on('click', '.qtybtn', function () {
                     var $button = $(this);
@@ -818,6 +870,7 @@
                     $("#inpFoodId").val(data.fFoodId);
                     $("#inpFoodName").val(data.fFoodName);
                     $("#spnUnit").text(data.fUnit);
+                    $("#inpSearchFood").keyup();
                 })
                 $('#addFoodModal').modal('hide');
                 $('#addRecordModal').modal('show');
@@ -825,6 +878,13 @@
             }
         })
 
+
+        //Demo鍵
+        $("#btnDemoFood").click(function () {
+            $("#inpNewFoodName").val("葡萄軟糖");
+            $("#inpNewUnit").val("包");
+            $("#inpNewCalories").val("165");
+        })
 
         //==========日期、攝取量計算==========
         //Datepicker事件
@@ -860,19 +920,41 @@
             }
         })
 
-        //Scroll fixed
-        //let navPosition = $("#divDateTake").offset().top;
-        //$(window).scroll(function () {
-        //    //console.log(bannerPosition)
-        //    let scrollTop = $(this).scrollTop();
-        //    if (scrollTop > navPosition) {
-        //        $("#divDateTake").css("position","fixed");
-        //        $("#divDateTake").css("top", "18vh");
-        //    }
-        //    else {
-        //        $("#divDateTake").css("position", "static");
-        //    }
-        //});
+        //==========圖表==========
+
+        const labels = [
+            '九月',
+            '十月',
+            '十一月',
+            '十二月',
+            '一月',
+            '二月',
+            '三月',
+            '四月',
+            '五月',
+            '六月',
+            '七月',
+            '八月'
+        ];
+        const inputs = $("#myBodyChart").nextAll("input");
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: '近一年BMI曲線',
+                backgroundColor: '#ffc83d',
+                borderColor: '#ffc83d',
+                data: [inputs.eq(11).val(), inputs.eq(10).val(), inputs.eq(9).val(), inputs.eq(8).val(), inputs.eq(7).val(), inputs.eq(6).val(), inputs.eq(5).val(), inputs.eq(4).val(), inputs.eq(3).val(), inputs.eq(2).val(), inputs.eq(1).val(), inputs.eq(0).val(),]
+            }]
+        };
+        const config = {
+            type: 'line',
+            data: data,
+            options: {}
+        };
+        const myBodyChart = new Chart(
+            document.getElementById('myBodyChart'),
+            config
+        );
 
     </script>
 

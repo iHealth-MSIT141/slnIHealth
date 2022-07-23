@@ -1,8 +1,11 @@
-﻿
+﻿@model IEnumerable<prjIHealth.ViewModels.COrderDetailViewModel>
 
 @{
     ViewData["Title"] = "OrderdetailList";
 }
+
+
+
 
 @section Styles{
     <style>
@@ -43,15 +46,15 @@
     </style>
 }
 
-
+@*banner大圖*@
 <section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     @*h2內容請自行更換*@
-                    <h2>訂單查詢</h2>
-                    <div class="breadcrumb__option">
+                    <h2 class="reveal_t1">訂單明細</h2>
+                    <div class="breadcrumb__option reveal_t1">
                         <a href="./index.html">Home</a>
                         <span>Shop</span>
                     </div>
@@ -70,13 +73,15 @@
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
-                            <li><a href="#">個人資料</a></li>
+
+                            <li><a href="~/member/edit">個人資料</a></li>
                             <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
                             <li><a href="~/Member/OrderList">訂單查詢</a></li>
                             <li><a href="~/Student/CandidateList">候選教練</a></li>
                             <li><a href="~/Student/CourseList">課程列表</a></li>
                             <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
                             <li><a href="~/Problem/CheckReply">客服記錄</a></li>
+
                         </ul>
                         <br />
                         <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
@@ -90,62 +95,65 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>
-                                        商品名稱
+                                    <th style="margin-left:auto">
+                                        編號
                                     </th>
-                                    <th>
-                                        價錢
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FProductId)
                                     </th>
-                                    <th>
-                                        數量
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FQuantity)
                                     </th>
-                                    <th>
-                                        折扣
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FUnitprice)
                                     </th>
+                                    <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FDiscountId)
+                                    </th>
+
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td @*class="shoping__cart__item"*@>
-                                        蘋果<br />
-                                    </td>
-                                    <td>
-                                        150<br />
-                                    </td>
-                                    <td>
-                                        2 <br />
-                                    </td>
-                                    <td>
-                                        <br />
-                                    </td>
+                                @{
+                                    int count = 0;
+                                    decimal pay = 0;
+                                    foreach (var item in Model)
+                                    {
+                                        int discount = Convert.ToInt32(item.fdiscount.FDiscountValue);
+                                        pay += item.FUnitprice-discount;
+                                        count++;
+                                        <tr>
+                                            <td style="margin-left:auto">
+                                                @count
+                                                <input type="hidden" value=" @Html.DisplayFor(model =>item.FOrderId)" name="FOrderId" id="FOrderId" />
+                                                <input type="hidden" value=" @Html.DisplayFor(model =>item.FProductId)" name="FProductId" id="FProductId" />
+                                                <input type="hidden" value=" @Html.DisplayFor(model =>item.FDiscountId)" name="FDiscountId" id="FDiscountId" />
+                                                <input type="hidden" value="@Html.DisplayFor(model =>item.FOrderDetailsId)" name="FOrderDetailsId" id="FOrderDetailsId" />
+                                            </td>
+                                            <td style="margin-left:auto">
+                                                @Html.DisplayFor(modelItem => item.fproduct.FProductName)
+                                            </td>
+                                            <td style="margin-left:auto">
+                                                @Html.DisplayFor(modelItem => item.FQuantity)
+                                            </td>
+                                            <td style="margin-left:auto">
+                                                @Html.DisplayFor(modelItem => item.FUnitprice)
+                                            </td>
+                                            <td style="margin-left:auto">
+                                                @Html.DisplayFor(modelItem => item.fdiscount.FDiscountValue)
+                                            </td>
 
-                                </tr>
-                                <tr>
-                                    <td>
-                                        橘子<br />
-                                    </td>
-                                    <td>
-                                        50<br />
-                                    </td>
-                                    <td>
-                                        5<br />
-                                    </td>
-                                    <td>
-                                        0.8<br />
-                                    </td>
-
-                                </tr>
-
+                                        </tr>
+                                    }
+                                }
                             </tbody>
                         </table>
-                        <span> 交易金額：500 </span>
-
+                        交易金額：@pay.ToString("0")
+                        <div class="form-group ">
+                            <a asp-action="OrderList" class="site-btn">返回清單</a>
+                        </div>
                     </div>
-                    <a asp-action="OrderList" class="primary-btn cart-btn">返回訂單</a>
                 </div>
-
-
-
             </div>
         </div>
     </div>
@@ -154,4 +162,3 @@
 @section Scripts{
 
 }
-

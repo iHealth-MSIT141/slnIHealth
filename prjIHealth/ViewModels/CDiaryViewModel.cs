@@ -12,12 +12,12 @@ namespace prjIHealth.ViewModels
 {
     public class CDiaryViewModel
     {
-        //private readonly IHealthContext db;
-        //public CDiaryViewModel(IHealthContext context)
-        //{
-        //    db = context;
-        //}
-        IHealthContext db = new IHealthContext();
+        private readonly IHealthContext db;
+        public CDiaryViewModel(IHealthContext context)
+        {
+            db = context;
+        }
+        //IHealthContext db = new IHealthContext();
 
         //載入全部食物列表
         public IEnumerable<TFoodCalory> AllFoods
@@ -28,19 +28,7 @@ namespace prjIHealth.ViewModels
             }
         }
 
-        //TODO 抓User的ID:  if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))...
-        //public IActionResult CartView()
-        //{
-        //    if (HttpContext.Session.Keys.Contains(CDictionary.SK_已經購買的_商品們_列表))
-        //    {
-        //        string jsonCart = HttpContext.Session.GetString(CDictionary.SK_已經購買的_商品們_列表);
-        //        List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
-        //        return View(cart);
-        //    }
-        //    else
-        //        return RedirectToAction("List");
-        //}
-        int userId = 8;
+        public int userId = 8;
 
         //登入會員的身體數據
         public IEnumerable<CBodyRecordViewModel> BodyRecords
@@ -51,7 +39,7 @@ namespace prjIHealth.ViewModels
                 List<CBodyRecordViewModel> bodyRecords = new List<CBodyRecordViewModel>();
                 foreach(var b in q)
                 {
-                    CBodyRecordViewModel bodyRecord = new CBodyRecordViewModel()
+                    CBodyRecordViewModel bodyRecord = new CBodyRecordViewModel(db)
                     {
                         FBodyRecordId = b.FBodyRecordId,
                         FMemberId = b.FMemberId,

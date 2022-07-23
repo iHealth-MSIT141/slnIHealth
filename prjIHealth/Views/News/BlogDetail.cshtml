@@ -8,26 +8,25 @@
     Layout = "_Layout"; }
 
 <!-- Blog Details Hero Begin -->
-<section class="blog-details-hero set-bg" data-setbg="/img/details_hero.jpg">
+
+
+<section class="breadcrumb-section set-bg" data-setbg="/img/blog/details/details-hero.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="blog__details__hero__text">
-                    @*文章標題*@
-<h2>@Model.FTitle</h2>
-<ul>
-    @*文章作者*@
-    <li>By @Model.FMemberId</li>
-    <li>@Model.FNewsDate.Substring(0, Math.Min(Model.FNewsDate.Length, 10))</li>
-    @*文章日期*@
-    <li>8 Comments</li>
-</ul>
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2 class="reveal_t1">@Model.FTitle</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/News/Blog">By @Model.FMemberId</a>
+                        <span>@Model.FNewsDate.Substring(0, Math.Min(Model.FNewsDate.Length, 10)) 8 Comments</span>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
-
 
 
 <!--<section class="blog-details-hero set-bg" data-setbg="img/blog/details/details-hero.jpg">
@@ -62,36 +61,44 @@
                     <div class="blog__sidebar__item">
                         <h4>專欄分類</h4>
                         <ul>
-                            <li><a href="#">所有顯示 (55)</a></li>
-                            <li><a href="#">運動健身 (20)</a></li>
-                            <li><a href="#">食物營養 (15)</a></li>
-                            <li><a href="#">新冠疫情 (10)</a></li>
-                            <li><a href="#">教練專欄 (10)</a></li>
+                            <li><a href="#">所有顯示 (@ViewBag.Category0Count)</a></li>
+                            <li><a href="#">運動健身 (@ViewBag.Category1Count)</a></li>
+                            <li><a href="#">食物營養 (@ViewBag.Category2Count)</a></li>
+                            <li><a href="#">新冠疫情 (@ViewBag.Category3Count)</a></li>
+                            <li><a href="#">教練專欄 (@ViewBag.Category4Count)</a></li>
                             <!--專欄分類使用處-->
                         </ul>
                     </div>
                     <div class="blog__sidebar__item">
                         <h4>近期專欄</h4>
-                        <div class="blog__sidebar__recent">
-                            <a href="#" class="blog__sidebar__recent__item">
-                                <div class="blog__sidebar__recent__item__pic">
-                                    <img src="img/blog/sidebar/sr-1.jpg" alt="">
-                                </div>
-                                <div class="blog__sidebar__recent__item__text">
-                                    <h6>09 Kinds Of Vegetables<br /> Protect The Liver</h6>
-                                    <span>MAR 05, 2019</span>
-                                </div>
-                            </a>
-                        </div>
+                        @{
+                            IHealthContext db = new IHealthContext();
+                            foreach (var item in db.TNews.OrderByDescending(t => t.FNewsDate).Take(3))
+                            {
+                                <a href="~/News/BlogDetail?id=@item.FNewsId" class="blog__sidebar__recent__item">
+                                    <div class="blog__sidebar__recent__item__pic">
+                                        <img src="~/img/blog/@item.FThumbnailPath" alt="" style="width:40px;height:40px">
+                                    </div>
+                                    <div class="blog__sidebar__recent__item__text">
+                                        <h6>
+                                            @item.FTitle.Substring(0, Math.Min(item.FContent.Length, 18)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")
+                                            <br />
+                                            @*@item.FTitle.Substring(20, Math.Min(item.FContent.Length, 30)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")*@
+                                        </h6>
+                                        <span>@item.FNewsDate.Substring(0, Math.Min(item.FNewsDate.Length, 10))</span>
+                                    </div>
+                                </a>
+                            }
+                        }
                     </div>
                     <div class="blog__sidebar__item">
                         <h4>快速搜尋</h4>
                         <div class="blog__sidebar__item__tags">
-                            <a href="#">Fitness</a>
-                            <a href="#">Eat</a>
-                            <a href="#">COVID</a>
-                            <a href="#">Fit</a>
-                            <a href="#">Diet</a>
+                            <a href="#">健身</a>
+                            <a href="#">飲食</a>
+                            <a href="#">新冠</a>
+                            <a href="#">健康</a>
+                            <a href="#">食譜</a>
                             <!--插入快速搜尋標籤-->
                         </div>
                     </div>
@@ -102,7 +109,7 @@
                     <img src="~/img/blog/@Model.FThumbnailPath" alt="">
                     <input type="hidden" value="@Model.FNewsId" name="NewsId" />
                     <p>
-                        @Html.Raw(@Model.FContent);
+                        @Html.Raw(@Model.FContent)
                     </p>
                     @*<h3>
                             The corner window forms a place within a place that is a resting point within the large
@@ -120,7 +127,7 @@
                         <div class="col-lg-6">
                             <div class="blog__details__author">
                                 <div class="blog__details__author__pic">
-                                    <img src="img/blog/details/details-author.jpg" alt="">@*會員大頭貼路徑*@
+                                    <img src="/img/blog/details/details-author.jpg" alt="">@*會員大頭貼路徑*@
                                 </div>
                                 <div class="blog__details__author__text">
                                     <h6>作者名稱</h6> @*@Model.FMemberId*@
@@ -164,45 +171,45 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="blog__item">
                     <div class="blog__item__pic">
-                        <img src="img/blog/blog-1.jpg" alt="">
+                        <img src="/img/blog/blog-1.jpg" alt="">
                     </div>
                     <div class="blog__item__text">
                         <ul>
                             <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
                             <li><i class="fa fa-comment-o"></i> 5</li>
                         </ul>
-                        <h5><a href="#">Cooking tips make cooking simple</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                        <h5><a href="#">簡單的小步驟協助你烹飪更簡單</a></h5>
+                        <p>此文章我們將為您提供幾項簡單的小烹飪技巧，協助您更輕鬆的煮出美味的餐飲</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="blog__item">
                     <div class="blog__item__pic">
-                        <img src="img/blog/blog-2.jpg" alt="">
+                        <img src="/img/blog/blog-2.jpg" alt="">
                     </div>
                     <div class="blog__item__text">
                         <ul>
                             <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
                             <li><i class="fa fa-comment-o"></i> 5</li>
                         </ul>
-                        <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                        <h5><a href="#">六個方向讓您為了三十歲而準備的早餐</a></h5>
+                        <p>為了即將到來的三十歲，我們會建議你六種不同的方向而準備的早餐類型</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="blog__item">
                     <div class="blog__item__pic">
-                        <img src="img/blog/blog-3.jpg" alt="">
+                        <img src="/img/blog/blog-3.jpg" alt="">
                     </div>
                     <div class="blog__item__text">
                         <ul>
                             <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
                             <li><i class="fa fa-comment-o"></i> 5</li>
                         </ul>
-                        <h5><a href="#">Visit the clean farm in the US</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                        <h5><a href="#">參訪美國的清境農場</a></h5>
+                        <p>我們會為您介紹幾家在美國評比觀光旅遊分數不錯的永續經營農場</p>
                     </div>
                 </div>
             </div>

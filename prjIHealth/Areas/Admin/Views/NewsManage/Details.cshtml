@@ -19,12 +19,12 @@
 <div class="contact-form spad">
     <div class="container">
         @*<div class="row">
-            <div class="col-lg-12">
-                <div class="contact__form__title">
-                    <h2>檢視文章</h2>
+                <div class="col-lg-12">
+                    <div class="contact__form__title">
+                        <h2>檢視文章</h2>
+                    </div>
                 </div>
-            </div>
-        </div>*@
+            </div>*@
         <form asp-action="Details" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" value="@Model.FNewsId" name="NewsId" />
@@ -50,22 +50,24 @@
                     <span asp-validation-for="FNewsDate" class="text-danger"></span>
                 </div>
                 <div class="col-lg-6 col-md-6">
-                    <label asp-for="FThumbnailPath" class="control-label"></label>
-                    <input asp-for="FThumbnailPath" class="form-control" readonly="readonly" />
-                    <span asp-validation-for="FThumbnailPath" class="text-danger"></span>
-                </div>
-                <div class="col-lg-6 col-md-6">
                     <label asp-for="FVideoUrl" class="control-label">影片連結</label>
-                    <input asp-for="FVideoUrl" class="form-control" readonly="readonly" />
+                    <input asp-for="FVideoUrl" class="form-control" placeholder="請輸入影片網址" />
                     <span asp-validation-for="FVideoUrl" class="text-danger"></span>
                 </div>
                 <div class="col-lg-6 col-md-6">
-                    <label class="control-label">專欄縮圖</label><br />
-                    <img src="~/img/blog/@Model.FThumbnailPath" width="200" height="120" />
+                    <label class="control-label">專欄縮圖</label>
+                    <input type="file" name="photo" class="form-control" id="imageFile" />
+                </div>
+                <div class="col-lg-6 col-md-6">
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <label>預覽縮圖</label>
+                    <br />
+                    <img id="imgPreivew" style="width:150px" src="~/img/blog/@Model.FThumbnailPath" />
                 </div>
                 <div class="col-lg-12 text-center">
                     <label asp-for="FContent" class="control-label">文章內容</label>
-                    <textarea asp-for="FContent" readonly="readonly"></textarea>
+                    <textarea asp-for="FContent" readonly="readonly" disabled="disabled"></textarea>
                     <span asp-validation-for="FContent" class="text-danger"></span>
                 </div>
             </div>
@@ -77,3 +79,29 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .then(editor => {
+                console.log(editor);
+            })
+
+        var arrayBuffer = null;
+        document.querySelector("#imageFile").addEventListener("change", function () {
+            var reader = new FileReader();
+            reader.onload = function () {
+                arrayBuffer = this.result;
+                var arrayBufferView = new Uint8Array(arrayBuffer);
+                var blob = new Blob([arrayBufferView], { type: "image/jpg" });
+                var urlCreator = window.URL || window.webkitURL;
+                var url = urlCreator.createObjectURL(blob);
+                $("#imgPreivew").attr("src", url);
+            };
+            reader.readAsArrayBuffer(this.files[0]);
+        }, false);
+    </script>
+}

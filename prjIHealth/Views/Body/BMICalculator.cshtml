@@ -60,15 +60,16 @@
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     <h2 class="reveal_t1">BMI計算器</h2>
-                    @*<div class="breadcrumb__option">
-                        <br />
-                    </div>*@
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Body/BodyCalculatorMain">Home</a>
+                        <span>Body Calculator</span>
+                    </div>
                 </div>
             </div>
 
@@ -132,9 +133,9 @@
                 <br />
                 <div class="text-center">
                     <button class="site-btn" id="btnGetBMI">開始計算!</button>
+                    <button type="button" class="btn btn-info" id="btnDemo">Demo</button>
                 </div>
-                <br />
-                <div class="text-center">想知道自己的每日總消耗熱量嗎？<a href="../Body/TDEECalculator" class="blog__btn" style="margin-left:1vw"><span class="arrow_right"></span>TDEE計算器</a></div>
+                <div class="text-center">想知道自己的每日總消耗熱量嗎？<a href="../Body/TDEECalculator" class="blog__btn" style="margin-left:1vw;margin-top:1vh"><span class="arrow_right"></span>TDEE計算器</a></div>
                 @*</form>*@
             </div>
         
@@ -186,5 +187,11 @@
             }
         })
 
+        //Demo鍵
+        $("#btnDemo").click(function () {
+            $("#FHeight").val("171");
+            $("#FWeight").val("85");
+            $("input").blur();
+        })
     </script>
 }

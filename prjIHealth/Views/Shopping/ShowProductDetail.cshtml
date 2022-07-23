@@ -1,25 +1,29 @@
-﻿@section Styles{
+﻿@model prjIHealth.Models.TProduct
+@using prjIHealth.Controllers
+
+@section Styles{
 
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     @*h2內容請自行更換*@
-                    <h2>商品詳情</h2>
-                    @*<div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
-                            <span>Shop</span>
-                        </div>*@
+                    <h2 class="reveal_t1">商品詳情</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Shopping/ShowShoppingMall">Home</a>
+                        <span>Shopping</span>
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 </section>
+
 
 <section class="product spad">
     <div class="container">
@@ -29,70 +33,45 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="product__details__pic">
                             <div class="product__details__pic__item">
-                                <img class="product__details__pic__item--large" src="/img/prjproduct/f1.jpg" alt="">
+                                <img class="product__details__pic__item--large"
+                                     src="/img/product/@Model.FCoverImage" alt="" style="height:575px;width:555px">
                             </div>
-                            <div class="product__details__pic__slider owl-carousel owl-loaded owl-drag">
-                                <div class="owl-stage-outer">
-                                    <div class="owl-stage" style="transform: translate3d(-587px, 0px, 0px); transition: all 1.2s ease 0s; width: 1410px;">
-                                        @*<div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f1.jpg" src="/img/prjproduct/f1.jpg" alt="">
-                                        </div><div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f2.jpg" src="/img/prjproduct/f2.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f3.jpg" src="/img/prjproduct/f3.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f4.jpg" src="/img/prjproduct/f4.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f5.jpg" src="/img/prjproduct/f5.jpg" alt="">
-                                        </div>*@
-                                        <div class="owl-item active" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f1.jpg" src="/img/prjproduct/f1.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item active" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f2.jpg" src="/img/prjproduct/f2.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item active" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f3.jpg" src="/img/prjproduct/f3.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item cloned active" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f4.jpg" src="/img/prjproduct/f4.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f5.jpg" src="/img/prjproduct/f5.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f6.jpg" src="/img/prjproduct/f6.jpg" alt="">
-                                        </div>
-                                        <div class="owl-item cloned" style="width: 97.5px; margin-right: 20px;">
-                                            <img data-imgbigurl="/img/prjproduct/f7.jpg" src="/img/prjproduct/f8.jpg" alt="">
-                                        </div>
-                                    </div>
-                                </div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><span aria-label="Previous">‹</span></button><button type="button" role="presentation" class="owl-next"><span aria-label="Next">›</span></button></div><div class="owl-dots disabled"><button role="button" class="owl-dot active"><span></span></button></div>
+                            <div class="product__details__pic__slider owl-carousel">
+                                @{
+                                    //由於CSS關係 只取4張或以下圖片
+                                    IHealthContext dblIHealth = new IHealthContext();
+                                    var images = (from p in dblIHealth.TProducts
+                                                  join i in dblIHealth.TProductsImages
+                                                  on p.FProductId equals i.FProductId
+                                                  where p.FProductId == Model.FProductId
+                                                  select i).Take(4);
+                                    foreach (var item in images)
+                                    {
+                                        <img data-imgbigurl="/img/product/@item.FImage"
+                                             src="/img/product/@item.FImage" alt="">
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="product__details__text">
-                            <h3>金牌巧克力乳清蛋白</h3>
-                            <div class="product__details__price">$1999</div>
+                            <h3>@Model.FProductName</h3>
+                            <div class="product__details__price">@Model.FUnitprice.ToString("C0")</div>
                             <p style="height:345px">
-                                蟬聯十年"最好喝"乳清蛋白，網友一致極推。
+                                @Model.FDescription
                             </p>
                             <div class="product__details__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
                                         @*<span class="dec qtybtn">-</span>*@
-                                        <input type="text" value="1">
+                                        <input type="text" value="1" id="ProductCount">
                                         @*<span class="inc qtybtn">+</span>*@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="primary-btn">加到購物車</a>
-                            <a href="/Shopping/AddToTrack" class="heart-icon"><span class="icon_heart_alt"></span></a>
-
+                            <a href="#" class="primary-btn" id="addToCart" data-id="@Model.FProductId">加到購物車</a>
+                            <a href="#" class="heart-icon" id="addToTrack" data-id="@Model.FProductId"><span class="icon_heart_alt"></span></a>
                         </div>
                     </div>
 
@@ -109,66 +88,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="product__item">
-                                    <div onclick="location.href='/Shopping/ShowProductDetail';" class="product__item__pic set-bg" data-setbg="/img/prjproduct/f2.jpg" style="background-image: url(&quot;img/product/product-1.jpg&quot;);">
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6><a href="#">Crab Pool Security</a></h6>
-                                        <h5>$30.00</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f3.jpg" style="background-image: url(&quot;img/product/product-2.jpg&quot;);">
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6><a href="#">Crab Pool Security</a></h6>
-                                        <h5>$40.00</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f4.jpg" style="background-image: url(&quot;img/product/product-3.jpg&quot;);">
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6><a href="#">Crab Pool Security</a></h6>
-                                        <h5>$50.00</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="/img/prjproduct/f5.jpg" style="background-image: url(&quot;img/product/product-7.jpg&quot;);">
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6><a href="#">Crab Pool Security</a></h6>
-                                        <h5>$60.00</h5>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="row" id="suggestProduct">
+                           @*動態生成*@
                         </div>
                     </div>
                 </section>
@@ -178,5 +99,157 @@
 </section>
 
 @section Scripts{
+    <script>
+        //加進購物車
+        $("#addToCart").click(function (event) {
+            event.preventDefault();
+            let id = $(this).attr("data-id");
+            let count = $("#ProductCount").val();
 
+            if (@MemberController.userID== 0) {
+                alert("請先登入會員");
+                $("#loginModal").modal("show");
+            }
+            else {
+                var data = {};
+                data.txtFid = id;
+                data.txtCount = count;
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("ShowProductDetail")",
+                    data: data
+                })
+                alert("已加入購物車");
+            }
+        })
+        //加入追蹤清單
+        $("#addToTrack").click(function (event) {
+            event.preventDefault();
+            id = $(this).attr("data-id");
+            if (@MemberController.userID== 0) {
+                alert("請先登入會員");
+                $("#loginModal").modal("show");
+            }
+            else {
+                addTrack(id);
+                alert("已成功加入追蹤清單");
+                console.log("text");
+                $(this).prop("style", "background-color:#7fad39");
+            }
+        })
+        async function addTrack(id) {
+                    url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
+                    let response = await fetch(url);
+                    let datas = await response.json();
+                    console.log(datas);
+        }
+
+        $.get("@Url.Content("~/Shopping/SuggestProduct")", function (datas) {
+            let htmlShowProduct = "";
+            $.each(datas, function (idx, product) {
+                htmlShowProduct += `<div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
+                                            <ul class="product__item__pic__hover">
+                                                <li><a href="#" data-id="${product.fProductId}" class="addToTrackInDetail"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#" data-id="${product.fProductId}" class="addToCartInDetail"><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6 id="showProductDetailInDetail" data-id="${product.fProductId}">${product.fProductName}</h6>
+                                            <h5>$${product.fUnitprice}</h5>
+                                        </div>
+                                    </div>
+                                </div>`
+            })
+            $("#suggestProduct").html(htmlShowProduct);
+        })
+
+        //推薦商品的部份
+        //按品名會彈出相對應商品明細
+                $("#suggestProduct").delegate("#showProductDetailInDetail", "click", function () {
+                    id = $(this).attr("data-id");
+                    location.href = `/Shopping/ShowProductDetail/${id}`;
+                    showProductDetail(id);
+                })
+                async function showProductDetail(id) {
+                    var data = {};
+                    data.FProductId = id;
+                    data.FProductName = 1;
+                    $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
+                }
+
+                //按心心會加入追蹤清單
+                $("#suggestProduct").delegate(".addToTrackInDetail", "click", function (event) {
+                    event.preventDefault();
+                    id = $(this).attr("data-id");
+                    if (@MemberController.userID== 0) {
+                        alert("請先登入會員");
+                        $("#loginModal").modal("show");
+                    }
+                    else {
+                        alert("已成功加入追蹤清單");
+                        addTrack(id);
+                    }
+
+                })
+                async function addTrack(id) {
+                    url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
+                    let response = await fetch(url);
+                    let datas = await response.json();
+                    console.log(datas);
+                }
+
+                //按購物車會加入到購物車
+                $("#suggestProduct").delegate(".addToCartInDetail", "click", function (event) {
+                    event.preventDefault();
+                    id = $(this).attr("data-id");
+                    if (@MemberController.userID == 0) {
+                        alert("請先登入會員");
+                        $("#loginModal").modal("show");
+
+                    }
+                    else
+                    {
+                        addCart(id);
+                        alert("已成功加入購物車");
+                    }
+                })
+                async function addCart(id) {
+                    //TODO
+                    var data = {};
+                    data.txtFid = id;
+                    data.txtCount = 1;
+                    $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
+                }
+
+        @*//顯示商品圖片
+        function showImages() {
+            let url = "@Url.Content("~/Shopping/ShowProductImages/")" + @Model.FProductId;
+            console.log(url);
+            $.get(url, function (datas) {
+                console.log(datas);
+                let htmlProductImages = "";
+                $.each(datas, function (idx, images) {
+                    console.log(images);
+                    //htmlProductImages += `<div class="owl-item cloned" style="width: 67.5px; margin-right: 20px;">
+                    //                        <img data-imgbigurl="/img/product/${images}" src="/img/product/${images}" alt="">
+                    //                      </div>
+                    //                      <div class="owl-item active" style="width: 67.5px; margin-right: 20px;">
+                    //                        <img data-imgbigurl="/img/product/${images}" src="/img/product/${images}" alt="">
+                    //                      </div>
+                    //                      <div class="owl-item cloned " style="width: 67.5px; margin-right: 20px;">
+                    //                        <img data-imgbigurl="/img/product/${images}" src="/img/product/${images}" alt="">
+                    //                      </div>`
+                    htmlProductImages += `<img data-imgbigurl="/img/product/${images}"
+                                           src="/img/product/${images}" alt="">`
+                })
+                $(".product__details__pic__slider owl-carousel").html(htmlProductImages);
+            })*@
+        /*}*/
+
+
+
+
+    </script>
 }

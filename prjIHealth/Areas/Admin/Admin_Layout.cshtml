@@ -10,12 +10,22 @@
 
     <title>後臺管理頁</title>
     <!-- css連結 -->
-    <!--<link rel="stylesheet" href="style.css">-->
+    <link rel="stylesheet" href="style.css">
     <!-- JQuery連結 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- JS連結 -->
-    <!--<script src="script.js"></script>-->
+    <script src="script.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="~/js/ScrollReveal.js"></script>
+    <script src="~/js/sweetalert2.js"></script>
     <!-- FontAwesome 連結 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Bootstrap5 連結 -->
@@ -34,9 +44,14 @@
     <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <link href="~/css/sweetalert2.css" rel="stylesheet" />
     <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
 
+
     <style>
+        body {
+            background-color: #F0FFF0;
+        }
             .container-all {
                 display: flex;
                 align-items: stretch;
@@ -57,7 +72,7 @@
         .container-right {
             background-color: #F0FFF0;
             width: 100%;
-            min-height:100vh;
+            height:100vh;
             text-align: center;
             padding: 30px;
         }
@@ -148,7 +163,7 @@
                 </button>
                 <!-- List 列表 -->
                 <ul>
-                    <p>iHealth管理區</p>
+                    <a href="~/Admin/Admin/AdminHome"><p>iHealth管理區</p></a>
                     <li>
                         <a href="~/Home/Index">返回首頁<i class="far fas fa-home"></i></a>
                     </li>
@@ -183,10 +198,10 @@
                         <!-- 子連結列表  -->
                         <ul id="ShoppingList" class="list-unstyled collapse">
                             <li>
-                                <a href="~/Admin/ProductManage/Product">-產品上架<i class="far fa fa-cart-plus" aria-hidden="true"></i></a>
+                                <a href="~/Admin/ProductManage/ProductList">-產品管理<i class="far fa fa-cart-plus" aria-hidden="true"></i></a>
                             </li>
                             <li>
-                                <a href="~/Admin/OrderManage/order">-訂單管理<i class="far fa fa-list-ol" aria-hidden="true"></i></a>
+                                <a href="~/Admin/OrderManage/OrderList">-訂單管理<i class="far fa fa-list-ol" aria-hidden="true"></i></a>
                             </li>
                         </ul>
                     </li>

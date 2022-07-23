@@ -1,4 +1,4 @@
-﻿@*@model IEnumerable<prjIHealth.Models.TCoach>*@
+﻿@model List<prjIHealth.ViewModels.CCoachViewModel>
 
 @{
     ViewData["Title"] = "iHeath後臺";
@@ -10,208 +10,177 @@
         .modal-content {
             padding: 10px;
         }
+
         .modal-title {
             color: #7FAD39;
-            font-weight:600;
+            font-weight: 600;
         }
+
         .dlResume {
             text-align: left;
         }
-        
-        .ddImg{
-            width:120px;
-            height:160px;
-            
+
+        .ddImg {
+            width: 120px;
+            height: 160px;
         }
+
         .btn-light {
+            background-color: #DFEACE;
+            color: black;
+        }
+
+        .btn-success {
             background-color: #7FAD39;
             color: white;
+            border: none;
         }
 
-            .btn-light:hover {
-                background-color: #4F6C24;
-                color: white;
-            }
-        .btn-success {
-            background-color: #DFEACE;
-            color:black;
-            border:none;
-        }
-            .btn-success:hover {
-                background-color: #CFE0B5;
-                color: black;
-                border: none;
-            }
         .divSearch {
             width: 70%;
-            margin:15px auto;
+            margin: 15px auto;
         }
-
-        .divSel {
-            padding: 0px;
-        }
-
-            .divSel > div {
-                width: 200px;
-            }
 
         .divKeyword {
             display: flex;
         }
 
-        .divSubmit {
-            height: 38px;
-            padding: 0px;
-            margin: 0px;
-            text-align: center;
-        }
         #title {
             font-weight: 800;
             color: #599e32;
             margin-left: 20vw;
             margin-right: 20vw;
         }
+
+        .ddImg {
+            width: 150px;
+            height: 200px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .modal-body {
+            max-height: 80vh;
+            overflow-y: scroll;
+        }
+        #selStatus {
+            color: #fff;
+            background-color: #343a40;
+            border-color: #454d55;
+            font-weight: bold;
+        }
     </style>
 }
 
-<h2 id="title">教練管理</h2>
+<h2 id="title">審核教練</h2>
 <hr />
 <section>
+    @*篩選*@
     <div class="divSearch row">
-        <div class="divSel col-lg-3">
-            <select class="selCity">
-                <option value="1">臺北市</option>
-                <option value="2">新北市</option>
-                <option value="3">桃園市</option>
+        <div class="col-lg-2">
+            <select class="custom-select" id="selCity">
+                <option value="0" selected>所有城市</option>
+                <option value="2">臺北市</option>
+                <option value="16">新北市</option>
+                <option value="17">新竹市</option>
+                <option value="1">臺中市</option>
+                <option value="4">臺南市</option>
+                <option value="12">高雄市</option>
             </select>
         </div>
-        <div class="divSel col-lg-3">
-            <select>
+        <div class="col-lg-3">
+            <select class="custom-select" id="selSkill">
+                <option value="0" selected>所有專長</option>
                 <option value="1">肌肥大訓練</option>
-                <option value="2">體態評估與雕塑</option>
-                <option value="3">備賽指導</option>
+                <option value="2">增肌減脂</option>
+                <option value="3">體態評估雕塑</option>
+                <option value="4">功能性訓練</option>
+                <option value="5">TRX課程訓練</option>
+                <option value="6">壺鈴課程訓練</option>
+                <option value="7">拳擊訓練</option>
+                <option value="8">備賽指導</option>
+                <option value="9">銀髮族訓練</option>
             </select>
         </div>
-        <div class="col-lg-5 divKeyword">
-            <input type="text" class="form-control inKeyword" placeholder="請輸入教練編號或教練姓名">
+        <div class="col-lg-1" style="padding-right:0">
+            <label class="col-form-label" style="float:right;font-weight:600">搜尋:</label>
         </div>
-        <div class="divSubmit col-lg-1">
-            <button class="btn btn-light btnSearch" type="button">查詢</button>
+        <div class="col-lg-4 divKeyword">
+            <input type="text" class="form-control" id="inpKeyword" placeholder="請輸入教練編號或教練姓名">
+        </div>
+        <div class="col-lg-2" style="padding-right:0">
+            <button class="btn btn-success" id="btnReset">清除篩選條件</button>
         </div>
     </div>
     <div>
         <table class="table">
+            @*教練列表Head*@
             <thead class="thead-dark">
                 <tr>
                     <th>
-                        No.
-                    </th>
-                    <th>
-
                         教練編號
                     </th>
-
                     <th>
-
                         教練姓名
                     </th>
                     <th>
-
                         所在城市
                     </th>
                     <th>
-
-                        申請時間
+                        希望待遇
+                    </th>
+                    <th class="thTime">
+                        申請時間<i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </th>
+                    <th class="thStatus">
+                        <select id="selStatus">
+                            <option value="0" selected>所有履歷狀態</option>
+                            <option value="65">審核中</option>
+                            <option value="66">審核通過</option>
+                            <option value="67">已退回</option>
+                        </select>
                     </th>
                     <th>
-
-                        履歷狀態
-                    </th>
-                    <th>
-
                         公開狀態
                     </th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                @*@foreach (var item in Model)
-                    {*@
-                <tr>
-                    <td>
-                        1
-                    </td>
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FCoachId)*@
-                        4
-                    </td>
-
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FMemberId)*@
-                        Michael
-                    </td>
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FRegionId)*@
-                        台北市
-                    </td>
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FApplyDate)*@
-                        2022-06-25 20:34:58
-                    </td>
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FStatusNumber)*@
-                        審核中
-                    </td>
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FVisible)*@
-                        未公開
-                    </td>
-                    <td class="details">
-                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                        @*@Html.ActionLink("查看履歷", "ViewResume", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-light" })*@
-                        @Html.ActionLink("審核通過", "CoachList", new { @*/* id = Model.PrimaryKey */*@}, new { @class = "btn btn-light" })
-                        @Html.ActionLink("退回申請", "CoachList", new { @*/* id = Model.PrimaryKey */*@}, new { @class = "btn btn-secondary" })
-                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">查看履歷</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        2
-                    </td>
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FCoachId)*@
-                        15
-                    </td>
-
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FMemberId)*@
-                        Tom
-                    </td>
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FRegionId)*@
-                        新北市
-                    </td>
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FApplyDate)*@
-                        2022-07-3 11:50:38
-                    </td>
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FStatusNumber)*@
-                        審核中
-                    </td>
-                    <td>
-                        @*@Html.DisplayNameFor(model => model.FVisible)*@
-                        未公開
-                    </td>
-                    <td class="details">
-                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                        @*@Html.ActionLink("查看履歷", "ViewResume", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-light" })*@
-                        @Html.ActionLink("審核通過", "CoachList", new { @*/* id = Model.PrimaryKey */*@}, new { @class = "btn btn-light" })
-                        @Html.ActionLink("退回申請", "CoachList", new { @*/* id = Model.PrimaryKey */*@}, new { @class = "btn btn-secondary" })
-                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">查看履歷</button>
-                    </td>
-                </tr>
-                @*}*@
+            @*教練列表*@
+            <tbody id="tbdCoachList">
+                @{
+                    foreach (var c in Model)
+                    {
+                        <tr>
+                            <td>
+                                @c.FCoachId
+                            </td>
+                            <td>
+                                @c.FCoachName
+                            </td>
+                            <td>
+                                @c.CityName
+                            </td>
+                            <td>
+                                @c.FCoachFee
+                            </td>
+                            <td>
+                                @c.ApplyDate
+                            </td>
+                            <td>
+                                @c.Status
+                            </td>
+                            <td>
+                                @c.Visible
+                            </td>
+                            <td class="details">
+                                <button class="btn btn-light btnViewResume" data-toggle="modal" data-target="#modalResume">查看履歷</button>
+                                <button type="button" class="btn btn-success btnPass">審核通過</button>
+                                <button type="button" class="btn btn-secondary btnReturn">退回申請</button>
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
     </div>
@@ -219,10 +188,10 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+@*彈出視窗:教練履歷*@
+<div class="modal fade" id="modalResume" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">教練履歷<span></span></h5>
@@ -232,126 +201,228 @@
             </div>
             <div class="modal-body">
                 <dl class="row dlResume">
-                    <dt class="col-sm-3">
-                        教練編號
-                        @*Html.DisplayNameFor(model => model.FCoachId)*@
-                    </dt>
-                    <dd class="col-sm-9">
-                        4
-                        @*Html.DisplayFor(model => model.FCoachId)*@
-                    </dd>
-                    <dt class="col-sm-3">
-                        會員編號
-                        @*Html.DisplayNameFor(model => model.FMemberId)*@
-                    </dt>
-                    <dd class="col-sm-9">
-                        23
-                        @*Html.DisplayFor(model => model.FMemberId)*@
-                    </dd>
-                    <dt class="col-sm-3">
-                        所在城市
-                        @*Html.DisplayNameFor(model => model.FRegionId)*@
-                    </dt>
-                    <dd class="col-sm-9">
-                        台北市
-                        @*Html.DisplayFor(model => model.FRegionId)*@
-                    </dd>
-                    <dt class="col-sm-3">
+                    <dt class="col-sm-2">
                         照片
                     </dt>
-                    <dd class="col-sm-9">
-                        <img class="ddImg" src="" />
+                    <dd class="col-sm-10" id="ddImg">
+                        @*<div class="ddImg" style="background-image: url(/img/coach/coachImage/Alisa.jpg);" />*@
                     </dd>
-                    <dt class="col-sm-3">
+                    <dt class="col-sm-2">
+                        教練編號
+                    </dt>
+                    <dd class="col-sm-4" id="ddCoachId">
+                    </dd>
+                    <dt class="col-sm-2">
+                        履歷狀態
+                    </dt>
+                    <dd class="col-sm-4" id="ddStatus">
+                    </dd>
+                    <dt class="col-sm-2">
+                        會員編號
+                    </dt>
+                    <dd class="col-sm-4" id="ddMemberId">
+                    </dd>
+                    <dt class="col-sm-2">
+                        公開狀態
+                    </dt>
+                    <dd class="col-sm-4" id="ddVisible">
+                    </dd>
+                    <dt class="col-sm-2">
+                        教練姓名
+                    </dt>
+                    <dd class="col-sm-4" id="ddCoachName">
+                    </dd>
+                    <dt class="col-sm-2">
+                        申請時間
+                    </dt>
+                    <dd class="col-sm-4" id="ddApplyDate">
+                    </dd>
+                    <dt class="col-sm-2">
+                        所在城市
+                    </dt>
+                    <dd class="col-sm-4" id="ddCityName">
+                    </dd>
+                    <dt class="col-sm-2">
+                        希望待遇
+                    </dt>
+                    <dd class="col-sm-4" id="ddFee">
+                    </dd>
+                    <dd><hr /></dd>
+                    <dt class="col-sm-2">
                         專長種類
                     </dt>
-                    <dd class="col-sm-9">
-                        肌肥大訓練、體態評估與雕塑、備賽指導
+                    <dd class="col-sm-10" id="ddSkills">
                     </dd>
-                    <dt class="col-sm-3">
+                    <dt class="col-sm-2">
                         經歷
-                        @*Html.DisplayNameFor(model => model.FExperience)*@
                     </dt>
-                    <dd class="col-sm-9">
-                        People Fitness 全民運動健身中心 兼職教練
-                        @*Html.DisplayFor(model => model.FExperience)*@
+                    <dd class="col-sm-10" id="ddExperiences">
                     </dd>
-                    <dt class="col-sm-3">
-
-                        @*Html.DisplayNameFor(model => model.FExperience)*@
-                    </dt>
-                    <dd class="col-sm-9">
-                        Dynasty 皇家官邸聯誼會 私人教練
-                        @*Html.DisplayFor(model => model.FExperience)*@
-                    </dd>
-                    <dt class="col-sm-3">
+                    <dt class="col-sm-2">
                         相關證照
-                        @*Html.DisplayNameFor(model => model.FLicense)*@
                     </dt>
-                    <dd class="col-sm-9">
-                        NASM-CPT美國運動醫學私人教練認證
-                        @*Html.DisplayFor(model => model.FLicense)*@
+                    <dd class="col-sm-10" id="ddLicenses">
                     </dd>
-                    <dt class="col-sm-3">
-
-                        @*Html.DisplayNameFor(model => model.FLicense)*@
-                    </dt>
-                    <dd class="col-sm-9">
-                        中華民國健身協會體適能健身C級證照
-                        @*Html.DisplayFor(model => model.FLicense)*@
-                    </dd>
-                    <dt class="col-sm-3">
-                        希望待遇
-                        @*Html.DisplayNameFor(model => model.FCoachFee)*@
-                    </dt>
-                    <dd class="col-sm-9">
-                        1500-1600
-                        @*Html.DisplayFor(model => model.FCoachFee)*@
-                    </dd>
-                    <dt class="col-sm-3">
+                    <dt class="col-sm-2">
                         介紹
-                        @*Html.DisplayNameFor(model => model.FCoachDescription)*@
                     </dt>
-                    <dd class="col-sm-9">
-                        跟著Michael的腳步找回自信體態！
-                        @*Html.DisplayFor(model => model.FCoachDescription)*@
-                    </dd>
-                    <dt class="col-sm-3">
-                        申請時間
-                        @*Html.DisplayNameFor(model => model.FApplyDate)*@
-                    </dt>
-                    <dd class="col-sm-9">
-                        2022-06-25 20:34:58
-                        @*Html.DisplayFor(model => model.FApplyDate)*@
-                    </dd>
-                    <dt class="col-sm-3">
-                        履歷狀態
-                        @*Html.DisplayNameFor(model => model.FStatusNumber)*@
-                    </dt>
-                    <dd class="col-sm-9">
-                        審核中
-                        @*Html.DisplayFor(model => model.FStatusNumber)*@
-                    </dd>
-                    <dt class="col-sm-3">
-                        公開狀態
-                        @*Html.DisplayNameFor(model => model.FVisible)*@
-                    </dt>
-                    <dd class="col-sm-9">
-                        未公開
-                        @*Html.DisplayFor(model => model.FVisible)*@
+                    <dd class="col-sm-10" id="ddSlogan">
                     </dd>
                 </dl>
-            </div>            
+            </div>
         </div>
     </div>
 </div>
 
-<script src="/js/jquery-3.3.1.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.nice-select.min.js"></script>
-<script src="/js/jquery-ui.min.js"></script>
-<script src="/js/jquery.slicknav.js"></script>
-<script src="/js/mixitup.min.js"></script>
-<script src="/js/owl.carousel.min.js"></script>
-<script src="/js/main.js"></script>
-<script src="https://unpkg.com/scrollreveal"></script>
+
+
+@section Scripts{
+    <script>
+        //SweetAlert Button樣式調整
+        const SwalGreen = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false
+        })
+
+        //查看履歷
+        function viewResume() {
+            let theCoachId = $(event.target).parents("tr").children("td:eq(0)").text();
+            $.get("@Url.Content("~/Admin/CoachManage/getCoach")", { id: theCoachId }, function (c) {
+                let skill = "";
+                $.each(c.skills, function (idx, val) {
+                    skill += val;
+                    skill += "、";
+                })
+                skill = skill.substr(0, skill.length - 1);
+                let experience = "";
+                $.each(c.experiences, function (idx, val) {
+                    experience += val;
+                    experience += "<br />";
+                })
+                let license = "";
+                $.each(c.licenses, function (idx, val) {
+                    license += val;
+                    license += "<br />";
+                })
+                $("#ddImg").html(`<div class="ddImg" style="background-image: url(/img/coach/coachImage/Alisa.jpg);" />`)
+                $("#ddCoachId").html(c.fCoachId);
+                $("#ddStatus").html(c.status);
+                $("#ddMemberId").html(c.fMemberId);
+                $("#ddVisible").html(c.visible);
+                $("#ddCoachName").html(c.fCoachName);
+                $("#ddApplyDate").html(c.applyDate);
+                $("#ddCityName").html(c.cityName);
+                $("#ddFee").html(c.fCoachFee);
+                $("#ddSkills").html(skill);
+                $("#ddExperiences").html(experience);
+                $("#ddLicenses").html(license);
+                $("#ddSlogan").html(c.fSlogan);
+            })
+        }
+        $(".btnViewResume").on("click", viewResume);
+
+        //審核通過
+        function passResume() {
+            const theTr = $(event.target).parents("tr");
+            let theCoachId = theTr.children("td:eq(0)").text();
+            let theCoachName = theTr.children("td:eq(1)").text();
+            SwalGreen.fire({
+                title: `確定通過${theCoachName}的履歷?`,
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: '確定',
+                cancelButtonText: "取消",
+                icon: 'question'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.get("@Url.Content("~/Admin/CoachManage/passResume")", { id: theCoachId }, function (c) {
+                            theTr.children("td:eq(5)").text("審核通過");
+                            theTr.children("td:eq(6)").text("公開");
+                            SwalGreen.fire(`${theCoachName}教練通過審核`, '', 'success')
+                        })
+                    }
+                })
+        }
+        $(".btnPass").on("click", passResume);
+
+        //退回申請
+        function returnResume() {
+            const theTr = $(event.target).parents("tr");
+            let theCoachId = theTr.children("td:eq(0)").text();
+            let theCoachName = theTr.children("td:eq(1)").text();
+            SwalGreen.fire({
+                title: `確定退回${theCoachName}的履歷?`,
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: '確定',
+                cancelButtonText: "取消",
+                icon: 'question'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                        $.get("@Url.Content("~/Admin/CoachManage/returnResume")", { id: theCoachId }, function (c) {
+                            theTr.children("td:eq(5)").text("已退回");
+                            theTr.children("td:eq(6)").text("未公開");
+                            SwalGreen.fire(`已退回${theCoachName}的履歷`, '', 'error')
+                        })
+                    }
+            })
+        }
+        $(".btnReturn").on("click", returnResume);
+
+        //篩選排序
+        function loadCoach() {
+            let isDesc;
+            if ($(".thTime").children("i").hasClass("fa-caret-down")) {//desc
+                isDesc = 1;
+            }
+            else {//orderby
+                isDesc = 0;
+            }
+            $.post("@Url.Content("~/Admin/CoachManage/loadCoach")", { "CityId": $("#selCity").val(), "SkillId": $("#selSkill").val(), "KeyWord": $("#inpKeyword").val(), "Sort": isDesc, "StatusNum": $("#selStatus").val() }, function (coaches) {
+                let html = "";
+                $.each(coaches, function (idx, val) {
+                    html += `<tr><td>${val.fCoachId}</td>`;
+                    html += `<td>${val.fCoachName}</td>`;
+                    html += `<td>${val.cityName}</td>`;
+                    html += `<td>${val.fCoachFee}</td>`;
+                    html += `<td>${val.applyDate}</td>`;
+                    html += `<td>${val.status}</td>`;
+                    html += `<td>${val.visible}</td>`;
+                    html += `<td class="details">`;
+                    html += `<button class="btn btn-light btnViewResume" data-toggle="modal" data-target="#modalResume" onclick="viewResume();">查看履歷</button>`;
+                    html += `<button type="button" class="btn btn-success btnPass" onclick="passResume();">審核通過</button>`;
+                    html += `<button type="button" class="btn btn-secondary btnReturn" onclick="returnResume();">退回申請</button></td></tr>`;
+                })
+                $("#tbdCoachList").html(html);
+            })
+        };
+        $("#selCity").on("change", loadCoach);
+        $("#selSkill").on("change", loadCoach);
+        $("#inpKeyword").on("keyup", loadCoach);
+        $("#selStatus").on("change", loadCoach);
+
+        //依時間排序
+        $(".thTime").click(function () {
+            if ($(".thTime").children("i").hasClass("fa-caret-down")) {
+                $(".thTime").children("i").removeClass("fa-caret-down").addClass("fa-caret-up");
+            }
+            else {
+                $(".thTime").children("i").removeClass("fa-caret-up").addClass("fa-caret-down");
+            }
+            loadCoach();
+        });
+
+        //清除篩選條件
+        $("#btnReset").click(function () {
+            $("#selCity").val(0);
+            $("#selSkill").val(0);
+            $("#inpKeyword").val("");
+            $("#selStatus").val(0);
+            loadCoach();
+        })
+
+    </script>
+}

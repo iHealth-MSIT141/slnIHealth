@@ -1,9 +1,9 @@
-﻿@*@model IEnumerable<prjiHealth.Models.TCourse>*@
+﻿@model List<prjIHealth.ViewModels.CCourseListViewModel>
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .divTopic {
-            margin-bottom: 10px;
+            margin-bottom: 3px;
         }
 
         .details {
@@ -168,21 +168,24 @@
             margin-right: 8vw;
             margin-bottom: 1vh;
         }
+        #txtaText{
+            height:140px
+        }
     </style>
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     @*h2內容請自行更換*@
-                    <h2>會員專區Demo</h2>
-                    @*<div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Shop</span>
-                    </div>*@
+                    <h2 class="reveal_t1">課程列表</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Member/Edit">Home</a>
+                        <span>Member</span>
+                    </div>
                 </div>
             </div>
 
@@ -193,18 +196,20 @@
 <section class="product spad">
     <div class="container">
         <div class="row">
+            @*左側導覽列*@
             <div class="col-lg-3 col-md-5">
-                <div class="sidebar">
+                <div class="sidebar" style="position:sticky;top:150px;">
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
-                            <li><a href="#">個人資料</a></li>
+                            <li><a href="~/member/edit">個人資料</a></li>
                             <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
                             <li><a href="~/Member/OrderList">訂單查詢</a></li>
                             <li><a href="~/Student/CandidateList">候選教練</a></li>
                             <li><a href="~/Student/CourseList">課程列表</a></li>
                             <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
                             <li><a href="~/Problem/CheckReply">客服記錄</a></li>
+
                         </ul>
                         <br />
                         <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
@@ -212,169 +217,107 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
-                @*※※※會員專區View內容請從此開始※※※*@
+                @*課程列表標題*@
                 <div>
                     <div class="divTopic reveal_t1"><h3><b>課程列表</b></h3></div>
                 </div>
                 <div class="divBar reveal_r1"></div>
+
                 <table class="table reveal_b1">
+                    @*課程列表標頭*@
                     <thead class="thead-dark">
                         <tr>
                             <th>
                                 No.
                             </th>
                             <th>
-                                @*@Html.DisplayNameFor(model => model.FCoachId)*@
                                 教練姓名
                             </th>
                             <th>
-                                @*@Html.DisplayNameFor(model => model.FContactDate)*@
-                                聯絡電話
+                                課程名稱
                             </th>
                             <th>
-                                @*@Html.DisplayNameFor(model => model.FContactDate)*@
-                                總堂數
+                                時段
                             </th>
                             <th>
-                                @*@Html.DisplayNameFor(model => model.FContactDate)*@
-                                剩餘堂數
+                                堂數
                             </th>
                             <th>
-                                @*@Html.DisplayNameFor(model => model.FStatusId)*@
                                 課程狀態
                             </th>
                             <th></th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @{
-                            //int count = 0;
-                            //foreach (var item in Model)
-                            //{
-                            //    count++;
-                            <tr>
-                                <td>
-                                    1
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                    May
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                    0922222222
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    16
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FStatusId)*@
-                                    13
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FStatusId)*@
-                                    課程進行中
-                                </td>
-                                <td class="tdBtns">
-                                    <button class=" accordion-toggle btnView"  data-toggle="collapse" data-target="#demo1"><i class="fa-solid fa-eye"></i>&nbsp&nbsp上課紀錄</button>
-                                    <button class="btnRate" data-toggle="modal" data-target="#addModal"><i class="fa-solid fa-clipboard-check"></i>&nbsp&nbsp評價教練</button>
-                                </td>
-                            </tr>
+                            int courseCount = 0;
+                            foreach (var c in Model)
+                            {
+                                courseCount++;
 
-                            <tr>
-                                <td colspan="12" class="hiddenRow">
-                                    <div class="accordian-body collapse" id="demo1">
-                                        <table class="table tbToggle">
-                                            <thead>
-                                                <tr class="info">
-                                                    <th class="thCount">堂數</th>
-                                                    <th class="thTime">上課時間</th>
-                                                    <th class="thStatus">狀態</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr data-toggle="collapse" class="accordion-toggle" data-target="#demo10">
-                                                    <td>1</td>
-                                                    <td>2022/07/01 16:00</td>
-                                                    <td>已完成</td>
-                                                </tr>
-                                                <tr data-toggle="collapse" class="accordion-toggle" data-target="#demo10">
-                                                    <td>2</td>
-                                                    <td>2022/07/03 16:00</td>
-                                                    <td>已完成</td>
-                                                </tr>
-                                                <tr data-toggle="collapse" class="accordion-toggle" data-target="#demo10">
-                                                    <td>3</td>
-                                                    <td>2022/07/10 16:00</td>
-                                                    <td>已完成</td>
-                                                </tr>
-                                                <tr data-toggle="collapse" class="accordion-toggle" data-target="#demo10">
-                                                    <td>4</td>
-                                                    <td>2022/07/07 16:00</td>
-                                                    <td>尚未完成</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                            </tr>
-                            <tr>
-                                <td>
-                                    2
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                    Zac
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                    0934567891
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    8
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FStatusId)*@
-                                    7
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FStatusId)*@
-                                    課程進行中
-                                </td>
-                                <td class="tdBtns">
-                                    <button class="accordion-toggle btnView"  data-toggle="collapse" data-target="#demo2"><i class="fa-solid fa-eye"></i>&nbsp&nbsp上課紀錄</button>
-                                    <button class="btnRate" data-toggle="modal" data-target="#addModal"><i class="fa-solid fa-clipboard-check"></i>&nbsp&nbsp評價教練</button>
-                                </td>
-                            </tr>
+                                @*課程列表*@
+                                <tr>
+                                    <td>
+                                        @courseCount
+                                    </td>
+                                    <td>
+                                        @c.CoachName
+                                    </td>
+                                    <td>
+                                        @c.FCourseName
+                                    </td>
+                                    <td>
+                                        @c.AvailableTime
+                                    </td>
+                                    <td>
+                                        @c.FCourseTotal
+                                    </td>
+                                    <td>
+                                        @c.Status
+                                    </td>
+                                    <td class="tdBtns">
+                                        <button class=" accordion-toggle btnView" data-toggle="collapse" data-target="#@c.CoachName@courseCount"><i class="fa-solid fa-eye"></i>&nbsp&nbsp上課紀錄</button>
+                                        <button class="btnRate" data-toggle="modal" data-target="#addModal"><i class="fa-solid fa-clipboard-check"></i>&nbsp&nbsp評價教練</button>
+                                        <input hidden value="@c.CoachId" />
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td colspan="12" class="hiddenRow">
-                                    <div class="accordian-body collapse" id="demo2">
-                                        <table class="table tbToggle">
-                                            <thead>
-                                                <tr class="info">
-                                                    <th class="thCount">堂數</th>
-                                                    <th class="thTime">上課時間</th>
-                                                    <th class="thStatus">狀態</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr data-toggle="collapse" class="accordion-toggle" data-target="#demo10">
-                                                    <td>1</td>
-                                                    <td>2022/07/06 15:00</td>
-                                                    <td>已完成</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </td>
-                            </tr>
+                                @*展開上課紀錄*@
+                                <tr>
+                                    <td colspan="12" class="hiddenRow">
+                                        <div class="accordian-body collapse" id="@c.CoachName@courseCount">
+                                            <table class="table tbToggle">
+                                                <thead>
+                                                    <tr class="info">
+                                                        <th class="thCount">堂數</th>
+                                                        <th class="thTime">上課時間</th>
+                                                        <th class="thStatus">狀態</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{
+                                                        int reservationCount = 0;
+                                                        foreach (var r in c.Reservations)
+                                                        {
+                                                            reservationCount++;
+                                                            <tr data-toggle="collapse" class="accordion-toggle" data-target="#demo10">
+                                                                <td>@reservationCount</td>
+                                                                <td>@r.FCourseTime</td>
+                                                                <td>@r.Status</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            }
                         }
-                        @*}*@
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
@@ -411,93 +354,34 @@
                     <div>
                         <div class="divGuide">
                             <span class="spGuide"><b>分享你的心得&nbsp;</b></span>
-                            <span class="spCheckWord">*限120字</span>
+                            @*<span class="spCheckWord">*限125字</span>*@
                         </div>
                         <div class="divTextarea">
-                            <textarea></textarea>
+                            <textarea id="txtaText"></textarea>
                         </div>                                       
                     </div>                    
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                @Html.ActionLink("送出評分", "Create", new { }, new { onclick = "return confirm('確定送出評分？')", @class = "btn btn-success" })
+                <button class="btn btn-success" id="btnSendRate">送出評分</button>
             </div>
         </div>
     </div>
 </div>
-@*<table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FCourseId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FMemberId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FCoachId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FRemainingCourse)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FStatusId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FVisible)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FCourseId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FMemberId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FCoachId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FRemainingCourse)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FStatusId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FVisible)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>*@
+
 @section Scripts{
     <script>
-        //
-        //$(".btnRate").click((event) => {
-        //    event.stopPropagation();     
-        //})
 
         //星星評分
-        var starIndex;
+        var starIndex = -1;
         $(".divStars>img").attr("class", "starOrig");
         $(".divStars>img").on({
+            mouseover: mouseOver,
             mouseout: mouseOut,
             click: clickStar,
             dblclick: reset
         })
-        $(".divStars>img").on("mouseover dblclick", mouseOver);
-
         function mouseOver() {
             starIndex = $(this).index();
             $(".divStars>img").slice(0, starIndex + 1).attr("class", "starChg");
@@ -507,15 +391,58 @@
             starIndex = $(this).index();
             $(".divStars>img").slice(0, starIndex + 1).attr("class", "starOrig");
             $(".spResult").text("您尚未評分");
+            starIndex = -1;
         }
         function clickStar() {
             $(".divStars>img").off("mouseover").off("mouseout");
-            $(".spResult").text(`${starIndex + 1}\t顆星`).attr("class", "confirm");
+            $(".spResult").text(`${starIndex + 1}\t顆星，雙擊可重置`);
         }
         function reset() {
             starIndex = $(this).index();
             $(".divStars>img").attr("class", "starOrig").mouseover(mouseOver).mouseout(mouseOut);
-            $(".spResult").text("您尚未評分").attr("class", "result");
+            $(".divStars>img").slice(0, starIndex + 1).attr("class", "starChg");
+            $(".spResult").text("評分中...");
         }
+
+        //顯示已評分內容
+        var theCoachId;
+        $(".btnRate").click(function () {
+            theCoachId = $(this).next("input").val();
+            $.get("@Url.Content("~/Student/viewRate")", { theCoachId: theCoachId }, function (rate) {
+                if (rate != null) {
+                    starIndex = rate.fRateStar - 1;
+                    $(".divStars>img").slice(0, starIndex + 1).attr("class", "starChg");
+                    $(".divStars>img").off("mouseover").off("mouseout");
+                    $(".spResult").text(`${starIndex + 1}\t顆星，雙擊可重置`);
+                    if (rate.fRateText != null) {
+                        $("#txtaText").val(rate.fRateText);
+                    }
+                }
+            })
+        })
+
+        //關閉modal時重置
+        $("#addModal").on("hidden.bs.modal", function () {
+            $(".divStars>img").attr("class", "starOrig").mouseover(mouseOver).mouseout(mouseOut);
+            $(".spResult").text("您尚未評分");
+            starIndex = -1;
+            $("#txtaText").val("");
+        });
+
+        //送出評分
+        $("#btnSendRate").click(function () {
+            if (starIndex >= 0) {
+                $.post("@Url.Content("~/Student/createRate")", { FCoachId: theCoachId, FRateStar: starIndex + 1, FRateText: $("#txtaText").val() }, function () {
+                    $("#addModal").modal('hide');
+                })
+            }
+            else {
+                alert("您尚未評分，請點擊星星給分");
+            }
+        });
+
+
+        
+
     </script>
 }

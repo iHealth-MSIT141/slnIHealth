@@ -1,4 +1,4 @@
-﻿@*@model IEnumerable<prjiHealth.Models.TCoachContact>*@
+﻿@model List<prjIHealth.ViewModels.CContactViewModel>
 
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -14,28 +14,45 @@
             margin-bottom: 50px;
             background-color: #7FAD39;
         }
-        .table{
-            table-layout:fixed;
-            word-break:break-all;
+
+        .table {
+            table-layout: fixed;
+            word-break: break-all;
         }
-        .thNo{
-            width:8%;
+
+        .thNo {
+            width: 6%;
         }
-        .thName{
-            width:10%;
+
+        .thName {
+            width: 10%;
         }
-        .thPhone{
-            width:15%;
+
+        .thPhone {
+            width: 15%;
         }
-        .thEmail{
-            width:20%;
+
+        .thPreferTime {
+            width: 14%;
         }
-        .thTime{
-            width:21%;
+
+        .thTime {
+            width: 18%;
         }
+
         .thStatus {
-            width: 12%;
+            width: 19%;
         }
+
+        .tdBtn {
+            width: 18%;
+            text-align: right;
+        }
+
+            .tdBtn button:disabled {
+                background-color: gray;
+            }
+
         .btnView {
             border: none;
             background-color: #DFEACE;
@@ -52,13 +69,6 @@
             padding: 0 !important;
         }
 
-        .tdBtn {
-            width:14%;
-            text-align: right;
-        }
-        .tdBtn button:disabled{
-            background-color:gray;
-        }
 
         .btn-success {
             background-color: #7fad39;
@@ -69,6 +79,7 @@
             background-color: #A9B6A8;
             border: none;
         }
+
         .blog__btn {
             display: inline-block;
             font-size: 14px;
@@ -103,20 +114,54 @@
             margin-right: 8vw;
             margin-bottom: 1vh;
         }
+
+        .selStatus {
+            display: inline !important;
+        }
+        #selStatus {
+            display: inline !important;
+            color: #fff;
+            background-color: #343a40;
+            border-color: #454d55;
+            font-weight: bold;
+        }
+        .selTime1, .selTime2 {
+            display: inline !important;
+            width: 48%;
+        }
+
+        .aMemberName {
+            color: #212529;
+        }
+
+            .aMemberName:visited {
+                color: #212529;
+            }
+
+            .aMemberName:hover {
+                color: #7fad39;
+            }
+
+        .ddImg {
+            width: 210px;
+            height: 280px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
     </style>
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     @*h2內容請自行更換*@
-                    <h2>會員專區Demo</h2>
-                    <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Member</span>
+                    <h2 class="reveal_t1">教練專區</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Student/CoachMainPage">Home</a>
+                        <span>Coach</span>
                     </div>
                 </div>
             </div>
@@ -128,8 +173,9 @@
 <section class="product spad">
     <div class="container">
         <div class="row">
+            @*教練專區左側導覽列*@
             <div class="col-lg-3 col-md-5">
-                <div class="sidebar">
+                <div class="sidebar" style="position:sticky;top:150px;">
                     <div class="sidebar__item">
                         <h4>教練專區</h4>
                         <ul>
@@ -138,204 +184,128 @@
                             <li><a href="~/Coach/TeachingList">教課列表</a></li>
                         </ul>
                         <br />
-                        <a href="~/Home/會員專區ViewDemo" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
+                        <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
                     </div>
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
-                @*※※※會員專區View內容請從此開始※※※*@
                 <div class="divTopic reveal_t1"><h3><b>招生紀錄</b></h3></div>
                 <div class="divBar reveal_r1"></div>
                 <table class="table reveal_b1">
+                    @*表格head*@
                     <thead class="thead-dark">
                         <tr>
                             <th class="thNo">
                                 No.
                             </th>
                             <th class="thName">
-                                @*@Html.DisplayNameFor(model => model.FCoachId)*@
-                                會員姓名
+                                學員
                             </th>
                             <th class="thPhone">
-                                @*@Html.DisplayNameFor(model => model.FCoachId)*@
                                 聯絡電話
                             </th>
-                            <th class="thEmail">
-                                @*@Html.DisplayNameFor(model => model.FCoachId)*@
-                                聯絡E-mail
+                            <th class="thPreferTime">
+                                偏好時段
                             </th>
                             <th class="thTime">
-                                @*@Html.DisplayNameFor(model => model.FContactDate)*@
-                                發送時間
-                            </th>                            
+                                發送時間<i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </th>
+                            <th class="thStatus">
+                                <select id="selStatus">
+                                    <option value="0" selected>所有聯繫狀態</option>
+                                    <option value="50">等待聯繫中</option>
+                                    <option value="52">已聯繫，配對成功</option>
+                                    <option value="51">已聯繫，暫無課程</option>
+                                </select>
+                            </th>
                             <th class="tdBtn"></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    @*招生紀錄*@
+                    <tbody id="tbdContact">
                         @{
-                            //int count = 0;
-                            //foreach (var item in Model)
-                            //{
-                            //    count++;
-                            <tr>
-                                <td>
-                                    1
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                    Amy
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    0988888888
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    mem1@gmail.com
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    2022-06-09 23:27:04
-                                </td>
-                                <td class="tdBtn">
-                                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增課程</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    2
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                    Tom
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    0968168168
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    mem2@gmail.com
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    2022-06-15 17:54:15
-                                </td>
-                                <td class="tdBtn">
-                                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增課程</button>
-                                    @*@Html.ActionLink("新增課程", "CreateCourse", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-outline-success" })*@
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    3
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                    Mary
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    0977777777
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    mem3@gmail.com
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    2022-06-20 17:54:15
-                                </td>
-                                <td class="tdBtn">
-                                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增課程</button>
-                                    @*@Html.ActionLink("新增課程", "CreateCourse", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-outline-success" })*@
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    4
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                    Peter
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    0999090909
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    mem4@gmail.com
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    2022-06-28 17:54:15
-                                </td>
-                                <td class="tdBtn">
-                                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增課程</button>
-                                    @*@Html.ActionLink("新增課程", "CreateCourse", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-outline-success" })*@
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    5
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                    Jenny
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    0922222222
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    mem5@gmail.com
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    2022-07-03 13:48:20
-                                </td>
-                                <td class="tdBtn">
-                                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增課程</button>
-                                    @*@Html.ActionLink("新增課程", "CreateCourse", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-outline-success" })*@
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    6
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                    Joanne
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    0988887887
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    mem6@gmail.com
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                    2022-07-08 17:54:15
-                                </td>
-                                <td class="tdBtn">
-                                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增課程</button>
-                                    @*@Html.ActionLink("新增課程", "CreateCourse", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-outline-success" })*@
-                                </td>
-                            </tr>
+                            int count = 0;
+                            foreach (var c in Model)
+                            {
+                                count++;
+                                <tr>
+                                    <td>
+                                        @count
+                                    </td>
+                                    <td>
+                                        <a class="aMemberName" data-toggle="modal" data-target="#modalMember" href="">@c.MemberName</a>
+                                        <input class="inpTheMemberID" type="hidden" value="@c.FMemberId" />
+                                    </td>
+                                    <td>
+                                        @c.MemberPhone
+                                    </td>
+                                    <td>
+                                        @c.AvailableTime
+                                        <input class="inpPreferTime" type="hidden" value="@c.FAvailableTimeNum" />
+                                    </td>
+                                    <td>
+                                        @c.StrContactDate
+                                    </td>
+                                    <td>
+                                        <select class="selStatus" onchange="changeStatus();">
+                                            @{
+                                                if (c.FStatusNumber == 50)
+                                                {
+                                                    <option value="50" selected>等待聯繫中</option>
+                                                    <option value="51">已聯繫，暫無課程</option>
+                                                    <option value="52">已聯繫，配對成功</option>
+                                                }
+                                                else if (c.FStatusNumber == 51)
+                                                {
+                                                    <option value="50">等待聯繫中</option>
+                                                    <option value="51" selected>已聯繫，暫無課程</option>
+                                                    <option value="52">已聯繫，配對成功</option>
+                                                }
+                                                else if (c.FStatusNumber == 52)
+                                                {
+                                                    <option value="50">等待聯繫中</option>
+                                                    <option value="51">已聯繫，暫無課程</option>
+                                                    <option value="52" selected>已聯繫，配對成功</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td class="tdBtn">
+                                        <input type="hidden" value="@c.FCoachContactId" />
+                                        <button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse">排課</button>
+                                        <button class="btn btn-secondary">聯繫</button>
+                                    </td>
+                                </tr>
+                            }
                         }
-                        @*}*@
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </section>
-<!-- Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+
+@*彈出視窗:會員資料*@
+<div class="modal fade" id="modalMember" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">學員資料<span></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl class="row" id="dlMember">
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*彈出視窗:新增課程(排課)*@
+<div class="modal fade" id="modalCreateCourse" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -346,81 +316,233 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="addForm">
-                    <div class="form-group">
-                        <label for="MemberId">會員編號</label>
-                        <input type="text" class="form-control" id="MemberId" name="MemberId">
+                <input type="hidden" id="inpContactId">
+                <div class="form-group">
+                    <label>會員姓名</label>
+                    <input type="hidden" id="inpMemberId">
+                    <input type="text" class="form-control" id="inpMemberName" readonly>
+                </div>
+                <div class="form-group">
+                    <label>課程名稱</label>
+                    <input type="text" class="form-control" id="inpCourseName">
+                </div>
+                <div class="form-group">
+                    <label>時段</label>
+                    <div>
+                        <select class="selTime1">
+                            <option value="7">每周日</option>
+                            <option value="1">每周一</option>
+                            <option value="2">每周二</option>
+                            <option value="3">每周三</option>
+                            <option value="4">每周四</option>
+                            <option value="5">每周五</option>
+                            <option value="6">每周六</option>
+                        </select>
+                        <select class="selTime2">
+                            <option value="9">09:00</option>
+                            <option value="10">10:00</option>
+                            <option value="11">11:00</option>
+                            <option value="12">12:00</option>
+                            <option value="13">13:00</option>
+                            <option value="14">14:00</option>
+                            <option value="15">15:00</option>
+                            <option value="16">16:00</option>
+                            <option value="17">17:00</option>
+                            <option value="18">18:00</option>
+                            <option value="19">19:00</option>
+                            <option value="20">20:00</option>
+                            <option value="21">21:00</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label for="MemberName">會員姓名</label>
-                        <input type="text" class="form-control" id="MemberName" name="MemberName">
-                    </div>
-                    <div class="form-group">
-                        <label for="Count">總堂數</label>
-                        <input type="text" class="form-control" id="Count" name="Count">
-                    </div>
-                </form>
+                </div>
+                <div class="form-group">
+                    <label>堂數</label>
+                    <input type="number" class="form-control" id="inpTotal">
+                </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="btnDemo">Demo</button>
+                <button type="button" class="btn btn-success" id="btnSendCourse">送出</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                <button type="button" class="btn btn-success" id="buttonSend">送出</button>
             </div>
         </div>
     </div>
 </div>
 
-@*<table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FCoachContactId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FMemberId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FCoachId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FContactDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FStatusId)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FCoachContactId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FMemberId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FCoachId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FContactDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FStatusId)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>*@
-
 @section Scripts{
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        console.log(new Date());
+        //select樣式
+        $(".nice-select").remove();
+        //SweetAlert Button樣式調整
+        const SwalWithGreen = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false
+        })
+
+        //改變聯繫狀態
+        function changeStatus() {
+            theContactId = $(event.target).parents("tr").find(".tdBtn").find("input").val();
+            theStatusNum = $(event.target).val();
+            $.get("@Url.Content("~/Coach/changeContactStatus")", { FCoachContactId: theContactId, FStatusNumber: theStatusNum})
+        }
+
+        //點擊查看學員資料
+        var theMemberId = 0;
+        $(".aMemberName").on("click", showMember);
+        function showMember() {
+            theMemberId = $(event.target).next("input").val();
+            $.get("@Url.Content("~/Coach/showMember")", { memberId: theMemberId }, function (member) {
+                let html = "";//
+                html += `<dt class="col-sm-3">會員編號</dt><dd class="col-sm-9">${member.fMemberId}</dd>`;
+                html += `<dt class="col-sm-3">姓名</dt><dd class="col-sm-9">${member.memberName}</dd>`;
+                html += `<dt class="col-sm-3">性別</dt><dd class="col-sm-9">${member.memberGender}</dd>`;
+                html += `<dt class="col-sm-3">年齡</dt><dd class="col-sm-9">${member.memberAge}</dd>`;
+                //TODO 改圖片路徑:member.memberPicturePath
+                html += `<dt class="col-sm-3">相片</dt><dd class="col-sm-9"><div class="ddImg" style="background-image: url(/img/coach/coachImage/Alisa.jpg);"/></dd>`;
+                html += `<dt class="col-sm-3">連絡電話</dt><dd class="col-sm-9">${member.memberPhone}</dd>`;
+                html += `<dt class="col-sm-3">Email</dt><dd class="col-sm-9">${member.memberEmail}</dd>`;
+                $("#dlMember").html(html);
+            })
+        }
+
+        //彈出新增排課視窗
+        var theMemberName;
+        var selStatus;
+        $(".btnCreateCourse").on("click", btnCreateCourseClick);
+        function btnCreateCourseClick() {
+            selStatus = $(event.target).parents("tr").find(".selStatus");
+            theMemberName = $(event.target).parents("tr").find("a").text();
+            theMemberId = $(event.target).parents("tr").find(".inpTheMemberID").val();
+            theContactId = $(event.target).prev("input").val();
+            thePreferTime = $(event.target).parents("tr").find(".inpPreferTime").val();
+            $("#inpMemberName").val(theMemberName);
+            $("#inpMemberId").val(theMemberId);
+            $("#inpContactId").val(theContactId);
+            $(".selTime1").val(thePreferTime.substr(0, 1));
+            $(".selTime2").val(thePreferTime.substr(1, 2));
+        }
+
+        //新增課程(排課)
+        $("#btnSendCourse").click(function () {
+            
+            if ($("#inpCourseName").val() == "" || $("#inpTotal").val() == "") {
+                SwalWithGreen.fire(
+                    '請勿空白',
+                    '請檢查是否完整填寫課程名稱及堂數',
+                    'error'
+                )
+            }
+            else {
+                SwalWithGreen.fire({
+                    title: '確定要新增課程嗎?',
+                    text: '確定新增後無法修改',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: '確定',
+                    cancelButtonText: `取消`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        let time = `${$(".selTime1").val()}${$(".selTime2").val()}`;
+                        $.post("@Url.Content("~/Coach/createCourse")", { FCoachContactId: $("#inpContactId").val(), FCourseName: $("#inpCourseName").val(), FCourseTotal: $("#inpTotal").val(), FAvailableTimeNum: time }, function () {
+                            SwalWithGreen.fire('新增成功', '', 'success')
+                            selStatus.val(52);
+                            $("#modalCreateCourse").modal("hide");
+                        })
+                    }
+                })
+            }
+        })
+
+        //DEMO鍵
+        $("#btnDemo").click(function () {
+            $("#inpCourseName").val("體態雕塑初階");
+            $("#inpTotal").val(8);
+        });
+
+        //依發送時間及聯絡狀態排序
+        function loadContact() {
+            let html = "";
+            if ($(".thTime").children("i").hasClass("fa-caret-up")) {
+                $.get("@Url.Content("~/Coach/loadContact")", { flag: 0, statusNum:$("#selStatus").val() }, function (contacts) {
+                    $.each(contacts, function (index, value) {
+                        html += `<tr><td>${index+1}</td>`;
+                        html += `<td><a class="aMemberName" data-toggle="modal" data-target="#modalMember" href="" onclick="showMember();">${value.memberName}</a>`;
+                        html += `<input class="inpTheMemberID" type="hidden" value="${value.fMemberId}" /></td>`;
+                        html += `<td>${value.memberPhone}</td>`;
+                        html += `<td>${value.availableTime} <input class="inpPreferTime" type = "hidden" value = "${value.fAvailableTimeNum}" /></td >`;
+                        html += `<td>${value.strContactDate}</td>`;
+                        html += `<td><select class="selStatus" onchange="changeStatus();">`;
+                        if (value.fStatusNumber == 50) {
+                            html += `<option value="50" selected>等待聯繫中</option>`;
+                            html += `<option value="51">已聯繫，暫無課程</option>`;
+                            html += `<option value="52">已聯繫，配對成功</option>`;
+                        }
+                        else if (value.fStatusNumber == 51) {
+                            html += `<option value="50">等待聯繫中</option>`;
+                            html += `<option value="51" selected>已聯繫，暫無課程</option>`;
+                            html += `<option value="52">已聯繫，配對成功</option>`;
+                        }
+                        else if (value.fStatusNumber == 52) {
+                            html += `<option value="50">等待聯繫中</option>`;
+                            html += `<option value="51">已聯繫，暫無課程</option>`;
+                            html += `<option value="52" selected>已聯繫，配對成功</option>`;
+                        }
+                        html += `</select></td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
+                        html += `<button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse" onclick="btnCreateCourseClick();">排課</button>`;
+                        html += `<button class="btn btn-secondary">聯繫</button></td></tr>`;
+                    })
+                    $("#tbdContact").html(html);
+                })
+            }
+            else {
+                $.get("@Url.Content("~/Coach/loadContact")", { flag: 1, statusNum: $("#selStatus").val() }, function (contacts) {
+                    $.each(contacts, function (index, value) {
+                        html += `<tr><td>${index + 1}</td>`;
+                        html += `<td><a class="aMemberName" data-toggle="modal" data-target="#modalMember" href="" onclick="showMember();">${value.memberName}</a>`;
+                        html += `<input class="inpTheMemberID" type="hidden" value="${value.fMemberId}" /></td>`;
+                        html += `<td>${value.memberPhone}</td>`;
+                        html += `<td>${value.availableTime} <input class="inpPreferTime" type = "hidden" value = "${value.fAvailableTimeNum}" /></td >`;
+                        html += `<td>${value.strContactDate}</td>`;
+                        html += `<td><select class="selStatus" onchange="changeStatus();">`;
+                        if (value.fStatusNumber == 50) {
+                            html += `<option value="50" selected>等待聯繫中</option>`;
+                            html += `<option value="51">已聯繫，暫無課程</option>`;
+                            html += `<option value="52">已聯繫，配對成功</option>`;
+                        }
+                        else if (value.fStatusNumber == 51) {
+                            html += `<option value="50">等待聯繫中</option>`;
+                            html += `<option value="51" selected>已聯繫，暫無課程</option>`;
+                            html += `<option value="52">已聯繫，配對成功</option>`;
+                        }
+                        else if (value.fStatusNumber == 52) {
+                            html += `<option value="50">等待聯繫中</option>`;
+                            html += `<option value="51">已聯繫，暫無課程</option>`;
+                            html += `<option value="52" selected>已聯繫，配對成功</option>`;
+                        }
+                        html += `</select></td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
+                        html += `<button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse" onclick="btnCreateCourseClick();">排課</button>`;
+                        html += `<button class="btn btn-secondary">聯繫</button> </td></tr>`;
+                    })
+                    $("#tbdContact").html(html);
+                })
+            }
+        }
+        $(".thTime").click(function () {
+            if ($(".thTime").children("i").hasClass("fa-caret-down")) {
+                $(".thTime").children("i").removeClass("fa-caret-down").addClass("fa-caret-up");
+            }
+            else {
+                $(".thTime").children("i").removeClass("fa-caret-up").addClass("fa-caret-down");
+            }
+            loadContact();
+        });
+        $("#selStatus").on("change", loadContact);
+
+
     </script>
 }

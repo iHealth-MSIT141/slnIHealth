@@ -17,6 +17,7 @@ namespace prjiHealth.ViewModels
         //public string txtKeyword { get; set; }
 
         //public int page { get { return page; } set { page = 1; } }
+        public string txtKeyword { get; set; }
 
         public CNewsViewModel(/*TNewsCategory category*/)
         {

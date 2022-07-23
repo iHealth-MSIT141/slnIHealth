@@ -1,8 +1,11 @@
-﻿using prjiHealth.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using prjiHealth.Models;
 using prjIHealth.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -71,6 +74,7 @@ namespace prjiHealth.ViewModels
             get { return _prob.FContactPhone; }
             set { _prob.FContactPhone = value; }
         }
+        [BindRequired]
         public int FStatusNumber
         {
             get { return _prob.FStatusNumber; }
@@ -86,13 +90,15 @@ namespace prjiHealth.ViewModels
       
         public TStatus Status { get; set; }
 
-
+        public IFormFile photo { get; set; }
 
         //reply用屬性
         public int FReplyId { get; set; }
         public string FReplyTime { get; set; }
+        [Required]
         public string FReplyContent { get; set; }
         public int? FReplierId { get; set; }
+        [BindRequired]
         public string FReplyType { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using prjIHealth.Models;
 using System;
 using System.Collections.Generic;

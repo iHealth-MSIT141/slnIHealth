@@ -18,27 +18,39 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml"; }
 
 <h2 id="title">專欄管理</h2>
-<hr />
 <section class="product spad">
     <div class="container">
-        <div style="margin-right:90%">
-            <div>
-                <a asp-action="Create" class="primary-btn" style="width:150px">新增專欄</a>
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    @*<div style="margin-right:90%">*@
+                    <div class="col-lg-3 col-md-3" style="margin-left:0%">
+                        <a asp-action="Create" class="primary-btn" style="width:150px">新增專欄</a>
+                    </div>
+                    <div class="col-lg-3 col-md-3 ">
+                        <a href="~/News/Blog" class="primary-btn" style="width:150px">專欄顯示</a>
+                    </div>
+                    <div class="col-lg-3 col-md-3 ">
+                        <select name="selectCate" id="selectCate" class="custom-select" style="width:150px">
+                            <option disabled selected hidden>依類別篩選</option>
+                            <option value="1">運動健身</option>
+                            <option value="2">食物營養</option>
+                            <option value="3">新冠疫情</option>
+                            <option value="4">教練專欄</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-3" style="margin-right:0%">
+                        <button name="btnReset" id="btnReset" class="site-btn" style="width:150px">清空篩選</button>
+                    </div>
+
+                    @*</div>*@
+                </div>
             </div>
-            <div>
-                <a href="~/News/Blog" class="primary-btn" style="width:150px">專欄顯示</a>
-            </div>
-            @*<div>
-                            @using (Html.BeginForm())
-                            {
-                @:關鍵字 @Html.TextBox("txtKeyword")
-                <input type="submit" value="輸入查詢" class="form-control" style="width:150px" />}
-                        </div>*@
         </div>
         @*※※※非會員專區的View的內容請從此處開始※※※*@
         <div class="row">
             <div>
-                <table class="table">
+                <table class="table" style="table-layout: fixed">
                     <thead>
                         <tr style="margin-left:auto">
                             @*<th>
@@ -71,13 +83,10 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="ListZone">
                         @foreach (var item in Model)
                         {
                             <tr>
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.FNewsId)
-                                    </td>*@
                                 <td>
                                     @item.FTitle.Substring(0, Math.Min(item.FTitle.Length, 10))
                                 </td>
@@ -92,7 +101,7 @@
                                     <img src="~/img/blog/@item.FThumbnailPath" width="100" height="80" />
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.FNewsCategoryId)
+                                    @Html.DisplayFor(modelItem => item.FNewsCategory.FCategoryName)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.FViews)
@@ -115,14 +124,136 @@
                         }
                     </tbody>
                 </table>
+                <div class="container">
+                    <div style="margin-right:85%">
+                        <div class="row">
+
+                            @using (Html.BeginForm())
+                            {
+                                @Html.TextBox("txtKeyword", null, null, new { @style = "width:150px" })
+                                <input type="submit" value="輸入查詢" class="site-btn" style="width:150px" />}
+                        </div>
+                    </div>
+                </div>
                 @*<div class="product__pagination" style="text-align:center">
                         <a href="#">1</a>
                         <a href="#">2</a>
                         <a href="#">3</a>
                     </div>*@
-                @Html.PagedListPager(Model, page => Url.Action("List", new { page }))
+                @Html.PagedListPager((IPagedList)ViewBag.OnePageOfNews, page => Url.Action("List", new { page }))
+                @*@Html.PagedListPager(Model, page => Url.Action("List", new { page }))*@
             </div>
         </div>
     </div>
 </section>
 
+@section Scripts{
+    <script>
+        $('#selectCate').on('change', CategoriesChange);
+        $('#btnReset').on('click', ResetClick);
+
+    async function CategoriesChange() {
+        $('#ListZone>tr').remove();
+        const changeCate = selectCate.options[selectCate.selectedIndex].value;
+        const response = await fetch("@Url.Content("~/Admin/NewsManage/SelectCategoryIDAPI")" + `?id=${changeCate}`);
+        const datas = await response.json();
+        console.log(datas);
+        let tr = '';
+        for (i = 0; i < datas.length; i++) {
+            let fixViews = '';                 /*處理篩選資料後，空值會顯示null字樣問題*/
+            let fixVideo = '';
+            let fixTitle = '';
+            let fixDate = '';
+            let fixContent = '';
+            if (datas[i].fViews == null) {
+                fixViews = ''
+            }
+            else {
+                fixViews = datas[i].fViews
+            }
+            if (datas[i].fVideoUrl == null) {
+                fixVideo = ''
+            }
+            else {
+                fixVideo = datas[i].fVideoUrl
+            }
+            if (datas[i].fTitle != null) {
+                fixTitle = datas[i].fTitle.substr(0, 10);
+            }
+            if (datas[i].fNewsDate != null) {
+                fixDate = datas[i].fNewsDate.substr(0, 10);
+            }
+            if (datas[i].fContent != null) {
+                fixContent = datas[i].fContent.substr(0, 10);
+            }
+             tr =`<tr>
+             <td>${fixTitle}</td>
+             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixDate}</td>
+             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixContent}</td>
+             <td>
+             <img src="/img/blog/${datas[i].fThumbnailPath}" width="100" height="80"/></td>
+             <td>${datas[i].newsCategory.fCategoryName}</td>
+             <td>${fixViews}</td>
+             <td>${fixVideo}</td>
+             <td>${datas[i].fMemberId}</td>
+             <td>
+             <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
+             <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
+             <a class="primary-btn" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+             </td></tr>`
+            $(`#ListZone`).append(tr);
+        }
+        };
+
+        async function ResetClick() {
+              $('#ListZone>tr').remove();
+        const response = await fetch('@Url.Content("~/Admin/NewsManage/ResetList")');
+        const datas = await response.json();
+        let tr = '';
+            for (i = 0; i < datas.length; i++) {
+                let fixViews = '';
+                let fixVideo = '';
+                let fixTitle = '';
+                let fixDate = '';
+                let fixContent = '';
+                if (datas[i].fViews == null) {
+                    fixViews = ''
+                }
+                else {
+                    fixViews = datas[i].fViews
+                }
+                if (datas[i].fVideoUrl == null) {
+                    fixVideo = ''
+                }
+                else {
+                    fixVideo = datas[i].fVideoUrl
+                }
+                if (datas[i].fTitle != null) {
+                    fixTitle = datas[i].fTitle.substr(0, 10);
+                }
+                if (datas[i].fNewsDate != null) {
+                    fixDate = datas[i].fNewsDate.substr(0, 10);
+                }
+                if (datas[i].fContent != null) {
+                    fixContent = datas[i].fContent.substr(0, 10);
+                }
+                tr = `<tr>
+             <td>${fixTitle}</td>
+             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixDate}</td>
+             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixContent}</td>
+             <td>
+             <img src="/img/blog/${datas[i].fThumbnailPath}" width="100" height="80"/></td>
+             <td>${datas[i].newsCategory.fCategoryName}</td>
+             <td>${fixViews}</td>
+             <td>${fixVideo}</td>
+             <td>${datas[i].fMemberId}</td>
+             <td>
+             <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
+             <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
+             <a class="primary-btn" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+             </td></tr>`
+                $(`#ListZone`).append(tr);
+            }
+        };
+    </script>
+}

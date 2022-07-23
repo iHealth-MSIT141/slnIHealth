@@ -1,90 +1,136 @@
-﻿@{
-    ViewData["Title"] = "Productcreate";
+﻿@model IEnumerable<prjIHealth.ViewModels.CProductViewModel>
+@{
+    ViewData["Title"] = "ProductCreate";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
-
 @section Styles{
-    <style>
-        #title {
-            font-weight: 800;
-            color: #599e32;
-            margin-left: 20vw;
-            margin-right: 20vw;
-        }
-    </style>
+
 }
-<h2 id="title">產品新增</h2>
+<h1>新增商品</h1>
 <hr />
 
-<section class="product spad">
+
     <div class="container">
         <div class="row">
-            @*※※※非會員專區的View的內容請從此處開始※※※*@
 
 
             <div style="margin:auto;">
-                <form asp-action="Create" style="margin-left:20%">
+
+                <form asp-action="ProductCreate" style="margin-left:20%" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
 
                     <div class="form-group col-md-8">
                         <div class="row">
-                            <div class="col-md-4"> <label for="InputName" style="font-size:30px;">商品名稱</label></div>
-                            <div class="col-md-8"><input type="text" class="form-control" id="InputName" name="name"></div>
+                            <div class="col-md-4"><label for="FProductName" class="control-label" style="font-size:30px;">商品名稱</label></div>
+                            <div class="col-md-8"><input id="FProductName" name="FProductName" class="form-control" /></div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4"><label class="control-label" style="font-size:30px;">種類</label></div>
+                            <div class="col-md-8">
+                                <select name="qtype" id="qtype" class="custom-select" style="text-align:center;">
+                                    <option value="999" disabled selected hidden>商品種類</option>
+                                    <option value="乳清蛋白">乳清蛋白</option>
+                                    <option value="健康食品">健康食品</option>
+                                    <option value="運動用品">運動用品</option>
+                                    <option value="男裝">男裝</option>
+                                    <option value="女裝">女裝</option>
+                                </select>
+                            </div>
+
                         </div>
                     </div>
                     <div class="form-group col-md-8">
                         <div class="row">
-                            <div class="col-md-4"> <label for="InputEmail" style="font-size:30px;">種類</label></div>
+                            <div class="col-md-4"> <label for="FUnitprice" class="control-label" style="font-size:30px;">價錢</label></div>
+                            <div class="col-md-8"><input id="FUnitprice" name="FUnitprice" class="form-control" /></div>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <div class="col-md-4"><label for="FDescription" class="control-label" style="font-size:30px;">描述</label></div>
+                            <div class="col-md-8"> <input id="FDescription" name="FDescription" class="form-control" /></div>
+
+                        </div>
+                    </div>
+                    <div class="form-group form-check col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="form-check-label" style="font-size:30px;">上架</label>
+                            </div>
                             <div class="col-md-8">
-                                <select class="form-control" id="InputEmail" name="email" style="width:380px;text-align:center;">
-                                    <option>乳清蛋白</option>
-                                    <option>男裝</option>
+                                <select name="qtypee" id="qtypee" class="custom-select" style="text-align:center;">
+                                    <option value="上架" selected="selected">上架</option>
+                                    <option value="下架">下架</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                    <div class="custom-file  col-md-8" style="margin-right:57%;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="customFile" class="control-label" style="font-size:30px;">圖片</label>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="custom-file-label" for="customFile">新增圖片</label>
+                                <input type="file" class="custom-file-input" id="customFile" name="photo">
+                            </div>
+                        </div>
+                    </div><br /><br />
 
-                    <div class="form-group col-md-8">
-                        <div class="row">
-                            <div class="col-md-4"> <label for="InputAge" style="font-size:30px;">價錢</label></div>
-                            <div class="col-md-8"><input type="text" class="form-control" id="InputAge" name="Inputage"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group col-md-8">
-                        <div class="row">
-                            <div class="col-md-4"><label for="Inputdes" style="font-size:30px;">描述</label>  </div>
-                            <div class="col-md-8"> <textarea class="form-control" id="Inputdes" name="age"></textarea></div>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-8">
-                        <div class="row">
-                            <div class="col-md-4"><label for="Inputvis" style="font-size:30px;">上架</label></div>
-                            <div class="col-md-8"><input type="checkbox" class="form-control" id="Inputvis" name="age"></div>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-8">
-                        <div class="row">
-                            <div class="col-md-4"><label style="font-size:30px;">新增圖片</label> </div>
-                            <div class="col-md-8"><input type="file" class="form-control" id="customFile" name="file"></div>
-                        </div>
-                    </div>
                     <div class="form-group col-md-11">
-                       
-                        <a asp-action="Product" class="btn btn-primary">確定新增</a>
-                        <a asp-action="Product" class="btn btn-primary">返回清單</a>
+                        <div id="AddFCategory"></div>
+                        <div id="AddFVisible"></div>
+                        <input type="submit" value="確定新增" class="btn btn-primary" />
+                        <a asp-action="ProductList" class="btn btn-primary">返回清單</a>
                     </div>
-
                 </form>
 
             </div>
         </div>
-
-
     </div>
 
-</section>
 
-@section Scripts{
+@section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        let FCategoryId = 0;
+        var input = '';
+        function SelectedfCategory() {          /*判斷所選類別對應的ID*/
+            $('#AddFCategory>input').remove();
+            if ($('#qtype').val() == "乳清蛋白")
+                FCategoryId = 1;
+            if ($('#qtype').val() == "健康食品")
+                FCategoryId = 2;
+            if ($('#qtype').val() == "運動用品")
+                FCategoryId = 3;
+            if ($('#qtype').val() == "男裝")
+                FCategoryId = 4;
+            if ($('#qtype').val() == "女裝")
+                FCategoryId = 5;
+            input = `<input type="hidden" id="FCategoryId" value="${FCategoryId}" name="FCategoryId" />`
+            $('#AddFCategory').append(input)   /*change事件發生時才產生存放資料的input*/
+        };
+        $('#qtype').on("change", SelectedfCategory) /*選擇類別時會產生寫入資料庫所需的FStatusNumber*/
+       //===============================================================================================
+        let FVisible = 0;
+        var inputt = '';
+        function SelectedFVisible() {
+            $('#AddFVisible>input').remove();
+            if ($('#qtypee').val() == "下架")
+                FVisible = false;
+            if ($('#qtypee').val() == "上架")
+                FVisible = true;
+            inputt = `<input type="hidden" id="FVisible" value="${FVisible}" name="FVisible" />`
+            $('#AddFCategory').append(inputt)
+        };
+        $('#qtypee').on("change", SelectedFVisible)
+    </script>
 }
 

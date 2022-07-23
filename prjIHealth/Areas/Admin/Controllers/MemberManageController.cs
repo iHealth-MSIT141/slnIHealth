@@ -1,29 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using prjiHealth.ViewModels;
 using prjIHealth.Models;
+using X.PagedList;
 
 namespace prjIHealth.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class MemberManageController : Controller
+        public class MemberManageController : Controller
     {
+        private IWebHostEnvironment _environment;
         private readonly IHealthContext _context;
-
-        public MemberManageController(IHealthContext context)
+        public MemberManageController(IHealthContext context, IWebHostEnvironment IWHE)
         {
             _context = context;
+            _environment = IWHE;
         }
 
         // GET: Admin/MemberManage
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int? page, CKeywordViewModel vModel)
         {
-            var iHealthContext = _context.TMembers.Include(t => t.FAuthority);
-            return View(await iHealthContext.ToListAsync());
+            IEnumerable<TMember> q = null;
+            if (string.IsNullOrEmpty(vModel.txtKeyword))
+            {
+                q = _context.TMembers.Include(t => t.FAuthority).ToList();
+
+                //q = _context.TMembers.Include(t => t.FAuthority);
+            }
+            else
+            {
+                q = _context.TMembers.Include(t => t.FAuthority).Where(m => m.FUserName.Contains(vModel.txtKeyword)
+                   || m.FMemberName.Contains(vModel.txtKeyword) || m.FEmail.Contains(vModel.txtKeyword)||m.FPhone.Contains(vModel.txtKeyword)).ToList();
+            }
+
+            var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
+            var onePageOfMembers = q.ToPagedList(pageNumber, 6); // will only contain 6 items max because of the pageSize
+            ViewBag.onePageOfMembers = onePageOfMembers;
+            return View(onePageOfMembers);
+
         }
 
         // GET: Admin/MemberManage/Details/5
@@ -33,7 +55,6 @@ namespace prjIHealth.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             var tMember = await _context.TMembers
                 .Include(t => t.FAuthority)
                 .FirstOrDefaultAsync(m => m.FMemberId == id);
@@ -76,7 +97,6 @@ namespace prjIHealth.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             var tMember = await _context.TMembers.FindAsync(id);
             if (tMember == null)
             {
@@ -91,35 +111,33 @@ namespace prjIHealth.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FMemberId,FMemberName,FPassword,FBirthday,FGender,FPicturePath,FUserName,FAddress,FPhone,FEmail,FRegisterDate,FAuthorityId,FDisabled,FRemarks")] TMember tMember)
+        //public async Task<IActionResult> Edit(int id, [Bind("FMemberId,FMemberName,FPassword,FBirthday,FGender,FPicturePath,FUserName,FAddress,FPhone,FEmail,FRegisterDate,FAuthorityId,FDisabled,FRemarks")] TMember tMember)
+        public IActionResult Edit(CLoginViewModel vModel)
         {
-            if (id != tMember.FMemberId)
+            var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == vModel.fMemberId);
+            if (q != null)
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (vModel.photo != null)
                 {
-                    _context.Update(tMember);
-                    await _context.SaveChangesAsync();
+                    string pName = Guid.NewGuid().ToString() + ".jpg";
+                    vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
+                    q.FPicturePath = pName;
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TMemberExists(tMember.FMemberId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                q.FMemberName = vModel.fMemberName;
+                q.FPassword = vModel.fPassword;
+                q.FBirthday = vModel.fBirthday;
+                q.FAddress = vModel.fAddress;
+                q.FPhone = vModel.fPhone;
+                q.FEmail = vModel.fEmail;
+                q.FRemarks = vModel.fRemarks;
+                q.FPhone = vModel.fPhone;
+                q.FGender = vModel.FGender;
+                q.FDisabled = vModel.FDisabled;
+                q.FAuthorityId = vModel.FAuthorityId;
+                
             }
-            ViewData["FAuthorityId"] = new SelectList(_context.TAuthorities, "FAutorityId", "FAuthorityName", tMember.FAuthorityId);
-            return View(tMember);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "MemberManage");
         }
 
         // GET: Admin/MemberManage/Delete/5

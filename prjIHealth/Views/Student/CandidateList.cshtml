@@ -1,17 +1,13 @@
-﻿@*@model IEnumerable<prjiHealth.Models.TCoachContact>*@
+﻿@model prjIHealth.ViewModels.CCandidateListViewModel
 
 
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .divTopic1 {
-            margin-bottom: 10px;
-        }
+        /*標題*/
         .divTopic2 {
-            margin-top:50px;
-            margin-bottom: 10px;
+            margin-bottom: 3px;
         }
-
         .divBar1 {
             width: 200px;
             height: 3px;
@@ -26,11 +22,12 @@
             margin-bottom: 40px;
             background-color: #7FAD39;
         }
+
+        /*候選教練*/
         .divCards {
             padding:0px 20px;
             display: flex;
         }
-       
         .divCard {
             margin: 20px;
             transition:.3s;
@@ -53,7 +50,6 @@
             margin-bottom: 15px;
             text-align: center;
         }
-
             .divName > h5 {
                 margin: 0px;
                 font-weight: 700;
@@ -73,6 +69,8 @@
                 background-color: #4F6C24;
                 border: none;
             }
+
+        /*教練專區連結*/
         .divLink {
             display: flex;
             justify-items: center;
@@ -80,6 +78,7 @@
             margin-left: 30px;
             height: 70px;
         }
+        
         .divOther {
             padding: 0px;
         }
@@ -90,6 +89,7 @@
             .divOther i {
                 color: #7F965C;
             }
+        
         .divUrl {
             margin-left: 10px;
             padding: 15px;
@@ -108,70 +108,7 @@
                 .divUrl a:hover {
                     color: #5F822B;
                 }
-        /*聯繫紀錄*/
-        .table {
-            table-layout: fixed;
-            word-break: break-all;
-        }
-
-        .thNo {
-            width: 8%;
-        }
-
-        .thName {
-            width: 15%;
-        }
-
-        .thPhone {
-            width: 25%;
-        }
-
-        .thEmail {
-            width: 42%;
-        }
-
-        .thTime {
-            width: 30%;
-        }
-
-        .btnView {
-            border: none;
-            background-color: #DFEACE;
-            border-radius: 5px;
-            height: 36px;
-            vertical-align: bottom;
-        }
-
-            .btnView:hover {
-                background-color: #C3CDB4;
-            }
-
-        .hiddenRow {
-            padding: 0 !important;
-        }
-
-        /*.tdBtns {
-            width: 10%;
-            text-align: right;
-        }*/
-
-        .btn-light {
-            background-color: #B0B0AD;
-            color: white;
-            border: none;
-            transition: .3s;
-        }
-            .btn-light:hover {
-                background-color: dimgray;
-                color: white;
-                border: none;
-            }
-
-        .btn-secondary {
-            background-color: #A9B6A8;
-            border: none;
-        }
-
+        
         .blog__btn {
             display: inline-block;
             font-size: 14px;
@@ -182,21 +119,68 @@
             padding: 14px 20px 12px;
             border-radius: 25px;
         }
-
             .blog__btn:visited {
                 color: #1c1c1c;
             }
-
             .blog__btn:hover {
                 color: black;
                 font-weight: 800;
             }
-
             .blog__btn:active {
                 color: black;
                 font-weight: 800;
             }
+        
+        /*彈出視窗-聯繫紀錄*/
+        .table {
+            table-layout: fixed;
+            word-break: break-all;
+        }
+        .thNo {
+            width: 10%;
+        }
+        .thName {
+            width: 15%;
+        }
+        .thPreferTime {
+            width: 25%;
+        }
+        .thTime {
+            width: 25%;
+        }
+        .thStatus {
+            width: 25%;
+        }
+        .btnView {
+            border: none;
+            color: white;
+            background-color: #7FAD39;
+            border-radius: 5px;
+            height: 36px;
+            vertical-align: bottom;
+            transition: .3s;
+        }
+            .btnView:hover {
+                background-color: #5F822B;
+                color: white;
+            }
+        .modal-body {
+            max-height: 80vh;
+            overflow-y: scroll;
+        }
+        td a {
+            color: #212529;
+        }
+            td a:hover {
+                color: #7fad39;
+            }
+        .modal-title {
+            color: #7fad39;
+            font-weight: 800;
+        }
 
+
+        /*左側導覽列*/
         .sidebar__item ul li a {
             border: dashed 2px #7fad39;
             border-top: none;
@@ -206,20 +190,35 @@
             margin-right: 8vw;
             margin-bottom: 1vh;
         }
+
+        /*select*/
+        #selStatus {
+            display: inline !important;
+            color: #fff;
+            background-color: #343a40;
+            border-color: #454d55;
+            font-weight: bold;
+        }
+        .nice-select {
+            display: none;
+        }
+        
+
+        
     </style>
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     @*h2內容請自行更換*@
-                    <h2>會員專區Demo</h2>
-                    <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Shop</span>
+                    <h2 class="reveal_t1">候選教練</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Member/Edit">Home</a>
+                        <span>Member</span>
                     </div>
                 </div>
             </div>
@@ -231,18 +230,21 @@
 <section class="product spad">
     <div class="container">
         <div class="row">
+            @*左側導覽列*@
             <div class="col-lg-3 col-md-5">
-                <div class="sidebar">
+                <div class="sidebar" style="position:sticky;top:150px;">
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
-                            <li><a href="#">個人資料</a></li>
+
+                            <li><a href="~/member/edit">個人資料</a></li>
                             <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
                             <li><a href="~/Member/OrderList">訂單查詢</a></li>
                             <li><a href="~/Student/CandidateList">候選教練</a></li>
                             <li><a href="~/Student/CourseList">課程列表</a></li>
                             <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
                             <li><a href="~/Problem/CheckReply">客服記錄</a></li>
+
                         </ul>
                         <br />
                         <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
@@ -250,90 +252,10 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
-                @*※※※會員專區View內容請從此開始※※※*@
                 <div>
+                    @*教練聯繫紀錄預覽*@
                     <div>
-                        <div class="divTopic1 reveal_t1"><h3><b>候選教練</b></h3></div>
-                        <div class="divBar1 reveal_r1"></div>
-                    </div>
-                    <div class="row divCards">
-                        <div class="card col-3 divCard reveal_b1">
-                            <div class="divCandImg">
-                                <a href="../Coach/ViewCoachDetails">
-                                    <img src="~/img/Coach/coachImage/May.jpg" class="card-img-top" alt="...">
-                                </a>
-                            </div>
-                            <div class="card-body divName">
-                                <h5 class="card-title">May</h5>
-                            </div>
-                            <div class="card-body divDeleteCand">
-                                @Html.ActionLink("移除候選", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定移除候選？')", @class = "btn btn-dark" })
-                                @*<a href="#" class="card-link">Another link</a>*@
-                            </div>
-                        </div>
-                        <div class="card col-3 divCard reveal_b1">
-                            <div class="divCandImg">
-                                <a href="../Coach/ViewCoachDetails">
-                                    <img src="~/img/Coach/coachImage/Alisa.jpg" class="card-img-top" alt="...">
-                                </a>
-                            </div>
-                            <div class="card-body divName">
-                                <h5 class="card-title">Alisa</h5>
-                            </div>
-                            <div class="card-body divDeleteCand">
-                                @Html.ActionLink("移除候選", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定移除候選？')", @class = "btn btn-dark" })
-                                @*<a href="#" class="card-link">Another link</a>*@
-                            </div>
-                        </div>
-                        <div class="card col-3 divCard reveal_b1">
-                            <div class="divCandImg">
-                                <a href="../Coach/ViewCoachDetails">
-                                    <img src="~/img/Coach/coachImage/Zac.jpg" class="card-img-top" alt="...">
-                                </a>
-                            </div>
-                            <div class="card-body divName">
-                                <h5 class="card-title">Zac</h5>
-                            </div>
-                            <div class="card-body divDeleteCand">
-                                @Html.ActionLink("移除候選", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定移除候選？')", @class = "btn btn-dark" })
-                                @*<a href="#" class="card-link">Another link</a>*@
-                            </div>
-                        </div>
-                        <div class="card col-3 divCard reveal_b1">
-                            <div class="divCandImg">
-                                <a href="../Coach/ViewCoachDetails">
-                                    <img src="~/img/Coach/coachImage/Jessica.jpg" class="card-img-top" alt="...">
-                                </a>
-                            </div>
-                            <div class="card-body divName">
-                                <h5 class="card-title">Jessica</h5>
-                            </div>
-                            <div class="card-body divDeleteCand">
-                                @Html.ActionLink("移除候選", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定移除候選？')", @class = "btn btn-dark" })
-                                @*<a href="#" class="card-link">Another link</a>*@
-                            </div>
-                        </div>
-                        <div class="card col-3 divCard reveal_b1">
-                            <div class="divCandImg">
-                                <a href="../Coach/ViewCoachDetails">
-                                    <img src="~/img/Coach/coachImage/Peeta.jpg" class="card-img-top" alt="...">
-                                </a>
-                            </div>
-                            <div class="card-body divName">
-                                <h5 class="card-title">Peeta</h5>
-                            </div>
-                            <div class="card-body divDeleteCand">
-                                @Html.ActionLink("移除候選", "Delete", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定移除候選？')", @class = "btn btn-dark" })
-                                @*<a href="#" class="card-link">Another link</a>*@
-                            </div>
-                        </div>
-                    </div>
-                    <div class="reveal_b1 divLink">
-                        <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span><b>&nbsp;&nbsp;想多看看其他教練？</b></span></div>
-                        <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Student/CoachMainPage">&nbsp;&nbsp;前往<b>私人教練專區</b></a></div>
-                    </div>
-                    <div>
-                        <div class="divTopic2 reveal_t1"><h3><b>通知發送紀錄</b></h3></div>
+                        <div class="divTopic2 reveal_t1"><h3><b>教練聯繫紀錄</b></h3></div>
                         <div class="divBar2 reveal_r1"></div>
                         <table class="table reveal_b1">
                             <thead class="thead-dark">
@@ -342,120 +264,163 @@
                                         No.
                                     </th>
                                     <th class="thName">
-                                        @*@Html.DisplayNameFor(model => model.FCoachId)*@
                                         教練姓名
                                     </th>
-                                    <th class="thPhone">
-                                        @*@Html.DisplayNameFor(model => model.FCoachId)*@
-                                        聯絡電話
-                                    </th>
-                                    <th class="thEmail">
-                                        @*@Html.DisplayNameFor(model => model.FCoachId)*@
-                                        聯絡E-mail
+                                    <th class="thPreferTime">
+                                        偏好時段
                                     </th>
                                     <th class="thTime">
-                                        @*@Html.DisplayNameFor(model => model.FContactDate)*@
                                         發送時間
+                                    </th>
+                                    <th class="thStatus">
+                                        聯繫狀態
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @{
-                                    //int count = 0;
-                                    //foreach (var item in Model)
-                                    //{
-                                    //    count++;
-                                    <tr>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                            May
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            0988888888
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            coach1@gmail.com
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            2022-07-09 23:27:04
-                                        </td>
-                                        @*<td class="tdBtns">
-                                <button class="btn btn-light">取消</button>
-                            </td>*@
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            2
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                            Jessica
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            0968168168
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            coach2@gmail.com
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            2022-06-20 17:54:15
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            3
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                            Alisa
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            0977777777
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            coach3@gmail.com
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            2022-06-28 17:54:15
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            4
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                            Peeta
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            0999090909
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            coach4@gmail.com
-                                        </td>
-                                        <td>
-                                            @*@Html.DisplayFor(modelItem => item.FContactDate)*@
-                                            2022-07-08 17:54:15
-                                        </td>
-                                    </tr>
+                                    int count = 0;
+                                    foreach (var c in Model.ContactViewModels.OrderByDescending(c => c.ContactDate).Take(2))
+                                    {
+                                        count++;
+                                        <tr>
+                                            <td>
+                                                @count
+                                            </td>
+                                            <td>
+                                                <a href="~/Student/ViewCoachDetails">
+                                                    @*上列要換成這個<a href="~/Coach/ViewCoachDetails/@c.FCoachId">*@
+                                                    @c.CoachName
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @c.AvailableTime
+                                            </td>
+                                            <td>
+                                                @c.StrContactDate
+                                            </td>
+                                            <td>
+                                                @c.Status
+                                            </td>
+                                        </tr>
+                                    }
                                 }
-                                @*}*@
+                                <tr>
+                                    <td>...</td>
+                                    <td>.....</td>
+                                    <td>.....</td>
+                                    <td>.....</td>
+                                    <td align="right">
+                                        <button class="btnView" data-toggle="modal" data-target="#modalContact"><i class="fa fa-expand" aria-hidden="true"></i>&nbsp&nbsp展開全部</button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    @*候選教練標題*@
+                    <div>
+                        <div class="reveal_t1"><h3><b>候選教練</b></h3></div>
+                        <div class="divBar1 reveal_r1"></div>
+                    </div>
+                    @*候選教練卡*@
+                    <div class="row divCards">
+                        @foreach (var c in Model.CandidateViewModels)
+                        {
+                            <div class="card col-3 divCard reveal_b1">
+                                <div class="divCandImg">
+                                    <a href="~/Student/ViewCoachDetails">
+                                        @*上列要換成這個<a href="~/Coach/ViewCoachDetails/@c.FCoachId">*@
+                                        <img src="~/img/Coach/coachImage/@c.CoachImage" class="card-img-top" alt="...">
+                                    </a>
+                                </div>
+                                <div class="card-body divName">
+                                    <h5 class="card-title">@c.CoachName</h5>
+                                </div>
+                                <div class="card-body divDeleteCand">
+                                    <input type="hidden" value="@c.FCandidateId" id="inpCandidateId" />
+                                    <a class="btn btn-dark aDelCand" style="color:white">移除候選</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    @*教練專區連結*@
+                    <div class="reveal_b1 divLink">
+                        <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span><b>&nbsp;&nbsp;想多看看其他教練？</b></span></div>
+                        <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Student/CoachMainPage">&nbsp;&nbsp;前往<b>私人教練專區</b></a></div>
+                    </div>
+
+                    @*彈出視窗:教練聯繫紀錄*@
+                    <div class="modal fade" id="modalContact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">教練聯繫紀錄<span></span></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th class="thNo">
+                                                    No.
+                                                </th>
+                                                <th class="thName">
+                                                    教練姓名
+                                                </th>
+                                                <th class="thPreferTime">
+                                                    偏好時段
+                                                </th>
+                                                <th class="thTime">
+                                                    發送時間<i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                </th>
+                                                <th class="thStatus">
+                                                    <select id="selStatus">
+                                                        <option value="0" selected>所有聯繫狀態</option>
+                                                        <option value="50">等待聯繫中</option>
+                                                        <option value="52">已聯繫，配對成功</option>
+                                                        <option value="51">已聯繫，暫無課程</option>
+                                                    </select>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbdContact">
+                                            @{
+                                                int modalCount = 0;
+                                                foreach (var c in Model.ContactViewModels.OrderByDescending(c => c.ContactDate))
+                                                {
+                                                    modalCount++;
+                                                    <tr>
+                                                        <td>
+                                                            @modalCount
+                                                        </td>
+                                                        <td>
+                                                            <a href="~/Student/ViewCoachDetails">
+                                                                @*上列要換成這個<a href="~/Coach/ViewCoachDetails/@c.FCoachId">*@
+                                                                @c.CoachName
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            @c.AvailableTime
+                                                        </td>
+                                                        <td>
+                                                            @c.StrContactDate
+                                                        </td>
+                                                        <td>
+                                                            @c.Status
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -464,7 +429,64 @@
 </section>
 
 @section Scripts{
+    <script>
+        //移除候選教練
+        $(".aDelCand").on("click", function () {
+            if (confirm("確定要移除嗎?")) {
+                let theCandidate = $(this);
+                $.get("@Url.Content("~/Student/delCandidate")", { id: theCandidate.prev("input").val() }, function (data) {
+                    theCandidate.closest(".divCard").remove();
+                })
+            }
+        });
 
+        //教練聯繫紀錄Modal依聯繫時間排序
+        $(".thTime").click(function () {
+            if ($(".thTime").children("i").hasClass("fa-caret-down")) {
+                $(".thTime").children("i").removeClass("fa-caret-down").addClass("fa-caret-up");
+            }
+            else {
+                $(".thTime").children("i").removeClass("fa-caret-up").addClass("fa-caret-down");
+            }
+            loadContact();
+        });
+
+        //教練聯繫紀錄Modal依聯繫狀態篩選
+        $("#selStatus").on("change", loadContact);
+
+        //教練聯繫紀錄Modal依聯繫時間排序+依聯繫狀態篩選
+        function loadContact() {
+            let html = "";
+            if ($(".thTime").children("i").hasClass("fa-caret-up")) {
+                $.get("@Url.Content("~/Student/loadContact")", { flag: 0, statusNum:$("#selStatus").val() }, function (contacts) {
+                    $.each(contacts, function (index, value) {
+                        console.log(value);
+                        html += `<tr><td>${index+1}</td>`;
+                        html += `<td><a href="/Student/ViewCoachDetails">${value.coachName}</a></td>`; //換成<a href="~/Coach/ViewCoachDetails/${value.fCoachId}">
+                        html += `<td>${value.availableTime}</td>`;
+                        html += `<td>${value.strContactDate}</td>`;
+                        html += `<td>${value.status}</td></tr>`;
+                    })
+                    $("#tbdContact").html(html);
+                })
+            }
+            else {
+                $.get("@Url.Content("~/Student/loadContact")", { flag: 1, statusNum: $("#selStatus").val() }, function (contacts) {
+                    $.each(contacts, function (index, value) {
+                        console.log(value);
+                        html += `<tr><td>${index+1}</td>`;
+                        html += `<td><a href="/Student/ViewCoachDetails">${value.coachName}</a></td>`; //換成<a href="~/Coach/ViewCoachDetails/${value.fCoachId}">
+                        html += `<td>${value.availableTime}</td>`;
+                        html += `<td>${value.strContactDate}</td>`;
+                        html += `<td>${value.status}</td></tr>`;
+                    })
+                    $("#tbdContact").html(html);
+                })
+            }
+        }
+
+
+    </script>
 }
 
 

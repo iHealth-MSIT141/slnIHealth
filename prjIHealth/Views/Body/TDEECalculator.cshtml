@@ -66,15 +66,16 @@
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     <h2 class="reveal_t1">TDEE計算器</h2>
-                    @*<div class="breadcrumb__option">
-                        <br />
-                    </div>*@
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Body/BodyCalculatorMain">Home</a>
+                        <span>Body Calculator</span>
+                    </div>
                 </div>
             </div>
 
@@ -134,9 +135,10 @@
                     <input class="form-control" name="FWeight" id="inpWeight" type="number" pattern="^[0-9]+(.[0-9])?$" placeholder="請輸入體重(kg)" required />
                 </div>
 
-                <div class="section-title product__discount__title">
-                    <button type="button" class="site-btn" id="btnGetTDEE" style="margin:40px 40px 0px 40px">開始計算!</button>
-                    <h2 style="font-size:25px;margin-left:40px" id="hResult">您的TDEE為：</h2>
+                <div class="section-title product__discount__title" style="margin-bottom:2vh">
+                    <button type="button" class="site-btn" id="btnGetTDEE" style="margin:0px 0px 0px 40px">開始計算!</button>
+                    <button type="button" class="btn btn-info" id="btnDemo">Demo</button>
+                    <h2 style="font-size:25px;margin-left:10px" id="hResult">您的TDEE為：</h2>
                 </div>
                 </form>
             </div>
@@ -217,5 +219,13 @@
         }
     })
 
+
+    //Demo鍵
+    $("#btnDemo").click(function () {
+        $("#inpAge").val("40");
+        $("#inpHeight").val("171");
+        $("#inpWeight").val("85");
+        $("input").blur();
+    })
 </script>
 }
