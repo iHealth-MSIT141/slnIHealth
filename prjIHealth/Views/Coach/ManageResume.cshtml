@@ -1,0 +1,391 @@
+﻿@model prjIHealth.Models.TCoach
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .divTopic {
+            margin-bottom: 10px;
+        }
+
+        .divBar {
+            width: 200px;
+            height: 3px;
+            margin-left: 30px;
+            margin-bottom: 50px;
+            background-color: #7FAD39;
+        }
+
+        .frmResume {
+            width: 100%;
+        }
+
+        .selCity {
+            width: 60%;
+            vertical-align: central;
+        }
+
+        .divImgLabel {
+            margin: 0px;
+        }
+
+        .divImg {
+            margin: 0px;
+        }
+
+            .divImg img {
+                margin-top: 10px;
+                width: 180px;
+                height: 240px;
+            }
+
+        .divUpload {
+            margin-top: 20px;
+        }
+
+        .divFee {
+            display: flex;
+        }
+
+        .inFee {
+            width: 60%;
+        }
+
+        .divPlus button {
+            background-color: transparent;
+            border: none;
+        }
+
+        .divSubmit {
+            margin-top: 40px;
+            text-align: right;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            vertical-align: central;
+        }
+
+            .form-group > label, legend {
+                font-weight: 600;
+            }
+
+        .spRemind {
+            font-size: 14px;
+            font-weight: 500;
+            color: #7fad39;
+        }
+
+        .btn-success {
+            border: none;
+            background-color: #7fad39;
+        }
+
+        .newInput {
+            margin-top: 25px;
+        }
+
+        #btnNewExp {
+            position: absolute;
+            top: 475px;
+            right: 25px;
+        }
+
+        #btnNewLic {
+            position: absolute;
+            top: 565px;
+            right: 25px;
+        }
+
+        .divImgUpload {
+            padding-left: 0px;
+        }
+        .blog__btn {
+            display: inline-block;
+            font-size: 14px;
+            color: #1c1c1c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #b2b2b2;
+            padding: 14px 20px 12px;
+            border-radius: 25px;
+        }
+
+            .blog__btn:visited {
+                color: #1c1c1c;
+            }
+
+            .blog__btn:hover {
+                color: black;
+                font-weight: 800;
+            }
+
+            .blog__btn:active {
+                color: black;
+                font-weight: 800;
+            }
+
+        .sidebar__item ul li a {
+            border: dashed 2px #7fad39;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            padding-left: 1vw;
+            margin-right: 8vw;
+            margin-bottom: 1vh;
+        }
+    </style>
+}
+
+@*banner大圖*@
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    @*h2內容請自行更換*@
+                    <h2 class="reveal_t1">教練專區</h2>
+                    <div class="breadcrumb__option reveal_t1">
+                        <a href="~/Student/CoachMainPage">Home</a>
+                        <span>Coach</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>教練專區</h4>
+                        <ul>
+                            <li><a href="~/Coach/ManageResume">履歷管理</a></li>
+                            <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
+                            <li><a href="~/Coach/TeachingList">教課列表</a></li>
+                        </ul>
+                        <br />
+                        <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                @*※※※會員專區View內容請從此開始※※※*@
+                <div class="row">
+                    <div class="col-xl-11">
+                        <div class="divTopic reveal_t1"><h3><b>履歷管理</b></h3></div>
+                        <div class="divBar reveal_r1"></div>
+                        <form class="frmResume reveal_b1" method="post">
+                            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+                            @*<input type="hidden" value="@Model.FMemberId" name="FId" />*@
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="form-group row">
+                                        <label for="selCity" class="col-sm-3 col-form-label">所在城市</label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="FCityId" id="selCity" class="selCity">
+                                                <option>臺北市</option>
+                                                <option>新北市</option>
+                                                <option>桃園市</option>
+                                                <option>台中市</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <fieldset class="form-group row">
+                                        <legend class="col-form-label col-sm-3 float-sm-left pt-0">專長種類</legend>
+                                        <div class="col-sm-9 row">
+                                            <div class="col-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="1">
+                                                    <label class="form-check-label" for="inlineCheckbox1">肌肥大訓練</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="2">
+                                                    <label class="form-check-label" for="inlineCheckbox2">增肌減脂</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3">
+                                                    <label class="form-check-label" for="inlineCheckbox3">體態評估雕塑</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3">
+                                                    <label class="form-check-label" for="inlineCheckbox3">功能性訓練</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="4">
+                                                    <label class="form-check-label" for="inlineCheckbox4">TRX課程訓練</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="5">
+                                                    <label class="form-check-label" for="inlineCheckbox5">壺鈴課程訓練</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="6">
+                                                    <label class="form-check-label" for="inlineCheckbox6">拳擊訓練</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3">
+                                                    <label class="form-check-label" for="inlineCheckbox3">備賽指導</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3">
+                                                    <label class="form-check-label" for="inlineCheckbox3">銀髮族訓練</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="form-group row">
+                                        <legend class="col-form-label col-sm-3 float-sm-left pt-0">可上課時段</legend>
+                                        <div class="col-sm-9 row">
+                                            <div class="col-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="1">
+                                                    <label class="form-check-label" for="inlineCheckbox1">平日上午</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="2">
+                                                    <label class="form-check-label" for="inlineCheckbox2">平日下午</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3">
+                                                    <label class="form-check-label" for="inlineCheckbox3">平日晚上</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="4">
+                                                    <label class="form-check-label" for="inlineCheckbox4">假日上午</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="5">
+                                                    <label class="form-check-label" for="inlineCheckbox5">假日下午</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="6">
+                                                    <label class="form-check-label" for="inlineCheckbox6">假日晚上</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="form-group row">
+                                        <label for="inputFee" class="col-sm-3 col-form-label">希望待遇</label>
+                                        <div class="col-sm-9 divFee">
+                                            <input asp-for="FCoachFee" class="form-control inFee" id="inFeeStart" />&nbsp&nbsp~&nbsp&nbsp
+                                            <input asp-for="FCoachFee" class="form-control inFee" id="inFeeEnd" />
+                                            <span asp-validation-for="FCoachFee" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4 divImgUpload">
+                                    <div class="form-group">
+                                        <label for="selCity" class="col-form-label">照片上傳</label><br />
+                                        <div class="form-group divImg">
+                                            <img />
+                                            <div class="input-group divUpload">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                                                    <label class="custom-file-label" for="inputGroupFile04"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label  class="col-sm-2 col-form-label">經歷<br /><span class="spRemind">*最多填寫10項</span></label>
+                                <div class="col-sm-10" id="divExp">
+                                    <input  class="form-control" id="exp1" />
+                                    <span  class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label  class="col-sm-2 col-form-label">相關證照<br /><span class="spRemind">*最多填寫10項</span></label>
+                                <div class="col-sm-10" id="divLic">
+                                    <input class="form-control" id="lic1" />
+                                    <span class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="FCoachDescription" class="col-sm-2 col-form-label">介紹<br /><span class="spRemind">*字數限120字</span></label>
+                                <div class="col-sm-10">
+                                    <textarea asp-for="FCoachDescription" style="height:150px" class="form-control"></textarea>
+                                    @*<input asp-for="FCoachDescription" class="form-control" />*@
+                                    <span asp-validation-for="FCoachDescription" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Slogan<br /><span class="spRemind">*字數限50字</span></label>
+                                <div class="col-sm-10">
+                                    <textarea asp-for="FCoachDescription" style="height:100px" class="form-control"></textarea>
+                                    @*<input asp-for="FCoachDescription" class="form-control" />*@
+                                    <span asp-validation-for="FCoachDescription" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group divSubmit">
+                                <input type="submit" value="送出履歷" class="btn btn-success" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xl-1">
+                        <div class="col-sm-3 divPlus">
+                            <button id="btnNewExp"><i class="fa-solid fa-circle-plus"></i></button>
+                        </div>
+                        <div class="col-sm-3 divPlus">
+                            <button id="btnNewLic"><i class="fa-solid fa-circle-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+        //新增經歷欄位
+        let expCount = 2;
+        let btnNewExp = document.querySelector("#btnNewExp");
+        let divExp = document.querySelector("#divExp");
+        btnNewExp.addEventListener("click", () => {
+            if (expCount > 10) {
+                return confirm("經歷上限為10項");
+            }
+            else {
+                let exp = document.createElement("input");
+                exp.type = "text";
+                exp.setAttribute("name", `exp${expCount}`);
+                exp.classList = "form-control newInput";                              
+                divExp.appendChild(exp);
+
+                //新增證照btn往下移
+                let lic1 = $("#lic1").offset().top;
+                $("#btnNewLic").offset({ top: `${lic1}` });
+            }
+            expCount++;
+        })
+
+        //新增相關證照欄位
+        let licCount = 2;
+        let btnNewLic = document.querySelector("#btnNewLic");
+        let divLic = document.querySelector("#divLic");
+        btnNewLic.addEventListener("click", () => {
+            if (licCount > 10) {
+                return confirm("相關證照上限為10項");
+            }
+            else {
+                let lic = document.createElement("input");
+                lic.type = "text";
+                lic.setAttribute("name", `lic${licCount}`);
+                lic.classList = "form-control newInput";
+                divLic.appendChild(lic);
+            }
+            licCount++;
+        })
+    </script>
+}
