@@ -28,7 +28,25 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
 
     @await RenderSectionAsync("Styles", required: false)
-
+    <style>
+        .iHealthBackground {
+            /*            background-image: url('/img/home/Green.png');
+            background-size:cover;*/
+            /*background-color: #F0FFF0;*/
+        }
+        .btn-success {
+            background-color: #7fad39;
+        }
+        .btn-light:hover {
+            color: #7fad39;
+        }
+        .btn-secondary:hover {
+            color: #7fad39;
+        }
+        .btn-outline-success{
+            
+        }
+    </style>
 </head>
 
 <body>
@@ -47,7 +65,16 @@
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span></span></a></li>
                 <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
-                <li class="header__top__right__auth"><a href="~/Home/會員專區ViewDemo"><i class="fa fa-user"></i>Login</a></li>
+                @if (@MemberController.userName == "登入")
+                {
+                    <li class="header__top__right__auth"><a id="btnLogin" data-toggle="modal" data-target="#loginModal" href=""><i class="fa fa-user"></i>@MemberController.userName</a></li>
+                }
+                else
+                {
+                    <li class="header__top__right__auth"><a href="~/Member/Edit"><i class="fa fa-user"></i>會員專區</a></li>
+                    <li class="header__top__right__auth"><a href="~/Member/Logout">登出<i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+                }
+
             </ul>
         </div>
         @*<div class="humberger__menu__widget">
@@ -68,7 +95,6 @@
                             <li><a href="./blog-details">Blog Details</a></li>
                         </ul>*@
                 </li>
-
                 <li><a href="~/Body/BodyCalculatorMain">BODY計算器</a></li>
                 <li><a href="~/problem/ReplyProblem">聯絡我們</a></li>
 
@@ -109,9 +135,26 @@
                             <div class="header__top__right__auth">
                                 <div class="header__cart" style="padding:0;">
                                     <ul>
-                                        @*<a href="#"><i class="fa fa-user"></i> Login</a>*@
-                                        <li><a href="" id="fa-heart"><i class="fa fa-heart"></i> <span></span></a></li>
-                                        <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
+                                        @if (@MemberController.userName == "登入")
+                                        {
+                                            <li>
+                                                <a data-toggle="modal" href="" id="fa-heart">
+                                                    <i class="fa fa-heart" data-toggle="modal" href="" onclick="pleaseLogin();" data-nexthref="~/Member/ShowTrackList">
+                                                    </i> <span></span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a data-toggle="modal" href="">
+                                                    <i class="fa fa-shopping-cart" data-toggle="modal" href="" onclick="pleaseLogin();" data-nexthref="~/Shopping/ShoppingCartList">
+                                                    </i> <span></span>
+                                                </a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li><a href="~/Member/ShowTrackList" id="fa-heart"><i class="fa fa-heart"></i> <span></span></a></li>
+                                            <li><a href="~/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
+                                        }
                                     </ul>
                                 </div>
                             </div>
@@ -149,18 +192,12 @@
                                 <li>
                                     <a href="~/Body/BodyCalculatorMain">BODY計算器</a>
                                 </li>
-                                <li>
-                                    <a href="~/Home/signalRChat">聊天室</a>
-                                </li>
                             </ul>
                         </nav>
                     </div>
                     <div class="col-lg-2">
-
                         <div class="header__menu">
                             <ul>
-
-
                                 <li>
                                     <div class="header__top__right__auth">
                                         @if (@MemberController.userName == "登入")
@@ -174,7 +211,7 @@
                                             <a href="~/Member/Edit"><i class="fa fa-user"></i>Hi~@MemberController.userName</a>
                                             <ul class="header__menu__dropdown">
                                                 <li><a href="~/Member/Edit">會員專區</a></li>
-                                                <li><a href="~/Coach/ManageResume">教練專區</a></li>
+                                                <li><a href="~/Coach/CreateResume">教練專區</a></li>
                                                 <li><a href="~/Member/Logout">登出<i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
                                             </ul>
                                         }
@@ -193,7 +230,6 @@
     <!-- Header Section End -->
     <!-- 各版頁面在此做轉換 -->
     <div>@RenderBody()</div>
-
     <!--頁尾在此開始-->
     <footer class="footer spad" id="footer">
         <div class="container">
@@ -242,7 +278,7 @@
                         </ul>
                         <ul style="width:20%">
                             <li><h6>教練專區</h6></li>
-                            <li><a href="~/Coach/ManageResume">履歷管理</a></li>
+                            <li><a href="~/Coach/CreateResume">履歷管理</a></li>
                             <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
                             <li><a href="~/Coach/TeachingList">教課列表</a></li>
                         </ul>
@@ -283,101 +319,106 @@
         </div>
     </footer>
     @*會員登入Modal*@
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-content justify-content-center">
-                    <h4 class=" col-12 modal-title w-100 text-center" id="exampleModalLabel">歡迎登入IHealth會員! </h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content iHealthBackground">
+            <div class="modal-header">
+                <h4 class="modal-title col-11 text-center" id="exampleModalLabel" style="color: #ffffff; text-shadow:1px 1px 10px black;font-weight:800">歡迎登入iHEALTH會員!</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="~/Member/Login" id="addForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                    <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
+                    <div class="form-group">
+                        <label for="fUserName" style="font-weight:700">使用者帳號</label>@*color: #ffffff; text-shadow:1px 1px 15px black;*@
+                        <input type="text" class="form-control" id="inpLogInUserName" name="fUserName" placeholder="帳號">
+                    </div>
+                    <div class="form-group">
+                        <label for="fPassword" style="font-weight:700">密碼 @*color: #ffffff; text-shadow:1px 1px 15px black;*@
+                        <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showPassword"></i></label>
+                        <input type="password" class="form-control" id="inpLogInPassword" name="fPassword" placeholder="密碼">
+                    </div>
+                    <div style="justify-content: center; display: flex; ">
+                        <button id="btnLogin1" type="submit" class="btn btn-success center"><i class="fa fa-sign-in" aria-hidden="true"></i>會員登入</button></i>
+                    </div>
+                </form>
+                <br />
+                <div style="justify-content: center; display: flex; ">
+                    <button class="btn btn-secondary" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal" style="margin-right:5px">
+                        <i class="fa fa-key"></i> 忘記密碼? 
+                    </button>
+                    <button class="btn btn-light" data-toggle="modal" data-target="#register1Modal" data-dismiss="modal" style="margin-left:5px">
+                        <i class="fa fa-user"></i> 加入會員 
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form action="~/Member/Login" id="addForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
-                        <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
-                        <div class="form-group">
-                            <label for="fUserName">使用者帳號</label>
-                            <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號">
-                        </div>
-                        <div class="form-group">
-                            <label for="fPassword">密碼</label>
-                            <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼">
-                        </div>
-                        <div>
-                            <input id="btnLogin1" type="submit" value="會員登入" class="btn btn-primary "><i class="fa fa-sign-in"></i>
-                        </div>
-
-                    </form>
-
-                </div>
-                <div class="modal-footer row">
-                    <div class="text-center col-md-4">
-                        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal">
-                            忘記密碼? <i class="fa fa-key"></i>
-                        </button>
-                    </div>
-                    <div class="text-center col-md-4">
-                        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">
-                            加入會員 <i class="fa fa-user"></i>
-                        </button>
-                    </div>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnDemoUserLog" class="btn btn-outline-success">Demo會員</button>
+                <button id="btnDemoCoachLog" class="btn btn-outline-success">Demo教練</button>
+                <button id="btnDemoAdminLog" class="btn btn-outline-success">Demo管理者</button>
             </div>
         </div>
     </div>
+</div>
     @*會員註冊Modal*@
     <div class="modal fade" id="register1Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h4 class="modal-title w-100" id="exampleModalLabel">歡迎加入IHealth會員! <span></span></h4>
+                <div class="modal-header">
+                    <h4 class="modal-title col-11 text-center" id="exampleModalLabel" style="color: #ffffff; text-shadow:1px 1px 10px black;font-weight:800">歡迎加入iHEALTH會員!</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form asp-action="Register" asp-controller="Member">
-                        <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
-                        <div class="form-group">
-                            <label for="fUserName">使用者帳號</label>
-                            <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號,至少需二個字(含)以上">
-                        </div>
-                        <div class="form-group">
-                            <label for="fMemberName">姓名</label>
-                            <input type="text" class="form-control" id="fMemberName" name="fMemberName" placeholder="姓名">
-                        </div>
-                        <div class="form-group">
-                            <label for="fPassword">密碼</label>
-                            <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母">
-                        </div>
-                        <div class="form-group">
-                            <label for="fAddress">地址</label>
-                            <input type="text" class="form-control" id="fAddress" name="fAddress" placeholder="地址">
-                        </div>
-                        <div class="form-group">
-                            <label for="fPhone">電話</label>
-                            <input type="text" class="form-control" id="fPhone" name="fPhone" placeholder="電話">
-                        </div>
-                        <div class="form-group">
-                            <label for="fBirthday">生日</label>
-                            <input type="text" class="form-control" id="fBirthday" name="fBirthday" placeholder="生日,請依格式19991231輸入">
-                        </div>
-                        <div class="form-group">
-                            <label for="fEmail">電子郵件信箱</label>
-                            <input type="text" class="form-control" id="fEmail" name="fEmail" placeholder="電子郵件信箱">
-                        </div>
-
-                        <div class="d-md-flex justify-content-start align-items-center mb-4 py-2" id="divGender">
-                            <h6 class="mb-0 me-4">生理性別: </h6>
-                            <div class="form-check form-check-inline mb-0 me-4">
-                                <input type="radio" class="form-check-input" id="femalGender" name="fGender" value="false">
-                                <label class="form-check-label" for="fGender">生理女性</label>
+                <form asp-action="Register" asp-controller="Member">
+                    <div class="modal-body row">
+                        <div class="col-lg-6">
+                            <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
+                            <div class="form-group">
+                                <label for="fUserName">使用者帳號</label>
+                                <input type="text" class="form-control" id="inpRegisterUserName" name="fUserName" placeholder="帳號,至少需二個字(含)以上">
                             </div>
-                            <div class="form-check form-check-inline mb-0 me-4">
-                                <input type="radio" class="form-check-input" id="maleGender" name="fGender" value="true">
-                                <label class="form-check-label" for="fGender">生理男性</label>
+                            <div class="form-group">
+                                <label for="fMemberName">姓名</label>
+                                <input type="text" class="form-control" id="inpRegisterMemberName" name="fMemberName" placeholder="姓名">
+                            </div>
+                            <div class="form-group">
+                                <label for="fPassword">密碼</label>
+                                <input type="password" class="form-control" id="inpRegisterPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母">
+                            </div>
+                            <div class="form-group">
+                                <label for="fEmail">電子郵件信箱</label>
+                                <input type="text" class="form-control" id="inpRegisterEmail" name="fEmail" placeholder="電子郵件信箱">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="fBirthday">生日</label>
+                                <input type="number" class="form-control" id="inpRegisterBirthday" name="fBirthday" placeholder="生日,請依格式19991231輸入">
+                            </div>
+                            <div class="form-group">
+                                <label for="fPhone">電話</label>
+                                <input type="text" class="form-control" id="inpRegisterPhone" name="fPhone" placeholder="電話">
+                            </div>
+                            <div class="form-group">
+                                <label for="fAddress">地址</label>
+                                <input type="text" class="form-control" id="inpRegisterAddress" name="fAddress" placeholder="地址">
+                            </div>
+                            <div class="form-group" id="divGender">
+                                <label>生理性別 </label>
+                                <br />
+                                <div class="form-check form-check-inline mb-0 me-4">
+                                    <input type="radio" class="form-check-input" id="femalGender" name="fGender" value="false">
+                                    <label class="form-check-label" for="fGender">女性</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-0 me-4">
+                                    <input type="radio" class="form-check-input" id="maleGender" name="fGender" value="true" checked>
+                                    <label class="form-check-label" for="fGender">男性</label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-outline mb-4">
@@ -389,12 +430,16 @@
                         <div class="form-outline mb-4">
                             <input type="hidden" value="false" name="fDisabled" class="form-control" id="fDisabled" />
                         </div>
-                        <div class="form-group col-md-8 col-md-4-offset">
-                            <input id="btnSubmit" type="submit" value="送出" class="btn btn-primary" />
-                            <input type="reset" value="重設" class="btn btn-danger" />
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div style="justify-content: center; display: flex; ">
+                        <button id="btnSubmit" type="submit" class="btn btn-success"><i class="fa fa-paper-plane" aria-hidden="true"></i> 送出</button>
+                    </div>
+                    <br />
+                    <div class="modal-footer" style="justify-content: center; display: flex; ">
+                        <button id="btnDemoRegister" class="btn btn-outline-success" type="button">Demo</button>
+                        <button type="reset" class="btn btn-secondary"><i class="fa fa-eraser" aria-hidden="true"></i> 重設</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -413,26 +458,22 @@
                     <form action="~/Member/ForgotPassword" id="passwordForgotForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
                         <div class="form-group">
                             <label for="fEmail">請輸入註冊時的電子信箱</label>
-                            <input type="text" class="form-control" id="fEmail" name="fEmail" placeholder="email">
+                            <input type="text" class="form-control" id="inpForgotPassword" name="fEmail" placeholder="email">
                         </div>
-
-                        <div>
-                            <input id="btnSubmit" type="submit" value="送出" class="btn btn-primary ">
+                        <div style="justify-content: center; display: flex;">
+                            
+                            <button id="btnSubmit" type="submit" class="btn btn-success"><i class="fa fa-paper-plane"></i>送出</button>
                         </div>
-
                     </form>
                 </div>
-                <div class="modal-footer row">
-                    <div class="offset-md-4 col-md-4">
-                        <button id="btnResetPwd" class="btn btn-primary mb-3" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal">
-                            重設密碼 <i class="fa fa-key"></i>
+                <div class="modal-footer"  style="justify-content: center; display: flex; ">
+                    <button id="btnDemoForgotPassword" class="btn btn-outline-success">Demo</button>
+                        <button id="btnResetPwd" class="btn btn-secondary" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
+                            <i class="fa fa-key"></i> 重設密碼 
                         </button>
-                    </div>
-                    <div class=" col-md-4">
-                        <button id="btnLogin3" class="btn btn-primary mb-3" data-toggle="modal" data-target="#loginModal" data-dismiss="modal">
-                            回到登入頁面<i class="fa fa-user"></i>
+                        <button id="btnLogin3" class="btn btn-light" data-toggle="modal" data-target="#loginModal" data-dismiss="modal" style="margin-left:5px">
+                            <i class="fa fa-user"></i> 回到登入頁面
                         </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -453,33 +494,31 @@
                     <form action="~/Member/ResetPassword" id="passwordForgotForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
                         <div class="form-group">
                             <label for="fEmail">請輸入註冊時的電子信箱</label>
-                            <input type="text" class="form-control" id="fEmail" name="fEmail" placeholder="email">
+                            <input type="text" class="form-control" id="inpResetPasswordEmail" name="fEmail" placeholder="email">
                         </div>
                         <div class="form-group">
                             <label for="fPassword">請輸入密碼</label>
-                            <input type="text" class="form-control" id="fEmail" name="fPassword" placeholder="登入密碼">
+                            <input type="text" class="form-control" id="inpResetPassword" name="fPassword" placeholder="登入密碼">
                         </div>
                         <div class="form-group">
                             <label for="firstPassword">請輸入重設密碼</label>
-                            <input type="text" class="form-control" id="firstPassword" name="firstPassword" placeholder="重設密碼 ">
+                            <input type="text" class="form-control" id="inpFirstPassword" name="firstPassword" placeholder="重設密碼 ">
                         </div>
                         <div class="form-group">
                             <label for="confirmPassword">請輸入確認密碼</label>
-                            <input type="text" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="確認密碼 ">
+                            <input type="text" class="form-control" id="inpConfirmPassword" name="confirmPassword" placeholder="確認密碼 ">
                         </div>
-                        <div>
+                        <div style="justify-content: center; display: flex;">
+                            <button id="btnResetPassword" type="submit" value="送出" class="btn btn-success">
+                                <i class="fa fa-paper-plane"></i> 送出
+                            </button>
                         </div>
-                        <div class="modal-footer row">
-                            <div class=" col-md-4">
-                                <button id="btnSubmit" type="submit" value="送出" class="btn btn-primary ">
-                                    送出<i class="fas fa-paper-plane"></i>
-                                </button>
-                            </div>
-                            <div class=" col-md-6">
-                                <button id="btnLogin" class="btn btn-primary " data-toggle="modal" data-target="#loginModal" data-dismiss="modal">
-                                    回到登入頁面 <i class="fa fa-user"></i>
-                                </button>
-                            </div>
+                        <br />
+                        <div class="modal-footer" style="justify-content: center; display: flex;">
+                            <button type="button" id="btnDemoResetPassword" class="btn btn-outline-success" style="margin-right:5px">Demo</button>
+                            <button type="button" id="btnLogin" class="btn btn-light" data-toggle="modal" data-target="#loginModal" data-dismiss="modal" style="margin-left:5px">
+                                <i class="fa fa-user"></i> 回到登入頁面
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -508,6 +547,56 @@
             },
             buttonsStyling: false
         })
+
+        //密碼顯示切換
+        $("#showPassword").click(function () {
+            if ($(this).hasClass("fa-eye-slash")) {
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+                $("#inpLogInPassword").attr("type", "text");
+            }
+            else {
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+                $("#inpLogInPassword").attr("type", "password");
+            }
+        });
+
+        //登入Demo
+        $("#btnDemoUserLog").click(function () {
+            $("#inpLogInUserName").val("Jay");
+            $("#inpLogInPassword").val("123");
+        });
+        $("#btnDemoCoachLog").click(function () {
+            $("#inpLogInUserName").val("Alisa");
+            $("#inpLogInPassword").val("123");
+        });
+        $("#btnDemoAdminLog").click(function () {
+            $("#inpLogInUserName").val("crystal");
+            $("#inpLogInPassword").val("123");
+        });
+
+        //註冊Demo
+        $("#btnDemoRegister").click(function () {
+            $("#inpRegisterUserName").val("summer21");
+            $("#inpRegisterMemberName").val("林佳辰");
+            $("#inpRegisterPassword").val("123");
+            $("#inpRegisterEmail").val("summer21@gmail.com");
+            $("#inpRegisterBirthday").val("19990605");
+            $("#inpRegisterPhone").val("0919660550");
+            $("#inpRegisterAddress").val("台北市松山區南京東路四段2號");
+        });
+
+        //忘記密碼Demo
+        $("#btnDemoForgotPassword").click(function () {
+            $("#inpForgotPassword").val("charles.chou570114@gmail.com");
+        });
+
+        //重設密碼Demo
+        $("#btnDemoResetPassword").click(function () {
+            $("#inpResetPasswordEmail").val("charles.chou570114@gmail.com");
+            $("#inpResetPassword").val("123");
+            $("#inpFirstPassword").val("321");
+            $("#inpConfirmPassword").val("321");
+        });
 
         //需登入的頁面去登入
         function pleaseLogin() {
@@ -550,18 +639,16 @@
         var day = (registerD.getDate() + 100).toString().substring(1);
         var str = year + month + day;
         $("#fRegisterDate").val(str);
-    </script>
 
     @*商城部份*@
-    <script>
-    $(".fa-heart").click(function () {
+    @*$(".fa-heart").click(function () {
         if (@MemberController.userID == 0) {
                 alert("請先登入帳號");
             }
         else{
                 $("#fa-heart").attr("href","/member/ShowTrackList/")
             }
-        })
+        })*@
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
