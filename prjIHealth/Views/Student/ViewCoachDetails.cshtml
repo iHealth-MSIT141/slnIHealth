@@ -1,157 +1,207 @@
-﻿
+﻿@model prjIHealth.ViewModels.CCoachViewModel
 
 @section Styles{
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<style>
-    .ulCategory li {
-        padding-right: 80px;
-    }
-
-        .ulCategory li a {
-            color: #585A55 !important;
-            transition: .2s;
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>        
+        /*左邊上半部*/
+        .back {            
+            margin-bottom:30px;
         }
-
-            .ulCategory li a:hover {
-                background-color: #ECF1E4;
-                color: black !important;
-            }
-    .imgMain {
-        border-radius: 10px;
-    }   	
-	.name {
-		margin-bottom: 15px;
-	}
-	.intro {
-		margin-top: 25px;
-		text-align:justify;
-	}
-	.page {
-		text-align: right;
-	}
-	.ulBtns {
-		display: flex;
-        justify-content:space-evenly;
-		margin-top:20px;
-        padding:0px 40px;
-		list-style: none;
-	}
-        .ulBtns > li {
-            width: 40%;
-            text-align: center;
-            margin: 20px;
-            border: 2px solid #7fad39;
-            border-radius: 10px;
-            transition: .3s;
-        }
-            .ulBtns > li:hover {
-                border: 2px solid #4F6C24;
-            }
-            .ulBtns > li > a {
-                display: block;
-                width: 100%;
-                height: 100%;
-                padding: 15px;
+            .back a {
                 color: #7fad39;
+                transition:.2s;
+            }
+            .back a:hover {
+                color: #4F6C24;
+            }    
+            
+        .divLeft{
+            text-align:center;
+        }
+        
+        .imgMain {
+            border-radius: 50%;
+            width:250px;
+            height:250px;
+        }
+
+        .name {
+            margin-bottom: 10px;
+        }
+
+        .liAvgRate{
+            margin-bottom:20px !important;
+            display:flex;
+        }
+
+        .intro {
+            margin: 0px 60px;
+            text-align: justify;
+        }
+        
+        .ulBtns {
+            display: flex;
+            justify-content: space-evenly;
+            list-style: none;
+        }
+
+            .ulBtns > li {
+                width: 40%;
+                text-align: center;
+                margin: 20px;
+                border: 2px solid #7fad39;
+                border-radius: 10px;
                 transition: .3s;
             }
-                .ulBtns > li > a:hover {
-                    color: #4F6C24;
+
+                .ulBtns > li:hover {
+                    border: 2px solid #4F6C24;
                 }
-                .info_details, .rate {
+
+                .ulBtns > li > a {
+                    display: block;
                     width: 100%;
-                    padding: 0px 30px;
-                }    
-	.topic {
-		padding: 20px 0px;
-	}
-	.info_details_list{
-		list-style-position:inside;
-		list-style:none;
-	}
-	.info_details_list>li{
-		margin:10px 0px;
-	}
-	.info_details_list>hr{
-		padding-top:30px;
-	}
-    .nav-tabs::before, .nav-tabs::after {
-        content: none !important;
-    }    
-    .bar {	
-		display:inline-block;
-		width:220px;
-		height:2px;
-		background-color:lightgray;
-		line-height:26px;
-    }
-	.tabs{
-		width:100%;
-	}
-    .tab_content,.recommend{
-		padding:0px 30px;
-    }
-	.rate{
-		margin-bottom:10px;
-		padding:0px;
-	}
-	.star{
-		height:22px;
-	}
-    .recommend {
-        padding-top: 50px;
-        padding-left:10px;
-    }
-    .coach_intro {
-        display: flex;
-        border-radius: 10px;
-        padding: 20px;
-    }
+                    height: 100%;
+                    padding: 10px;
+                    transition: .3s;
+                    color: #7fad39;
+                    font-size:16px;
+                }
 
-    .coach_img {
-        border-radius: 10px;
-        border: 3px solid white;
-        width: 180px;
-        height: 200px;
-        transition: .3s;
-    }
+                    .ulBtns > li > a:hover {
+                        color: #4F6C24;
+                    }
 
-        .coach_img:hover {            
-            border: 3px solid gray;
-        }    
+        /*左邊下半部*/
+        .info_details, .rate {
+            width: 100%;
+            padding: 0px 30px;
+        }
 
-    .icon {
-        height: 20px;
-    }
+        .topic {
+            padding: 30px 0px 15px 0px;
+        }
 
-    .li {
-        margin: 5px 0px;
-    }
-    .slogan {
-        margin-top: 18px;
-    }   
-    .recommend_topic > h4 {
-        margin: 20px 0px;
-    }
-    .recommend_bar {
-        width: 350px;
-        height: 2px;
-        margin-left: 50px;
-        margin-bottom: 30px;
-        background-color: #7fad39;
-    }
-    .recommend_coach {
-        margin-left: 30px;
-        margin-bottom: 30px;
-        border-radius: 10px;
-        padding: 20px;
-        border: 2px solid lightgray;
-        box-shadow: 2px 2px 5px lightgray;
-    }
-    .divRecCoach {
-        padding: 30px;
-    }   
-</style>
+        .info_details_list {
+            list-style-position: inside;
+            list-style: none;
+        }
+
+            .info_details_list > li {
+                margin: 10px 0px;
+            }
+
+            .info_details_list > hr {
+                padding-top: 30px;
+            }
+
+        .nav-tabs::before, .nav-tabs::after {
+            content: none !important;
+        }
+
+        .bar {
+            display: inline-block;
+            width: 160px;
+            height: 2px;
+            background-color: lightgray;
+            line-height: 26px;
+        }
+
+        .tabs {
+            width: 100%;
+        }
+        .product__details__tab{
+            padding-top:50px;
+        }
+        .tab_content{
+            padding: 0px 40px !important;
+        }
+
+        .rate {
+            margin-bottom: 30px;
+            padding: 0px;
+        }
+
+        .divSort{
+            text-align:right;
+            padding-top:15px;
+            padding-right:30px;
+        }
+        .star {
+            height: 18px;
+        }
+        .starOrig {
+            filter: grayscale(1);
+        }
+        
+        /*推薦教練*/
+        .divRecContent {
+            margin-top: 80px;
+            margin-left: 40px;
+        }
+        .divRecTopic > span {
+            margin: 10px 0px;
+            font-size: 22px;
+        }
+
+        .spTopic2 {
+            padding-left: 50px;
+        }
+
+        .recBar {
+            text-align: right;
+            height: 2px;
+            margin: 20px 0px;
+            margin-left: 55px;
+            background-color: #7fad39;
+        }
+
+        .divRec {
+            margin-bottom: 30px;
+            border-radius: 10px;
+            padding: 20px 15px 10px 15px;
+            border: 2px solid #F1F1F1;
+            box-shadow: 1px 1px 5px #F1F1F1;
+        }
+            .divRec span {
+                font-size: 14px;
+            }
+        .divRecCoach{
+            padding:0px;
+            padding-right:10px;
+        }
+        .divRecName h4{
+            margin-bottom:10px;
+        }
+       
+        .coach_img {
+            border-radius: 50%;
+            border: 2px solid white;
+            width: 100px;
+            height: 100px;
+            transition: .3s;
+        }
+
+            .coach_img:hover {
+                border: 2px solid gray;
+            }
+        .divRecList{
+            padding:10px 30px;
+        }       
+        .recSkill{
+            line-height:30px;
+        }
+        .icon {
+            height: 16px;
+        }
+
+        .li {
+            margin: 5px 0px;
+            font-size:16px;
+        }
+       
+        
+    </style>
 }
 @*banner大圖*@
 <section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg">
@@ -172,53 +222,64 @@
 </section>
 
 <section class="product spad">
-	<div class="container">
-		<div class="row">
-			@*※※※非會員專區的View的內容請從此處開始※※※*@
-			<div class="col-lg-3">
-				<div class="sidebar">
-					<div class="sidebar__item reveal_l1">
-						<h4>運動類別</h4>
-                        <ul class="ulCategory">
-                            <li><a href="#">肌肥大訓練</a></li>
-                            <li><a href="#">增肌減脂</a></li>
-                            <li><a href="#">體態評估雕塑</a></li>
-                            <li><a href="#">功能性訓練</a></li>
-                            <li><a href="#">TRX課程訓練</a></li>
-                            <li><a href="#">壺鈴課程訓練</a></li>
-                            <li><a href="#">拳擊訓練</a></li>
-                            <li><a href="#">備賽指導</a></li>
-                            <li><a href="#">銀髮族訓練</a></li>
-                        </ul>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-9">
-                <div class="row">
-                    <div class="col-md-5 reveal_t1">
-                        <img src="~/img/Coach/coachImage/May.jpg" class="imgMain" />
+    <div class="container">
+        <div class="row">
+            @*※※※非會員專區的View的內容請從此處開始※※※*@
+            <div class="col-lg-8">
+                <div class="back reveal_t1"><a href="/Student/CoachList">< 返回教練列表</a></div>
+                <div class="row divUp">
+                    <div class="col-md-5 reveal_t1 divLeft">
+                        <img src="~/img/Coach/coachImage/@Model.FCoachImage" class="imgMain" />
                     </div>
                     <div class="col-md-7 divMainCoach reveal_r1">
                         <ul>
-                            <li style="list-style:none" class="name"><h3><b>May</b></h3></li>
-                            <li style="list-style:none" class="li">
-                                <img src="~/img/Coach/icon/location.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b><span>台北市</span>
+                            <li style="list-style:none" class="name"><h3><b>@Model.FCoachName</b></h3></li>
+                            <li style="list-style:none" class="li liAvgRate">
+                                <span id="avgRate"></span>&nbsp;&nbsp;&nbsp;
+                                <img class="star starOrig" src="~/img/coach/icon/star.png" id="star1" />
+                                <img class="star starOrig" src="~/img/coach/icon/star.png" id="star2" />
+                                <img class="star starOrig" src="~/img/coach/icon/star.png" id="star3" />
+                                <img class="star starOrig" src="~/img/coach/icon/star.png" id="star4" />
+                                <img class="star starOrig" src="~/img/coach/icon/star.png" id="star5" />&nbsp;&nbsp;&nbsp;
+                                <span id="rateCount"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span id="courseCount">@Model.FCourseCount 次成交&nbsp;<i class="fa-regular fa-circle-check"></i></span>
                             </li>
                             <li style="list-style:none" class="li">
-                                <img src="~/img/Coach/icon/skill.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;專長項目： </b><span>肌肥大訓練、體態評估雕塑、增肌減脂</span>
+                                <img src="~/img/Coach/icon/location.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
+                                <span>@Model.CityName</span>
                             </li>
                             <li style="list-style:none" class="li">
-                                <img src="~/img/Coach/icon/time.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;可上課時段： </b><span>平日上午、平日下午、假日下午</span>
+                                <img src="~/img/Coach/icon/skill.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;專長項目： </b>
+                                @{
+                                    string s = "";
+                                    foreach (var skill in Model.Coach.TCoachSkills)
+                                    {
+                                        s += skill.FSkill.FSkillName;
+                                        s += "、";
+                                    }
+                                    if (s.Length != 0)
+                                    {
+                                        s = s.Substring(0, s.Length - 1);
+                                    }
+                                    <span class="spSkill">@s</span>
+                                }
                             </li>
                             <li style="list-style:none" class="li">
-                                <img src="~/img/Coach/icon/fee.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;希望待遇： </b><span>1500/時</span>
+                                <img src="~/img/Coach/icon/time.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;可上課時段： </b>
+                                @{
+                                    string times = "";
+                                    foreach (var t in Model.Coach.TCoachAvailableTimes)
+                                    {
+                                        times += t.FAvailableTime.FAvailableTime;
+                                        times += "、";
+                                    }
+                                    if (times.Length != 0)
+                                        times = times.Substring(0, times.Length - 1);
+                                    <span>@times</span>
+                                }
                             </li>
-                            <li style="list-style:none" class="intro">
-                                <h7>
-                                    你為了什麼而開始選擇運動？
-                                    改變體態的決心絕非嘴上說說，付出的努力與汗水終將給予你回饋，而鏡子裡的你即是過去的決定。
-                                    用最專業的教學和生物力學訓練幫助學員達到目標設定，而非似是而非五花八門的網路訓練，幫助你達成目標，找回自信體態！
-                                </h7>
+                            <li style="list-style:none" class="li">
+                                <img src="~/img/Coach/icon/fee.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;參考費用： $</b><span>@Model.FCoachFee/時</span>
                             </li>
                         </ul>
                         <ul class="ServiceProfile__buttonList___27UCn ulBtns">
@@ -236,139 +297,206 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="intro">
+                        <div class="topic"><h5><b>教練介紹</b></h5></div>
+                        <h7>@Model.FCoachDescription</h7>
+                    </div>
                 </div>
-					<div class="product__details__tab tabs">
-                        <ul class="nav nav-tabs tablist" role="tablist">
-                            <li ><div class="bar"></div></li>
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="false">經歷及相關證照</a>
-                            </li>                           
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab" aria-selected="true">會員評價 <span>(2)</span></a>
-                            </li>
-                            <li><div class="bar"></div></li>
-                        </ul>
-						<div class="tab-content">
-							<div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <div class="product__details__tab__desc tab_content reveal_b1">
-                                    <div><h4 class="topic">經歷</h4></div>
-                                    <ul class="info_details_list ">
-                                        <li><img src="~/img/Coach/icon/experience.png" class="icon" />&nbsp&nbspPeople Fitness 全民運動健身中心 兼職教練</li>
-                                        <li><img src="~/img/Coach/icon/experience.png" class="icon" />&nbsp&nbspDynasty 皇家官邸聯誼會 私人教練</li>
-                                        <li><img src="~/img/Coach/icon/experience.png" class="icon" />&nbsp&nbspBeyond Gym 超越健身中心 私人教練</li>
-                                        <li><img src="~/img/Coach/icon/experience.png" class="icon" />&nbsp&nbsp2018 Global Classic Mprogram </li>
-                                        <li><img src="~/img/Coach/icon/experience.png" class="icon" />&nbsp&nbspwomen's bikini junior 165+季軍</li>
-                                        <li><img src="~/img/Coach/icon/experience.png" class="icon" />&nbsp&nbsp2018 全國青年盃健美錦標賽女子比基尼163+ 第四名</li>
-                                        <li><img src="~/img/Coach/icon/experience.png" class="icon" />&nbsp&nbsp2019 Global Classic Mprogram </li>
-                                        <li><img src="~/img/Coach/icon/experience.png" class="icon" />&nbsp&nbspwomen's bikini junior 第八名</li>
-                                    </ul>
-                                    <div><h4 class="topic">相關證照</h4></div>
-                                    <ul class="info_details_list">
-                                        <li><img src="~/img/Coach/icon/license.png" class="icon" />&nbsp&nbspNASM-CPT美國運動醫學私人教練認證</li>
-                                        <li><img src="~/img/Coach/icon/license.png" class="icon" />&nbsp&nbsp中華民國健身協會體適能健身C級證照</li>
-                                        <li><img src="~/img/Coach/icon/license.png" class="icon" />&nbsp&nbspIPTA壺鈴培訓Level1-2</li>
-                                        <li><img src="~/img/Coach/icon/license.png" class="icon" />&nbsp&nbspIPTA徒手核心訓練課程</li>
-                                        <li><img src="~/img/Coach/icon/license.png" class="icon" />&nbsp&nbspCTSSN運動營養專業認證</li>
-                                        <li><img src="~/img/Coach/icon/license.png" class="icon" />&nbsp&nbspAED+CPR</li>
-                                    </ul>
-                                </div>
-							</div>
-							<div class="tab-pane" id="tabs-2" role="tabpanel">
-                                <div class="product__details__tab__desc tab_content">
-                                    <div class="feedback-item">
-                                        <p>林家丞</p>
-                                        <div class="RatingStar__rating___2FJnc rate">
-                                            <img src="~/img/Coach/icon/star.png" class="star" />
-                                            <img src="~/img/Coach/icon/star.png" class="star" />
-                                            <img src="~/img/Coach/icon/star.png" class="star" />
-                                            <img src="~/img/Coach/icon/star.png" class="star" />
-                                            <img src="~/img/Coach/icon/star.png" class="star" />
-                                        </div>
-                                        <div><p>教練非常細心，會依照你的體能狀況來編排適合的訓練</p></div>
-                                        <p class="created">2022年7月1日</p><hr>
-                                    </div>
-                                    <div class="feedback-item">
-                                        <p>劉雨涵</p>
-                                        <div class="RatingStar__rating___2FJnc rate">
-                                            <img src="~/img/Coach/icon/star.png" class="star" />
-                                            <img src="~/img/Coach/icon/star.png" class="star" />
-                                            <img src="~/img/Coach/icon/star.png" class="star" />
-                                            <img src="~/img/Coach/icon/star.png" class="star" />
-                                            <img src="~/img/Coach/icon/star.png" class="star" />
-                                        </div>
-                                        <div><p>Very good!</p></div>
-                                        <p class="created">2022年5月17日</p><hr>
-                                    </div>
-                                </div>                                   
-                            </div>
-						</div>							
-					</div>
-					
-                <div>
-                    <div class="recommend">
-                        @*推薦教練*@
-                        <div class="recommend_topic">
-                            <h4>在<b>&nbsp;台北市&nbsp;</b>，擁有相同專長的教練...</h4>
-                        </div>
-                        <div class="recommend_bar"></div>
-                        <div class="row recommend_coach reveal_b1">
-                            <div class="col-3">
-                                <a href="/Student/ViewCoachDetails"><img src="~/img/Coach/coachImage/Zac.jpg" class="coach_img"></a>
-                            </div>
-                            <div class="col-9 divRecCoach">
-                                <ul>
-                                    <li style="list-style:none" class="name"><h3><b>Zac</b></h3></li>
-                                    <li style="list-style:none" class="li">
-                                        <img src="~/img/Coach/icon/location.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b><span>台北市</span>
-                                    </li>
-                                    <li style="list-style:none" class="li">
-                                        <img src="~/img/Coach/icon/skill.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;專長項目： </b><span>肌肥大訓練、備賽指導</span>
-                                    </li>
-                                    <li style="list-style:none" class="slogan"><h5><b>夏天來臨前，跟著Zac一起打造完美body！</b></h5></li>
+                <div class="product__details__tab tabs">
+                    <ul class="nav nav-tabs tablist" role="tablist">
+                        <li><div class="bar"></div></li>
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="false">經歷及相關證照</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link rate" data-toggle="tab" href="#tabs-2" role="tab" aria-selected="true">會員評價 <span id="spRate"></span></a>
+                        </li>
+                        <li><div class="bar"></div></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc tab_content reveal_b1">
+                                <div><h5 class="topic"><b>經歷</b></h5></div>
+                                <ul class="info_details_list ">
+                                    @{
+                                        foreach (var exp in Model.Coach.TCoachExperiences)
+                                        {
+                                            <li><img src="~/img/Coach/icon/experience.png" class="icon" />&nbsp;&nbsp;@exp.FExperience</li>
+                                        }
+                                    }
+                                </ul><br />
+                                <div><h5 class="topic"><b>專業證照</b></h5></div>
+                                <ul class="info_details_list">
+                                    @{
+                                        foreach (var lic in Model.Coach.TCoachLicenses)
+                                        {
+                                            <li><img src="~/img/Coach/icon/license.png" class="icon" />&nbsp;&nbsp;@lic.FLicense</li>
+                                        }
+                                    }
                                 </ul>
                             </div>
                         </div>
-                        <div class="row recommend_coach reveal_b1">
-                            <div class="col-3">
-                                <a href="/Student/ViewCoachDetails"><img src="~/img/Coach/coachImage/Alisa.jpg" class="coach_img"></a>
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <div class="filter__sort divSort">
+                                <span>排序</span>
+                                <select id="selSort">
+                                    <option value="0">預設</option>
+                                    <option value="1">最新評價</option>
+                                    <option value="2">評價高至低</option>
+                                    <option value="3">評價低至高</option>
+                                </select>
                             </div>
-                            <div class="col-9 divRecCoach">
-                                <ul>
-                                    <li style="list-style:none" class="name"><h3><b>Alisa</b></h3></li>
-                                    <li style="list-style:none" class="li">
-                                        <img src="~/img/Coach/icon/location.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b><span>台北市</span>
-                                    </li>
-                                    <li style="list-style:none" class="li">
-                                        <img src="~/img/Coach/icon/skill.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;專長項目： </b><span>增肌減脂、功能性訓練備賽指導</span>
-                                    </li>
-                                    <li style="list-style:none" class="slogan"><h5><b>Enjoy workout with Alisa！</b></h5></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="row recommend_coach reveal_b1">
-                            <div class="col-3">
-                                <a href="/Student/ViewCoachDetails"><img src="~/img/Coach/coachImage/Jessica.jpg" class="coach_img"></a>
-                            </div>
-                            <div class="col-9 divRecCoach">
-                                <ul>
-                                    <li style="list-style:none" class="name"><h3><b>Jessica</b></h3></li>
-                                    <li style="list-style:none" class="li">
-                                        <img src="~/img/Coach/icon/location.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b><span>台北市</span>
-                                    </li>
-                                    <li style="list-style:none" class="li">
-                                        <img src="~/img/Coach/icon/skill.png" class="icon" /><b>&nbsp;&nbsp;&nbsp;專長項目： </b><span>增肌減脂、體態評估與雕塑</span>
-                                    </li>
-                                    <li style="list-style:none" class="slogan"><h5><b>由Jessica帶領你從零開始，從我們跨出了那一步開始就不是零了！</b></h5></li>
-                                </ul>
-                            </div>
+                            <div class="product__details__tab__desc tab_content divRate"></div>
                         </div>
                     </div>
-                </div>				
-			</div>
-		</div>
-	</div>
+                </div>                
+            </div>
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <div class="divRecContent">
+                            <div class="divRecTopic reveal_t1">
+                                <span>在<b>&nbsp;@Model.CityName，&nbsp;</b><br></span>
+                                <span class="spTopic2">擁有相同專長的教練 —</span>
+                            </div>
+                            <div class="recBar reveal_r1"></div>
+                            <div class="divCoaches">
+                                <div class="row divRec reveal_b1">
+                                    <div class="col-5"> @*d1*@
+                                        <a href="/Student/ViewCoachDetails">
+                                            <img src="~/img/Coach/coachImage/Zac.jpg" class="coach_img">
+                                        </a>
+                                    </div>
+                                    <div class="col-7 divRecCoach"> @*d2*@
+                                        <div class="divRecName"><h4><b>Zac</b></h4></div>
+                                        <div><span>夏天來臨前，跟著Zac一起打造完美body！</span></div>
+                                    </div>
+                                    <div class="divRecList"> @*d3*@
+                                        <ul class="ulRec">
+                                            <li style="list-style:none" class="li">
+                                                <img src="~/img/Coach/icon/location.png" class="icon" /><span><b>&nbsp;&nbsp;&nbsp;授課地區： </b>&nbsp;&nbsp;台北市</span>
+                                            </li>
+                                            <li style="list-style:none" class="li">
+                                                <img src="~/img/Coach/icon/skill.png" class="icon" /><span><b>&nbsp;&nbsp;&nbsp;專長項目： </b>&nbsp;&nbsp;肌肥大訓練、備賽指導</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
-@section Scripts{
+@section Scripts{    
+    <script>
+        //載入評價(上方+tabpage)
+        $(document).ready(function () {
+            $.getJSON("@Url.Content("~/Student/GetCoachRate")", { "id": "@Model.FCoachId" },
+                function (data) {
+                    let countSum=0;
+                    $.each(data, function (index, rate) {
+                        countSum = countSum + rate.cr.fRateStar;
+                    })
+                    let avg = countSum / data.length;
+                    for (let i = 1; i <= avg; i++) {
+                        $(`#star${i}`).removeClass("starOrig");
+                    }
+                    $("#avgRate").text(`${avg}`);
+                    $("#spRate").text(`(${data.length})`);
+                    $("#rateCount").text(`(${data.length})`);
+                    displayRate(data);
+                })
+        })
 
+        //評價排序
+        $("#selSort").change(() => {
+            let opt = $("#selSort option:selected").val();
+            if (opt == 0) {
+                $.getJSON("@Url.Content("~/Student/GetCoachRate")", { "id": "@Model.FCoachId" },
+                    function (data) {
+                        displayRate(data);
+                    })
+            }
+            else if (opt == 1) {
+                $.getJSON("@Url.Content("~/Student/GetNewRate")", { "id": "@Model.FCoachId" },
+                    function (data) {
+                        displayRate(data);
+                    })
+            }
+            else if (opt == 2) {
+                $.getJSON("@Url.Content("~/Student/GetDesRate")", { "id": "@Model.FCoachId" },
+                    function (data) {
+                        displayRate(data);
+                    })
+            }
+            else if (opt == 3) {
+                $.getJSON("@Url.Content("~/Student/GetAscRate")", { "id": "@Model.FCoachId" },
+                    function (data) {
+                        displayRate(data);
+                    })
+            }
+        })
+
+        //顯示評價
+        function displayRate(data) {
+            $(".divRate").empty();
+            $.each(data, function (index, item) {
+                        $(".divRate").append(`<div class="feedback-item"><p><b>${item.fMemberName}</b></p><div class="rate" id=r${index}></div></div>`);
+                        for (let i = 1; i <= 5; i++) {
+                            $(`#r${index}`).append(`<img class="star starOrig" id="star${index}${i}"/>`);
+                            $(".star").attr("src", "@Url.Content("~/img/coach/icon/star.png")");
+                        }
+                        for (let i = 1; i <= item.cr.fRateStar; i++) {
+                            $(`#star${index}${i}`).removeClass("starOrig");
+                        }
+                        let year = `${item.cr.fRateDate}`.substr(0, 4);
+                        let month = `${item.cr.fRateDate}`.substr(4, 2);
+                        let day = `${item.cr.fRateDate}`.substr(6, 2);
+                        $(`#r${index}`).after(`<div id="t${index}"><p>${item.cr.fRateText}<p></div>`);
+                        $(`#t${index}`).after(`<p class="created">${year}年${month}月${day}日</p><hr>`);
+                    })
+        }
+
+        //推薦教練
+        $(document).ready(function () {
+            $.getJSON("@Url.Content("~/Student/GetRecCoach")", { "id": "@Model.FCoachId" },
+                function (data) {
+                    console.log(data);
+                    $(".divCoaches").empty();
+                    $.each(data, function (index, item) {
+                        $(".divCoaches").append(`<div class="row divRec reveal_b1" id=rec${index}></div>`);
+                        $(`#rec${index}`).append(`<div class="col-5" id=d1${index}></div>`).append(`<div class="col-7 divRecCoach" id=d2${index}></div>`)
+                            .append(`<div class="divRecList" id=d3${index}></div>`);
+                        $(`#d1${index}`).append(`<a href="/Student/ViewCoachDetails/${item.fCoachId}" id=a${index}></a>`);
+                        $(`#a${index}`).append(`<img id=img${index} class="coach_img">`);
+                        $(`#img${index}`).attr("src", `../../img/Coach/coachImage/${item.fCoachImage}`);
+
+                        $(`#d2${index}`).append(`<div class="divRecName"><h4><b>${item.fCoachName}</b></h4></div>`).append(`<div><span>${item.fSlogan}</span></div>`);
+                        $(`#d3${index}`).append(`<ul class="ulRec" id=ul${index}>`);
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=l1${index}></li>`).append(`<li style="list-style:none" class="li" id=l2${index}></li>`);
+                        $(`#l1${index}`).append(`<img class="icon location"/><span><b>&nbsp;&nbsp;&nbsp;授課地區： </b>&nbsp;&nbsp;${item.cityName}</span>`);
+                        $(".location").attr("src", "@Url.Content("~/img/Coach/icon/location.png")");
+                        $(`#l2${index}`).append(`<img class="icon skill" /><span id=skill${index} class="recSkill"><b>&nbsp;&nbsp;&nbsp;專長項目： </b>&nbsp;&nbsp;</span>`)
+                        $(".skill").attr("src", "@Url.Content("~/img/Coach/icon/skill.png")");
+
+                        //取得專長項目
+                        $.getJSON("@Url.Content("~/Student/GetSkillName")", { "id": `${item.fCoachId}` },
+                            function (skills) {  
+                                let s = "";
+                                $.each(skills, function (index, skill) {                                    
+                                    s += skill;
+                                    s += "、";
+                                })
+                                s = s.substr(0, s.length - 1);     
+                                $(`#skill${index}`).append(`${s}`);
+                            }
+                        )                        
+                    })
+                    })
+        })
+    </script>
 }

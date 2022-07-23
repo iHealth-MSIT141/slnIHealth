@@ -30,6 +30,7 @@ namespace prjIHealth.Models
         public bool? FVisible { get; set; }
         public int? FCourseCount { get; set; }
         public string FSlogan { get; set; }
+        public string FCoachName { get; set; }
 
         public virtual TCity FCity { get; set; }
         public virtual TMember FMember { get; set; }
