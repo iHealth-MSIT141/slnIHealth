@@ -1,102 +1,104 @@
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using prjIHealth.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace prjIHealth.ViewModels
 {
-    public class CCoachResumeViewModel
+    public class CCoachViewModel
     {
-        public TCoach Coach;
-        public CCoachViewModel()
+        private IHealthContext db;
+        public CCoachViewModel(IHealthContext context)
         {
-            Coach = new TCoach();
+            db = context;
         }
-        public CCoachViewModel(TCoach c)
-        {
-            Coach = c;
-        }
-        static public List<CCoachViewModel> CoachList(List<TCoach> coachList)
-        {
-            List<CCoachViewModel> list = new List<CCoachViewModel>();
-            foreach(var c in coachList)
-            {
-                CCoachViewModel vModel = new CCoachViewModel(c);
-                list.Add(vModel);
-            }
-            return list;
-        }
-        public int FCoachId
-        {
-            get { return Coach.FCoachId; }
-        }
-        public int? FMemberId
-        {
-            get { return Coach.FCoachId; }
-            set { Coach.FCoachId = (int)value; }
-        }
-        public bool? Gender
-        {
-            get { return Coach.FMember.FGender; }
-            set { Coach.FMember.FGender = value; }
-        }
-        public string FCoachName
-        {
-            get { return Coach.FCoachName; }
-            set { Coach.FCoachName = value; }
-        }
-        public int? FCityId
-        {
-            get { return Coach.FCityId; }
-            set { Coach.FCityId = value; }
-        }
+        public TCoach Coach { get; set; }
         public string CityName
         {
-            get { return Coach.FCity.FCityName; }
-            set { Coach.FCity.FCityName = value; }
+            get
+            {
+                if (Coach.FCityId != null)
+                    return db.TCities.FirstOrDefault(c => c.FCityId == Coach.FCityId).FCityName;
+                else
+                    return null;
+
+            }
         }
-        public string FCoachImage
+        public string ApplyDate
         {
-            get { return Coach.FCoachImage; }
-            set { Coach.FCoachImage = value; }
+            get
+            {
+                if (!String.IsNullOrEmpty(Coach.FApplyDate))
+                {
+                    string fApplyDate = Coach.FApplyDate;
+                    string yyyy = fApplyDate.Substring(0, 4);
+                    string MM = fApplyDate.Substring(4, 2);
+                    string dd = fApplyDate.Substring(6, 2);
+                    string hh = fApplyDate.Substring(8, 2);
+                    string mm = fApplyDate.Substring(10, 2);
+                    return $"{yyyy}-{MM}-{dd} {hh}:{mm}";
+                }
+                else
+                    return null;
+            }
         }
-        public int? FCoachFee
+        public string Status
         {
-            get { return Coach.FCoachFee; }
-            set { Coach.FCoachFee = value; }
-        }       
-        public string FApplyDate
-        {
-            get { return Coach.FApplyDate; }
-            set { Coach.FApplyDate = value; }
+            get
+            {
+                if (Coach.FStatusNumber != null)
+                    return db.TStatuses.FirstOrDefault(s => s.FStatusNumber == Coach.FStatusNumber).FStatus;
+                else
+                    return null;
+            }
         }
-        public int? FStatusNumber
+        public string Visible
         {
-            get { return Coach.FStatusNumber; }
-            set { Coach.FStatusNumber = value; }
+            get
+            {
+                if (Coach.FVisible != null)
+                {
+                    if ((bool)(Coach.FVisible))
+                        return "公開";
+                    else
+                        return "未公開";
+                }
+                else
+                    return null;
+            }
         }
-        public bool? FVisible
+
+        public IEnumerable<string> Skills
         {
-            get { return Coach.FVisible; }
-            set { Coach.FVisible = value; }
+            get
+            {
+                if (Coach.FCoachId != null && Coach.FCoachId != 0)
+                    return db.TCoachSkills.Where(cs => cs.FCoachId == Coach.FCoachId).Include(cs => cs.FSkill).Select(cs => cs.FSkill.FSkillName);
+                else
+                    return null;
+            }
         }
-        public int? FCourseCount
+        public IEnumerable<string> Experiences
         {
-            get { return Coach.FCourseCount; }
-            set { Coach.FCourseCount = value; }
+            get
+            {
+                if (Coach.FCoachId != null && Coach.FCoachId != 0)
+                    return db.TCoachExperiences.Where(e => e.FCoachId == Coach.FCoachId).Select(e => e.FExperience);
+                else
+                    return null;
+            }
         }
-        public string FCoachDescription
+        public IEnumerable<string> Licenses
         {
-            get { return Coach.FCoachDescription; }
-            set { Coach.FCoachDescription = value; }
+            get
+            {
+                if (Coach.FCoachId != null && Coach.FCoachId != 0)
+                    return db.TCoachLicenses.Where(l => l.FCoachId == Coach.FCoachId).Select(l => l.FLicense);
+                else
+                    return null;
+            }
         }
-        public string FSlogan
-        {
-            get { return Coach.FSlogan; }
-            set { Coach.FSlogan = value; }
-        }        
     }
 }
