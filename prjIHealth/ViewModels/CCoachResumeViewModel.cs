@@ -7,14 +7,26 @@ using System.Threading.Tasks;
 
 namespace prjIHealth.ViewModels
 {
-    public class CCoachViewModel
+    public class CCoachResumeViewModel
     {
         private IHealthContext db;
-        public CCoachViewModel(IHealthContext context)
+        public CCoachResumeViewModel(IHealthContext context)
         {
             db = context;
         }
-        public TCoach Coach { get; set; }
+        public TCoach Coach;
+        public int FCoachId { get; set; }
+        public string FCoachName { get; set; }
+        public int? FMemberId { get; set; }
+        public int? FCityId { get; set; }
+        public string FCoachImage { get; set; }
+        public int? FCoachFee { get; set; }
+        public string FCoachDescription { get; set; }
+        public string FApplyDate { get; set; }
+        public int? FStatusNumber { get; set; }
+        public bool? FVisible { get; set; }
+        public int? FCourseCount { get; set; }
+        public string FSlogan { get; set; }
         public string CityName
         {
             get
