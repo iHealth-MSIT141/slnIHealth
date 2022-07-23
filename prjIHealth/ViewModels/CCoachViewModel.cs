@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.EntityFrameworkCore;
 using prjIHealth.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,93 +9,107 @@ namespace prjIHealth.ViewModels
 {
     public class CCoachViewModel
     {
-        public TCoach Coach;
-        public CCoachViewModel()
+        private IHealthContext db;
+        public CCoachViewModel(IHealthContext context)
         {
-            Coach = new TCoach();
+            db = context;
         }
-        public CCoachViewModel(TCoach c)
-        {
-            Coach = c;
-        }
-        static public List<CCoachViewModel> CoachList(List<TCoach> coachList)
-        {
-            List<CCoachViewModel> list = new List<CCoachViewModel>();
-            foreach(var c in coachList)
-            {
-                CCoachViewModel vModel = new CCoachViewModel(c);
-                list.Add(vModel);
-            }
-            return list;
-        }
-        public int FCoachId
-        {
-            get { return Coach.FCoachId; }
-        }
-        public int? FMemberId
-        {
-            get { return Coach.FCoachId; }
-            set { Coach.FCoachId = (int)value; }
-        }
-        public bool? Gender
-        {
-            get { return Coach.FMember.FGender; }
-            set { Coach.FMember.FGender = value; }
-        }
-        public string FCoachName
-        {
-            get { return Coach.FCoachName; }
-            set { Coach.FCoachName = value; }
-        }
-        public int? FCityId
-        {
-            get { return Coach.FCityId; }
-            set { Coach.FCityId = value; }
-        }
+        public int FCoachId { get; set; }
+        public string FCoachName { get; set; }
+        public int? FMemberId { get; set; }
+        public int? FCityId { get; set; }
+        public string FCoachImage { get; set; }
+        public int? FCoachFee { get; set; }
+        public string FCoachDescription { get; set; }
+        public string FApplyDate { get; set; }
+        public int? FStatusNumber { get; set; }
+        public bool? FVisible { get; set; }
+        //public int? FCourseCount { get; set; }
+        public string FSlogan { get; set; }
         public string CityName
         {
-            get { return Coach.FCity.FCityName; }
-            set { Coach.FCity.FCityName = value; }
+            get
+            {
+                if (FCityId != null)
+                    return db.TCities.FirstOrDefault(c => c.FCityId == FCityId).FCityName;
+                else
+                    return null;
+                
+            }
         }
-        public string FCoachImage
+        public string ApplyDate
         {
-            get { return Coach.FCoachImage; }
-            set { Coach.FCoachImage = value; }
+            get
+            {
+                if (!String.IsNullOrEmpty(FApplyDate))
+                {
+                    string fApplyDate = FApplyDate;
+                    string yyyy = fApplyDate.Substring(0, 4);
+                    string MM = fApplyDate.Substring(4, 2);
+                    string dd = fApplyDate.Substring(6, 2);
+                    string hh = fApplyDate.Substring(8, 2);
+                    string mm = fApplyDate.Substring(10, 2);
+                    return $"{yyyy}-{MM}-{dd} {hh}:{mm}";
+                }
+                else
+                    return null;
+            }
         }
-        public int? FCoachFee
+        public string Status
         {
-            get { return Coach.FCoachFee; }
-            set { Coach.FCoachFee = value; }
-        }       
-        public string FApplyDate
-        {
-            get { return Coach.FApplyDate; }
-            set { Coach.FApplyDate = value; }
+            get
+            {
+                if (FStatusNumber != null)
+                    return db.TStatuses.FirstOrDefault(s => s.FStatusNumber == FStatusNumber).FStatus;
+                else
+                    return null;
+            }
         }
-        public int? FStatusNumber
+        public string Visible
         {
-            get { return Coach.FStatusNumber; }
-            set { Coach.FStatusNumber = value; }
+            get
+            {
+                if (FVisible != null)
+                {
+                    if ((bool)(FVisible))
+                        return "公開";
+                    else
+                        return "未公開";
+                }
+                else
+                    return null;
+            }
         }
-        public bool? FVisible
+
+        public IEnumerable<string> Skills
         {
-            get { return Coach.FVisible; }
-            set { Coach.FVisible = value; }
+            get
+            {
+                if (FCoachId != null && FCoachId != 0)
+                    return db.TCoachSkills.Where(cs => cs.FCoachId == FCoachId).Include(cs => cs.FSkill).Select(cs => cs.FSkill.FSkillName);
+                else
+                    return null;
+            }
         }
-        public int? FCourseCount
+        public IEnumerable<string> Experiences
         {
-            get { return Coach.FCourseCount; }
-            set { Coach.FCourseCount = value; }
+            get
+            {
+                if (FCoachId != null && FCoachId != 0)
+                    return db.TCoachExperiences.Where(e => e.FCoachId == FCoachId).Select(e => e.FExperience);
+                else
+                    return null;
+            }
         }
-        public string FCoachDescription
+        public IEnumerable<string> Licenses
         {
-            get { return Coach.FCoachDescription; }
-            set { Coach.FCoachDescription = value; }
+            get
+            {
+                if (FCoachId != null && FCoachId != 0)
+                    return db.TCoachLicenses.Where(l => l.FCoachId == FCoachId).Select(l => l.FLicense);
+                else
+                    return null;
+            }
         }
-        public string FSlogan
-        {
-            get { return Coach.FSlogan; }
-            set { Coach.FSlogan = value; }
-        }        
     }
 }
