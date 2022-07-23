@@ -233,6 +233,7 @@ namespace prjIHealth.Controllers
                        on o.FStatusNumber equals s.FStatusNumber
                        join m in _context.TMembers
                        on o.FMemberId equals m.FMemberId
+                       where o.FMemberId == loginUser.FMemberId
                        select new COrderViewModel()
                        {
                            FOrderId = o.FOrderId,
@@ -240,7 +241,7 @@ namespace prjIHealth.Controllers
                            fPayment = o.FPaymentCategory,
                            FDate = o.FDate,
                            FAddress = o.FAddress,
-                           FMemberId = o.FMemberId,
+                           FMemberId = loginUser.FMemberId,
                            fmember = o.FMember,
                            FContact = o.FContact,
                            FPhone = o.FPhone,

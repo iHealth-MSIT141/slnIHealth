@@ -216,7 +216,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                 db.TProductsImages.Remove(prod);
                 db.SaveChanges();
             }
-            return RedirectToAction("ProductImgList");
+            return RedirectToAction("ProductList");
         }
         //AJAX
         public IActionResult Categoryselect(int id)

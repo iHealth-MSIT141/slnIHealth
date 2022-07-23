@@ -292,5 +292,133 @@ namespace prjiHealth.Controllers
             }
             return Json(list);
         }
+        public IActionResult CheckDiscount(string code)
+        {
+            IHealthContext db = new IHealthContext();
+            var discount = db.TDiscounts.Where(t => t.FDiscountCode == code).Select(t => t.FDiscountValue).Distinct();
+            return Json(discount);
+        }
+
+        public ActionResult ShoppingCartSession(CAddToCartViewModel vModel)
+        {
+            IHealthContext db = new IHealthContext();
+            TProduct prod = db.TProducts.FirstOrDefault(t => t.FProductId == vModel.txtFid);
+            if (prod == null)
+            {
+                return RedirectToAction("ShowShoppingMall");
+            }
+            string jsonCart = "";
+            List<CShoppingCartItem> list = null;
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_Shopped_Items))
+            {
+                list = new List<CShoppingCartItem>();
+            }
+            else
+            {
+                jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
+                list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
+            }
+            CShoppingCartItem item = new CShoppingCartItem()
+            {
+                count = vModel.txtCount,
+                price = (decimal)prod.FUnitprice,
+                productId = vModel.txtFid,
+                product = prod
+            };
+
+            if (list.Count == 0)
+            {
+                list.Add(item);
+            }
+            else
+            {
+                bool sameproduct = false;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].productId == item.productId)
+                    {
+                        list[i].count = item.count;
+                        sameproduct = true;
+                    }
+                }
+                if (!sameproduct)
+                {
+                    list.Add(item);
+                }
+            }
+            jsonCart = JsonSerializer.Serialize(list);
+            HttpContext.Session.SetString(CDictionary.SK_Shopped_Items, jsonCart);
+            return RedirectToAction("ShoppingCartList");
+        }
+        public ActionResult ShoppingCartDelete(CAddToCartViewModel vModel)
+        {
+            IHealthContext db = new IHealthContext();
+            TProduct prod = db.TProducts.FirstOrDefault(t => t.FProductId == vModel.txtFid);
+            if (prod == null)
+            {
+                return RedirectToAction("ShowShoppingMall");
+            }
+            string jsonCart = "";
+            List<CShoppingCartItem> list = null;
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_Shopped_Items))
+            {
+                list = new List<CShoppingCartItem>();
+            }
+            else
+            {
+                jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
+                list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
+            }
+            CShoppingCartItem item = new CShoppingCartItem()
+            {
+                count = vModel.txtCount,
+                price = (decimal)prod.FUnitprice,
+                productId = vModel.txtFid,
+                product = prod
+            };
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].productId == vModel.txtFid)
+                    list.Remove(list[i]);
+            }
+            jsonCart = JsonSerializer.Serialize(list);
+            HttpContext.Session.SetString(CDictionary.SK_Shopped_Items, jsonCart);
+            return RedirectToAction("ShoppingCartList");
+        }
+        public ActionResult ShoppingCartCheckZero(CAddToCartViewModel vModel)
+        {
+            IHealthContext db = new IHealthContext();
+            TProduct prod = db.TProducts.FirstOrDefault(t => t.FProductId == vModel.txtFid);
+            if (prod == null)
+            {
+                return RedirectToAction("ShowShoppingMall");
+            }
+            string jsonCart = "";
+            List<CShoppingCartItem> list = null;
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_Shopped_Items))
+            {
+                list = new List<CShoppingCartItem>();
+            }
+            else
+            {
+                jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
+                list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
+            }
+            CShoppingCartItem item = new CShoppingCartItem()
+            {
+                count = vModel.txtCount,
+                price = (decimal)prod.FUnitprice,
+                productId = vModel.txtFid,
+                product = prod
+            };
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].count == 0 || list[i].count == -1)
+                    list.Remove(list[i]);
+            }
+            jsonCart = JsonSerializer.Serialize(list);
+            HttpContext.Session.SetString(CDictionary.SK_Shopped_Items, jsonCart);
+            return RedirectToAction("CheckOut");
+        }
     }
 }
