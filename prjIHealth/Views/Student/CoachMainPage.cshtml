@@ -211,24 +211,24 @@
             </div>
             <div class="divCategory">
                 <ul class="ulCategory reveal_l1">
-                    <li>@Html.ActionLink("肌肥大訓練", "CoachList", new { id = 1 }, new { @id = "Skill1" })</li>
+                    <li><a href="~/Student/CoachList">肌肥大訓練</a></li>
+                    <li id="liDivider"></li>                    
+                    <li><a href="~/Student/CoachList">增肌減脂</a></li>
                     <li id="liDivider"></li>
-                    <li>@Html.ActionLink("增肌減脂", "CoachList", new { id = 2 }, new { @id = "Skill2" })</li>
+                    <li><a href="~/Student/CoachList">體態評估雕塑</a></li>
                     <li id="liDivider"></li>
-                    <li>@Html.ActionLink("體態評估雕塑", "CoachList", new { id = 3 }, new { @id = "Skill3" })</li>
-                    <li id="liDivider"></li>
-                    <li>@Html.ActionLink("功能性訓練", "CoachList", new { id = 4 }, new { @id = "Skill4" })</li>
+                    <li><a href="~/Student/CoachList">功能性訓練</a></li>
                 </ul>
                 <ul class="ulCategory reveal_r1">
-                    <li>@Html.ActionLink("TRX課程訓練", "CoachList", new { id = 5 }, new { @id = "Skill5" })</li>
+                    <li><a href="~/Student/CoachList">TRX課程訓練</a></li>
                     <li id="liDivider"></li>
-                    <li>@Html.ActionLink("壺鈴課程訓練", "CoachList", new { id = 6 }, new { @id = "Skill6" })</li>
+                    <li><a href="~/Student/CoachList">壺鈴課程訓練</a></li>
                     <li id="liDivider"></li>
-                    <li>@Html.ActionLink("拳擊訓練", "CoachList", new { id = 7 }, new { @id = "Skill7" })</li>
+                    <li><a href="~/Student/CoachList">拳擊訓練</a></li>
                     <li id="liDivider"></li>
-                    <li>@Html.ActionLink("備賽指導", "CoachList", new { id = 8 }, new { @id = "Skill8" })</li>
+                    <li><a href="~/Student/CoachList">備賽指導</a></li>
                     <li id="liDivider"></li>
-                    <li>@Html.ActionLink("銀髮族訓練", "CoachList", new { id = 9 }, new { @id = "Skill9" })</li>
+                    <li><a href="~/Student/CoachList">銀髮族訓練</a></li>
                 </ul>
             </div>
             <div class="divNewCoach reveal_b1">
@@ -332,6 +332,94 @@
                 </div>
 
             </div>
+
+
+            @*<table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FCoachId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FMemberId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FRegionId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FCoachImage)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FExperience)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FLicense)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FCoachFee)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FCoachDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FApplyDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FStatusId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FVisible)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FCoachId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FMemberId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FRegionId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FCoachImage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FExperience)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FLicense)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FCoachFee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FCoachDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FApplyDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FStatusId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FVisible)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>*@
+
         </div>
     </div>
 </section>
