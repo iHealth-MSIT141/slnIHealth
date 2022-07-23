@@ -16,13 +16,12 @@ namespace prjiHealth.ViewModels
         public TMember Member { get { return _tmember; } set {_tmember=value; } }
         public int fMemberId { get { return _tmember.FMemberId; } set { _tmember.FMemberId = value; } }
         public string fUserName { get { return _tmember.FUserName; } set { _tmember.FUserName = value; } }
-        [DataType(DataType.Password)]
         public string fPassword { get { return _tmember.FPassword; } set { _tmember.FPassword = value; } }
         public string fEmail { get { return _tmember.FEmail; } set { _tmember.FEmail = value; } }
         public string fPhone { get { return _tmember.FPhone; } set { _tmember.FPhone = value; } }
-        [DisplayName("姓名")]
         public string fMemberName { get { return _tmember.FMemberName; } set { _tmember.FMemberName = value; } }
         public string fBirthday { get { return _tmember.FBirthday; } set { _tmember.FBirthday = value; } }
+        public string fRegisterDate { get { return _tmember.FRegisterDate; } set { _tmember.FRegisterDate = value; } }
         public string fAddress { get { return _tmember.FAddress; } set { _tmember.FAddress = value; } }
         public string fRemarks { get { return _tmember.FRemarks; } set { _tmember.FRemarks = value; } }
         public int? FAuthorityId { get { return _tmember.FAuthorityId; } set { _tmember.FAuthorityId = value; } }

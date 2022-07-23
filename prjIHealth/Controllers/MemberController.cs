@@ -106,15 +106,18 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(TMember tm)
         {
+            bool result = false;
             var q = _context.TMembers.FirstOrDefault(m => m.FUserName == tm.FUserName);
             if (q == null)
             {
                 _context.TMembers.Add(tm);
                 _context.SaveChanges();
-                //return RedirectToRoute(new { controller = "Member", action = "Login" });
-                return RedirectToAction("Login", "Member");
+                //return RedirectToAction("Login", "Member");
+                result = true;
+
             }
-            else { return RedirectToAction("Index", "Home"); }
+            else { result = false;  /*return RedirectToAction("register", "Member");*/ }
+            return Json(result);
         }
 
         public IActionResult Delete(int? id)
