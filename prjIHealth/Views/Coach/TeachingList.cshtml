@@ -155,6 +155,7 @@
                             <li><a href="~/Coach/CreateResume">履歷管理</a></li>
                             <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
                             <li><a href="~/Coach/TeachingList">教課列表</a></li>
+                            <li><a href="~/Coach/CoachCalendar">課程行事曆</a></li>
                         </ul>
                         <br />
                         <a href="~/Home/會員專區ViewDemo" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
@@ -366,17 +367,17 @@
                 {
                     time = time.Substring(1, 1);
                 }
-<script>
-            //顯示排課時間
-            $(`#sel_${@r.FReservationId}`).val(`${@time}`);
+                <script>
+                //顯示排課時間
+                $(`#sel_${@r.FReservationId}`).val(`${@time}`);
 
 
-            if (@r.FStatusNumber== 61) {
-                $(`#done_@r.FReservationId`).remove();
-                $(`#edit_@r.FReservationId`).prop("disabled",true);
-            }
+                if (@r.FStatusNumber== 61) {
+                    $(`#done_@r.FReservationId`).hide();
+                    $(`#edit_@r.FReservationId`).hide();
+                }
 
-            //完成排課
+                //完成排課
                 $(`#done_@r.FReservationId`).click((evt) => {
                     evt.preventDefault();
                     Swal.fire({
@@ -396,8 +397,8 @@
                                             title: '已完成'
                                         })
                                         $(`#status_@r.FReservationId`).text("已完成");
-                                        $(`#done_@r.FReservationId`).remove();
-                                        $(`#edit_@r.FReservationId`).remove();
+                                        $(`#done_@r.FReservationId`).hide();
+                                        $(`#edit_@r.FReservationId`).hide();
 
                                         //剩餘堂數變更
                                         let remain = parseInt($(`#remain_@r.FCourseId`).text()) - 1;
@@ -411,50 +412,50 @@
                     })
                 })
 
-            //開放變更時間
-            $(`#edit_@r.FReservationId`).click((evt) => {
-                evt.preventDefault();
-                $(`#date_@r.FReservationId`).prop("disabled", false);
-                $(`#sel_@r.FReservationId`).prop("disabled", false);
-                $(`#edit_@r.FReservationId`).css("display", "none");
-                $(`#cancel_@r.FReservationId`).show();
-                $(`#submit_@r.FReservationId`).show();
-                $(`#done_@r.FReservationId`).css("display", "none");
-            })
+                //開放變更時間
+                $(`#edit_@r.FReservationId`).click((evt) => {
+                    evt.preventDefault();
+                    $(`#date_@r.FReservationId`).prop("disabled", false);
+                    $(`#sel_@r.FReservationId`).prop("disabled", false);
+                    $(`#edit_@r.FReservationId`).css("display", "none");
+                    $(`#cancel_@r.FReservationId`).show();
+                    $(`#submit_@r.FReservationId`).show();
+                    $(`#done_@r.FReservationId`).css("display", "none");
+                })
 
-            //取消
-            $(`#cancel_@r.FReservationId`).click((evt) => {
-                evt.preventDefault();
-                $(`#date_@r.FReservationId`).prop("disabled", true);
-                $(`#sel_@r.FReservationId`).prop("disabled", true);
-                $(`#edit_@r.FReservationId`).show();
-                $(`#cancel_@r.FReservationId`).css("display", "none");
-                $(`#submit_@r.FReservationId`).css("display", "none");
-                $(`#done_@r.FReservationId`).show();
-            })
+                //取消
+                $(`#cancel_@r.FReservationId`).click((evt) => {
+                    evt.preventDefault();
+                    $(`#date_@r.FReservationId`).prop("disabled", true);
+                    $(`#sel_@r.FReservationId`).prop("disabled", true);
+                    $(`#edit_@r.FReservationId`).show();
+                    $(`#cancel_@r.FReservationId`).css("display", "none");
+                    $(`#submit_@r.FReservationId`).css("display", "none");
+                    $(`#done_@r.FReservationId`).show();
+                })
 
-            //完成變更
-            $(`#submit_@r.FReservationId`).click((evt) => {
-                evt.preventDefault();
-                let date = $(`#date_@r.FReservationId`).val();
-                let time = $(`#sel_@r.FReservationId`).val();
-                $.get("@Url.Content("~/Coach/EditReservation")", { "id": "@r.FReservationId","date":`${date}`,"time":`${time}`},
-                                function (response) {
-                                    if (response == "Success") {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: '已完成變更'
-                                        })
-                                        $(`#edit_@r.FReservationId`).prop("disabled", false).show();
-                                        $(`#submit_@r.FReservationId`).css("display", "none");
-                                        $(`#cancel_@r.FReservationId`).css("display", "none");
-                                        $(`#done_@r.FReservationId`).show();
-                                        $(`#date_@r.FReservationId`).prop("disabled", true);
-                                        $(`#sel_@r.FReservationId`).prop("disabled", true);
-                                    }
-                                })
-            })
-</script>
+                //完成變更
+                $(`#submit_@r.FReservationId`).click((evt) => {
+                    evt.preventDefault();
+                    let date = $(`#date_@r.FReservationId`).val();
+                    let time = $(`#sel_@r.FReservationId`).val();
+                    $.get("@Url.Content("~/Coach/EditReservation")", { "id": "@r.FReservationId","date":`${date}`,"time":`${time}`},
+                                    function (response) {
+                                        if (response == "Success") {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: '已完成變更'
+                                            })
+                                            $(`#edit_@r.FReservationId`).prop("disabled", false).show();
+                                            $(`#submit_@r.FReservationId`).css("display", "none");
+                                            $(`#cancel_@r.FReservationId`).css("display", "none");
+                                            $(`#done_@r.FReservationId`).show();
+                                            $(`#date_@r.FReservationId`).prop("disabled", true);
+                                            $(`#sel_@r.FReservationId`).prop("disabled", true);
+                                        }
+                                    })
+                })
+                </script>
             }
         }
     }

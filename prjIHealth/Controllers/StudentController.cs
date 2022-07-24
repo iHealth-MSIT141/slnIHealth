@@ -23,7 +23,7 @@ namespace prjiHealth.Controllers
             db = context;
             _context = context;
         }
-
+       
         //教練專區主頁
         public IActionResult CoachMainPage()
         {
@@ -340,10 +340,32 @@ namespace prjiHealth.Controllers
             return Json(contactViewModels);
         }
 
-
+        int userId = 11;    //TODO 取得登入MemberId
         public IActionResult ViewCourseCalendar()   //課程行事曆
         {
             return View();
-        }       
+        }
+        //取得會員所有排課
+        public IActionResult GetAllReservation()
+        {
+            var memId = _context.TMembers.FirstOrDefault(m => m.FMemberId == userId).FMemberId;
+            var reservations = _context.TReservations
+                .Include(r => r.FCourse).ThenInclude(c => c.FCoachContact).ThenInclude(c => c.FCoach)
+                .Where(r => r.FCourse.FCoachContact.FMemberId == memId).OrderBy(r => r.FCourseTime).ToList();
+
+            var reservationList = CCalendarViewModel.ReservationList(reservations);
+            return Json(reservationList);
+        }
+        //取得所有有上課的CoachId
+        public IActionResult GetReservationCoachId()
+        {
+            var memId = _context.TMembers.FirstOrDefault(m => m.FMemberId == userId).FMemberId;
+            var coachIdList = _context.TReservations
+                .Include(r => r.FCourse).ThenInclude(c => c.FCoachContact).ThenInclude(c => c.FCoach)
+                .Where(r => r.FCourse.FCoachContact.FMemberId == memId)
+                .Select(r => r.FCourse.FCoachContact.FCoachId).Distinct().ToList();
+            return Json(coachIdList);
+        }
+
     }
 }

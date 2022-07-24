@@ -1,6 +1,6 @@
 ﻿@section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
+    <style>        
         .divDate {
             width: 70%;
             margin: 30px auto;
@@ -17,7 +17,7 @@
             }
 
                 .divDate button:hover {
-                    border: 2px solid #7FAD39;
+                    border:2px solid #7FAD39;
                 }
 
         #inputMon {
@@ -96,15 +96,12 @@
         .color7 {
             background-color: #007A24;
         }
-
         .color8 {
             background-color: #6CA25A;
         }
-
         .color9 {
             background-color: #870005;
         }
-
         .color10 {
             background-color: #003039;
         }
@@ -114,14 +111,14 @@
             margin: 0px;
             width: 100%;
             font-size: 16px;
-            font-weight: 300;
-            color: white;
+            font-weight:300;
+            color:white;
         }
 
             .divRecord:hover {
-                border: 1.5px solid white;
+                border:1.5px solid white;
             }
-
+                
         /*會員專區導覽列*/
         .blog__btn {
             display: inline-block;
@@ -185,23 +182,20 @@
             <div class="col-lg-3 col-md-5 reveal_b1">
                 <div class="sidebar" style="position:sticky;top:150px;">
                     <div class="sidebar__item">
-                        <h4>會員專區</h4>
+                        <h4>教練專區</h4>
                         <ul>
-                            <li><a href="~/member/edit">個人資料</a></li>
-                            <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
-                            <li><a href="~/Member/OrderList">訂單查詢</a></li>
-                            <li><a href="~/Student/CandidateList">候選教練</a></li>
-                            <li><a href="~/Student/CourseList">課程列表</a></li>
-                            <li><a href="~/Student/ViewCourseCalendar">課程行事曆</a></li>
-                            <li><a href="~/Problem/CheckReply">客服記錄</a></li>
+                            <li><a href="~/Coach/CreateResume">履歷管理</a></li>
+                            <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
+                            <li><a href="~/Coach/TeachingList">教課列表</a></li>
+                            <li><a href="~/Coach/CoachCalendar">課程行事曆</a></li>
                         </ul>
                         <br />
-                        <a href="~/Coach/CreateResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
+                        <a href="~/Home/會員專區ViewDemo" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
                     </div>
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
-                @*※※※會員專區View內容請從此開始※※※*@
+                @*※※※會員專區View內容請從此開始※※※*@               
                 <div>
                     <div class="divDate reveal_t1">
                         <button id="btnPre"><i class="fa-solid fa-caret-left"></i></button>
@@ -352,18 +346,17 @@
 
         //顯示當月排課
         function GetReservations() {
-            $.getJSON("@Url.Content("~/Student/GetAllReservation")", function (data) {
-                console.log(data);           
+            $.getJSON("@Url.Content("~/Coach/GetAllReservation")", function (data) {
                 $.each(data, function (index, record) {
                 if (record.courseDate.substr(0, 4) == Year && record.courseDate.substr(4, 2) == Month) {
                     let theDate = record.courseDate.substr(6, 2) < 10 ? record.courseDate.substr(7, 1) : record.courseDate.substr(6, 2);
                     let time = record.courseTime.substr(0, 2) + ":" + record.courseTime.substr(2, 2);
-                    $(`#${Year + Month + theDate}`).append(`<div class="divRecord r${record.coachId}"><b>${record.coachName}</b>-${time}</div>`);
+                    $(`#${Year + Month + theDate}`).append(`<div class="divRecord r${record.memberId}"><b>${record.memberName}</b>-${time}</div>`);
                     }
                 })
             }).done(() => {
                 //取得所有MemberId，不同Member設定不同顏色
-                $.getJSON("@Url.Content("~/Student/GetReservationCoachId")", function (data) {
+                $.getJSON("@Url.Content("~/Coach/GetReservationMemId")", function (data) {
                     let classCount = 1;
                     for (let i = 0; i < data.length; i++) {
                         $(`.r${data[i]}`).addClass(`color${classCount}`);

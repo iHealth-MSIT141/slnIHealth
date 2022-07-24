@@ -26,6 +26,34 @@ namespace prjiHealth.Controllers
             _context = context;
             _environment = environment;
         }
+        int userId = 11; //TODO 取登入者的MemberId
+        public IActionResult CoachCalendar()
+        {
+            return View();
+        }
+
+        //取得教練所有排課
+        public IActionResult GetAllReservation()
+        {
+            var coachId = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId).FCoachId;
+            var reservations = _context.TReservations
+                .Include(r => r.FCourse).ThenInclude(c=>c.FCoachContact).ThenInclude(c => c.FMember)
+                .Where(r=>r.FCourse.FCoachContact.FCoachId == coachId).OrderBy(r=>r.FCourseTime).ToList();
+
+            var reservationList=CCalendarViewModel.ReservationList(reservations);
+            return Json(reservationList);
+        }
+        //取得所有有排課的MemberId
+        public IActionResult GetReservationMemId()
+        {
+            var coachId = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId).FCoachId;
+            var memIdList = _context.TReservations
+                .Include(r => r.FCourse).ThenInclude(c => c.FCoachContact).ThenInclude(c => c.FMember)
+                .Where(r => r.FCourse.FCoachContact.FCoachId == coachId)
+                .Select(r=>r.FCourse.FCoachContact.FMemberId).Distinct().ToList();
+            return Json(memIdList);
+        }
+
         //教課列表
         public IActionResult TeachingList()
         {
@@ -161,13 +189,16 @@ namespace prjiHealth.Controllers
             _context.SaveChanges();
             return Content("Success", "text/plain");
         }
-
-        int userId = 11; //TODO 取登入者的MemberId
+        
         //修改履歷
         public IActionResult EditResume()
         {
-            TCoach data = _context.TCoaches.Include(c => c.TCoachSkills).Include(c => c.TCoachAvailableTimes).
-                Include(c => c.TCoachExperiences).Include(c => c.TCoachLicenses).FirstOrDefault(c => c.FMemberId == userId);
+            TCoach data = _context.TCoaches
+                .Include(c => c.TCoachSkills)
+                .Include(c => c.TCoachAvailableTimes)
+                .Include(c => c.TCoachExperiences)
+                .Include(c => c.TCoachLicenses)
+                .FirstOrDefault(c => c.FMemberId == userId);
             CCoachViewModel vModel = new CCoachViewModel
             {
                 Coach = data
