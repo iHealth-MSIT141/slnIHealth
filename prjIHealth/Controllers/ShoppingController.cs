@@ -63,10 +63,12 @@ namespace prjiHealth.Controllers
         [HttpPost]
         public IActionResult GetProduct(CShoppingFeatureViewModel vModel)
         {
-
             IEnumerable<TProduct> dataShoppingItems = null;
+            //預設顥示商品
             dataShoppingItems = from t in dblIHealth.TProducts
                                 select t;
+
+            //以價格排序
             if (vModel.sort != null)
             {
                 if (vModel.sort == "asc")
@@ -78,7 +80,7 @@ namespace prjiHealth.Controllers
                     dataShoppingItems = dataShoppingItems.OrderByDescending(t => t.FUnitprice);
                 }
             }
-
+            //以類別排序
             if (vModel.categoryID != null)
             {
                 if (vModel.categoryID != 0)
@@ -86,7 +88,7 @@ namespace prjiHealth.Controllers
                     dataShoppingItems = dataShoppingItems.Where(t => t.FCategoryId == vModel.categoryID);
                 }
             }
-
+            //以關鍵字搜尋
             if (!string.IsNullOrEmpty(vModel.txtKeyword))
             {
                 if (vModel.txtKeyword != "")
@@ -121,7 +123,6 @@ namespace prjiHealth.Controllers
                         TTrackList trackList = new TTrackList()
                         {
                             FMemberId = userID,
-                            //TODO GET member id
                             FProductId = Convert.ToInt32(id)
                         };
                         dblIHealth.TTrackLists.Add(trackList);
@@ -136,8 +137,6 @@ namespace prjiHealth.Controllers
         //產品明細界面
         public ActionResult ShowProductDetail(int? id)
         {
-            //var prod = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
-            //var profinclude = dblIHealth.TProducts.Include(p => p.TProductsImages).Where(t => t.FProductId == id).AsEnumerable();
             TProduct prod = dblIHealth.TProducts.FirstOrDefault(t => t.FProductId == id);
             if (prod == null)
             {
@@ -202,7 +201,7 @@ namespace prjiHealth.Controllers
             return RedirectToAction("ShowShoppingMall");
         }
 
-        //以ProductID搜對應的圖片
+        //以ProductID搜對應的圖片顯示在ProductDetail(沒用到先放著)
         public ActionResult ShowProductImages(int? id)
         {
             var images = from p in dblIHealth.TProducts
@@ -240,6 +239,8 @@ namespace prjiHealth.Controllers
 
             return Json(list);
         }
+
+        //隨機推薦4項商品
         public ActionResult SuggestProduct()
         {
             ArrayList list = new ArrayList();

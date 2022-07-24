@@ -290,9 +290,13 @@
         }
 
         //按價格排序
+        //class改變箭頭方向
+        //以data-sort的值傳去後端做IF/ELSE判斷
         $(".sort").on("click", sorting);
         function sorting() {
+            //以data-sort當flag
             let dataSort = $(".sort").attr("data-sort");
+            //每次執行function清空sort以外class
             $(".sort").removeClass("sort-asc sort-desc");
             if (dataSort == null || dataSort == "") {
                 dataSort = "asc";
@@ -300,7 +304,7 @@
                 $(".sort").attr("data-sort", dataSort);
             }
             else if (dataSort == "desc") {
-                dataSort = "asc";
+                dataSort = "asc";//改變旗標
                 $(".sort").addClass("sort-asc");
                 $(".sort").attr("data-sort", dataSort);
             }
@@ -320,7 +324,6 @@
             console.log(this);
             option.categoryID = id;
             AllProducts(option);
-            /*showProductByCategory(id);*/
         })
 
          //以輸入文字搜產品
@@ -376,7 +379,6 @@
                     if (@MemberController.userID == 0) {
                         alert("請先登入會員");
                         $("#loginModal").modal("show");
-
                     }
                     else
                     {
