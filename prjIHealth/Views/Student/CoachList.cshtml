@@ -5,12 +5,7 @@
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .divSearch {
-            display: flex;
-            justify-content: center;
-            padding: 0px 20px;
-        }
-
+        /*多重篩選*/
         .divSelCity {
             padding-left: 10px;
             text-align: right;
@@ -28,103 +23,8 @@
             display: none;
         }
 
-        .divKeyword {
-            display: flex;
-        }
-
-        .divSubmit {
-            height: 38px;
-            padding: 0px;
-            margin: 0px;
-            text-align: center;
-        }
-
-        .hero__search__form, .divCoachList {
-            width: 100%;
-        }
-
         .filter {
             margin: 30px 0px;
-        }
-
-        .divCoachCount {
-            text-align: right;
-        }
-
-        .divCoachCard {
-            display: flex;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border: 2px solid lightgray;
-            box-shadow: 2px 2px 5px lightgray;
-        }
-
-        .imgCoach {
-            border-radius: 10px;
-            border: 3px solid white;
-            width: 180px;
-            height: 200px;
-            transition: .3s;
-        }
-
-            .imgCoach:hover {
-                border: 3px solid gray;
-            }
-
-        .divCoachInfo {
-            padding: 20px;
-        }
-
-        .imgIcon {
-            height: 20px;
-        }
-
-        .li {
-            margin: 5px 0px;
-        }
-
-        .liCoachName {
-            margin-bottom: 10px;
-        }
-
-        .liSlogan {
-            margin-top: 18px;
-        }
-
-            .liSlogan b {
-                font-size: 16px;
-                line-height: 28px;
-            }
-
-        .divPage {
-            text-align: right;
-        }
-
-        .btn-success {
-            background-color: #7fad39;
-            border: none;
-        }
-
-        .btn-light {
-            background-color: #4F6C24;
-            color: white;
-        }
-
-            .btn-light:hover {
-                background-color: #304115;
-                color: white;
-            }
-
-        .inKeyword {
-            border-bottom-right-radius: 0px;
-            border-top-right-radius: 0px;
-        }
-
-        .btnSearch {
-            height: 38px;
-            border-bottom-left-radius: 0px;
-            border-top-left-radius: 0px;
         }
 
         .divFilter {
@@ -159,6 +59,186 @@
             font-weight: 600;
             color: gray;
         }
+
+        /*關鍵字*/
+        .divSearch {
+            display: flex;
+            align-items:center;
+        }
+
+        .divKeyword {
+            display: flex;
+        }
+
+        .divSubmit {
+            height: 38px;
+            padding: 0px;
+            margin: 0px;
+            text-align: center;
+        }
+
+        .hero__search__form, .divCoachList {
+            width: 100%;
+        }
+
+        .inKeyword {
+            border-bottom-right-radius: 0px;
+            border-top-right-radius: 0px;
+        }
+
+        .btnSearch {
+            height: 38px;
+            border-bottom-left-radius: 0px;
+            border-top-left-radius: 0px;
+        }
+        .divLink {
+            display: flex;
+            justify-content:right;
+            height: 70px;
+        }
+
+        .divOther {
+            padding: 0px;
+        }
+
+            .divOther span {
+                color: #5F822B;
+                line-height: 70px;
+            }
+
+            .divOther i {
+                color: #5F822B;
+            }
+
+        .divUrl {
+            margin-left: 10px;
+            padding: 10px;
+            line-height: 48px;
+            border: 1px solid #BFD69C;
+            border-radius: 20px;
+        }
+
+            .divUrl i {
+                color: #DFEACE;
+            }
+
+            .divUrl a {
+                color: #7FAD39;
+                text-decoration: none;
+                transition: .3s;
+            }
+
+                .divUrl a:hover {
+                    color: #5F822B;
+                }
+
+        /*列表*/
+        .divRight {
+            padding: 0px 20px;
+        }
+
+        .divCoachCount {
+            text-align: right;
+        }
+
+        .divCoachCard {
+            display: flex;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid whitesmoke;
+            box-shadow: 2px 2px 5px lightgray;
+        }
+
+        .divImg {
+            text-align: right;
+            display: flex;
+            align-items: center;
+        }
+
+        .imgCoach {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            margin: auto;
+        }
+
+        .divCoachInfo {
+            padding: 20px;
+        }
+
+        .imgIcon {
+            height: 20px;
+        }
+
+        .li {
+            margin: 5px 0px;
+        }
+
+        .liCoachName {
+            margin-bottom: 10px;
+            display:flex;
+        }
+
+        .liSlogan {
+            margin-top: 18px;
+        }
+
+            .liSlogan span {
+                line-height: 30px;
+            }
+
+        .divPage {
+            text-align: right;
+        }
+
+        .btn-success {
+            background-color: #7fad39;
+            border: none;
+        }
+
+        .btn-light {
+            background-color: #4F6C24;
+            color: white;
+        }
+
+            .btn-light:hover {
+                background-color: #304115;
+                color: white;
+            }
+
+        .star {
+            height: 18px;
+        }
+
+        .starOrig {
+            filter: grayscale(1);
+        }
+
+        .liAvgRate {
+            margin-bottom: 20px !important;
+            display: flex;
+        }
+        .divBtnDetail {
+            text-align: center;
+            padding: 8px;
+            border: 2px solid #7fad39;
+            border-radius:5px;
+            transition:.3s;
+        }
+            .divBtnDetail a {
+                display:block;
+                width:100%;
+                height:100%;
+                color: #7fad39;
+                font-weight: 600;
+            }
+            .divBtnDetail:hover {
+                border: 2px solid #5F822B;
+            }
+            .divBtnDetail a:hover {
+                color: #5F822B;
+            }
     </style>
 }
 
@@ -200,7 +280,7 @@
                                     <select class="custom-select" id="selCity" name="FCityId">
                                         <option selected disabled>請選擇地區</option>
                                         @{
-                                            foreach (var c in db.TCities.ToList())
+                                            foreach (var c in db.TCities.Where(c=>c.TCoaches.Any()).ToList())
                                             {
                                                 <option value="@c.FCityId" id="@c.FCityId">@c.FCityName</option>
                                             }
@@ -240,13 +320,13 @@
                                 </div>
                                 <div>
                                     @{
-                                        foreach (var t in db.TAvailableTimes.ToList())
+                                        foreach (var t in db.TAvailableTimes.Where(at=>at.FAvailableTimeId<=6).ToList())
                                         {
                                             <input type="checkbox" value="@t.FAvailableTimeId" name="fCoachTime[]" /><label>&nbsp;@t.FAvailableTime</label><br />
                                         }
                                     }
                                 </div>
-                            </div>                           
+                            </div>
                             <div class="form-group filterSubmit">
                                 <input type="submit" value="篩選" id="btnSubmit" class="btn btn-success" />
                             </div>
@@ -254,9 +334,9 @@
                     </form>
                 </div>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-9 divRight">
                 <div class="divSearch row">
-                    <form class="col-lg-10">
+                    <form class="col-lg-7">
                         <div class="divKeyword">
                             <input type="text" name="txtKeyword" id="ipKeyword" class="form-control inKeyword" placeholder="請輸入關鍵字">
                             <div class="divSubmit">
@@ -264,12 +344,10 @@
                             </div>
                         </div>
                     </form>
-                    @*<div class="divApply col-lg-2">
-                            @Html.ActionLink("重設條件", "CoachList",new { id=0} ,new {  @CityId = null , @Keyword = null}, new { @class = "btn btn-dark" })
-                        </div>*@
-                    <div class="divApply col-lg-2">
-                        @Html.ActionLink("成為教練", "CreateResume", "Coach", new { }, new { @class = "btn btn-light" })
-                    </div>
+                    <div class="divLink reveal_b2 col-lg-5">
+                        <div class="divOther"><i class="fa-solid fa-user-plus"></i><span><b>&nbsp;&nbsp;想成為教練？</b></span></div>
+                        <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CreateResume">&nbsp;&nbsp;前往<b>填寫履歷</b></a></div>
+                    </div>                    
                 </div>
                 <div class="row filter">
                     <div class="col-lg-4 col-md-5">
@@ -284,7 +362,7 @@
                     </div>
                     <div class="col-lg-8 col-md-4">
                         <div class="filter__found divCoachCount">
-                            <h6>搜尋結果：<span id=""></span>，共  <span>@Model.ToArray().Length</span> 位私人教練</h6>
+                            <h6>共  <span>@Model.ToArray().Length</span> 位私人教練</h6>
                         </div>
                     </div>
                 </div>
@@ -294,22 +372,33 @@
                         {
                             <div class="divCoachCard row reveal_b1">
                                 <label hidden>@coach.FCoachId</label>
-                                <label hidden>@coach.Gender @*_context.TMembers.FirstOrDefault(m => m.FMemberId == coach._coach.FMemberId).FGender*@</label>
-                                <div class="col-3">
-                                    <a href="/Student/ViewCoachDetails/@coach.FCoachId">
-                                        <img src="/img/coach/coachImage/@coach.FCoachImage" class="imgCoach">
-                                    </a>
+                                <label hidden>@coach.Gender</label>
+                                <div class="col-3 divImg">
+                                    <img src="/img/coach/coachImage/@coach.FCoachImage" class="imgCoach">
                                 </div>
                                 <div class="col-9 divCoachInfo">
-                                    <ul>
-                                        <li style="list-style:none" class="liCoachName"><h3><b>@coach.FCoachName</b></h3></li>
+                                    <ul>                                        
+                                        <li style="list-style:none" class="liCoachName row">
+                                            <h3 class="col-8"><b>@coach.FCoachName</b></h3>
+                                            <div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/@coach.FCoachId">教練檔案</a></div>                                        
+                                        </li>
+                                        <li style="list-style:none" class="li liAvgRate">
+                                            <span id="avg_@coach.FCoachId"></span>&nbsp;&nbsp;&nbsp;
+                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star1_@coach.FCoachId" />
+                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star2_@coach.FCoachId" />
+                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star3_@coach.FCoachId" />
+                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star4_@coach.FCoachId" />
+                                            <img class="star starOrig" src="~/img/coach/icon/star.png" id="star5_@coach.FCoachId" />&nbsp;&nbsp;&nbsp;
+                                            <span id="rateCount">(@coach.RateCount)</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span id="courseCount">@coach.FCourseCount 次成交&nbsp;<i class="fa-regular fa-circle-check"></i></span>
+                                        </li>
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/location.png" class="imgIcon" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b>
                                             <span>@coach.CityName</span>
                                         </li>
                                         <li style="list-style:none" class="li">
                                             <img src="~/img/Coach/icon/skill.png" class="imgIcon" />
-                                            <b>&nbsp;&nbsp;&nbsp;專長項目： </b>
+                                            <b>&nbsp;&nbsp;&nbsp;專長： </b>
                                             @{
                                                 string s = "";
                                                 foreach (var c in coach.Coach.TCoachSkills)
@@ -325,7 +414,7 @@
                                                 <span class="spSkill">@s</span>
                                             }
                                         </li>
-                                        <li style="list-style:none" class="liSlogan"><h5><b>@coach.FSlogan</b></h5></li>
+                                        <li style="list-style:none" class="liSlogan"><span>@coach.FSlogan</span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -344,6 +433,28 @@
 </section>
 
 @section Scripts{
+    @{
+        foreach (var coach in Model)
+        {
+            decimal avgRate;
+            if (coach.RateCount != 0)
+            {
+                avgRate = ((int)db.TCoachRates.Where(r => r.FCoachId == coach.FCoachId).Select(r => r.FRateStar).Sum()) / coach.RateCount;
+            }
+            else
+            {
+                avgRate = 0;
+            }
+            string avg = avgRate.ToString("0.0");
+            <script>
+                $(`#avg_@coach.FCoachId`).text("@avg");
+                    for (let i = 1; i <=@avgRate; i++) {
+                                                    $(`#star${i}_@coach.FCoachId`).removeClass("starOrig");
+                                                }
+            </script>
+        }
+
+    }
     <script>
 
         //const formData = new FormData(document.frmFilter);

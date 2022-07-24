@@ -40,7 +40,8 @@ namespace prjiHealth.Controllers
                     .Include(c => c.FCity)
                     .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill)
                     .Include(c => c.TCoachExperiences)
-                    .Include(c => c.TCoachLicenses).AsEnumerable()
+                    .Include(c => c.TCoachLicenses)
+                    .Include(c=>c.TCoachRates).AsEnumerable()
                     .Where(c => c.FVisible == true &&
                     c.FCoachName.Contains(v.txtKeyword) || c.FCoachDescription.Contains(v.txtKeyword) || c.FSlogan.Contains(v.txtKeyword) ||
                         c.TCoachExperiences.Any(ce => ce.FExperience.Contains(v.txtKeyword)) || c.TCoachLicenses.Any(ce => ce.FLicense.Contains(v.txtKeyword)));
@@ -49,7 +50,8 @@ namespace prjiHealth.Controllers
                 datas = _context.TCoaches
                     .Include(c => c.FMember)
                     .Include(c => c.FCity)
-                    .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill).AsEnumerable()
+                    .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill)
+                    .Include(c => c.TCoachRates).AsEnumerable()
                     .Where(c => c.FVisible == true);
 
             var coaches = CCoachViewModel.CoachList(datas.ToList());
@@ -64,7 +66,8 @@ namespace prjiHealth.Controllers
                 .Include(c => c.FMember)
                 .Include(c => c.FCity)
                 .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill)
-                .Include(c => c.TCoachAvailableTimes).AsEnumerable()
+                .Include(c => c.TCoachAvailableTimes)
+                .Include(c => c.TCoachRates).AsEnumerable()
                 .Where(c => c.FVisible == true &&
                         (FCityId != null ? c.FCityId == FCityId : true) &&
                         (fGender.Length != 0 ? fGender.Contains(c.FMember.FGender.ToString()) : true) &&
