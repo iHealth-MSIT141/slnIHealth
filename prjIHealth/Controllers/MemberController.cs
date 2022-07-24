@@ -49,7 +49,7 @@ namespace prjIHealth.Controllers
                     string loginSession = JsonSerializer.Serialize(q);
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
-                    userName = $"{loginUser.FUserName}";
+                    userName = $"{loginUser.FMemberName}";
                     userID = loginUser.FMemberId;
                     if (!string.IsNullOrEmpty(ReturnUrl))
                     { return LocalRedirect(ReturnUrl); }
@@ -64,13 +64,20 @@ namespace prjIHealth.Controllers
             userName = "登入";
             return RedirectToAction("Index","Home");
         }
-        public IActionResult Edit(int? id)
+        public IActionResult Edit()
         {
-            var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-            loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
-            var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == loginUser.FMemberId);
-            return View(q);
-
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+                var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == loginUser.FMemberId);
+                return View(q);
+            }
+            else
+            {
+                var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == 8);
+                return View(q);
+            }
         }
         [HttpPost]
         public IActionResult Edit(CLoginViewModel vModel)
@@ -97,7 +104,7 @@ namespace prjIHealth.Controllers
 
             }       
             _context.SaveChanges();
-            return RedirectToAction("Login","Member");
+            return RedirectToAction("Edit","Member");
         }
         // GET: Member
         public IActionResult Register()

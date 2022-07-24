@@ -50,7 +50,7 @@
 
     <style>
         body {
-            background-color: #F0FFF0;
+            /*background-color: #F0FFF0;*/
         }
             .container-all {
                 display: flex;
@@ -70,9 +70,11 @@
             }
 
         .container-right {
-            background-color: #F0FFF0;
+            /*background-color: #F0FFF0;*/
+            /*background-color: rgba(168, 186, 32, 0.1);*/
+            background-color: #EFF0EA;
             width: 100%;
-            height:100vh;
+            height: 100vh;
             text-align: center;
             padding: 30px;
         }
@@ -186,7 +188,7 @@
                         <!-- 子連結列表  -->
                         <ul id="CoachList" class="list-unstyled collapse">
                             <li>
-                                <a href="~/Admin/CoachManage/CoachList">-審核教練<i class="far fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a href="~/Admin/CoachManage/CoachList">-教練履歷審核<i class="far fa fa-pencil-square-o" aria-hidden="true"></i></a>
                             </li>
                             <li>
                                 <a href="~/Admin/CoachManage/RateList">-教練評論管理<i class="far fa fa-star-half-o" aria-hidden="true"></i></a>
@@ -212,7 +214,7 @@
             </nav>
         </div>
         <!-- 右邊 -->
-        <div class="container-right">
+        <div class="container-right" style="height:100vh;overflow:scroll;">
             <div class="container-fluid">
                 @RenderBody()
             </div>
