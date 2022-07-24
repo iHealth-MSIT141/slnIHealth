@@ -623,14 +623,14 @@
             </div>
             <div class="modal-body">
 
-                <form action="~/Member/ResetPassword" id="passwordForgotForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                <form action="~/Member/ResetPassword" id="resetPasswordForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
                     <div class="form-group">
                         <label for="fEmail">請輸入註冊時的電子信箱</label>
-                        <input type="text" class="form-control" id="fEmail" name="fEmail" placeholder="email">
+                        <input type="text" class="form-control" id="fEmailReset" name="fEmail" placeholder="email">
                     </div>
                     <div class="form-group">
                         <label for="fPassword">請輸入密碼</label>
-                        <input type="text" class="form-control" id="fEmail" name="fPassword" placeholder="登入密碼">
+                        <input type="text" class="form-control" id="fPasswordReset" name="fPassword" placeholder="登入密碼">
                     </div>
                     <div class="form-group">
                         <label for="firstPassword">請輸入重設密碼</label>
@@ -644,7 +644,7 @@
                     </div>
                     <div class="modal-footer row">
                         <div class=" col-md-4">
-                            <button id="btnSubmit" type="submit" value="送出" class="btn btn-primary ">
+                            <button id="btnResetPassword" type="submit" value="送出" class="btn btn-primary ">
                                 送出<i class="fa fa-paper-plane"></i>
                             </button>
                         </div>
@@ -743,5 +743,36 @@
                 }
             });
         });
+        //==============================ajax重設密碼,popup登入頁面==============================
+        const btnRP = document.querySelector('#btnResetPassword');
+        btnRP.addEventListener('click', (event) =>
+        {
+            event.preventDefault();
+            let data = $("#resetPasswordForm").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Member/ResetPassword",
+                data: data,
+                success: function (data)
+                {
+                    if (data == "false")
+                    {
+                        alert("輸入的資料錯誤,請重新輸入");
+                        $('#fEmailReset').val("");
+                        $('#fPasswordReset').val("");
+                        $('#firstPassword').val("");
+                        $('#confirmPassword').val("");
+
+                    } else
+                    {
+                        alert(`${data},密碼重設成功, 請登入`);
+                        $('#resetPasswordModal').modal('hide');
+                        $('#loginModal').modal('show');
+                    }
+                }
+            });
+        });
+
+
     </script>
 }
