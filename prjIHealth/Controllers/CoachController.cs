@@ -26,6 +26,34 @@ namespace prjiHealth.Controllers
             _context = context;
             _environment = environment;
         }
+        int userId = 11; //TODO 取登入者的MemberId
+        public IActionResult CoachCalendar()
+        {
+            return View();
+        }
+
+        //取得教練所有排課
+        public IActionResult GetAllReservation()
+        {
+            var coachId = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId).FCoachId;
+            var reservations = _context.TReservations
+                .Include(r => r.FCourse).ThenInclude(c=>c.FCoachContact).ThenInclude(c => c.FMember)
+                .Where(r=>r.FCourse.FCoachContact.FCoachId == coachId).OrderBy(r=>r.FCourseTime).ToList();
+
+            var reservationList=CCalendarViewModel.ReservationList(reservations);
+            return Json(reservationList);
+        }
+        //取得所有有排課的MemberId
+        public IActionResult GetReservationMemId()
+        {
+            var coachId = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId).FCoachId;
+            var memIdList = _context.TReservations
+                .Include(r => r.FCourse).ThenInclude(c => c.FCoachContact).ThenInclude(c => c.FMember)
+                .Where(r => r.FCourse.FCoachContact.FCoachId == coachId)
+                .Select(r=>r.FCourse.FCoachContact.FMemberId).Distinct().ToList();
+            return Json(memIdList);
+        }
+
         //教課列表
         public IActionResult TeachingList()
         {
@@ -33,9 +61,53 @@ namespace prjiHealth.Controllers
             if (coach == null)
                 return RedirectToAction("CreateResume");
 
-            var data = _context.TCourses.Include(c => c.FCoachContact).Where(c => c.FCoachContact.FCoachId == coach.FCoachId).ToList();
-            return View(CCourseViewModel.CourseList(data));
+            var data = _context.TCourses
+                .Include(c => c.FCoachContact).ThenInclude(cc=>cc.FMember)
+                .Include(c=>c.TReservations)
+                .Where(c => c.FCoachContact.FCoachId == coach.FCoachId).ToList();
+            return View(CTeachingListViewModel.CourseList(data));
         }
+        
+        //完成排課
+        public IActionResult ReservationDone(int id)
+        {
+            var reservation = _context.TReservations.FirstOrDefault(r => r.FReservationId == id);
+            reservation.FStatusNumber = 61;
+            _context.SaveChanges();
+
+            //若Reservation皆結束，即修改課程狀態為「已結束」
+            int courseId = (int)reservation.FCourseId;
+            if (_context.TReservations.Where(r => r.FCourseId == courseId).Select(r => r.FStatusNumber).ToList().All(num=>num==61))
+            {
+                var thisCourse = _context.TCourses.FirstOrDefault(c => c.FCourseId == courseId);
+                thisCourse.FStatusNumber = 56;
+            }
+            _context.SaveChanges();
+            return Content("Success", "text/plain");
+        }
+        //更改時間
+        public IActionResult EditReservation(int id,string date,string time)
+        {
+            var reservation = _context.TReservations.FirstOrDefault(r => r.FReservationId == id);
+            string newDate = date.Replace("-", "");
+            string newTime = time.Length == 1 ? "0" + time : time;
+            reservation.FCourseTime = newDate + newTime + "00";
+            _context.SaveChanges();
+            return Content("Success", "text/plain");
+        }
+        //取得進行中課程
+        public IActionResult GetCourseInProcess(int id)
+        {
+            var courses = _context.TCourses.Where(c => c.FStatusNumber == id).Select(c => c.FCourseId).ToList();
+            return Json(courses);
+        }
+        //取得已結束課程
+        public IActionResult GetCourseDone(int id)
+        {
+            var courses = _context.TCourses.Where(c => c.FStatusNumber == id).Select(c => c.FCourseId).ToList();
+            return Json(courses);
+        }
+
         //成為教練--MemberId尚無教練權限
         public IActionResult CreateResume()
         {
@@ -117,13 +189,16 @@ namespace prjiHealth.Controllers
             _context.SaveChanges();
             return Content("Success", "text/plain");
         }
-
-        int userId = 11; //TODO 取登入者的MemberId
+        
         //修改履歷
         public IActionResult EditResume()
         {
-            TCoach data = _context.TCoaches.Include(c => c.TCoachSkills).Include(c => c.TCoachAvailableTimes).
-                Include(c => c.TCoachExperiences).Include(c => c.TCoachLicenses).FirstOrDefault(c => c.FMemberId == userId);
+            TCoach data = _context.TCoaches
+                .Include(c => c.TCoachSkills)
+                .Include(c => c.TCoachAvailableTimes)
+                .Include(c => c.TCoachExperiences)
+                .Include(c => c.TCoachLicenses)
+                .FirstOrDefault(c => c.FMemberId == userId);
             CCoachViewModel vModel = new CCoachViewModel
             {
                 Coach = data

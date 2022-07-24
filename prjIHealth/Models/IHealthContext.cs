@@ -57,7 +57,7 @@ namespace prjIHealth.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=IHealth;Integrated Security=True;MultipleActiveResultSets=true");
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=IHealth;Integrated Security=True");
             }
         }
 
@@ -87,18 +87,13 @@ namespace prjIHealth.Models
 
                 entity.ToTable("tAvailableTimes");
 
-                entity.HasIndex(e => e.FAvailableTimeNum, "IX_tAvailableTimes")
-                    .IsUnique();
-
                 entity.Property(e => e.FAvailableTimeId).HasColumnName("fAvailableTimeID");
 
                 entity.Property(e => e.FAvailableTime)
                     .HasMaxLength(50)
                     .HasColumnName("fAvailableTime");
 
-                entity.Property(e => e.FAvailableTimeNum)
-                    .IsRequired()
-                    .HasColumnName("fAvailableTimeNum");
+                entity.Property(e => e.FAvailableTimeNum).HasColumnName("fAvailableTimeNum");
             });
 
             modelBuilder.Entity<TBodyRecord>(entity =>
@@ -179,7 +174,7 @@ namespace prjIHealth.Models
                 entity.HasOne(d => d.FCoach)
                     .WithMany(p => p.TCandidates)
                     .HasForeignKey(d => d.FCoachId)
-                    .HasConstraintName("FK_tCandidates_tCoaches");
+                    .HasConstraintName("FK_tCandidates_tCoaches1");
 
                 entity.HasOne(d => d.FMember)
                     .WithMany(p => p.TCandidates)
@@ -295,12 +290,6 @@ namespace prjIHealth.Models
                 entity.Property(e => e.FMemberId).HasColumnName("fMemberID");
 
                 entity.Property(e => e.FStatusNumber).HasColumnName("fStatusNumber");
-
-                entity.HasOne(d => d.FAvailableTimeNumNavigation)
-                    .WithMany(p => p.TCoachContacts)
-                    .HasPrincipalKey(p => p.FAvailableTimeNum)
-                    .HasForeignKey(d => d.FAvailableTimeNum)
-                    .HasConstraintName("FK_tCoachContacts_tAvailableTimes");
 
                 entity.HasOne(d => d.FCoach)
                     .WithMany(p => p.TCoachContacts)
@@ -434,12 +423,6 @@ namespace prjIHealth.Models
 
                 entity.Property(e => e.FVisible).HasColumnName("fVisible");
 
-                entity.HasOne(d => d.FAvailableTimeNumNavigation)
-                    .WithMany(p => p.TCourses)
-                    .HasPrincipalKey(p => p.FAvailableTimeNum)
-                    .HasForeignKey(d => d.FAvailableTimeNum)
-                    .HasConstraintName("FK_tCourses_tAvailableTimes");
-
                 entity.HasOne(d => d.FCoachContact)
                     .WithMany(p => p.TCourses)
                     .HasForeignKey(d => d.FCoachContactId)
@@ -458,9 +441,7 @@ namespace prjIHealth.Models
 
                 entity.ToTable("tDiscount");
 
-                entity.Property(e => e.FDiscountId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("fDiscountID");
+                entity.Property(e => e.FDiscountId).HasColumnName("fDiscountID");
 
                 entity.Property(e => e.FDiscountCode)
                     .IsRequired()
@@ -893,7 +874,7 @@ namespace prjIHealth.Models
                     .WithMany(p => p.TProductsImages)
                     .HasForeignKey(d => d.FProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_tProductsImages_tProducts");
+                    .HasConstraintName("FK_tProductsImages_tProducts1");
             });
 
             modelBuilder.Entity<TRegion>(entity =>
