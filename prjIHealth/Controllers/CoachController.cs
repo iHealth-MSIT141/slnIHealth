@@ -299,6 +299,9 @@ namespace prjiHealth.Controllers
             _context.SaveChanges();
             return Content(coach.FVisible.ToString(), "text/plain");
         }
+        
+
+        //教練專區-招生紀錄==================================================
         public IActionResult RecruitmentList()
         {
             //取得登入者ID
@@ -329,13 +332,15 @@ namespace prjiHealth.Controllers
             }
 
             return View(contactViewModels);
-        } //教練專區-招生紀錄
+        } 
+        //教練專區-招生紀錄:改變聯繫狀態
         public IActionResult changeContactStatus(TCoachContact contact)
         {
             db.TCoachContacts.FirstOrDefault(c => c.FCoachContactId == contact.FCoachContactId).FStatusNumber = contact.FStatusNumber;
             db.SaveChanges();
             return Content("");
-        } //教練專區-招生紀錄:改變聯繫狀態
+        } 
+        //教練專區-招生紀錄:顯示學員資料
         public IActionResult showMember(int? memberId)
         {
             CContactViewModel member = new CContactViewModel(db)
@@ -344,7 +349,8 @@ namespace prjiHealth.Controllers
             };
 
             return Json(member);
-        } //教練專區-招生紀錄:顯示學員資料
+        } 
+        //教練專區-招生紀錄:新增課程&排課
         public IActionResult createCourse(TCourse course)
         {
             //加入課程
@@ -414,11 +420,17 @@ namespace prjiHealth.Controllers
                 db.TReservations.Add(reservation);
                 date = date.AddDays(7);
             }
+
+            //增加教練課程數量
+            var courseCount = db.TCoaches.FirstOrDefault(c => c.FCoachId == course.FCoachContact.FCoachId).FCourseCount;
+            db.TCoaches.FirstOrDefault(c => c.FCoachId == course.FCoachContact.FCoachId).FCourseCount = courseCount + 1;
+            
             db.SaveChanges();
 
             return Content("");
-        } //教練專區-招生紀錄:新增課程&排課
-        public IActionResult loadContact(int? flag, int? statusNum)    //教練專區-招生紀錄:依聯繫時間排序
+        } 
+        //教練專區-招生紀錄:依聯繫時間排序
+        public IActionResult loadContact(int? flag, int? statusNum)    
         {
             //取得登入者ID
             int theCoachMemberId = 132; //TODO:改為演示用教練MemberID
@@ -464,6 +476,31 @@ namespace prjiHealth.Controllers
                 contactViewModels.Add(contactViewModel);
             }
             return Json(contactViewModels);
+        }
+        //教練專區-招生紀錄:顯示訊息
+        public IActionResult loadChatText(int? id)
+        {
+            var tContactTexts = db.TContactTexts.Where(t => t.FCoachContactId == id).OrderBy(t => t.FContactTextTime);
+            List<CContactTextViewModel> texts = new List<CContactTextViewModel>();
+            if (tContactTexts.Count() != 0)
+            {
+                foreach (var t in tContactTexts)
+                {
+                    CContactTextViewModel contactTextViewModel = new CContactTextViewModel(db);
+                    contactTextViewModel.TcontactText = t;
+                    texts.Add(contactTextViewModel);
+                }
+            }
+            return Json(texts);
+        }
+        //教練專區-招生紀錄:傳送訊息
+        public IActionResult saveText(TContactText contactText)
+        {
+            contactText.FContactTextTime = DateTime.Now.ToString("yyyyMMddHHmm");
+            contactText.FIsCoach = true;
+            db.TContactTexts.Add(contactText);
+            db.SaveChanges();
+            return Content("");
         }
 
     }
