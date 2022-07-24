@@ -457,10 +457,51 @@
         </div>
     </div>
 </section>
-@*加入會員Modal*@
+@*會員登入Modal*@
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100" id="exampleModalLabel">歡迎登入IHealth會員! <span></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Login" asp-controller="Member" id="loginForm">
+                    <div class="form-group">
+                        <label for="fUserName">使用者帳號</label>
+                        <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號">
+                    </div>
+                    <div class="form-group">
+                        <label for="fPassword">密碼</label>
+                        <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼">
+                    </div>
+                    <div>
+                        <input id="btnLoginModal" type="button" value="會員登入" class="btn btn-primary ">
+                    </div>
+                </form>
+                <div class="modal-footer row">
+                    <div class="text-center col-md-4">
+                        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal">
+                            忘記密碼? <i class="fa fa-key"></i>
+                        </button>
+                    </div>
+                    <div class="text-center col-md-4">
+                        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registerModal" data-dismiss="modal">
+                            加入會員 <i class="fa fa-user"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*會員註冊Modal*@
 <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
                 <h4 class="modal-title w-100" id="exampleModalLabel">歡迎加入IHealth會員! <span></span></h4>
@@ -469,7 +510,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="Register" asp-controller="Member">
+                <form asp-action="Register" asp-controller="Member" id="registerForm">
                     <div class="form-group">
                         <label for="fUserName">使用者帳號</label>
                         <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號,至少需二個字(含)以上">
@@ -482,10 +523,6 @@
                         <label for="fPassword">密碼</label>
                         <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母">
                     </div>
-                    @*<div class="form-group">
-                        <label for="fPassword">確認密碼</label>
-                        <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母">
-                    </div>*@
                     <div class="form-group">
                         <label for="fAddress">地址</label>
                         <input type="text" class="form-control" id="fAddress" name="fAddress" placeholder="地址">
@@ -502,7 +539,6 @@
                         <label for="fEmail">電子郵件信箱</label>
                         <input type="text" class="form-control" id="fEmail" name="fEmail" placeholder="電子郵件信箱">
                     </div>
-
                     <div class="d-md-flex justify-content-start align-items-center mb-4 py-2" id="divGender">
                         <h6 class="mb-0 me-4">生理性別: </h6>
                         <div class="form-check form-check-inline mb-0 me-4">
@@ -524,7 +560,7 @@
                         <input type="hidden" value="false" name="fDisabled" class="form-control" id="fDisabled" />
                     </div>
                     <div class="form-group col-md-8 col-md-4-offset">
-                        <input id="btnSubmit" type="submit" value="送出" class="btn btn-primary" />
+                        <input id="btnRegister" type="button" value="送出" class="btn btn-primary" />
                         <input type="reset" value="重設" class="btn btn-danger" />
                     </div>
                 </form>
@@ -532,75 +568,141 @@
         </div>
     </div>
 </div>
-@*會員登入Modal*@
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+@*忘記密碼*@
+<div class="modal fade" id="passwordForgotModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">歡迎登入IHealth會員! <span></span></h4>
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 " id="exampleModalLabel">忘記密碼!</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="~/Member/Login" id="addForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                <form action="~/Member/ForgotPassword" id="passwordForgotForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
                     <div class="form-group">
-                        <label for="fUserName">使用者帳號</label>
-                        <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號">
+                        <label for="fEmail">請輸入註冊時的電子信箱</label>
+                        <input type="text" class="form-control" id="fEmail" name="fEmail" placeholder="email">
                     </div>
-                    <div class="form-group">
-                        <label for="fPassword">密碼</label>
-                        <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼">
-                    </div>
+
                     <div>
-                        <input id="btnLogin1" type="submit" value="會員登入" class="btn btn-primary "><i class="fa fa-sign-in"></i>
+                        <input id="btnSubmit" type="submit" value="送出" class="btn btn-primary ">
                     </div>
 
                 </form>
-
             </div>
             <div class="modal-footer row">
-                <div class="text-center col-md-4">
-                    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal">
-                        忘記密碼? <i class="fa fa-key"></i>
+                <div class="offset-md-4 col-md-4">
+                    <button id="btnResetPwd" class="btn btn-primary mb-3" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal">
+                        重設密碼 <i class="fa fa-key"></i>
                     </button>
                 </div>
-                <div class="text-center col-md-4">
-                    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">
-                        加入會員 <i class="fa fa-user"></i>
+                <div class=" col-md-4">
+                    <button id="btnForgotLogin" class="btn btn-primary mb-3" data-toggle="modal" data-target="#loginModal" data-dismiss="modal">
+                        回到登入頁面<i class="fa fa-user"></i>
                     </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@*重設密碼*@
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 " id="exampleModalLabel">重設密碼! <span></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="~/Member/ResetPassword" id="passwordForgotForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                    <div class="form-group">
+                        <label for="fEmail">請輸入註冊時的電子信箱</label>
+                        <input type="text" class="form-control" id="fEmail" name="fEmail" placeholder="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="fPassword">請輸入密碼</label>
+                        <input type="text" class="form-control" id="fEmail" name="fPassword" placeholder="登入密碼">
+                    </div>
+                    <div class="form-group">
+                        <label for="firstPassword">請輸入重設密碼</label>
+                        <input type="text" class="form-control" id="firstPassword" name="firstPassword" placeholder="重設密碼 ">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">請輸入確認密碼</label>
+                        <input type="text" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="確認密碼 ">
+                    </div>
+                    <div>
+                    </div>
+                    <div class="modal-footer row">
+                        <div class=" col-md-4">
+                            <button id="btnSubmit" type="submit" value="送出" class="btn btn-primary ">
+                                送出<i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class=" col-md-6">
+                            <button id="btnResetLogin" class="btn btn-primary " data-toggle="modal" data-target="#loginModal" data-dismiss="modal">
+                                回到登入頁面 <i class="fa fa-user"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 @section Scripts{
     <script>
-        $(".divOption").hover(function ()
-        {
-            $(this).children("img").css("border-radius", "50%").css("opacity", "0.2").end().find("h1").css("color", "black").end().children(".divBackground").css("visibility", "hidden");
-        }, function ()
-        {
-            $(this).children("img").css("border-radius", "2%").css("opacity", "0.8").end().find("h1").css("color", "#ffffff").end().children(".divBackground").css("visibility", "visible");
-        })
         //註冊取得系統日期
         var registerD = new Date();
         var year = registerD.getFullYear().toString();
         var month = (registerD.getMonth() + 101).toString().substring(1);
         var day = (registerD.getDate() + 100).toString().substring(1);
         var str = year + month + day;
-        //let d = document.querySelector("#fRegisterDate").val(str);
-        //document.querySelector("#fRegisterDate").val(str);
         $("#fRegisterDate").val(str);
+        //ajax 會員登入
+        const btnUserName = document.querySelector('#btnLoginModal');
+        btnUserName.addEventListener('click', (event) =>
+        {
+            event.preventDefault();
+            let data = $("#loginForm").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Member/login",
+                data: data,
+                success: function (data)
+                {
+                    if (data == "false") { alert("登入資料錯誤, 請重新登入"); } else
+                    {
+                        $('#loginModal').modal('hide');
+                        alert(`${data}:歡迎登入`);
+                        window.location.href = "/Home/會員專區ViewDemo" }
+                }
+            });
+        });
+        //登入時menu_dropdown顯示, 否則隱藏
+        let spanText = $("#btnLogin>span").text();
+        if (spanText == "登入")
+        {
+            console.log(spanText + "aa")
+            $(".header__menu__dropdown").css("display", "none");
+        } else
+        {
+            console.log(spanText + "BB")
+        }
 
-        $(".header__menu__dropdown").css("display", "none");
-        //---------------------------------------------
+        //註冊會員後,popup 登入頁面 by bootstrap modal
         const btn = document.querySelector('#btnRegister');
         btn.addEventListener('click', (event) =>
         {
             event.preventDefault();
-            var data = $("#registerForm").serialize();
+            let data = $("#registerForm").serialize();
             $.ajax({
                 type: "Post",
                 url: "/Member/Register",
@@ -608,10 +710,10 @@
                 success: function (result)
                 {
                     alert("歡迎您成為IHealth會員!,請登入會員")
-                    $('#register1Modal').modal('hide');
+                    $('#registerModal').modal('hide');
                     $('#loginModal').modal('show');
                 }
             });
-        });
-    </script>
+        });</script>
+    <script></script>
 }

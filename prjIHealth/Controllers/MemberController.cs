@@ -23,7 +23,7 @@ namespace prjIHealth.Controllers
     public class MemberController : Controller
     {
         utilities ul = new utilities();
-        public static TMember loginUser = null; 
+        public static TMember loginUser = null;
         public static string userName = "登入";
         private readonly IHealthContext _context;
         private IWebHostEnvironment _environment;
@@ -31,14 +31,14 @@ namespace prjIHealth.Controllers
         public MemberController(IHealthContext context, IWebHostEnvironment iwhe)
         {
             _context = context;
-            _environment=iwhe;
+            _environment = iwhe;
         }
         public IActionResult Login()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Login(CLoginViewModel vModel,string ReturnUrl)
+        public IActionResult Login(CLoginViewModel vModel, string ReturnUrl)
         {
             var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
             if (q != null)
@@ -50,18 +50,37 @@ namespace prjIHealth.Controllers
                     loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
                     userName = $"{loginUser.FUserName}";
                     //userID = loginUser.FMemberId;
-                    if (!string.IsNullOrEmpty(ReturnUrl))
-                    { return LocalRedirect(ReturnUrl); }
-                   return RedirectToAction( "會員專區ViewDemo","Home" );
+                    //if (!string.IsNullOrEmpty(ReturnUrl))
+                    //{
+                    //    return LocalRedirect(ReturnUrl);
+                    //}
+
+                    //return RedirectToAction("會員專區ViewDemo", "Home");
+                    return Content(loginUser.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
+
                 }
             }
-            return RedirectToAction("Index", "Home");
+             return Content("false", "text/plain", System.Text.Encoding.UTF8); 
+            //return RedirectToAction("Index", "Home");
         }
         public IActionResult Logout()
         {
             HttpContext.Session.Remove(CDictionary.SK_Logined_User);
             userName = "登入";
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
+        }
+        public IActionResult getUserName()
+        {
+            var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+            loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+            if (loginUser.FUserName != null)
+            {
+                return Content(loginUser.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
+            }
+            else
+            {
+                return Content("false", "text/plain", System.Text.Encoding.UTF8);
+            };
         }
         public IActionResult Edit(int? id)
         {
@@ -69,17 +88,14 @@ namespace prjIHealth.Controllers
             loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
             var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == loginUser.FMemberId);
             return View(q);
-
         }
         [HttpPost]
         public IActionResult Edit(CLoginViewModel vModel)
         {
-            //var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-            //loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
             var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == vModel.fMemberId);
             if (q != null)
             {
-                if (vModel.photo!= null)
+                if (vModel.photo != null)
                 {
                     string pName = Guid.NewGuid().ToString() + ".jpg";
                     vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
@@ -93,10 +109,9 @@ namespace prjIHealth.Controllers
                 q.FEmail = vModel.fEmail;
                 q.FRemarks = vModel.fRemarks;
                 q.FPhone = vModel.fPhone;
-
-            }       
+            }
             _context.SaveChanges();
-            return RedirectToAction("Login","Member");
+            return RedirectToAction("Login", "Member");
         }
         // GET: Member
         public IActionResult Register()
@@ -112,14 +127,11 @@ namespace prjIHealth.Controllers
             {
                 _context.TMembers.Add(tm);
                 _context.SaveChanges();
-                //return RedirectToAction("Login", "Member");
                 result = true;
-
             }
-            else { result = false;  /*return RedirectToAction("register", "Member");*/ }
+            else { result = false; }
             return Json(result);
         }
-
         public IActionResult Delete(int? id)
         {
             IHealthContext dblIHealth = new IHealthContext();
@@ -131,15 +143,12 @@ namespace prjIHealth.Controllers
             }
             return RedirectToAction("ShowTrackList");
         }
-
-     
-
         public IActionResult ForgotPassword()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult ForgotPassword([Bind("fEmail,")]CLoginViewModel vModel)
+        public IActionResult ForgotPassword([Bind("fEmail,")] CLoginViewModel vModel)
         {
             //var exists = _context.Members.Any(m => m.Name == name);
             //return Content(exists.ToString(), "text/plain");
@@ -149,9 +158,11 @@ namespace prjIHealth.Controllers
             if (q != null)
             {
                 utilities.sendMail(q.FUserName, q.FEmail);
-                return RedirectToAction("Login","Member" );
+                return RedirectToAction("Login", "Member");
             }
-            else { return RedirectToAction("Index","Home");
+            else
+            {
+                return RedirectToAction("Index", "Home");
             }
             //labForgotPWD.BackColor = Color.AliceBlue;
             //if (string.IsNullOrEmpty(txtAccountName.Text)) { MessageBox.Show("請輸入使用者名稱!"); labForgotPWD.BackColor = Color.Transparent; }
@@ -175,22 +186,25 @@ namespace prjIHealth.Controllers
         }
         public IActionResult ResetPassword() { return View(); }
         [HttpPost]
-        public IActionResult ResetPassword(CLoginViewModel vmodel) {
-            var q = _context.TMembers.FirstOrDefault(m => m.FEmail ==vmodel.fEmail&& m.FPassword==vmodel.fPassword);
-            if (q != null) {
-                if (vmodel.firstPassword == vmodel.confirmPassword) {
+        public IActionResult ResetPassword(CLoginViewModel vmodel)
+        {
+            var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vmodel.fEmail && m.FPassword == vmodel.fPassword);
+            if (q != null)
+            {
+                if (vmodel.firstPassword == vmodel.confirmPassword)
+                {
                     q.FPassword = vmodel.firstPassword;
                     _context.SaveChanges();
                     return RedirectToAction("Login", "Member");
                 }
-            } 
-                        return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         //========================追蹤清單===========================
 
         int userID = 0;
- 
+
         public IActionResult ShowTrackList()
         {
             CProductViewModel ProductvModel = new CProductViewModel();
