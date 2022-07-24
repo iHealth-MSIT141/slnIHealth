@@ -469,7 +469,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="Login" asp-controller="Member" id="loginForm">
+                <form asp-action="Login" asp-controller="Member" id="loginForm" name="loginForm" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="fUserName">使用者帳號</label>
                         <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號" autocomplete="off">
@@ -478,10 +478,10 @@
                         <label for="fPassword">密碼</label>
                         <input type="password" class="form-control" id="fPassword" name="fPassword" placeholder="密碼" autocomplete="off">
                     </div>
-                     
+
                     <div class="modal-footer row">
                         <div class="text-center col">
-                            <button class="btn btn-primary mb-3" id="btnLoginModal" >
+                            <button class="btn btn-primary mb-3" id="btnLoginModal">
                                 會員登入<i class="fa fa-sign-in"></i>
                             </button>
                         </div>
@@ -596,17 +596,17 @@
                 </form>
             </div>
             @*<div class="modal-footer row">
-                <div class="offset-md-4 col-md-4">
-                    <button id="btnResetPwd" class="btn btn-primary mb-3" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal">
-                        重設密碼 <i class="fa fa-key"></i>
-                    </button>
-                </div>
-                <div class=" col-md-4">
-                    <button id="btnForgotLogin" class="btn btn-primary mb-3" data-toggle="modal" data-target="#loginModal" data-dismiss="modal">
-                        回到登入頁面<i class="fa fa-user"></i>
-                    </button>
-                </div>
-            </div>*@
+                    <div class="offset-md-4 col-md-4">
+                        <button id="btnResetPwd" class="btn btn-primary mb-3" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal">
+                            重設密碼 <i class="fa fa-key"></i>
+                        </button>
+                    </div>
+                    <div class=" col-md-4">
+                        <button id="btnForgotLogin" class="btn btn-primary mb-3" data-toggle="modal" data-target="#loginModal" data-dismiss="modal">
+                            回到登入頁面<i class="fa fa-user"></i>
+                        </button>
+                    </div>
+                </div>*@
         </div>
     </div>
 </div>
@@ -669,25 +669,24 @@
         var day = (registerD.getDate() + 100).toString().substring(1);
         var str = year + month + day;
         $("#fRegisterDate").val(str);
-        //====================ajax 會員登入==================================
+        //====================ajax 會員登入(fetch)==================================
         const btnUserName = document.querySelector('#btnLoginModal');
         btnUserName.addEventListener('click', (event) =>
         {
             event.preventDefault();
-            let data = $("#loginForm").serialize();
-            $.ajax({
-                type: "Post",
-                url: "/Member/login",
-                data: data,
-                success: function (data)
+            var formData = new FormData(document.querySelector("#loginForm"));
+            fetch("/Member/login", {
+                body: formData,
+                method: "Post"
+            }).then(Response => Response.text()).then(data =>
+            {
+                if (data == "false") { alert("登入資料錯誤, 請重新登入"); } else
                 {
-                    if (data == "false") { alert("登入資料錯誤, 請重新登入"); } else
-                    {
-                        $('#loginModal').modal('hide');
-                        alert(`${data}:歡迎登入`);
-                        window.location.href = "/Home/會員專區ViewDemo" }
+                    $('#loginModal').modal('hide');
+                    alert(`${data}:歡迎登入`);
+                    window.location.href = "/Home/會員專區ViewDemo"
                 }
-            });
+            })
         });
         //==================登入時menu_dropdown顯示, 否則隱藏=====================
         let spanText = $("#btnLogin>span").text();

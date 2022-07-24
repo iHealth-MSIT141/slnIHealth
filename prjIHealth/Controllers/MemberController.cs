@@ -185,12 +185,9 @@ namespace prjIHealth.Controllers
                 {
                     q.FPassword = vmodel.firstPassword;
                     _context.SaveChanges();
-                    //return RedirectToAction("Login", "Member");
                     return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
-
                 }
             }
-            //return RedirectToAction("Index", "Home");
             return Content("false", "text/plain", System.Text.Encoding.UTF8);
 
         }
