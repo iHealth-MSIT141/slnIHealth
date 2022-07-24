@@ -19,7 +19,6 @@ namespace prjIHealth.Models
         }
 
         public int FCoachId { get; set; }
-        public string FCoachName { get; set; }
         public int? FMemberId { get; set; }
         public int? FCityId { get; set; }
         public string FCoachImage { get; set; }
@@ -30,6 +29,7 @@ namespace prjIHealth.Models
         public bool? FVisible { get; set; }
         public int? FCourseCount { get; set; }
         public string FSlogan { get; set; }
+        public string FCoachName { get; set; }
 
         public virtual TCity FCity { get; set; }
         public virtual TMember FMember { get; set; }

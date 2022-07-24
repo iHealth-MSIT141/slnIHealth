@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace prjIHealth.ViewModels
 {
-    public class CCourseViewModel
+    public class CTeachingListViewModel
     {
         public TCourse Course;
-        public CCourseViewModel()
+        public CTeachingListViewModel()
         {
             Course = new TCourse();
         }
-        public CCourseViewModel(TCourse c)
+        public CTeachingListViewModel(TCourse c)
         {
             Course = c;
         }
-        static public List<CCourseViewModel> CourseList(List<TCourse> courseList)
+        static public List<CTeachingListViewModel> CourseList(List<TCourse> courseList)
         {
-            List<CCourseViewModel> list = new List<CCourseViewModel>();
+            List<CTeachingListViewModel> list = new List<CTeachingListViewModel>();
             foreach (var c in courseList)
             {
-                CCourseViewModel vModel = new CCourseViewModel(c);
+                CTeachingListViewModel vModel = new CTeachingListViewModel(c);
                 list.Add(vModel);
             }
             return list;
@@ -37,13 +37,12 @@ namespace prjIHealth.ViewModels
             get { return Course.FCoachContactId; }
             set { Course.FCoachContactId = value; }
         }
-        [DisplayName("會員編號")]
         public int? MemberId
         {
             get { return Course.FCoachContact.FMember.FMemberId; }
             set { Course.FCoachContact.FMember.FMemberId = (int)value; }
         }
-        [DisplayName("會員姓名")]
+        [DisplayName("學員")]
         public string MemberName
         {
             get { return Course.FCoachContact.FMember.FMemberName; }
@@ -55,7 +54,7 @@ namespace prjIHealth.ViewModels
             get { return Course.FCoachContact.FMember.FPhone; }
             set { Course.FCoachContact.FMember.FPhone = value; }
         }
-        [DisplayName("總堂數")]
+        [DisplayName("堂數")]
         public int? FCourseTotal
         {
             get { return Course.FCourseTotal; }
@@ -67,18 +66,18 @@ namespace prjIHealth.ViewModels
             get { return Course.FCourseName; }
             set { Course.FCourseName = value; }
         }
-        [DisplayName("課程時間")]
+        [DisplayName("上課時段")]
         public int? FAvailableTimeNum
         {
             get { return Course.FAvailableTimeNum; }
             set { Course.FAvailableTimeNum = value; }
-        }             
+        }        
         public int? FStatusNumber
         {
             get { return Course.FStatusNumber; }
             set { Course.FStatusNumber = value; }
         }
-        [DisplayName("課程狀態")]
+        [DisplayName("狀態")]
         public string Status
         {
             get { return Course.FStatusNumber == 55 ? "進行中" : "已結束"; }
@@ -87,6 +86,25 @@ namespace prjIHealth.ViewModels
         {
             get { return Course.FVisible; }
             set { Course.FVisible = value; }
-        }       
+        }
+
+        //排課紀錄
+        public List<CCalendarViewModel> Reservations
+        {
+            get
+            {
+                var reservations = Course.TReservations.AsEnumerable();
+                List<CCalendarViewModel> list = new List<CCalendarViewModel>();
+                foreach (var r in reservations)
+                {
+                    CCalendarViewModel vModel = new CCalendarViewModel(r)
+                    {
+                        Reservation = r
+                    };
+                    list.Add(vModel);
+                }
+                return list;
+            }
+        }
     }
 }
