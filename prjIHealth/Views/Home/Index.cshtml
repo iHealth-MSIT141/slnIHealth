@@ -472,28 +472,31 @@
                 <form asp-action="Login" asp-controller="Member" id="loginForm">
                     <div class="form-group">
                         <label for="fUserName">使用者帳號</label>
-                        <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號">
+                        <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label for="fPassword">密碼</label>
-                        <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼">
+                        <input type="password" class="form-control" id="fPassword" name="fPassword" placeholder="密碼" autocomplete="off">
                     </div>
-                    <div>
-                        <input id="btnLoginModal" type="button" value="會員登入" class="btn btn-primary ">
+                     
+                    <div class="modal-footer row">
+                        <div class="text-center col">
+                            <button class="btn btn-primary mb-3" id="btnLoginModal" >
+                                會員登入<i class="fa fa-sign-in"></i>
+                            </button>
+                        </div>
+                        <div class="text-center col">
+                            <button class="btn btn-danger mb-3" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal">
+                                忘記密碼? <i class="fa fa-key"></i>
+                            </button>
+                        </div>
+                        <div class="text-center col">
+                            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#registerModal" data-dismiss="modal">
+                                加入會員 <i class="fa fa-user"></i>
+                            </button>
+                        </div>
                     </div>
                 </form>
-                <div class="modal-footer row">
-                    <div class="text-center col-md-4">
-                        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal">
-                            忘記密碼? <i class="fa fa-key"></i>
-                        </button>
-                    </div>
-                    <div class="text-center col-md-4">
-                        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registerModal" data-dismiss="modal">
-                            加入會員 <i class="fa fa-user"></i>
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -581,18 +584,18 @@
             </div>
             <div class="modal-body">
                 <form action="~/Member/ForgotPassword" id="passwordForgotForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
-                    <div class="form-group">
-                        <label for="fEmail">請輸入註冊時的電子信箱</label>
-                        <input type="text" class="form-control" id="fEmail" name="fEmail" placeholder="email">
+                    <div class="form-group" id="forgotPasswordDiv">
+                        <label for="fEmail">請輸入註冊時的電子信箱</label><span></span>
+                        <input type="text" class="form-control" id="fEmailInput" name="fEmail" placeholder="email">
                     </div>
 
                     <div>
-                        <input id="btnSubmit" type="submit" value="送出" class="btn btn-primary ">
+                        <input id="btnForgotPassword" type="button" value="送出" class="btn btn-primary ">
                     </div>
 
                 </form>
             </div>
-            <div class="modal-footer row">
+            @*<div class="modal-footer row">
                 <div class="offset-md-4 col-md-4">
                     <button id="btnResetPwd" class="btn btn-primary mb-3" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal">
                         重設密碼 <i class="fa fa-key"></i>
@@ -603,7 +606,7 @@
                         回到登入頁面<i class="fa fa-user"></i>
                     </button>
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
@@ -642,7 +645,7 @@
                     <div class="modal-footer row">
                         <div class=" col-md-4">
                             <button id="btnSubmit" type="submit" value="送出" class="btn btn-primary ">
-                                送出<i class="fas fa-paper-plane"></i>
+                                送出<i class="fa fa-paper-plane"></i>
                             </button>
                         </div>
                         <div class=" col-md-6">
@@ -659,14 +662,14 @@
 </div>
 @section Scripts{
     <script>
-        //註冊取得系統日期
+        //===================註冊取得系統日期================================
         var registerD = new Date();
         var year = registerD.getFullYear().toString();
         var month = (registerD.getMonth() + 101).toString().substring(1);
         var day = (registerD.getDate() + 100).toString().substring(1);
         var str = year + month + day;
         $("#fRegisterDate").val(str);
-        //ajax 會員登入
+        //====================ajax 會員登入==================================
         const btnUserName = document.querySelector('#btnLoginModal');
         btnUserName.addEventListener('click', (event) =>
         {
@@ -686,7 +689,7 @@
                 }
             });
         });
-        //登入時menu_dropdown顯示, 否則隱藏
+        //==================登入時menu_dropdown顯示, 否則隱藏=====================
         let spanText = $("#btnLogin>span").text();
         if (spanText == "登入")
         {
@@ -697,7 +700,7 @@
             console.log(spanText + "BB")
         }
 
-        //註冊會員後,popup 登入頁面 by bootstrap modal
+        //=================註冊會員後,popup 登入頁面 by bootstrap modal=============
         const btn = document.querySelector('#btnRegister');
         btn.addEventListener('click', (event) =>
         {
@@ -714,6 +717,31 @@
                     $('#loginModal').modal('show');
                 }
             });
-        });</script>
-    <script></script>
+        });
+        //=========================忘記密碼,輸入電子郵件正確,popup至重設密碼頁面==============
+        const btnFP = document.querySelector('#btnForgotPassword');
+        btnFP.addEventListener('click', (event) =>
+        {
+            event.preventDefault();
+            let data = $("#passwordForgotForm").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Member/ForgotPassword",
+                data: data,
+                success: function (data)
+                {
+                    if (data == "false")
+                    {
+                        alert("電件郵件錯誤, 請重新填寫");
+                        $('#fEmailInput').val("");
+                    } else
+                    {
+                        alert(`${data}請收信,重設密碼`);
+                        $('#passwordForgotModal').modal('hide');
+                        $('#resetPasswordModal').modal('show');
+                    }
+                }
+            });
+        });
+    </script>
 }

@@ -146,11 +146,13 @@ namespace prjIHealth.Controllers
             if (q != null)
             {
                 utilities.sendMail(q.FUserName, q.FEmail);
-                return RedirectToAction("Login", "Member");
+                //return RedirectToAction("Login", "Member");
+                return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
+
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return Content("false", "text/plain", System.Text.Encoding.UTF8);
             }
             //labForgotPWD.BackColor = Color.AliceBlue;
             //if (string.IsNullOrEmpty(txtAccountName.Text)) { MessageBox.Show("請輸入使用者名稱!"); labForgotPWD.BackColor = Color.Transparent; }
