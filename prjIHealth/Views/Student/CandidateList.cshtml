@@ -8,6 +8,7 @@
         .divTopic2 {
             margin-bottom: 3px;
         }
+
         .divBar1 {
             width: 200px;
             height: 3px;
@@ -15,6 +16,7 @@
             margin-bottom: 30px;
             background-color: #7FAD39;
         }
+
         .divBar2 {
             width: 200px;
             height: 3px;
@@ -25,14 +27,16 @@
 
         /*候選教練*/
         .divCards {
-            padding:0px 20px;
+            padding: 0px 20px;
             display: flex;
         }
+
         .divCard {
             margin: 20px;
-            transition:.3s;
-            width:22rem;
+            transition: .3s;
+            width: 22rem;
         }
+
             .divCard:hover {
                 border-color: seagreen;
                 box-shadow: 2px 2px 5px lightgray;
@@ -40,16 +44,19 @@
 
         .divCandImg {
             padding: 20px 10px;
-        }  
-        .divCandImg img{
-            width:160px;
-            height:180px;
         }
+
+            .divCandImg img {
+                width: 160px;
+                height: 180px;
+            }
+
         .divName {
             padding: 0px;
             margin-bottom: 15px;
             text-align: center;
         }
+
             .divName > h5 {
                 margin: 0px;
                 font-weight: 700;
@@ -61,10 +68,12 @@
             margin-bottom: 20px;
             padding: 0px;
         }
+
         .btn-dark {
             background-color: #7FAD39;
-            border:none;
+            border: none;
         }
+
             .btn-dark:hover {
                 background-color: #4F6C24;
                 border: none;
@@ -78,18 +87,20 @@
             margin-left: 30px;
             height: 70px;
         }
-        
+
         .divOther {
             padding: 0px;
         }
+
             .divOther span {
                 color: #7F965C;
                 line-height: 70px;
             }
+
             .divOther i {
                 color: #7F965C;
             }
-        
+
         .divUrl {
             margin-left: 10px;
             padding: 15px;
@@ -97,18 +108,21 @@
             border: 1px solid #BFD69C;
             border-radius: 20px;
         }
+
             .divUrl a {
                 color: #7FAD39;
-                text-decoration:none;
-                transition:.3s;
+                text-decoration: none;
+                transition: .3s;
             }
+
             .divUrl i {
                 color: #DFEACE;
             }
-                .divUrl a:hover {
-                    color: #5F822B;
-                }
-        
+
+            .divUrl a:hover {
+                color: #5F822B;
+            }
+
         .blog__btn {
             display: inline-block;
             font-size: 14px;
@@ -119,38 +133,51 @@
             padding: 14px 20px 12px;
             border-radius: 25px;
         }
+
             .blog__btn:visited {
                 color: #1c1c1c;
             }
+
             .blog__btn:hover {
                 color: black;
                 font-weight: 800;
             }
+
             .blog__btn:active {
                 color: black;
                 font-weight: 800;
             }
-        
+
         /*彈出視窗-聯繫紀錄*/
         .table {
             table-layout: fixed;
             word-break: break-all;
         }
+
         .thNo {
             width: 10%;
         }
+
         .thName {
-            width: 15%;
+            width: 12%;
         }
+
         .thPreferTime {
-            width: 25%;
+            width: 16%;
         }
+
         .thTime {
-            width: 25%;
+            width: 22%;
         }
+
         .thStatus {
             width: 25%;
         }
+
+        .thBtn {
+            width: 15%;
+        }
+
         .btnView {
             border: none;
             color: white;
@@ -160,20 +187,25 @@
             vertical-align: bottom;
             transition: .3s;
         }
+
             .btnView:hover {
                 background-color: #5F822B;
                 color: white;
             }
+
         .modal-body {
             max-height: 80vh;
             overflow-y: scroll;
         }
+
         td a {
             color: #212529;
         }
+
             td a:hover {
                 color: #7fad39;
             }
+
         .modal-title {
             color: #7fad39;
             font-weight: 800;
@@ -199,12 +231,23 @@
             border-color: #454d55;
             font-weight: bold;
         }
+
         .nice-select {
             display: none;
         }
-        
 
-        
+        /*聊天室*/
+        .chatText {
+            border: 1px solid #7FAD39;
+            border-radius: 10px;
+            padding: 3px 8px 3px 8px;
+            background-color: ghostwhite;
+        }
+
+            .chatText small {
+                color: #7fad39;
+                margin-left: 5px;
+            }
     </style>
 }
 
@@ -275,6 +318,7 @@
                                     <th class="thStatus">
                                         聯繫狀態
                                     </th>
+                                    <th class="thBtn"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -302,18 +346,23 @@
                                             <td>
                                                 @c.Status
                                             </td>
+                                            <td>
+                                                <input type="hidden" value="@c.FCoachContactId" />
+                                                <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="@c.FCoachId" onclick="getId();">訊息</button>
+                                            </td>
                                         </tr>
                                     }
                                 }
-                                <tr>
-                                    <td>...</td>
-                                    <td>.....</td>
-                                    <td>.....</td>
-                                    <td>.....</td>
-                                    <td align="right">
-                                        <button class="btnView" data-toggle="modal" data-target="#modalContact"><i class="fa fa-expand" aria-hidden="true"></i>&nbsp&nbsp展開全部</button>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>...</td>
+                                <td>.....</td>
+                                <td>.....</td>
+                                <td>.....</td>
+                                <td>.....</td>
+                                <td align="right">
+                                    <button class="btnView" data-toggle="modal" data-target="#modalContact"><i class="fa fa-expand" aria-hidden="true"></i>&nbsp&nbsp展開全部</button>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -386,6 +435,7 @@
                                                         <option value="51">已聯繫，暫無課程</option>
                                                     </select>
                                                 </th>
+                                                <th class="thBtn"></th>
                                             </tr>
                                         </thead>
                                         <tbody id="tbdContact">
@@ -413,6 +463,10 @@
                                                         <td>
                                                             @c.Status
                                                         </td>
+                                                        <td>
+                                                            <input type="hidden" value="@c.FCoachContactId" />
+                                                            <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="@c.FCoachId" onclick="getId();">訊息</button>
+                                                        </td>
                                                     </tr>
                                                 }
                                             }
@@ -427,6 +481,36 @@
         </div>
     </div>
 </section>
+
+
+@*彈出視窗:聯繫聊天室*@
+<div class="modal fade" id="modalChat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="hMemberName">聯繫教練<span></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:70vh;overflow-y:scroll">
+                <input type="hidden" id="inpChatContactId" />
+                <div class="row" id="divChatBox">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="width:100%" class="row">
+                    <textarea id="txtNewText" class="col-10"></textarea>
+                    <div class="col-2" style="justify-content: center; display: flex;">
+                        <button type="button" class="btn btn-success" id="btnSendText" style="height:40px">送出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
     <script>
@@ -460,12 +544,13 @@
             if ($(".thTime").children("i").hasClass("fa-caret-up")) {
                 $.get("@Url.Content("~/Student/loadContact")", { flag: 0, statusNum:$("#selStatus").val() }, function (contacts) {
                     $.each(contacts, function (index, value) {
-                        console.log(value);
                         html += `<tr><td>${index+1}</td>`;
                         html += `<td><a href="/Student/ViewCoachDetails">${value.coachName}</a></td>`; //換成<a href="~/Coach/ViewCoachDetails/${value.fCoachId}">
                         html += `<td>${value.availableTime}</td>`;
                         html += `<td>${value.strContactDate}</td>`;
-                        html += `<td>${value.status}</td></tr>`;
+                        html += `<td>${value.status}</td>`;
+                        html += `<td><input type="hidden" value="${value.fCoachContactId}" />`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="${value.fCoachId}" onclick="getId();">訊息</button></td></tr>`;
                     })
                     $("#tbdContact").html(html);
                 })
@@ -473,18 +558,56 @@
             else {
                 $.get("@Url.Content("~/Student/loadContact")", { flag: 1, statusNum: $("#selStatus").val() }, function (contacts) {
                     $.each(contacts, function (index, value) {
-                        console.log(value);
                         html += `<tr><td>${index+1}</td>`;
                         html += `<td><a href="/Student/ViewCoachDetails">${value.coachName}</a></td>`; //換成<a href="~/Coach/ViewCoachDetails/${value.fCoachId}">
                         html += `<td>${value.availableTime}</td>`;
                         html += `<td>${value.strContactDate}</td>`;
-                        html += `<td>${value.status}</td></tr>`;
+                        html += `<td>${value.status}</td>`;
+                        html += `<td><input type="hidden" value="${value.fCoachContactId}" />`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="${value.fCoachId}" onclick="getId();">訊息</button></td></tr>`;
                     })
                     $("#tbdContact").html(html);
                 })
             }
         }
 
+        //線上聯繫TODO 改SignalR
+        var theContactId;
+        function getId() {
+            theContactId = $(event.target).parent("td").children("input").val();
+            $("#inpChatContactId").val(theContactId);
+        }
+        function loadChatText() {
+            if (theContactId != undefined) {
+                $.get("@Url.Content("~/Student/loadChatText")", { id: theContactId }, function (texts) {
+                    console.log(theContactId)
+                    let html = "";
+                    $.each(texts, function (idx, text) {
+                        if (text.fIsCoach == false) {//學員自己
+                            html += `<div class="col-3" ></div><div class="col-9" style="float:right">`;
+                            html += `<p class="chatText" style="float: right; text-align: end;">${text.fContactText}`;
+                            html += `<small>${text.time}</small></p></div>`;
+                        }
+                        else {//對方教練
+                            html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> 教練${text.coachName}</label></div><div class="col-7">`;
+                            html += `<p class="chatText" style="float: left; text-align: start;">${text.fContactText}`;
+                            html += `<small>${text.time}</small></p></div><div class="col-3"></div></div >`;
+                        }
+                    })
+                    $("#divChatBox").html(html);
+                });
+            }
+        }
+
+        //開啟setInterval(TODO改用SIGNALR)
+        window.setInterval(() => { loadChatText(); }, 500);
+
+        //送出訊息
+        $("#btnSendText").click(function () {
+            let id = $("#inpChatContactId").val();
+            let text = $("#txtNewText").val();
+            $.get("@Url.Content("~/Student/saveText")", { FCoachContactId: id, FContactText: text })
+        })
 
     </script>
 }

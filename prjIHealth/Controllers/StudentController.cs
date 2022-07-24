@@ -235,7 +235,9 @@ namespace prjiHealth.Controllers
                 return Json(null);
             }
         }
-        public IActionResult CandidateList()    //會員專區--候選教練
+        
+        //會員專區--候選教練
+        public IActionResult CandidateList()    
         {
             //取得登入者ID
             int theMemberId = 8;
@@ -285,14 +287,16 @@ namespace prjiHealth.Controllers
             };
             return View(candidateListViewModel);
         }
-        public IActionResult delCandidate(int? id)    //會員專區--候選教練:移除候選教練
+        //會員專區--候選教練:移除候選教練
+        public IActionResult delCandidate(int? id)    
         {
             var theCandidate = db.TCandidates.FirstOrDefault(c => c.FCandidateId == id);
             db.TCandidates.Remove(theCandidate);
             db.SaveChanges();
             return Content("");
         }
-        public IActionResult loadContact(int? flag,int? statusNum)    //會員專區--候選教練:依聯繫時間排序
+        //會員專區--候選教練:依聯繫時間排序
+        public IActionResult loadContact(int? flag,int? statusNum)    
         {
             //取得登入者ID
             int theMemberId = 8;
@@ -339,6 +343,32 @@ namespace prjiHealth.Controllers
             }
             return Json(contactViewModels);
         }
+        //會員專區--候選教練:顯示訊息
+        public IActionResult loadChatText(int? id)
+        {
+            var tContactTexts = db.TContactTexts.Where(t => t.FCoachContactId == id).OrderBy(t => t.FContactTextTime);
+            List<CContactTextViewModel> texts = new List<CContactTextViewModel>();
+            if (tContactTexts.Count() != 0)
+            {
+                foreach (var t in tContactTexts)
+                {
+                    CContactTextViewModel contactTextViewModel = new CContactTextViewModel(db);
+                    contactTextViewModel.TcontactText = t;
+                    texts.Add(contactTextViewModel);
+                }
+            }
+            return Json(texts);
+        }
+        //會員專區--候選教練:傳送訊息
+        public IActionResult saveText(TContactText contactText)
+        {
+            contactText.FContactTextTime = DateTime.Now.ToString("yyyyMMddHHmm");
+            contactText.FIsCoach = false;
+            db.TContactTexts.Add(contactText);
+            db.SaveChanges();
+            return Content("");
+        }
+
 
 
         public IActionResult ViewCourseCalendar()   //課程行事曆

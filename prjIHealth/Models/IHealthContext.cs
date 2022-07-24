@@ -30,6 +30,7 @@ namespace prjIHealth.Models
         public virtual DbSet<TCoachLicense> TCoachLicenses { get; set; }
         public virtual DbSet<TCoachRate> TCoachRates { get; set; }
         public virtual DbSet<TCoachSkill> TCoachSkills { get; set; }
+        public virtual DbSet<TContactText> TContactTexts { get; set; }
         public virtual DbSet<TCourse> TCourses { get; set; }
         public virtual DbSet<TDiscount> TDiscounts { get; set; }
         public virtual DbSet<TFoodCalory> TFoodCalories { get; set; }
@@ -410,6 +411,30 @@ namespace prjIHealth.Models
                     .WithMany(p => p.TCoachSkills)
                     .HasForeignKey(d => d.FSkillId)
                     .HasConstraintName("FK_tCoachSkill_tSkills");
+            });
+
+            modelBuilder.Entity<TContactText>(entity =>
+            {
+                entity.HasKey(e => e.FContactTextId);
+
+                entity.ToTable("tContactText");
+
+                entity.Property(e => e.FContactTextId).HasColumnName("fContactTextID");
+
+                entity.Property(e => e.FCoachContactId).HasColumnName("fCoachContactID");
+
+                entity.Property(e => e.FContactText).HasColumnName("fContactText");
+
+                entity.Property(e => e.FContactTextTime)
+                    .HasMaxLength(50)
+                    .HasColumnName("fContactTextTime");
+
+                entity.Property(e => e.FIsCoach).HasColumnName("fIsCoach");
+
+                entity.HasOne(d => d.FCoachContact)
+                    .WithMany(p => p.TContactTexts)
+                    .HasForeignKey(d => d.FCoachContactId)
+                    .HasConstraintName("FK_tContactText_tCoachContacts");
             });
 
             modelBuilder.Entity<TCourse>(entity =>
