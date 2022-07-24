@@ -200,53 +200,53 @@
 </section>
 
 @section Scripts{ 
-<script>    
+<script>
     let fullDate = new Date();  //取得今天日期    
-    let year = fullDate.getFullYear();
-    let month = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
+    let Year = fullDate.getFullYear();
+    let Month = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
     let date = fullDate.getDate();
-    let totalDate = (new Date(year, month, 0)).getDate();   //取得該月總天數
+    let totalDate = (new Date(Year, Month, 0)).getDate();   //取得該月總天數
     let weekDay, firstDay;
-    $("#inputMon").val(`${year}-${month}`);        
+    $("#inputMon").val(`${Year}-${Month}`);
     CreateCalendar();
     LoadTestData();
 
     //年月改變時重新載入月曆
     $("#inputMon").change(() => {
-        year = $("#inputMon").val().substr(0, 4);
-        month = $("#inputMon").val().substr(5, 2);
-        totalDate = (new Date(year, month, 0)).getDate();
+        Year = $("#inputMon").val().substr(0, 4);
+        Month = $("#inputMon").val().substr(5, 2);
+        totalDate = (new Date(Year, Month, 0)).getDate();
         CreateCalendar();
-        LoadTestData();        
+        LoadTestData();
     })
 
     //click下個月
-    $("#btnNext").click(() => {        
-        if (month == 12) {
-            year++;
-            month = "01";
+    $("#btnNext").click(() => {
+        if (Month == 12) {
+            Year++;
+            Month = "01";
         }
         else {
             let m = parseInt($("#inputMon").val().substr(5, 2));
             let newMon = m + 1 >= 10 ? m + 1 : "0" + (m + 1)
-            month = newMon;       
-        }        
-        $("#inputMon").val(`${year}-${month}`);
+            Month = newMon;
+        }
+        $("#inputMon").val(`${Year}-${Month}`);
         CreateCalendar();
         LoadTestData();
     })
     //click上個月
     $("#btnPre").click(() => {
-        if (month == 1) {
-            year--;
-            month = "12";
+        if (Month == 1) {
+            Year--;
+            Month = "12";
         }
         else {
             let m = parseInt($("#inputMon").val().substr(5, 2));
             let newMon = m - 1 >= 10 ? m - 1 : "0" + (m - 1);
-            month = newMon;
+            Month = newMon;
         }
-        $("#inputMon").val(`${year}-${month}`);
+        $("#inputMon").val(`${Year}-${Month}`);
         CreateCalendar();
         LoadTestData();
     })
@@ -258,14 +258,14 @@
             recent.remove();    //移除舊的月曆
 
         //新增tbody、第一行
-        var tbody = document.createElement("tbody");        
+        var tbody = document.createElement("tbody");
         tbody.setAttribute("id", "tbody");
         var fragtable = document.createDocumentFragment();
         var row = document.createElement("tr");
         var count = 0;
 
         //新增第一行空格
-        firstDay = (new Date(year, month - 1, 1)).getDay(); //取得該月份第一天星期幾
+        firstDay = (new Date(Year, Month - 1, 1)).getDay(); //取得該月份第一天星期幾
         for (let i = 1; i <= firstDay; i++) {
             let td = document.createElement("td");
             td.className = "false";
@@ -294,11 +294,11 @@
                 td.appendChild(text);
                 row.appendChild(td);
                 count += 1;
-            }            
+            }
         }
 
         //新增最後一行空格
-        let d = new Date(year, month - 1, totalDate);
+        let d = new Date(Year, Month - 1, totalDate);
         let lastDay = d.getDay();
         for (i = 1; i <= 6 - lastDay; i++) {
             let td = document.createElement("td");
@@ -312,27 +312,26 @@
         //當天日期的邊框變色
         let thisYear = fullDate.getFullYear();
         let thisMon = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
-        if (thisYear == year && thisMon== month)
+        if (thisYear == Year && thisMon == Month)
             $(`#${date}`).addClass("today");
-    }    
+    }
 
     //假資料
     function LoadTestData() {
         var data = {
             "records": [{ "coach": "May", "date": "2022-07-13", "time": "16:00" },
-                { "coach": "Jessica", "date": "2022-07-25", "time": "16:00" },
-                { "coach": "Alisa", "date": "2022-07-29", "time": "16:00" },
+            { "coach": "Jessica", "date": "2022-07-25", "time": "16:00" },
+            { "coach": "Alisa", "date": "2022-07-29", "time": "16:00" },
             { "coach": "Zac", "date": "2022-08-10", "time": "16:00" },
             { "coach": "Peeta", "date": "2022-09-16", "time": "16:00" }]
         }
         $.each(data.records, function (index, record) {
-            if (record.date.substr(0, 4) == year && record.date.substr(5, 2) == month) {
+            if (record.date.substr(0, 4) == Year && record.date.substr(5, 2) == Month) {
                 let target = record.date.substr(8, 2) < 10 ? record.date.substr(9, 1) : record.date.substr(8, 2);
                 $(`#${target}`).append(`<div class="divRecord"><b>${record.coach}</b>-${record.time}</div>`);
             }
         })
     }
-
 </script>
 
 }

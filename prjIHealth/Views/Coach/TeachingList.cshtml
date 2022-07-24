@@ -1,48 +1,63 @@
-﻿@model IEnumerable<prjIHealth.ViewModels.CCourseViewModel>
-@{ 
+﻿@model IEnumerable<prjIHealth.ViewModels.CTeachingListViewModel>
+@{
     IHealthContext db = new IHealthContext();
 }
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .divTopic {
-            margin-bottom: 10px;
+        /*會員專區*/
+        .blog__btn {
+            display: inline-block;
+            font-size: 14px;
+            color: #1c1c1c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #b2b2b2;
+            padding: 14px 20px 12px;
+            border-radius: 25px;
         }
 
-        .details {
-            text-align: right;
-        }
-
-        .divBar {
-            width: 200px;
-            height: 3px;
-            margin-left: 30px;
-            margin-bottom: 50px;
-            background-color: #7FAD39;
-        }
-
-        .btn-light {
-            background-color: #DFEACE;
-        }
-
-            .btn-light:hover {
-                background-color: #F3F7ED;
+            .blog__btn:visited {
+                color: #1c1c1c;
             }
 
+            .blog__btn:hover {
+                color: black;
+                font-weight: 800;
+            }
+
+            .blog__btn:active {
+                color: black;
+                font-weight: 800;
+            }
+
+        .sidebar__item ul li a {
+            border: dashed 2px #7fad39;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            padding-left: 1vw;
+            margin-right: 8vw;
+            margin-bottom: 1vh;
+        }
+
+        /*列表*/        
         .btn-success {
             background-color: #7FAD39;
             border: none;
         }
 
-        .btn-secondary {
-            background-color: #A9B6A8;
-            border: none;
+            .btn-success:disabled {
+                background-color: gray;
+            }
+
+        .btnDone {
+            background-color: #40561C;
         }
 
-        .btnClose {
-            background-color: #4F534A;
-            border: none;
-        }
+            .btnDone:hover {
+                background-color: #4F6C24;
+            }
 
         .divLink {
             display: flex;
@@ -89,39 +104,24 @@
             text-align: right;
         }
 
-        .blog__btn {
-            display: inline-block;
-            font-size: 14px;
-            color: #1c1c1c;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 1px solid #b2b2b2;
-            padding: 14px 20px 12px;
-            border-radius: 25px;
+        .selStatus {
+            background-color: #343a40;
+            color: white;
+            font-weight: 700;
+            border: none;
         }
 
-            .blog__btn:visited {
-                color: #1c1c1c;
-            }
+        /*排課紀錄*/
+        .h5Records {
+            color: #7fad39
+        }
 
-            .blog__btn:hover {
-                color: black;
-                font-weight: 800;
-            }
+        .selTime, .selStatus {
+            display: inline !important;
+        }
 
-            .blog__btn:active {
-                color: black;
-                font-weight: 800;
-            }
-
-        .sidebar__item ul li a {
-            border: dashed 2px #7fad39;
-            border-top: none;
-            border-left: none;
-            border-right: none;
-            padding-left: 1vw;
-            margin-right: 8vw;
-            margin-bottom: 1vh;
+        .nice-select {
+            display: none !important;
         }
     </style>
 }
@@ -144,7 +144,6 @@
         </div>
     </div>
 </section>
-
 <section class="product spad">
     <div class="container">
         <div class="row">
@@ -164,19 +163,11 @@
             </div>
             <div class="col-lg-9 col-md-7">
                 @*※※※會員專區View內容請從此開始※※※*@
-                <div>
-                    <div class="divTopic reveal_t1"><h3><b>教課列表</b></h3></div>
-                </div>
-                <div class="divBar reveal_r1"></div>
                 <table class="table reveal_b1">
                     <thead class="thead-dark">
-                        
                         <tr>
                             <th>
                                 No.
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.MemberId)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.MemberName)
@@ -194,10 +185,14 @@
                                 @Html.DisplayNameFor(model => model.FCourseTotal)
                             </th>
                             <th>
-                                剩餘堂數
+                                剩餘
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Status)
+                            <th class="thStatus">
+                                <select class="selStatus" id="selStatus">
+                                    <option>@Html.DisplayNameFor(model => model.Status)</option>
+                                    <option value="55">進行中</option>
+                                    <option value="56">已結束</option>
+                                </select>
                             </th>
                             <th></th>
                         </tr>
@@ -208,12 +203,9 @@
                             foreach (var item in Model)
                             {
                                 count++;
-                                <tr>
+                                <tr id="tr_@item.FCourseId">
                                     <td>
                                         @count
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.MemberId)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.MemberName)
@@ -225,28 +217,30 @@
                                         @Html.DisplayFor(modelItem => item.FCourseName)
                                     </td>
                                     <td>
-                                        @*@db.TAvailableTimes.Where(at=>at.)*@                                   
+                                        @db.TAvailableTimes.FirstOrDefault(at => at.FAvailableTimeNum == item.FAvailableTimeNum).FAvailableTime
                                     </td>
                                     <td>
-                                        @*@Html.DisplayFor(modelItem => item.FRemainingCourse)*@
-                                        12
+                                        @Html.DisplayFor(modelItem => item.FCourseTotal)
                                     </td>
-                                    <td>
-                                        @*@Html.DisplayFor(modelItem => item.FStatusId)*@
-                                        進行中
+                                    @{
+                                        int total = (int)item.FCourseTotal;
+                                        int done = db.TReservations.Where(r => r.FCourseId == item.FCourseId && r.FStatusNumber == 61).Count();
+                                        int remain = total - done;
+                                        <td id="remain_@item.FCourseId">
+                                            @remain                                           
+                                        </td>                                        
+                                    }
+                                    <td id="status_@item.FCourseId">
+                                        @Html.DisplayFor(modelItem => item.Status)                                        
                                     </td>
-                                    <td class="details">
-                                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                                        <button class="btn btn-light" data-toggle="modal" data-target="#addModal2">查看排課紀錄</button>
+                                    <td class="tdBtns">
+                                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal_@item.FCourseId"><i class="fa-solid fa-eye"></i>&nbsp&nbsp排課紀錄</button>
                                     </td>
                                 </tr>
-
-
                             }
                         }
-
                     </tbody>
-                </table>               
+                </table>
                 <div class="divLink reveal_b2">
                     <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span><b>&nbsp;&nbsp;想一覽所有課程？</b></span></div>
                     <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Student/ViewCourseCalendar">&nbsp;&nbsp;前往<b>課程行事曆</b></a></div>
@@ -255,189 +249,250 @@
         </div>
     </div>
 </section>
-<!-- Modal --新增課程-->
-<div class="modal fade" id="addModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">新增課程<span></span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="addForm">
-                    <div class="form-group">
-                        <label for="MemberId">會員編號</label>
-                        <input type="text" class="form-control" id="MemberId" name="MemberId">
+@{
+    foreach (var item in Model)
+    {
+        <!-- Modal --排課紀錄-->
+        <div class="modal fade" id="addModal_@item.FCourseId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title h5Records" id="exampleModalLabel"><b>排課紀錄</b><span></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="MemberName">會員姓名</label>
-                        <input type="text" class="form-control" id="MemberName" name="MemberName">
+                    <div class="modal-body">
+                        <form id="addForm">
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                No.
+                                            </th>
+                                            <th>
+                                                上課日期
+                                            </th>
+                                            <th>
+                                                上課時間
+                                            </th>
+                                            <th>
+                                                排課狀態
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int rCount = 0;
+                                            foreach (var r in item.Reservations.Where(r => r.FCourseId == item.FCourseId))
+                                            {
+                                                rCount++;
+                                                <tr>
+                                                    <td>
+                                                        @rCount
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            string Year = r.CourseDate.Substring(0, 4);
+                                                            string Mon = r.CourseDate.Substring(4, 2);
+                                                            string Date = r.CourseDate.Substring(6, 2);
+                                                            <input type="date" id="date_@r.FReservationId" value="@Year-@Mon-@Date" disabled />
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            <select id="sel_@r.FReservationId" class="selTime custom-select" disabled>
+                                                                <option value="9">09:00</option>
+                                                                <option value="10">10:00</option>
+                                                                <option value="11">11:00</option>
+                                                                <option value="12">12:00</option>
+                                                                <option value="13">13:00</option>
+                                                                <option value="14">14:00</option>
+                                                                <option value="15">15:00</option>
+                                                                <option value="16">16:00</option>
+                                                                <option value="17">17:00</option>
+                                                                <option value="18">18:00</option>
+                                                                <option value="19">19:00</option>
+                                                                <option value="20">20:00</option>
+                                                                <option value="21">21:00</option>
+                                                            </select>
+                                                        }
+                                                    </td>
+                                                    <td id="status_@r.FReservationId">
+                                                        @r.Status
+                                                    </td>
+                                                    <td class="tdBtns">
+                                                        <button class="btn btn-success btnEdit" id="edit_@r.FReservationId">
+                                                            <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;變更時間
+                                                        </button>
+                                                        <button class="btn btn-success btnEdit" id="submit_@r.FReservationId" style="display:none">
+                                                            <i class="fa-solid fa-check"></i>&nbsp;&nbsp;完成變更
+                                                        </button>
+                                                        <button class="btn btn-success btnDone" id="cancel_@r.FReservationId" style="display:none">
+                                                            <i class="fa-solid fa-xmark"></i>&nbsp;&nbsp;取消
+                                                        </button>
+                                                        <button class="btn btn-success btnDone" id="done_@r.FReservationId">
+                                                            <i class="fa-solid fa-calendar-check"></i>&nbsp;&nbsp;完成
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="Count">總堂數</label>
-                        <input type="text" class="form-control" id="Count" name="Count">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btnClose" id="btnClose" data-dismiss="modal">關閉</button>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                <button type="button" class="btn btn-success" id="buttonSend">送出</button>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    }
+}
 
-<!-- Modal --查看排課-->
-<div class="modal fade" id="addModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">排課紀錄<span></span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="addForm">
-                    <div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        @*@Html.DisplayNameFor(model => model.FCourseRecordsId)*@
-                                        No.
-                                    </th>
-                                    <th>
-                                        @*@Html.DisplayNameFor(model => model.FCourseTime)*@
-                                        上課時間
-                                    </th>
-                                    <th>
-                                        @*@Html.DisplayNameFor(model => model.FStatusId)*@
-                                        課程狀態
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @*@foreach (var item in Model) {*@
-                                <tr>
-                                    <td>
-                                        @*@Html.DisplayFor(modelItem => item.FCourseRecordsId)*@
-                                        <input type="hidden" />1
-                                    </td>
-                                    <td>
-                                        @*@Html.DisplayFor(modelItem => item.FCourseTime)*@
-                                        2022/07/03 16:00
-                                    </td>
-                                    <td>
-                                        @*@Html.DisplayFor(modelItem => item.FStatusId)*@
-                                        尚未執行
-                                    </td>
-                                    <td class="tdBtns">
-                                        <button type="button" class="btn btn-light">完成</button>
-                                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-                                        @Html.ActionLink("改期", "Edit", new { /* id=item.PrimaryKey */ }, new { onclick = "return confirm('確定刪除該次排課？')", @class = "btn btn-secondary" })
-                                    </td>
-                                </tr>                                
-                                @*}*@
-                            </tbody>
-                        </table>
-                    </div>
-                    @*<div class="divCreateRecords">
-                            <button class="btn btn-success" data-toggle="modal" data-target="#addModal">新增排課</button>
-                        </div>*@
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">關閉</button>
-                <button class="btn btn-success" data-toggle="modal" data-target="#addModal3">新增排課</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal --新增排課-->
-<div class="modal fade" id="addModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">新增排課<span></span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <label>請選擇日期與時間</label>
-                <input type="datetime-local" class="form-control" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">關閉</button>
-                <button class="btn btn-success" @*data-toggle="modal" data-target="#addModal3"*@>新增</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-@*<table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FCourseId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FMemberId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FCoachId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FRemainingCourse)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FStatusId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FVisible)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FCourseId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FMemberId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FCoachId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FRemainingCourse)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FStatusId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FVisible)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>*@
 @section Scripts{
+    @{
+        //課程狀態變更
+        foreach (var course in Model)
+        {           
+            foreach (var r in course.Reservations)
+            {
+                string time = r.CourseTime.Substring(0, 2);
+                if (time.StartsWith("0"))
+                {
+                    time = time.Substring(1, 1);
+                }
+<script>
+            //顯示排課時間
+            $(`#sel_${@r.FReservationId}`).val(`${@time}`);
 
+
+            if (@r.FStatusNumber== 61) {
+                $(`#done_@r.FReservationId`).remove();
+                $(`#edit_@r.FReservationId`).prop("disabled",true);
+            }
+
+            //完成排課
+                $(`#done_@r.FReservationId`).click((evt) => {
+                    evt.preventDefault();
+                    Swal.fire({
+                        title: '確認已完成此次課程？',
+                        icon: 'question',
+                        confirmButtonText: '確定',
+                        cancelButtonText: '取消',
+                        showCancelButton: true,
+                        showCloseButton: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.get("@Url.Content("~/Coach/ReservationDone")", { "id": "@r.FReservationId" },
+                                function (response) {
+                                    if (response == "Success") {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: '已完成'
+                                        })
+                                        $(`#status_@r.FReservationId`).text("已完成");
+                                        $(`#done_@r.FReservationId`).remove();
+                                        $(`#edit_@r.FReservationId`).remove();
+
+                                        //剩餘堂數變更
+                                        let remain = parseInt($(`#remain_@r.FCourseId`).text()) - 1;
+                                        $(`#remain_@r.FCourseId`).text(`${remain}`);
+                                        if ($(`#remain_@r.FCourseId`).text() == "0") {
+                                            $(`#status_@r.FCourseId`).text("已結束");
+                                        }
+                                    }
+                                })
+                        }
+                    })
+                })
+
+            //開放變更時間
+            $(`#edit_@r.FReservationId`).click((evt) => {
+                evt.preventDefault();
+                $(`#date_@r.FReservationId`).prop("disabled", false);
+                $(`#sel_@r.FReservationId`).prop("disabled", false);
+                $(`#edit_@r.FReservationId`).css("display", "none");
+                $(`#cancel_@r.FReservationId`).show();
+                $(`#submit_@r.FReservationId`).show();
+                $(`#done_@r.FReservationId`).css("display", "none");
+            })
+
+            //取消
+            $(`#cancel_@r.FReservationId`).click((evt) => {
+                evt.preventDefault();
+                $(`#date_@r.FReservationId`).prop("disabled", true);
+                $(`#sel_@r.FReservationId`).prop("disabled", true);
+                $(`#edit_@r.FReservationId`).show();
+                $(`#cancel_@r.FReservationId`).css("display", "none");
+                $(`#submit_@r.FReservationId`).css("display", "none");
+                $(`#done_@r.FReservationId`).show();
+            })
+
+            //完成變更
+            $(`#submit_@r.FReservationId`).click((evt) => {
+                evt.preventDefault();
+                let date = $(`#date_@r.FReservationId`).val();
+                let time = $(`#sel_@r.FReservationId`).val();
+                $.get("@Url.Content("~/Coach/EditReservation")", { "id": "@r.FReservationId","date":`${date}`,"time":`${time}`},
+                                function (response) {
+                                    if (response == "Success") {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: '已完成變更'
+                                        })
+                                        $(`#edit_@r.FReservationId`).prop("disabled", false).show();
+                                        $(`#submit_@r.FReservationId`).css("display", "none");
+                                        $(`#cancel_@r.FReservationId`).css("display", "none");
+                                        $(`#done_@r.FReservationId`).show();
+                                        $(`#date_@r.FReservationId`).prop("disabled", true);
+                                        $(`#sel_@r.FReservationId`).prop("disabled", true);
+                                    }
+                                })
+            })
+</script>
+            }
+        }
+    }
+<script>
+    //篩選課程狀態
+    let filter = $("#selStatus");
+    filter.change(() => {
+        if (filter.val() == "狀態") {
+            $("tbody tr").show();
+        }
+        if (filter.val() == 55) {
+            $.getJSON("@Url.Content("~/Coach/GetCourseInProcess")", { "id": "55" },
+                function (data) {
+                    $.each(data, function (index, course) {
+                        $(`#tr_${course}`).show();
+                    });
+                })
+            $.getJSON("@Url.Content("~/Coach/GetCourseDone")", { "id": "56" },
+                function (data) {
+                    $.each(data, function (index, course) {
+                        $(`#tr_${course}`).hide();
+                    });
+                })
+        }
+        if (filter.val() == 56) {
+             $.getJSON("@Url.Content("~/Coach/GetCourseInProcess")", { "id": "55" },
+                function (data) {
+                    $.each(data, function (index, course) {
+                        $(`#tr_${course}`).hide();
+                    });
+                })
+            $.getJSON("@Url.Content("~/Coach/GetCourseDone")", { "id": "56" },
+                function (data) {
+                    $.each(data, function (index, course) {
+                        $(`#tr_${course}`).show();
+                    });
+                })
+        }        
+    })
+</script>
 }

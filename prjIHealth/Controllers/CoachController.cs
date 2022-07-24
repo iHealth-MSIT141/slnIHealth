@@ -33,9 +33,53 @@ namespace prjiHealth.Controllers
             if (coach == null)
                 return RedirectToAction("CreateResume");
 
-            var data = _context.TCourses.Include(c => c.FCoachContact).Where(c => c.FCoachContact.FCoachId == coach.FCoachId).ToList();
-            return View(CCourseViewModel.CourseList(data));
+            var data = _context.TCourses
+                .Include(c => c.FCoachContact).ThenInclude(cc=>cc.FMember)
+                .Include(c=>c.TReservations)
+                .Where(c => c.FCoachContact.FCoachId == coach.FCoachId).ToList();
+            return View(CTeachingListViewModel.CourseList(data));
         }
+        
+        //完成排課
+        public IActionResult ReservationDone(int id)
+        {
+            var reservation = _context.TReservations.FirstOrDefault(r => r.FReservationId == id);
+            reservation.FStatusNumber = 61;
+            _context.SaveChanges();
+
+            //若Reservation皆結束，即修改課程狀態為「已結束」
+            int courseId = (int)reservation.FCourseId;
+            if (_context.TReservations.Where(r => r.FCourseId == courseId).Select(r => r.FStatusNumber).ToList().All(num=>num==61))
+            {
+                var thisCourse = _context.TCourses.FirstOrDefault(c => c.FCourseId == courseId);
+                thisCourse.FStatusNumber = 56;
+            }
+            _context.SaveChanges();
+            return Content("Success", "text/plain");
+        }
+        //更改時間
+        public IActionResult EditReservation(int id,string date,string time)
+        {
+            var reservation = _context.TReservations.FirstOrDefault(r => r.FReservationId == id);
+            string newDate = date.Replace("-", "");
+            string newTime = time.Length == 1 ? "0" + time : time;
+            reservation.FCourseTime = newDate + newTime + "00";
+            _context.SaveChanges();
+            return Content("Success", "text/plain");
+        }
+        //取得進行中課程
+        public IActionResult GetCourseInProcess(int id)
+        {
+            var courses = _context.TCourses.Where(c => c.FStatusNumber == id).Select(c => c.FCourseId).ToList();
+            return Json(courses);
+        }
+        //取得已結束課程
+        public IActionResult GetCourseDone(int id)
+        {
+            var courses = _context.TCourses.Where(c => c.FStatusNumber == id).Select(c => c.FCourseId).ToList();
+            return Json(courses);
+        }
+
         //成為教練--MemberId尚無教練權限
         public IActionResult CreateResume()
         {
