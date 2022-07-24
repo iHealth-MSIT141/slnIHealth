@@ -33,6 +33,7 @@ namespace prjIHealth.Controllers
             _context = context;
             _environment = iwhe;
         }
+        //=======================會員CRUD==============================
         public IActionResult Login()
         {
             return View();
@@ -68,19 +69,6 @@ namespace prjIHealth.Controllers
             HttpContext.Session.Remove(CDictionary.SK_Logined_User);
             userName = "登入";
             return RedirectToAction("Index", "Home");
-        }
-        public IActionResult getUserName()
-        {
-            var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-            loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
-            if (loginUser.FUserName != null)
-            {
-                return Content(loginUser.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
-            }
-            else
-            {
-                return Content("false", "text/plain", System.Text.Encoding.UTF8);
-            };
         }
         public IActionResult Edit(int? id)
         {
