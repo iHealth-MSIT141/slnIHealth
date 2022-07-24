@@ -60,35 +60,39 @@ namespace prjiHealth.Controllers
             return 0;
         }
 
-
-        //商城搜尋功能
-        public IActionResult SearchProduct(string keyword)
+        [HttpPost]
+        public IActionResult GetProduct(CShoppingFeatureViewModel vModel)
         {
-            IEnumerable<TProduct> dataShoppingItems = null;
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                dataShoppingItems = from t in dblIHealth.TProducts
-                                    where t.FProductName.Contains(keyword)
-                                    select t;
-            }
-            return Json(dataShoppingItems);
-        }
 
-        //在商城主頁顯示各個產品
-        public IActionResult ShowProduct(int? id)
-        {
             IEnumerable<TProduct> dataShoppingItems = null;
-            //TODO           
-            if (id == null)
+            dataShoppingItems = from t in dblIHealth.TProducts
+                                select t;
+            if (vModel.sort != null)
             {
-                dataShoppingItems = from t in dblIHealth.TProducts
-                                    select t;
+                if (vModel.sort == "asc")
+                {
+                    dataShoppingItems = dataShoppingItems.OrderBy(t => t.FUnitprice);
+                }
+                else if (vModel.sort == "desc")
+                {
+                    dataShoppingItems = dataShoppingItems.OrderByDescending(t => t.FUnitprice);
+                }
             }
-            else
+
+            if (vModel.categoryID != null)
             {
-                dataShoppingItems = from t in dblIHealth.TProducts
-                                    where t.FCategoryId == id
-                                    select t;
+                if (vModel.categoryID != 0)
+                {
+                    dataShoppingItems = dataShoppingItems.Where(t => t.FCategoryId == vModel.categoryID);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(vModel.txtKeyword))
+            {
+                if (vModel.txtKeyword != "")
+                {
+                    dataShoppingItems = dataShoppingItems.Where(t => t.FProductName.Contains(vModel.txtKeyword));
+                }               
             }
             return Json(dataShoppingItems);
         }
@@ -127,46 +131,6 @@ namespace prjiHealth.Controllers
                 }
                 return RedirectToAction("ShowShoppingMall");
             }
-        }
-
-        //價格由大到小排序
-        public IActionResult DescProduct(int? id)
-        {
-            IEnumerable<TProduct> dataShoppingItems = null;
-            if (id == null || id == 0)
-            {
-                dataShoppingItems = from t in dblIHealth.TProducts
-                                    orderby t.FUnitprice descending
-                                    select t;
-            }
-            else
-            {
-                dataShoppingItems = from t in dblIHealth.TProducts
-                                    where t.FCategoryId == id
-                                    orderby t.FUnitprice descending
-                                    select t;
-            }
-            return Json(dataShoppingItems);
-        }
-
-        //價格由小到大排序
-        public IActionResult AscProduct(int? id)
-        {
-            IEnumerable<TProduct> dataShoppingItems = null;
-            if (id == null || id == 0)
-            {
-                dataShoppingItems = from t in dblIHealth.TProducts
-                                    orderby t.FUnitprice ascending
-                                    select t;
-            }
-            else
-            {
-                dataShoppingItems = from t in dblIHealth.TProducts
-                                    where t.FCategoryId == id
-                                    orderby t.FUnitprice ascending
-                                    select t;
-            }
-            return Json(dataShoppingItems);
         }
 
         //產品明細界面

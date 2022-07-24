@@ -3,7 +3,14 @@
 @using prjIHealth.Controllers
 
 @section Styles{
-
+    <style>
+        .sort-asc::after {
+            content: "↑";
+        }
+        .sort-desc::after {
+            content: "↓";
+        }
+    </style>
 }
 
 @*banner大圖*@
@@ -34,12 +41,12 @@
                     <div class="sidebar__item">
                         <h4>商品類別</h4>
                         <ul id="showByCatergory">
-                            <li><a href="#" data-id="0">所有商品</a></li>
-                            <li><a href="#" data-id="1">乳清蛋白</a></li>
-                            <li><a href="#" data-id="2">健康食品</a></li>
-                            <li><a href="#" data-id="3">運動用品</a></li>
-                            <li><a href="#" data-id="4">男裝</a></li>
-                            <li><a href="#" data-id="5">女裝</a></li>
+                            <li><a href="#" data-id="0" class="categoryItem">所有商品</a></li>
+                            <li><a href="#" data-id="1" class="categoryItem">乳清蛋白</a></li>
+                            <li><a href="#" data-id="2" class="categoryItem">健康食品</a></li>
+                            <li><a href="#" data-id="3" class="categoryItem">運動用品</a></li>
+                            <li><a href="#" data-id="4" class="categoryItem">男裝</a></li>
+                            <li><a href="#" data-id="5" class="categoryItem">女裝</a></li>
                         </ul>
                         <br />
                         <br />
@@ -228,9 +235,8 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
-
                 <div class="hero__search">
-                    <button type="button" class="hero__search__form site-btn sort sort-asc" style="width:20%">按價格排序↕</button>
+                    <button type="button" class="hero__search__form site-btn sort" data-sort="" style="width:20%">按價格排序</button>
                     <div class="hero__search__form " style="width:57.3%" id="search">
                         <form method="post">
                             <input style="width:392.1px;height:46px" id="txtKeyword" name="txtKeyword" type="text">
@@ -249,10 +255,19 @@
 
 @section Scripts{
     <script>
+        let option = {
+            categoryID: 0,
+            sort: "",
+            url: "",
+            page: 1,
+            txtKeyword:""
+        }
 
         //顯示商品
-        function AllProducts(url) {
-            $.get(url, function (datas) {
+        AllProducts(option);        
+        function AllProducts(option) {
+            let url = "@Url.Content("~/Shopping/GetProduct/")" + (option.categoryID == 0 ? "" : option.categoryID);
+            $.post(url,option, function (datas) {
                 let htmlShowProduct = "";
                 $.each(datas, function (idx, product) {
                     htmlShowProduct += `<div class="col-lg-4 col-md-6 col-sm-6" ><div id="header" style="cursor:pointer;">
@@ -274,31 +289,52 @@
             })
         }
 
-        //以價格排序
-        function asc(id) {
-            let url = "@Url.Content("~/Shopping/AscProduct/")" + id;
-            AllProducts(url);
-            $(".sort").text("按價格排序↑");
-            $(".sort").removeClass("sort-asc");
-            $(".sort").addClass("sort-desc");
-            $(".sort").unbind('click');
-            $(".sort-desc").on('click', desc);
-        }
-        function desc(id) {
-            let url = "@Url.Content("~/Shopping/DescProduct/")" +id;
-            AllProducts(url);
-            $(".sort").text("按價格排序↓");
-            $(".sort").removeClass("sort-desc");
-            $(".sort").addClass("sort-asc");
-            $(".sort").unbind('click');
-            $(".sort-asc").on('click',asc)
+        //按價格排序
+        $(".sort").on("click", sorting);
+        function sorting() {
+            let dataSort = $(".sort").attr("data-sort");
+            $(".sort").removeClass("sort-asc sort-desc");
+            if (dataSort == null || dataSort == "") {
+                dataSort = "asc";
+                $(".sort").addClass("sort-asc");
+                $(".sort").attr("data-sort", dataSort);
+            }
+            else if (dataSort == "desc") {
+                dataSort = "asc";
+                $(".sort").addClass("sort-asc");
+                $(".sort").attr("data-sort", dataSort);
+            }
+            else {
+                dataSort = "desc";
+                $(".sort").addClass("sort-desc");
+                $(".sort").attr("data-sort", dataSort);
+            }
+            option.sort = dataSort;
+            AllProducts(option);
         }
 
+        //以類別分類各產品
+        $("#showByCatergory").find(".categoryItem").click(function (event) {
+            event.preventDefault();
+            id = $(this).attr("data-id");
+            console.log(this);
+            option.categoryID = id;
+            AllProducts(option);
+            /*showProductByCategory(id);*/
+        })
+
+         //以輸入文字搜產品
+        $("#btnSearch").click(function () {
+            let keyword = $("#txtKeyword").val();
+            option.txtKeyword = keyword;
+            AllProducts(option);
+        })
+           
+        showProduct();
         //在商城主頁執行所有function
         function showProduct() {
-            let firstURL = "@Url.Content("~/Shopping/ShowProduct")";
-            AllProducts(firstURL);
-
+            option.url = "@Url.Content("~/Shopping/ShowProduct")";
+            AllProducts(option);
                 //按品名會彈出相對應商品明細
                 $("#showProduct").delegate("#showProductDetail", "click", function () {
                     id = $(this).attr("data-id");
@@ -349,56 +385,13 @@
                     }
                 })
                 async function addCart(id) {
-                    //TODO
                     var data = {};
                     data.txtFid = id;
                     data.txtCount = 1;
                     $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
                 }
 
-                //以類別搜產品
-                $("#showByCatergory").find("a").click(function (event) {
-                    event.preventDefault();
-                    id = $(this).attr("data-id");
-                    console.log(this);
-                    console.log(id);
-                    showProductByCategory(id);
-
-                     //TODO 商品以類別+價格排序
-                    $(".sort-asc").click(function () {
-                        asc(id);
-                    })
-                    $(".sort-desc").click(function () {
-                        desc(id);
-                    })
-                })
-                function showProductByCategory(id) {
-                    let url = "@Url.Content("~/Shopping/ShowProduct/")" + id;
-                    if (id == 0) {
-                        url = "@Url.Content("~/Shopping/ShowProduct")";
-                    }
-                    AllProducts(url);
-                }
-
-                //以輸入文字搜產品
-                $("#btnSearch").click(searchProductByKeyword);
-                function searchProductByKeyword() {
-                    let keyword = $("#txtKeyword").val();
-                    let url = "@Url.Content("~/Shopping/SearchProduct")" + `?keyword=${keyword}`;
-                    //console.log(url);
-                    AllProducts(url);
-                }
-
-                //所有商品排序
-                $(".sort-asc").click(function () {
-                    asc();
-                })
-
-                $(".sort-desc").click(function () {
-                    desc();
-                })
-
-                //顯示各類別前3名產品
+                @*//顯示各類別前3名產品
             function showTop3() {
                 MilkTop3();
                 function MilkTop3() {
@@ -505,14 +498,8 @@
                         $("#Woman5").html(htmlShowTop3);
                     })
                 }
-
-
-
-            }
-            /*showTop3();*/
+            }*@
         }
-        showProduct();
-
     </script>
 }
 
