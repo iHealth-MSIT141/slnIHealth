@@ -153,7 +153,72 @@ namespace prjiHealth.Controllers
             var data = _context.TCoachSkills.Include(cs => cs.FSkill).Where(cs => cs.FCoachId == id).Select(cs => cs.FSkill.FSkillName).ToArray();
             return Json(data);
         }
-        public IActionResult CourseList()   //會員專區--課程列表
+        
+        //教練預約時間表-可預約
+        public IActionResult getAvailableTimeId(int? id)
+        {
+            var ids = db.TCoachAvailableTimes.Where(ca => ca.FCoachId == id).Select(ca=>ca.FAvailableTimeId).Distinct();
+            return Json(ids);
+        }
+        //教練預約時間表-已額滿
+        public IActionResult getAvailableTimeNum(int? id)
+        {
+            var nums = db.TCourses.Where(c=>c.FCoachContact.FCoachId==id).Select(c=>c.FAvailableTimeNum).Distinct();
+            return Json(nums);
+        }
+        //通知教練
+        public IActionResult createContact(TCoachContact coachContact)
+        {
+            //取得登入者ID
+            int userId = 8; //備用帳號
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
+            else
+            {
+                MemberController.loginUser = null;
+                MemberController.userName = "登入";
+            }
+            coachContact.FMemberId = userId;
+            coachContact.FContactDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+            coachContact.FStatusNumber = 50;
+            db.TCoachContacts.Add(coachContact);
+            db.SaveChanges();
+            return Content("");
+        }
+
+        //通知教練
+        public IActionResult addCandidate(TCandidate candidate)
+        {
+            //取得登入者ID
+            int userId = 8; //備用帳號
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
+            else
+            {
+                MemberController.loginUser = null;
+                MemberController.userName = "登入";
+            }
+            candidate.FMemberId = userId;
+            if (db.TCandidates.Any(c => c.FCoachId == candidate.FCoachId && c.FMemberId == candidate.FMemberId))
+            {
+                return Content("repeat");
+            }
+            else
+            {
+                db.TCandidates.Add(candidate);
+                db.SaveChanges();
+                return Content("ok");
+            }
+        }
+
+        //會員專區--課程列表=========================================================
+        public IActionResult CourseList()   
         {
             //取得登入者ID
             int theMemberId = 8; 
@@ -186,7 +251,8 @@ namespace prjiHealth.Controllers
             }
             return View(courseList);
         }               
-        public IActionResult createRate(TCoachRate rate) //會員專區--課程列表:儲存評價教練
+        //會員專區--課程列表:儲存評價教練
+        public IActionResult createRate(TCoachRate rate) 
         {
             //取得登入者ID
             int theMemberId = 8;
@@ -215,7 +281,8 @@ namespace prjiHealth.Controllers
             }
             return Content("");
         }      
-        public IActionResult viewRate(int? theCoachId)//會員專區--課程列表:顯示評價教練
+        //會員專區--課程列表:顯示評價教練
+        public IActionResult viewRate(int? theCoachId)
         {
             //取得登入者ID
             int theMemberId = 8;
@@ -236,7 +303,8 @@ namespace prjiHealth.Controllers
             }
         }
         
-        //會員專區--候選教練
+
+        //會員專區--候選教練=========================================================
         public IActionResult CandidateList()    
         {
             //取得登入者ID

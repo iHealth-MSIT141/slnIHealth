@@ -345,6 +345,11 @@ namespace prjiHealth.Controllers
                 db.TReservations.Add(reservation);
                 date = date.AddDays(7);
             }
+
+            //增加教練課程數量
+            var courseCount = db.TCoaches.FirstOrDefault(c => c.FCoachId == course.FCoachContact.FCoachId).FCourseCount;
+            db.TCoaches.FirstOrDefault(c => c.FCoachId == course.FCoachContact.FCoachId).FCourseCount = courseCount + 1;
+            
             db.SaveChanges();
 
             return Content("");
