@@ -23,12 +23,7 @@ namespace prjiHealth.Controllers
             db = context;
             _context = context;
         }
-       
-        //教練專區主頁
-        public IActionResult CoachMainPage()
-        {
-            return View();
-        }
+               
         //教練列表
         public IActionResult CoachList(CKeywordViewModel v)
         {
@@ -54,30 +49,12 @@ namespace prjiHealth.Controllers
                     .Include(c => c.TCoachRates).AsEnumerable()
                     .Where(c => c.FVisible == true);
 
+            ViewBag.Keyword = v.txtKeyword;
             var coaches = CCoachViewModel.CoachList(datas.ToList());
             return View(coaches);
         }
-
-        //多重篩選
-        [HttpPost]
-        public IActionResult CoachList(int? FCityId, string[] fGender, int[] fCoachSkill, int[] fCoachTime)
-        {
-            var datas = _context.TCoaches
-                .Include(c => c.FMember)
-                .Include(c => c.FCity)
-                .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill)
-                .Include(c => c.TCoachAvailableTimes)
-                .Include(c => c.TCoachRates).AsEnumerable()
-                .Where(c => c.FVisible == true &&
-                        (FCityId != null ? c.FCityId == FCityId : true) &&
-                        (fGender.Length != 0 ? fGender.Contains(c.FMember.FGender.ToString()) : true) &&
-                        (fCoachSkill.Length != 0 ? c.TCoachSkills.Select(cs => (int)cs.FSkillId).ToArray<int>().Intersect<int>(fCoachSkill).Count() > 0 : true) &&
-                        (fCoachTime.Length != 0 ? c.TCoachAvailableTimes.Select(at => (int)at.FAvailableTimeId).ToArray<int>().Intersect<int>(fCoachTime).Count() > 0 : true));
-
-            var coaches = CCoachViewModel.CoachList(datas.ToList());
-            return View(coaches);
-        }
-
+       
+        //Ajax多重篩選
         public IActionResult MultiFilter(int? FCityId, string[] fGender, int[] fCoachSkill, int[] fCoachTime)
         {
             var datas = _context.TCoaches
@@ -90,11 +67,44 @@ namespace prjiHealth.Controllers
                         (FCityId != null ? c.FCityId == FCityId : true) &&
                         (fGender.Length != 0 ? fGender.Contains(c.FMember.FGender.ToString()) : true) &&
                         (fCoachSkill.Length != 0 ? c.TCoachSkills.Select(cs => (int)cs.FSkillId).ToArray<int>().Intersect<int>(fCoachSkill).Count() > 0 : true) &&
-                        (fCoachTime.Length != 0 ? c.TCoachAvailableTimes.Select(at => (int)at.FAvailableTimeId).ToArray<int>().Intersect<int>(fCoachTime).Count() > 0 : true));
+                        (fCoachTime.Length != 0 ? c.TCoachAvailableTimes.Select(at => (int)at.FAvailableTimeId).ToArray<int>().Intersect<int>(fCoachTime).Count() > 0 : true));                
 
             var coaches = CCoachViewModel.CoachList(datas.ToList());
             return Json(coaches);
+        }  
+        //取得教練評價平均
+        public IActionResult GetAvgRate(int id)
+        {
+            int rateSum = (int)_context.TCoachRates.Where(cr => cr.FCoachId == id).Select(cr => cr.FRateStar).Sum();
+            int count = _context.TCoachRates.Where(cr => cr.FCoachId == id).Count();
+            int avg = 0;
+            if (count != 0)
+                avg = rateSum / count;            
+            return Content(avg.ToString("0.0"), "text/plain");
         }
+        //取得教練Skill
+        public IActionResult GetSkills(int id)
+        {
+            var skills = _context.TCoachSkills.Where(cs => cs.FCoachId == id).Select(cs=>cs.FSkillId).ToList();
+            string s = "";
+            foreach(int skill in skills)
+            {
+                string skillName = _context.TSkills.FirstOrDefault(s => s.FSkillId == skill).FSkillName;
+                s += skillName;
+                s += "、";
+            }
+            s = s.Substring(0, s.Length - 1);
+            return Content(s, "text/plain");
+        }
+        //取得最新教練(待補)
+        //public IActionResult GetNewCoach()
+        //{
+        //    var data = (from co in _context.TCoaches
+        //                where co.FVisible == true
+        //                orderby co.FApplyDate descending
+        //                select new { co, co.FCity.FCityName }).Take(6);
+        //    return Json(data);
+        //}        
         //教練詳細資料
         public IActionResult ViewCoachDetails(int? id)
         {
@@ -108,7 +118,8 @@ namespace prjiHealth.Controllers
                 .Include(c => c.TCoachAvailableTimes).ThenInclude(t => t.FAvailableTime)
                 .Include(c => c.TCoachExperiences)
                 .Include(c => c.TCoachLicenses).AsEnumerable()
-                .Where(c => c.FVisible == true && c.FCoachId == id).FirstOrDefault();
+                .Where(c => c.FVisible == true && c.FCoachId == id)
+                .FirstOrDefault();
 
             CCoachViewModel vModel = new CCoachViewModel
             {

@@ -68,7 +68,7 @@ namespace prjIHealth
              
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Coach}/{action=TeachingList}/{id?}");
+                    pattern: "{controller=Student}/{action=CoachList}/{id?}");
                  endpoints.MapHub<ChatHub>("/chatHub");
             });   
            

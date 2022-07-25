@@ -23,21 +23,18 @@
             display: none;
         }
 
-        .filter {
-            margin: 30px 0px;
-        }
-
         .divFilter {
             padding-right: 40px;
         }
 
-        .divfilterTopic {
+        .divLeftTopic {
             margin-bottom: 15px;
         }
 
-            .divfilterTopic b {
-                color: #7fad39;
-            }
+        .bTopic {
+            color: #7fad39 !important;
+            font-size: 18px;
+        }
 
         .keyTopic {
             margin-bottom: 10px;
@@ -49,12 +46,17 @@
             margin-bottom: 25px;
         }
 
-        #btnSubmit {
+        #btnClear {
             display: block;
+            padding:5px;
             width: 100%;
-            border-color: #7fad39;
+            background-color: #7fad39;
+            color:white;
+            font-weight:500;
+            border:none;
+            border-radius:5px;
         }
-
+          
         .skillCount {
             font-weight: 600;
             color: gray;
@@ -64,6 +66,7 @@
         .divSearch {
             display: flex;
             align-items:center;
+            margin-bottom:30px;
         }
 
         .divKeyword {
@@ -135,14 +138,14 @@
         /*列表*/
         .divRight {
             padding: 0px 20px;
-        }
-
+        }        
         .divCoachCount {
             text-align: right;
         }
 
         .divCoachCard {
             display: flex;
+            height:340px;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 30px;
@@ -239,6 +242,32 @@
             .divBtnDetail a:hover {
                 color: #5F822B;
             }
+
+        /*最新教練*/
+        .divNewCoach{
+            margin-top:60px;
+        }
+        .icon {
+            width:16px;
+            height: 16px;
+        }
+        .imgNew {
+            width: 100px !important;
+            height: 100px !important;
+            border-radius: 50%;
+        }
+
+        .hName {
+            font-weight: 600;
+            margin-bottom:5px;
+        }
+        .spNew {
+            color: dimgray !important;
+            font-weight: 500 !important;
+            font-size: 16px !important;
+            line-height: 24px;
+        }
+       
     </style>
 }
 
@@ -267,10 +296,10 @@
             @*※※※非會員專區的View的內容請從此處開始※※※*@
             <div class="col-lg-3">
                 <div class="reveal_l1">
-                    <form method="post" name="frmFilter">
+                    <form method="post" id="frmFilter" name="frmFilter">
                         <div class="divFilter">
-                            <div class="divfilterTopic">
-                                <h5><b>篩選條件</b></h5>
+                            <div class="divLeftTopic">
+                                <b class="bTopic">篩選條件</b>
                             </div>
                             <div class="filterCard">
                                 <div class="keyTopic">
@@ -278,9 +307,9 @@
                                 </div>
                                 <div>
                                     <select class="custom-select" id="selCity" name="FCityId">
-                                        <option selected disabled>請選擇地區</option>
+                                        <option value="0" selected disabled>請選擇地區</option>
                                         @{
-                                            foreach (var c in db.TCities.Where(c=>c.TCoaches.Any()).ToList())
+                                            foreach (var c in db.TCities.Where(c => c.TCoaches.Any()).ToList())
                                             {
                                                 <option value="@c.FCityId" id="@c.FCityId">@c.FCityName</option>
                                             }
@@ -320,25 +349,25 @@
                                 </div>
                                 <div>
                                     @{
-                                        foreach (var t in db.TAvailableTimes.Where(at=>at.FAvailableTimeId<=6).ToList())
+                                        foreach (var t in db.TAvailableTimes.Where(at => at.FAvailableTimeId <= 6).ToList())
                                         {
                                             <input type="checkbox" value="@t.FAvailableTimeId" name="fCoachTime[]" /><label>&nbsp;@t.FAvailableTime</label><br />
                                         }
                                     }
                                 </div>
                             </div>
-                            <div class="form-group filterSubmit">
-                                <input type="submit" value="篩選" id="btnSubmit" class="btn btn-success" />
+                            <div class="divClear">
+                                <button id="btnClear">清除條件</button>
                             </div>
                         </div>
                     </form>
-                </div>
+                </div>            
             </div>
             <div class="col-lg-9 divRight">
                 <div class="divSearch row">
-                    <form class="col-lg-7">
+                    <form class="col-lg-7" method="post">
                         <div class="divKeyword reveal_t1">
-                            <input type="text" name="txtKeyword" id="ipKeyword" class="form-control inKeyword" placeholder="請輸入關鍵字">
+                            <input type="text" name="txtKeyword" id="ipKeyword" class="form-control inKeyword" placeholder="請輸入關鍵字" value="@ViewBag.Keyword">
                             <div class="divSubmit">
                                 <button type="submit" class="btn btn-success btnSearch" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
@@ -348,31 +377,14 @@
                         <div class="divOther reveal_t1"><i class="fa-solid fa-user-plus"></i><span><b>&nbsp;&nbsp;想找學生？</b></span></div>
                         <div class="divUrl reveal_r1"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CreateResume">&nbsp;&nbsp;前往<b>刊登履歷</b></a></div>
                     </div>                    
-                </div>
-                <div class="row filter">
-                    <div class="col-lg-4 col-md-5">
-                        <div class="filter__sort">
-                            <span>排序依據</span>
-                            <select>
-                                <option value="1">預設</option>
-                                <option value="2">加入日期新至舊</option>
-                                <option value="3">加入日期舊至新</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-md-4">
-                        <div class="filter__found divCoachCount">
-                            <h6>共  <span>@Model.ToArray().Length</span> 位私人教練</h6>
-                        </div>
-                    </div>
-                </div>
+                </div>              
                 <div class="divCoachList">
                     @{
+                        int count = 0;
                         foreach (var coach in Model)
                         {
-                            <div class="divCoachCard row reveal_b1">
-                                <label hidden>@coach.FCoachId</label>
-                                <label hidden>@coach.Gender</label>
+                            count++;
+                            <div class="divCoachCard row reveal_b1" id="coach_@count">                               
                                 <div class="col-3 divImg">
                                     <img src="/img/coach/coachImage/@coach.FCoachImage" class="imgCoach">
                                 </div>
@@ -422,10 +434,10 @@
                     }
                 </div>
                 <div class="product__pagination divPage">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
+                    @*<a href="#">1</a>
+                    <a href="#" id="1">2</a>
                     <a href="#">3</a>
-                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>*@
                 </div>
             </div>
         </div>
@@ -434,71 +446,97 @@
 
 @section Scripts{
     @{
-        //每位教練平均評價
+        //教練評價
         foreach (var coach in Model)
-        {
-            decimal avgRate;
-            if (coach.RateCount != 0)
-            {
-                avgRate = ((int)db.TCoachRates.Where(r => r.FCoachId == coach.FCoachId).Select(r => r.FRateStar).Sum()) / coach.RateCount;
-            }
-            else
-            {
-                avgRate = 0;
-            }
-            string avg = avgRate.ToString("0.0");
-            <script>
-                $(`#avg_@coach.FCoachId`).text("@avg");
-                for (let i = 1; i <=@avgRate; i++) {
+        {            
+        <script>
+            $.get("@Url.Content("~/Student/GetAvgRate")", { "id": "@coach.FCoachId" },
+                function (avg) {
+                    $(`#avg_@coach.FCoachId`).text(`${avg}`);
+                for (let i = 1; i <=`${avg}`; i++) {
                     $(`#star${i}_@coach.FCoachId`).removeClass("starOrig");
                     }
-            </script>
+                })            
+        </script>
+        }
+    }
+<script>          
+        //Ajax篩選後顯示教練
+        function GetCoach() {
+            $.ajax({
+                url: '@Url.Content("~/Student/MultiFilter")',
+                type: 'post',
+                data: new FormData(document.frmFilter),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data.length);
+                    $(".divCoachList").empty();
+                    $.each(data, function (index, coach) {
+                        $(".divCoachList").append(`<div class="divCoachCard row reveal_b1" id=div${index}></div>`)
+                        //左-col-3
+                        $(`#div${index}`).append(`<div class="col-3 divImg" id=divImg${index}><img class="imgCoach" id=img${index}></div>`);
+                        $(`#img${index}`).attr("src", `/img/coach/coachImage/${coach.fCoachImage}`);
+                        //右-col-9
+                        $(`#div${index}`).append(`<div class="col-9 divCoachInfo" id=divInfo${index}></div>`);
+                        $(`#divInfo${index}`).append(`<ul id=ul${index}></ul>`);
+                        //名稱、btn
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="liCoachName row" id=liName${index}></li>`);
+                        $(`#liName${index}`).append(`<h3 class="col-8"><b>${coach.fCoachName}</b></h3>`);
+                        $(`#liName${index}`).append(`<div class="col-3 divBtnDetail"><a href="/Student/ViewCoachDetails/${coach.fCoachId}">教練檔案</a></div>`);
+                        //評價、成交數
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="li liAvgRate" id=liRate${index}></li>`);
+                        $(`#liRate${index}`).append(`<span id="spAvg${index}"></span>&nbsp;&nbsp;&nbsp;`)
+                        $(`#liRate${index}`).append(`<img class="star starOrig" id="star1_${index}" />
+                                            <img class="star starOrig" id="star2_${index}" />
+                                            <img class="star starOrig" id="star3_${index}" />
+                                            <img class="star starOrig" id="star4_${index}" />
+                                            <img class="star starOrig" id="star5_${index}" />&nbsp;&nbsp;&nbsp;`);
+                        //平均評價
+                        $.get("@Url.Content("~/Student/GetAvgRate")", { "id": `${coach.fCoachId}` },
+                            function (avg) {
+                                $(`#spAvg${index}`).text(`${avg}`);
+                                for (let i = 1; i <= avg; i++) {
+                                    $(`#star${i}_${index}`).removeClass("starOrig");
+                                }
+                            })
+                        $(".star").attr("src", "/img/coach/icon/star.png");
+                        $(`#liRate${index}`).append(`<span id="rateCount">(${coach.rateCount})</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`);
+                        $(`#liRate${index}`).append(`<span id="courseCount">${coach.fCourseCount} 次成交&nbsp;<i class="fa-regular fa-circle-check"></i></span>`);
+                        //City
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=liCity${index}></li>`);
+                        $(`#liCity${index}`).append(`<img class="imgIcon iconCity" /><b>&nbsp;&nbsp;&nbsp;授課地區： </b><span>${coach.cityName}</span>`);
+                        $(".iconCity").attr("src", "/img/Coach/icon/location.png");
+                        //Skill
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=liSkill${index}><img class="imgIcon iconSkill" /><b>&nbsp;&nbsp;&nbsp;專長： </b></li>`);
+                        $(".iconSkill").attr("src", "/img/Coach/icon/skill.png");
+                        $(`#liSkill${index}`).append(`<span class="spSkill" id=spSkill${index}></span>`);
+                        $.get("@Url.Content("~/Student/GetSkills")", { "id": `${coach.fCoachId}` },
+                            function (skills) {
+                                $(`#spSkill${index}`).text(`${skills}`);
+                            })
+                        //Slogan
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="liSlogan"><span>${coach.fSlogan}</span></li>`);
+                    })
+                }
+            });
         }
 
-    }
-    <script>
-
-        const formData = new FormData(document.frmFilter);
+        //多重篩選觸發事件
         $("#selCity").change(() => {
-            //if ($(this).find("input[type=checkbox]:checked").val() != undefined) {
-            //    //let result = $(this).find("input[type=checkbox]:checked").val();
-                $.post({
-                    url: 'Student/MultiFilter',
-                    type: 'POST',
-                    data: formData,
-                    //dataType: Text,
-                    contentType: false,
-                    cache: false,
-                    processData: false
-                }).done((data) => {
-                    console.log(data);
-                })
+            GetCoach();
+        })
+        $("input[name='fGender[]'],input[name='fCoachSkill[]'],input[name='fCoachTime[]']").click(() => {
+            GetCoach();
         })
 
-        //TODO 畫面上保留搜尋條件
-        //let city;
-        //let keyword;
-        //$("#selCity").text(city);
-        //$("#ipKeyword").text(keyword);
-        //$("#selCity").change(() => {
-        //    city = $("#selCity").text();
-        //    console.log(city);
-        //})
-        //$("#ipKeyword").blur(() => {
-        //    keyword = $("#ipKeyword").text();
-        //    console.log(keyword);
-        //})
-
-        @*$.get("@Url.Content("~/Student/GetCurrentCategory")", function (data) {
-            console.log(data);
-            $(`#Category${data}`).addClass("current").siblings().addClass("orig");
-        })*@
-
-        @*$(".ulCategory li a").click(() => {
-            $.get("@Url.Content("~/Student/GetCurrentCategory")", function (data) {
-            console.log(data);
-            $(`#Skill${data}`).addClass("current").siblings().addClass("orig");
+        //清除條件
+    $("#btnClear").click((evt) => {
+        evt.preventDefault();
+        $("#selCity").val("0");
+            $("input[type='checkbox']").prop("checked", false);
+            GetCoach();
         })
-        })*@
-    </script>
+
+</script>
 }

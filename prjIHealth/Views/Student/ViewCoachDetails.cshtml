@@ -370,7 +370,7 @@
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="false">經歷及相關證照</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item liSort">
                             <a class="nav-link rate" data-toggle="tab" href="#tabs-2" role="tab" aria-selected="true">會員評價 <span id="spRate"></span></a>
                         </li>
                         <li><div class="bar"></div></li>
@@ -652,7 +652,7 @@
 </div>
 
 @section Scripts{
-    <script>
+    <script>      
  //載入評價(上方+tabpage)
         $(document).ready(function () {
             $.getJSON("@Url.Content("~/Student/GetCoachRate")", { "id": "@Model.FCoachId" },
@@ -673,8 +673,6 @@
                     $("#rateCount").text(`(${data.length})`);
                     displayRate(data);
                 })
-
-
         })
 
         //評價排序
@@ -714,6 +712,7 @@
                 $(".divRate").css("text-align", "center").css("color","dimgray");
             }
             $.each(data, function (index, item) {
+                console.log(data);
                         $(".divRate").append(`<div class="feedback-item"><p><b>${item.fMemberName}</b></p><div class="rate" id=r${index}></div></div>`);
                         for (let i = 1; i <= 5; i++) {
                             $(`#r${index}`).append(`<img class="star starOrig" id="star${index}${i}"/>`);
