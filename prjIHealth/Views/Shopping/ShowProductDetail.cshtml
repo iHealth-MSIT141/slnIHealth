@@ -122,6 +122,14 @@
                 alert("已加入購物車");
             }
         })
+
+        //js轉換數字為千分位型態方法
+        function toCurrency(num) {
+            var parts = num.toString().split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return parts.join('.');
+        }
+
         //加入追蹤清單
         $("#addToTrack").click(function (event) {
             event.preventDefault();
@@ -148,6 +156,7 @@
         $.get("@Url.Content("~/Shopping/SuggestProduct")", function (datas) {
             let htmlShowProduct = "";
             $.each(datas, function (idx, product) {
+                product.fUnitprice = "NT$"+toCurrency(product.fUnitprice);
                 htmlShowProduct += `<div class="col-lg-3 col-md-4 col-sm-6">
                                     <div class="product__item">
                                         <div class="product__item__pic set-bg" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
@@ -158,7 +167,7 @@
                                         </div>
                                         <div class="product__item__text">
                                             <h6 id="showProductDetailInDetail" data-id="${product.fProductId}">${product.fProductName}</h6>
-                                            <h5>$${product.fUnitprice}</h5>
+                                            <h5>${product.fUnitprice}</h5>
                                         </div>
                                     </div>
                                 </div>`

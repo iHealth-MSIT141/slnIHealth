@@ -224,7 +224,7 @@ namespace prjIHealth.Controllers
             }
             else
             {
-                int trackNum = _context.TTrackLists.Where(t => t.FMemberId == userID).Count();
+                int trackNum = _context.TTrackLists.Where(t => t.FMemberId == userID).Select(t=>t).Count();
                 return Json(trackNum);
             }
         }

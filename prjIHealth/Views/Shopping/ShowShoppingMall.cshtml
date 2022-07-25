@@ -263,6 +263,13 @@
             txtKeyword:""
         }
 
+        //js轉換數字為千分位型態方法
+        function toCurrency(num) {
+            var parts = num.toString().split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return parts.join('.');
+        }
+
         //顯示商品
         AllProducts(option);        
         function AllProducts(option) {
@@ -270,6 +277,7 @@
             $.post(url,option, function (datas) {
                 let htmlShowProduct = "";
                 $.each(datas, function (idx, product) {
+                    product.fUnitprice = "NT$" + toCurrency(product.fUnitprice);
                     htmlShowProduct += `<div class="col-lg-4 col-md-6 col-sm-6" ><div id="header" style="cursor:pointer;">
                                 <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
@@ -280,7 +288,7 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6 id="showProductDetail" data-id="${product.fProductId}">${product.fProductName}</h6>
-                                    <h5>$${product.fUnitprice}</h5>
+                                    <h5>${product.fUnitprice}</h5>
                                 </div>
                             </div>
                             </div></div>`
