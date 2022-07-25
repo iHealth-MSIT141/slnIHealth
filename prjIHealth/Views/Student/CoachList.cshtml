@@ -337,16 +337,16 @@
             <div class="col-lg-9 divRight">
                 <div class="divSearch row">
                     <form class="col-lg-7">
-                        <div class="divKeyword">
+                        <div class="divKeyword reveal_t1">
                             <input type="text" name="txtKeyword" id="ipKeyword" class="form-control inKeyword" placeholder="請輸入關鍵字">
                             <div class="divSubmit">
                                 <button type="submit" class="btn btn-success btnSearch" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
                     </form>
-                    <div class="divLink reveal_b2 col-lg-5">
-                        <div class="divOther"><i class="fa-solid fa-user-plus"></i><span><b>&nbsp;&nbsp;想成為教練？</b></span></div>
-                        <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CreateResume">&nbsp;&nbsp;前往<b>填寫履歷</b></a></div>
+                    <div class="divLink col-lg-5">
+                        <div class="divOther reveal_t1"><i class="fa-solid fa-user-plus"></i><span><b>&nbsp;&nbsp;想找學生？</b></span></div>
+                        <div class="divUrl reveal_r1"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CreateResume">&nbsp;&nbsp;前往<b>刊登履歷</b></a></div>
                     </div>                    
                 </div>
                 <div class="row filter">
@@ -434,6 +434,7 @@
 
 @section Scripts{
     @{
+        //每位教練平均評價
         foreach (var coach in Model)
         {
             decimal avgRate;
@@ -448,31 +449,31 @@
             string avg = avgRate.ToString("0.0");
             <script>
                 $(`#avg_@coach.FCoachId`).text("@avg");
-                    for (let i = 1; i <=@avgRate; i++) {
-                                                    $(`#star${i}_@coach.FCoachId`).removeClass("starOrig");
-                                                }
+                for (let i = 1; i <=@avgRate; i++) {
+                    $(`#star${i}_@coach.FCoachId`).removeClass("starOrig");
+                    }
             </script>
         }
 
     }
     <script>
 
-        //const formData = new FormData(document.frmFilter);
-        //$("#selCity").change(() => {
-        //    //if ($(this).find("input[type=checkbox]:checked").val() != undefined) {
-        //    //    //let result = $(this).find("input[type=checkbox]:checked").val();
-        //        $.ajax({
-        //            url: 'Student/MultiFilter',
-        //            type: 'POST',
-        //            data: formData,
-        //            //dataType: Text,
-        //            contentType: false,
-        //            cache: false,
-        //            processData: false
-        //        }).done((data) => {
-        //            console.log(data);
-        //        })
-        //})
+        const formData = new FormData(document.frmFilter);
+        $("#selCity").change(() => {
+            //if ($(this).find("input[type=checkbox]:checked").val() != undefined) {
+            //    //let result = $(this).find("input[type=checkbox]:checked").val();
+                $.post({
+                    url: 'Student/MultiFilter',
+                    type: 'POST',
+                    data: formData,
+                    //dataType: Text,
+                    contentType: false,
+                    cache: false,
+                    processData: false
+                }).done((data) => {
+                    console.log(data);
+                })
+        })
 
         //TODO 畫面上保留搜尋條件
         //let city;

@@ -78,6 +78,23 @@ namespace prjiHealth.Controllers
             return View(coaches);
         }
 
+        public IActionResult MultiFilter(int? FCityId, string[] fGender, int[] fCoachSkill, int[] fCoachTime)
+        {
+            var datas = _context.TCoaches
+                .Include(c => c.FMember)
+                .Include(c => c.FCity)
+                .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill)
+                .Include(c => c.TCoachAvailableTimes)
+                .Include(c => c.TCoachRates).AsEnumerable()
+                .Where(c => c.FVisible == true &&
+                        (FCityId != null ? c.FCityId == FCityId : true) &&
+                        (fGender.Length != 0 ? fGender.Contains(c.FMember.FGender.ToString()) : true) &&
+                        (fCoachSkill.Length != 0 ? c.TCoachSkills.Select(cs => (int)cs.FSkillId).ToArray<int>().Intersect<int>(fCoachSkill).Count() > 0 : true) &&
+                        (fCoachTime.Length != 0 ? c.TCoachAvailableTimes.Select(at => (int)at.FAvailableTimeId).ToArray<int>().Intersect<int>(fCoachTime).Count() > 0 : true));
+
+            var coaches = CCoachViewModel.CoachList(datas.ToList());
+            return Json(coaches);
+        }
         //教練詳細資料
         public IActionResult ViewCoachDetails(int? id)
         {
