@@ -418,10 +418,10 @@
                                                 <div class="form-group">
                                                     <label>數量</label>
                                                     <div class="quantity">
-                                                        <div class="pro-qty">
-                                                            <span class="dec qtybtn"></span>
+                                                        <div class="pro-qty intaketQty">
+                                                            <span class="dec qtybtn btnIntaketQty"></span>
                                                             <input id="inpQuantity" name="FQuantity" type="text" value="1">
-                                                            <span class="inc qtybtn"></span>
+                                                            <span class="inc qtybtn btnIntaketQty"></span>
                                                         </div>
                                                         <span id="spnUnit" name="FUnit"></span>@*單位*@
                                                     </div>
@@ -552,14 +552,39 @@
         function showBodyRecord() {
             notEdit();
             $.get("@Url.Content("~/Diary/getBodyRecord")", { "date": $("#inpDatepicker").val() }, function (data) {
-                $("#inpHeight").val(`身高: ${data.fHeight} cm`);
-                $("#inpWeight").val(`體重: ${data.fWeight} kg`);
-                $("#selWorkload").val(data.fWorkload);
-                $("#inpBMI").val(`BMI: ${data.numBMI}`);
-                $("#inpFat").val(`體脂率: ${data.numFat}%`);
-                $("#inpTDEE").val(`每日熱量消耗: ${data.numTDEE} kcal`);
-                theTDEE = data.numTDEE;
-                loadDiary();
+                if (data == null) {
+                    $("#inpHeight").val(``);
+                    $("#inpWeight").val(``);
+                    $("#selWorkload").val("");
+                    $("#inpBMI").val(``);
+                    $("#inpFat").val(``);
+                    $("#inpTDEE").val(``);
+                    theTDEE = 0;
+                    loadDiary();
+                }
+                else {
+                    let bmiResult = "";
+                    if (data.numBMI < 18.5) {
+                        bmiResult = "過輕";
+                    }
+                    else if (data.numBMI >= 18.5 && data.numBMI < 24) {
+                        bmiResult = "正常";
+                    }
+                    else if (data.numBMI >= 24 && data.numBMI < 27) {
+                        bmiResult = "過重";
+                    }
+                    else if (data.numBMI >= 27) {
+                        bmiResult = "肥胖";
+                    }
+                    $("#inpHeight").val(`身高: ${data.fHeight} cm`);
+                    $("#inpWeight").val(`體重: ${data.fWeight} kg`);
+                    $("#selWorkload").val(data.fWorkload);
+                    $("#inpBMI").val(`BMI: ${data.numBMI}   ${bmiResult}`);
+                    $("#inpFat").val(`體脂率: ${data.numFat}%`);
+                    $("#inpTDEE").val(`每日熱量消耗: ${data.numTDEE} kcal`);
+                    theTDEE = data.numTDEE;
+                    loadDiary();
+                }
             })
         }
         showBodyRecord();

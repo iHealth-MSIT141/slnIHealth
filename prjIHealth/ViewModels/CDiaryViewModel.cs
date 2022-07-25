@@ -18,17 +18,18 @@ namespace prjIHealth.ViewModels
             db = context;
         }
         //IHealthContext db = new IHealthContext();
+        public int userId = 8;
+
 
         //載入全部食物列表
         public IEnumerable<TFoodCalory> AllFoods
         {
             get
             {
-                return db.TFoodCalories;
+                return db.TFoodCalories.OrderByDescending(f => f.TCalorieIntakes.Where(c => c.FMemberId == userId).Count()).ThenBy(f => f.FFoodId);
             }
         }
 
-        public int userId = 8;
 
         //登入會員的身體數據
         public IEnumerable<CBodyRecordViewModel> BodyRecords

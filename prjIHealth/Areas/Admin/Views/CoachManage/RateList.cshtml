@@ -28,13 +28,34 @@
             margin-right: 20vw;
         }
 
-/*        body {
+        /*        body {
             font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
         }*/
     </style>
 }
 <h2 id="title">教練評論管理</h2>
 <hr />
+@*篩選*@
+<div class="divSearch row">
+    <div class="col-lg-3">
+        <select class="custom-select" id="selStarCount">
+            <option value="1" selected>排序: 依日期由進至遠</option>
+            <option value="0">排序: 依日期由遠至近</option>
+            <option value="2" selected>排序: 依星等由高至低</option>
+            <option value="3">排序: 依星等由低至高</option>
+        </select>
+    </div>
+    <div class="col-lg-1" style="padding-right:0">
+        <label class="col-form-label" style="float:right;font-weight:600">搜尋:</label>
+    </div>
+    <div class="col-lg-6 divKeyword">
+        <input type="text" class="form-control" id="inpKeyword" placeholder="請輸入評價內容">
+    </div>
+    <div class="col-lg-2" style="padding-right:0">
+        <button class="btn btn-success" id="btnReset">清除篩選條件</button>
+    </div>
+</div>
+<br />
 <table class="table">
     <thead class="thead-dark">
         <tr>
@@ -62,7 +83,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tbdRates">
         @{
             int count = 0;
             foreach (var r in Model)
@@ -91,7 +112,7 @@
                         @r.Visible
                     </td>
                     <td>
-                        <button class="btn btn-success btnVisible">顯示</button>
+                        <button class="btn btn-success btnVisible">公開</button>
                         <button class="btn btn-danger btnHidden">隱藏</button>
                         <input type="hidden" value="@r.FRateId" />
                     </td>
@@ -128,6 +149,69 @@
                 theTr.find(".tdVisible").text("否");
             })
         });
+
+
+
+        //關鍵字查詢+排序
+        function loadRate() {
+            let isDesc = $("#selStarCount").val();
+            let keyword = $("#inpKeyword").val();
+            $.get("@Url.Content("~/Admin/CoachManage/loadRate")", { IsDesc: isDesc, Keyword: keyword }, function (trates) {
+                let html = "";
+                if (trates != null) {
+                    $.each(trates, function (idx, r) {
+                        html += `<tr><td>${idx + 1}</td>`;
+                        html += `<td>${r.memberName} (${r.fMemberId})</td>`;
+                        html += `<td>${r.coachName} (${r.fCoachId})</td>`;
+                        html += `<td>${r.fRateStar}</td>`;
+                        html += `<td class="tdRateText">${r.fRateText}</td>`;
+                        html += `<td>${r.rateDate}</td>`;
+                        html += `<td class="tdVisible">${r.visible}</td>`;
+                        html += `<td><button class="btn btn-success btnVisible">公開</button>`;
+                        html += `<button class="btn btn-danger btnHidden">隱藏</button>`;
+                        html += `<input type="hidden" value="${r.fRateId}" /></td></tr>`;
+                    })
+                }
+                $("#tbdRates").html(html);
+                $(".btnVisible").click(function () {
+                    theTr = $(this).parent("td").parent("tr");
+                    $.get("@Url.Content("~/Admin/CoachManage/editVisible")", { flag: 1, FRateId: $(this).parent("td").find("input").val() }, function () {
+                        Swal.fire(
+                            '成功',
+                            '您已成功顯示此則評價!',
+                            'success'
+                        )
+                        theTr.find(".tdVisible").text("是");
+                    })
+                });
+
+                $(".btnHidden").click(function () {
+                    theTr = $(this).parent("td").parent("tr");
+                    $.get("@Url.Content("~/Admin/CoachManage/editVisible")", { flag: 0, FRateId: $(this).next("input").val() }, function () {
+                        Swal.fire(
+                            '隱藏',
+                            '您已成功隱藏此則評價!',
+                            'error'
+                        )
+                        theTr.find(".tdVisible").text("否");
+                    })
+                });
+            })
+        };
+        $("#selStarCount").on("change", loadRate);
+        $("#inpKeyword").on("keyup", loadRate);
+
+        //清除篩選內容
+        $("#btnReset").click(function () {
+            $("#selStarCount").val(1);
+            $("#inpKeyword").val("");
+            loadRate();
+        })
+
+
+        //頁碼
+
+
 
     </script>
 }
