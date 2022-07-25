@@ -201,7 +201,6 @@ namespace prjIHealth.Controllers
 
         public IActionResult ShowTrackProduct(int? id)//MemberID
         {
-            //id = loginUser.FMemberId;
             if (id == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -214,6 +213,19 @@ namespace prjIHealth.Controllers
                                    where a.FMemberId == id
                                    select b;
                 return Json(showProducts);
+            }
+        }
+
+        public IActionResult ShowTrackCount(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                int trackNum = _context.TTrackLists.Where(t => t.FMemberId == userID).Count();
+                return Json(trackNum);
             }
         }
 

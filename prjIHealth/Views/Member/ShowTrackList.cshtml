@@ -46,52 +46,7 @@
                             </tr>
                         </thead>
                         <tbody id="showTrack">
-                            @*<tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="/img/prjproduct/f1.jpg" alt="" style="width:30%">
-                                        <h5>Vegetable’s Package</h5>
-                                    </td>
-
-                                    <td class="shoping__cart__price">
-                                        $55.00
-                                    </td>
-                                    <td class="shoping__cart__item__close col-lg-7">
-                                        <span class="fa fa-shopping-bag"></span>
-                                    </td>
-                                    <td class="shoping__cart__item__close col-lg-5">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="/img/prjproduct/f2.jpg" alt="" style="width:30%">
-                                        <h5>Fresh Garden Vegetable</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        $39.00
-                                    </td>
-                                    <td class="shoping__cart__item__close col-lg-7">
-                                        <span class="fa fa-shopping-bag"></span>
-                                    </td>
-                                    <td class="shoping__cart__item__close col-lg-5">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="/img/prjproduct/f5.jpg" alt="" style="width:30%">
-                                        <h5>Organic Bananas</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        $69.00
-                                    </td>
-                                    <td class="shoping__cart__item__close col-lg-7">
-                                        <span class="fa fa-shopping-bag"></span>
-                                    </td>
-                                    <td class="shoping__cart__item__close col-lg-5">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>*@
+                                @*動態生成*@
                         </tbody>
                     </table>
                 </div>
@@ -137,6 +92,16 @@
             showTrackList(url);
         }
 
+        //
+        showTrackCount();
+        async function showTrackCount() {
+             url = "@Url.Content("~/Member/ShowTrackCount/")" + MemberID;
+                    let response = await fetch(url);
+                    let datas = await response.json();
+                    console.log(datas);
+                    $("#fa-heart").children("span").text(datas);
+        }
+
         //以ProductID刪除追蹤商品
         $("#showTrack").delegate(".icon_close", "click", function (event) {
             let productID = $(this).attr("data-id");
@@ -164,16 +129,6 @@
             console.log(productID);
             showProductDetail(productID);
         })
-        //$("#test").delegate(".product_item", "click", function () {
-        //    let a = $(this).attr("data-id");
-        //    let _this = $(this);
-        //    $(this).find(".icon_close").on("click", function () {
-        //        _this.remove();
-        //        let el = document.querySelector(`tr[data-id=${a}]`);
-        //        console.log(el);
-        //    })
-        //    //var el = document.querySelector("tr[data-id='1']");
-        //    //console.log(this);
-        //})
+
     </script>
 }

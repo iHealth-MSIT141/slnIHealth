@@ -142,6 +142,7 @@
                     let response = await fetch(url);
                     let datas = await response.json();
                     console.log(datas);
+                    $("#fa-heart").children("span").text(datas);
         }
 
         $.get("@Url.Content("~/Shopping/SuggestProduct")", function (datas) {

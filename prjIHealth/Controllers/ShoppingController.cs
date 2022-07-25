@@ -63,10 +63,12 @@ namespace prjiHealth.Controllers
         [HttpPost]
         public IActionResult GetProduct(CShoppingFeatureViewModel vModel)
         {
-
             IEnumerable<TProduct> dataShoppingItems = null;
+            //預設顥示商品
             dataShoppingItems = from t in dblIHealth.TProducts
                                 select t;
+
+            //以價格排序
             if (vModel.sort != null)
             {
                 if (vModel.sort == "asc")
@@ -78,7 +80,7 @@ namespace prjiHealth.Controllers
                     dataShoppingItems = dataShoppingItems.OrderByDescending(t => t.FUnitprice);
                 }
             }
-
+            //以類別排序
             if (vModel.categoryID != null)
             {
                 if (vModel.categoryID != 0)
@@ -86,13 +88,13 @@ namespace prjiHealth.Controllers
                     dataShoppingItems = dataShoppingItems.Where(t => t.FCategoryId == vModel.categoryID);
                 }
             }
-
+            //以關鍵字搜尋
             if (!string.IsNullOrEmpty(vModel.txtKeyword))
             {
                 if (vModel.txtKeyword != "")
                 {
                     dataShoppingItems = dataShoppingItems.Where(t => t.FProductName.Contains(vModel.txtKeyword));
-                }               
+                }
             }
             return Json(dataShoppingItems);
         }
@@ -103,6 +105,7 @@ namespace prjiHealth.Controllers
             int userID = TakeMemberID();
             var p = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
 
+            //TODO
             //判定產品有沒有曾出現於該會員的追蹤清單內
             var q = (from a in dblIHealth.TTrackLists
                      where a.FMemberId == userID && a.FProductId == id
@@ -110,7 +113,7 @@ namespace prjiHealth.Controllers
 
             if (q != 0)
             {
-                return Content("你已加入追蹤清單");
+                return Json(q);
             }
             else
             {
@@ -121,12 +124,15 @@ namespace prjiHealth.Controllers
                         TTrackList trackList = new TTrackList()
                         {
                             FMemberId = userID,
-                            //TODO GET member id
                             FProductId = Convert.ToInt32(id)
                         };
                         dblIHealth.TTrackLists.Add(trackList);
                         dblIHealth.SaveChanges();
-                        return Json(p);
+
+                        Dictionary<string, int> trackCount = new Dictionary<string, int>();
+                        int trackNum = dblIHealth.TTrackLists.Where(t => t.FMemberId == userID).Count();
+                        trackCount.Add("trackNum", trackNum);
+                        return Json(trackNum);
                     }
                 }
                 return RedirectToAction("ShowShoppingMall");
@@ -136,8 +142,6 @@ namespace prjiHealth.Controllers
         //產品明細界面
         public ActionResult ShowProductDetail(int? id)
         {
-            //var prod = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
-            //var profinclude = dblIHealth.TProducts.Include(p => p.TProductsImages).Where(t => t.FProductId == id).AsEnumerable();
             TProduct prod = dblIHealth.TProducts.FirstOrDefault(t => t.FProductId == id);
             if (prod == null)
             {
@@ -202,7 +206,7 @@ namespace prjiHealth.Controllers
             return RedirectToAction("ShowShoppingMall");
         }
 
-        //以ProductID搜對應的圖片
+        //以ProductID搜對應的圖片顯示在ProductDetail(沒用到先放著)
         public ActionResult ShowProductImages(int? id)
         {
             var images = from p in dblIHealth.TProducts
@@ -240,6 +244,8 @@ namespace prjiHealth.Controllers
 
             return Json(list);
         }
+
+        //隨機推薦4項商品
         public ActionResult SuggestProduct()
         {
             ArrayList list = new ArrayList();
