@@ -177,6 +177,8 @@
                     var data = {};
                     data.FProductId = id;
                     data.FProductName = 1;
+                    data.discountValue = 0;
+                    data.discountID = 10;
                     $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
                 }
 

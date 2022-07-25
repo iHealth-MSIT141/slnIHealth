@@ -39,9 +39,71 @@ namespace prjiHealth.Controllers
 
         public IActionResult CheckOut()
         {
-            return View();
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Shopped_Items))
+            {
+                string jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
+                List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
+                return View(cart);
+            }
+            else
+                return RedirectToAction("ShowShoppingMall");
         }
+        [HttpPost]
+        public IActionResult CheckOut(CShoppingCartItem vmodel)
+        {
+            if (ModelState.IsValid)
+            {
+                IHealthContext db = new IHealthContext();
+                TOrder order = new TOrder();
+                order.FPaymentCategoryId = vmodel.FPaymentCategoryId;
+                order.FDate = vmodel.FDate;
+                order.FMemberId = vmodel.FMemberId;
+                order.FAddress = vmodel.FAddress;
+                order.FContact = vmodel.FContact;
+                order.FPhone = vmodel.FPhone;
+                order.FRemarks = vmodel.FRemarks;
+                order.FStatusNumber = vmodel.FStatusNumber;
+                db.TOrders.Add(order);
 
+                db.SaveChanges();
+
+                //第一次寫入資料庫產生orderid後，開啟第二dbcontext處理orderdetail，取用session的list進行迴圈寫入
+                IHealthContext dbod = new IHealthContext();
+                TOrderDetail orderdetail = new TOrderDetail();
+                string jsonCart = "";
+                List<CShoppingCartItem> list = null;
+                jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
+                list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
+                var orderid = (from p in dbod.TOrders
+                               where p.FMemberId == vmodel.FMemberId
+                               orderby p.FOrderId descending
+                               select p.FOrderId).FirstOrDefault();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    //每次迴圈時識別欄位值會異動，故重新設為0
+                    orderdetail.FOrderDetailsId = 0;
+                    orderdetail.FOrderId = orderid;
+                    orderdetail.FProductId = list[i].productId;
+                    orderdetail.FQuantity = list[i].count;
+                    orderdetail.FUnitprice = (int)list[i].price;
+                    if (list[i].discountID == 0)
+                    {
+                        orderdetail.FDiscountId = 10;
+                    }
+                    else
+                    {
+                        orderdetail.FDiscountId = list[i].discountID;
+                    }
+                    dbod.TOrderDetails.Add(orderdetail);
+                    dbod.SaveChanges();
+                }
+            }
+            else
+            {
+                return RedirectToAction("CheckOut");
+            }
+            return RedirectToAction("ShowShoppingMall");
+        }
         //商城主頁界面
         public IActionResult ShowShoppingMall()
         {
@@ -265,7 +327,7 @@ namespace prjiHealth.Controllers
         public IActionResult CheckDiscount(string code)
         {
             IHealthContext db = new IHealthContext();
-            var discount = db.TDiscounts.Where(t => t.FDiscountCode == code).Select(t => t.FDiscountValue).Distinct();
+            var discount = db.TDiscounts.Where(t => t.FDiscountCode == code).Select(t => t).Distinct();
             return Json(discount);
         }
 
@@ -293,7 +355,9 @@ namespace prjiHealth.Controllers
                 count = vModel.txtCount,
                 price = (decimal)prod.FUnitprice,
                 productId = vModel.txtFid,
-                product = prod
+                discount = vModel.discountValue,
+                product = prod,
+                discountID = vModel.discountID
             };
 
             if (list.Count == 0)
@@ -310,6 +374,8 @@ namespace prjiHealth.Controllers
                         list[i].count = item.count;
                         sameproduct = true;
                     }
+                    list[i].discount = item.discount;
+                    list[i].discountID = item.discountID;
                 }
                 if (!sameproduct)
                 {
@@ -344,6 +410,7 @@ namespace prjiHealth.Controllers
                 count = vModel.txtCount,
                 price = (decimal)prod.FUnitprice,
                 productId = vModel.txtFid,
+                discount = vModel.discountValue,
                 product = prod
             };
             for (int i = 0; i < list.Count; i++)
@@ -379,6 +446,7 @@ namespace prjiHealth.Controllers
                 count = vModel.txtCount,
                 price = (decimal)prod.FUnitprice,
                 productId = vModel.txtFid,
+                discount = vModel.discountValue,
                 product = prod
             };
             for (int i = 0; i < list.Count; i++)
@@ -389,6 +457,43 @@ namespace prjiHealth.Controllers
             jsonCart = JsonSerializer.Serialize(list);
             HttpContext.Session.SetString(CDictionary.SK_Shopped_Items, jsonCart);
             return RedirectToAction("CheckOut");
+        }
+        public ActionResult AttachDiscount(CAddToCartViewModel vModel)
+        {
+            IHealthContext db = new IHealthContext();
+            TProduct prod = db.TProducts.FirstOrDefault(t => t.FProductId == vModel.txtFid);
+            if (prod == null)
+            {
+                return RedirectToAction("ShowShoppingMall");
+            }
+            string jsonCart = "";
+            List<CShoppingCartItem> list = null;
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_Shopped_Items))
+            {
+                list = new List<CShoppingCartItem>();
+            }
+            else
+            {
+                jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
+                list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
+            }
+            CShoppingCartItem item = new CShoppingCartItem()
+            {
+                count = vModel.txtCount,
+                price = (decimal)prod.FUnitprice,
+                productId = vModel.txtFid,
+                discount = vModel.discountValue,
+                product = prod,
+                discountID = vModel.discountID
+            };
+            for (int i = 0; i < list.Count; i++)
+            {
+                list[i].discount = item.discount;
+                list[i].discountID = item.discountID;
+            }
+            jsonCart = JsonSerializer.Serialize(list);
+            HttpContext.Session.SetString(CDictionary.SK_Shopped_Items, jsonCart);
+            return RedirectToAction("ShoppingCartList");
         }
     }
 }
