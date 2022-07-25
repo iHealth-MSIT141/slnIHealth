@@ -97,6 +97,10 @@ namespace prjIHealth.ViewModels
         {
             get { return Coach.FSlogan; }
             set { Coach.FSlogan = value; }
+        }
+        public int RateCount
+        {
+            get { return Coach.TCoachRates.Count(); }
         }        
     }
 }
