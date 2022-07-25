@@ -54,21 +54,21 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td class="shoping__cart__item" style="margin-left: auto; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            <td class="shoping__cart__item" style="margin-left: auto;vertical-align:middle; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                 <img src="~/img/product/@item.FCoverImage" style="width:30%;height:30%;" /> <span>@Html.DisplayFor(modelItem => item.FProductName)</span>
                             </td>
-                            <td style="margin-left:auto; text-align:center;">
+                            <td style="margin-left: auto; text-align: center; vertical-align: middle; ">
                                 <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FCategoryId)" id="FCategoryId" name="FCategoryId" />
                                 @Html.DisplayFor(modelItem => item.FCategoryName.FCategoryName)
                             </td>
-                            <td style="margin-left:auto">
+                            <td style="margin-left: auto;vertical-align:middle; ">
                                 @Html.DisplayFor(modelItem => item.FUnitprice)
                             </td>
-                            <td style="margin-left: auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
+                            <td style="margin-left: auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; vertical-align: middle; ">
                                 @*@Html.DisplayFor(modelItem => item.FDescription)*@
                                 @item.FDescription.Substring(0, Math.Min(item.FDescription.Length, 20))
                             </td>
-                            <td style="margin-left:auto">
+                            <td style="margin-left: auto; vertical-align: middle; ">
                                 @Html.DisplayFor(modelItem => item.FVisible)
                             </td>
                             <td style="margin-left:auto">
