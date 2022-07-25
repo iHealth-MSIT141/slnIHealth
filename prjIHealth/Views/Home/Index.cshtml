@@ -80,10 +80,11 @@
         }*/
 
         .disabled {
-            pointer-events: none ;
+            pointer-events: none;
             cursor: default;
             color: Gray;
         }
+
         .active {
             cursor: pointer;
         }
@@ -103,7 +104,7 @@
                         <h3 style="font-weight:800;">一手包辦您的體態、運動、飲食計畫</h3>
                         <p></p>
                         <div class="text-center col-md-4">
-                            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">
+                            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registerModal" data-dismiss="modal">
                                 加入會員 <i class="fa fa-user"></i>
                             </button>
                         </div>
@@ -483,11 +484,16 @@
                         <label for="fUserName">使用者帳號</label>
                         <input type="text" class="form-control" id="userNameLogin" name="fUserName" placeholder="帳號" autocomplete="off">
                     </div>
-                    <div class="form-group">
-                        <label for="fPassword">密碼</label>
+                    @*<div class="form-group">
+                            <button class="btn btn-light" type="button" id="btnPasswordShow"><i class="fa fa-eye-slash"></i></button><label for="fPassword">密碼</label>
+                            <input type="password" class="form-control" id="passwordLogin" name="fPassword" placeholder="密碼" autocomplete="off">
+                        </div>*@
+                    <div class="form-group col-12">
+                        <button class="btn btn-light" type="button" id="btnPasswordShow"><i class="fa fa-eye-slash"></i></button><label for="fPassword">密碼</label>
                         <input type="password" class="form-control" id="passwordLogin" name="fPassword" placeholder="密碼" autocomplete="off">
+                        <div class="input-group-append">
+                        </div>
                     </div>
-
                     <div class="modal-footer row">
                         <div class="text-center col">
                             <button class="btn btn-primary mb-3" id="btnLoginModal">
@@ -525,7 +531,7 @@
                 <form asp-action="Register" asp-controller="Member" id="registerForm">
                     <div class="form-group">
                         <label for="fUserName">使用者帳號</label>
-                        <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號,至少需二個字(含)以上">
+                        <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號,至少需二個字(含)以上" pattern="[A-Za-z]{3}">
                     </div>
                     <div class="form-group">
                         <label for="fMemberName">姓名</label>
@@ -533,7 +539,7 @@
                     </div>
                     <div class="form-group">
                         <label for="fPassword">密碼</label>
-                        <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母">
+                        <input type="text" class="form-control" id="fPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母" />
                     </div>
                     <div class="form-group">
                         <label for="fAddress">地址</label>
@@ -670,7 +676,7 @@
     </div>
 </div>
 @section Scripts{
-    <script> 
+    <script>
         $('#AdminPage').addClass("disabled");
 
         //===================註冊取得系統日期================================
@@ -680,47 +686,72 @@
         var day = (registerD.getDate() + 100).toString().substring(1);
         var str = year + month + day;
         $("#fRegisterDate").val(str);
-        //====================ajax 會員登入(fetch)==================================
-        const btnUserName = document.querySelector('#btnLoginModal');
-        btnUserName.addEventListener('click', (event) =>
+        //====================密碼型態轉換==========================================
+        let PasswordShow = false;
+        $("#btnPasswordShow").click(function ()
         {
-            event.preventDefault();
-            var formData = new FormData(document.querySelector("#loginForm"));
-            fetch("/Member/login", {
-                body: formData,
-                method: "Post"
-            }).then(Response => Response.text()).then(data =>
+            PasswordShow = !PasswordShow;
+            if (PasswordShow)
             {
-                if (data == "false")
-                {
-                    alert("登入資料錯誤, 請重新登入");
-                    $('#userNameLogin').val("");
-                    $('#passwordLogin').val("");
-
-
-                } else
-                {
-                    let username = data.substring(1);
-                    let userAdmin = data.substring(0, 1);
-                    $("#btnLogin>span").text(username)
-                    $('#loginModal').modal('hide');
-                    alert(`${username}:歡迎登入`);
-                    $(".header__menu__dropdown").css("display", "");
-                    $('#userNameLogin').val("");
-                    $('#passwordLogin').val("");
-                    if (userAdmin >= 1 && userAdmin <= 4) { $('#AdminPage').removeClass("disabled").addClass("active"); }
-                }
-            })
+                $("#btnPasswordShow").html('<i class="fa fa-eye"></i>');
+                $("#passwordLogin").attr("type", "text");
+            } else
+            {
+                $("#btnPasswordShow").html('<i class="fa fa-eye-slash"></i>');
+            } $("#passwordLogin").attr("type", "password");
         });
+
+
+
+
+        function checkPassword(str)
+        {
+            // at least one number, one lowercase and one uppercase letter
+            // at least six characters that are letters, numbers or the underscore
+            var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$/;
+            return re.test(str);
+        }
+        //====================ajax 會員登入(fetch)==================================
+        //const btnUserName = document.querySelector('#btnLoginModal');
+        //btnUserName.addEventListener('click', (event) =>
+        //{
+        //    event.preventDefault();
+        //    var formData = new FormData(document.querySelector("#loginForm"));
+        //    fetch("/Member/login", {
+        //        body: formData,
+        //        method: "Post"
+        //    }).then(Response => Response.text()).then(data =>
+        //    {
+        //        if (data == "false")
+        //        {
+        //            alert("登入資料錯誤, 請重新登入");
+        //            $('#userNameLogin').val("");
+        //            $('#passwordLogin').val("");
+
+
+        //        } else
+        //        {
+        //            let username = data.substring(1);
+        //            let userAdmin = data.substring(0, 1);
+        //            $("#btnLogin>span").text(username)
+        //            $('#loginModal').modal('hide');
+        //            alert(`${username}:歡迎登入`);
+        //            $(".header__menu__dropdown").css("display", "");
+        //            $('#userNameLogin').val("");
+        //            $('#passwordLogin').val("");
+        //            if (userAdmin >= 1 && userAdmin <= 4) { $('#AdminPage').removeClass("disabled").addClass("active"); }
+        //        }
+        //    })
+        //});
         //==================登入時menu_dropdown顯示, 否則隱藏=====================
         let spanTextUsername = $("#btnLogin>span").text();
-       
+
         let spanTextAutor = $('#header__top__right__auth>p').text();
         if (spanTextUsername == "登入")
         {
             console.log(spanTextUsername + "aa")
             $(".header__menu__dropdown").css("display", "none");
-           
+
         } else
         {
             console.log(spanTextUsername + "BB")
@@ -736,11 +767,20 @@
                 type: "Post",
                 url: "/Member/Register",
                 data: data,
-                success: function (result)
+                success: function (data)
                 {
-                    alert("歡迎您成為IHealth會員!,請登入會員")
-                    $('#registerModal').modal('hide');
-                    $('#loginModal').modal('show');
+                    
+                    if (data == false)
+                    {
+                        alert("請注意必填欄位不可空白或使用者有人使用,請重新註冊");
+
+                    } else
+                    {
+                        alert("歡迎您成為IHealth會員!,請登入會員")
+                        $('#registerModal').modal('hide');
+                        $('#loginModal').modal('show');
+                    }
+
                 }
             });
         });

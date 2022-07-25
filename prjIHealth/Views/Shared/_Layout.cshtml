@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="/css/style.css" type="text/css">
 
     <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
-
     @await RenderSectionAsync("Styles", required: false)
 
 </head>
@@ -302,7 +301,40 @@
         });
 
     </script>
+    <script> //====================ajax 會員登入(fetch)==================================
+        $('#AdminPage').addClass("disabled");
 
+        const btnUserName = document.querySelector('#btnLoginModal');
+        btnUserName.addEventListener('click', (event) =>
+        {
+            event.preventDefault();
+            var formData = new FormData(document.querySelector("#loginForm"));
+            fetch("/Member/login", {
+                body: formData,
+                method: "Post"
+            }).then(Response => Response.text()).then(data =>
+            {
+                if (data == "false")
+                {
+                    alert("登入資料錯誤, 請重新登入");
+                    $('#userNameLogin').val("");
+                    $('#passwordLogin').val("");
+
+
+                } else
+                {
+                    let username = data.substring(1);
+                    let userAdmin = data.substring(0, 1);
+                    $("#btnLogin>span").text(username)
+                    $('#loginModal').modal('hide');
+                    alert(`${username}:歡迎登入`);
+                    $(".header__menu__dropdown").css("display", "");
+                    $('#userNameLogin').val("");
+                    $('#passwordLogin').val("");
+                    if (userAdmin >= 1 && userAdmin <= 4) { $('#AdminPage').removeClass("disabled").addClass("active"); }
+                }
+            })
+        });</script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

@@ -111,16 +111,17 @@ namespace prjIHealth.Controllers
         }
         [HttpPost]
         public IActionResult Register(TMember tm)
-        {
-            bool result = false;
-            var q = _context.TMembers.FirstOrDefault(m => m.FUserName == tm.FUserName);
+        {   bool result = false;
+            if (tm.FPassword == null || tm.FUserName == null) { result = false; }
+            else {      var q = _context.TMembers.FirstOrDefault(m => m.FUserName == tm.FUserName);
             if (q == null)
             {
                 _context.TMembers.Add(tm);
                 _context.SaveChanges();
                 result = true;
             }
-            else { result = false; }
+            else { result = false; } }
+      
             return Json(result);
         }
         public IActionResult Delete(int? id)
