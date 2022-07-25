@@ -78,6 +78,15 @@
         /*        .greenback {
             background-color: #7fad39;
         }*/
+
+        .disabled {
+            pointer-events: none ;
+            cursor: default;
+            color: Gray;
+        }
+        .active {
+            cursor: pointer;
+        }
     </style>
 }
 
@@ -472,11 +481,11 @@
                 <form asp-action="Login" asp-controller="Member" id="loginForm" name="loginForm" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="fUserName">使用者帳號</label>
-                        <input type="text" class="form-control" id="fUserName" name="fUserName" placeholder="帳號" autocomplete="off">
+                        <input type="text" class="form-control" id="userNameLogin" name="fUserName" placeholder="帳號" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label for="fPassword">密碼</label>
-                        <input type="password" class="form-control" id="fPassword" name="fPassword" placeholder="密碼" autocomplete="off">
+                        <input type="password" class="form-control" id="passwordLogin" name="fPassword" placeholder="密碼" autocomplete="off">
                     </div>
 
                     <div class="modal-footer row">
@@ -661,7 +670,9 @@
     </div>
 </div>
 @section Scripts{
-    <script>
+    <script> 
+        $('#AdminPage').addClass("disabled");
+
         //===================註冊取得系統日期================================
         var registerD = new Date();
         var year = registerD.getFullYear().toString();
@@ -680,23 +691,39 @@
                 method: "Post"
             }).then(Response => Response.text()).then(data =>
             {
-                if (data == "false") { alert("登入資料錯誤, 請重新登入"); } else
+                if (data == "false")
                 {
+                    alert("登入資料錯誤, 請重新登入");
+                    $('#userNameLogin').val("");
+                    $('#passwordLogin').val("");
+
+
+                } else
+                {
+                    let username = data.substring(1);
+                    let userAdmin = data.substring(0, 1);
+                    $("#btnLogin>span").text(username)
                     $('#loginModal').modal('hide');
-                    alert(`${data}:歡迎登入`);
-                    window.location.href = "/Home/會員專區ViewDemo"
+                    alert(`${username}:歡迎登入`);
+                    $(".header__menu__dropdown").css("display", "");
+                    $('#userNameLogin').val("");
+                    $('#passwordLogin').val("");
+                    if (userAdmin >= 1 && userAdmin <= 4) { $('#AdminPage').removeClass("disabled").addClass("active"); }
                 }
             })
         });
         //==================登入時menu_dropdown顯示, 否則隱藏=====================
-        let spanText = $("#btnLogin>span").text();
-        if (spanText == "登入")
+        let spanTextUsername = $("#btnLogin>span").text();
+       
+        let spanTextAutor = $('#header__top__right__auth>p').text();
+        if (spanTextUsername == "登入")
         {
-            console.log(spanText + "aa")
+            console.log(spanTextUsername + "aa")
             $(".header__menu__dropdown").css("display", "none");
+           
         } else
         {
-            console.log(spanText + "BB")
+            console.log(spanTextUsername + "BB")
         }
 
         //=================註冊會員後,popup 登入頁面 by bootstrap modal=============
@@ -771,7 +798,5 @@
                 }
             });
         });
-
-
     </script>
 }

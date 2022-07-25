@@ -25,6 +25,7 @@ namespace prjIHealth.Controllers
         utilities ul = new utilities();
         public static TMember loginUser = null;
         public static string userName = "登入";
+        public static int authorId ;
         private readonly IHealthContext _context;
         private IWebHostEnvironment _environment;
 
@@ -49,6 +50,7 @@ namespace prjIHealth.Controllers
                     string loginSession = JsonSerializer.Serialize(q);
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
+                    authorId = (int)loginUser.FAuthorityId;
                     userName = $"{loginUser.FUserName}";
                     //userID = loginUser.FMemberId;
                     //if (!string.IsNullOrEmpty(ReturnUrl))
@@ -57,7 +59,8 @@ namespace prjIHealth.Controllers
                     //}
 
                     //return RedirectToAction("會員專區ViewDemo", "Home");
-                    return Content(loginUser.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
+                    string loginContent = loginUser.FAuthorityId + loginUser.FUserName;
+                    return Content(loginContent, "text/plain", System.Text.Encoding.UTF8);
 
                 }
             }

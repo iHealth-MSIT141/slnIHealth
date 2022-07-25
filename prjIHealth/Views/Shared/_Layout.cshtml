@@ -102,7 +102,6 @@
                             <div class="header__top__right__auth">
                                 <div class="header__cart" style="padding:0;">
                                     <ul>
-                                        @*<a href="#"><i class="fa fa-user"></i> Login</a>*@
                                         <li><a href="/member/showtracklist"><i class="fa fa-heart"></i> <span></span></a></li>
                                         <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
 
@@ -159,7 +158,8 @@
                                     <div class="header__top__right__auth">
                                         <button type="button" id="btnLogin" class="btn btn-primary mb-3" data-toggle="modal" data-target="#loginModal">
                                             <i class="fa fa-user"></i>
-                                            <span>@MemberController.userName</span>
+                                            <span>@MemberController.userName</span> 
+                                            <p style="display:none">@MemberController.authorId</p>
                                         </button>
                                         <span id="sessionTest"></span>
                                         <ul class="header__menu__dropdown">
@@ -190,7 +190,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="~/Admin/Admin/管理頁Demo"><h3>iHealth</h3></a>
+                            <a href="~/Admin/Admin/管理頁Demo" id="AdminPage" ><h3>iHealth</h3></a>
                         </div>
                         <ul>
                             <li>Address: 台北市大安區復興南路一段390號2樓</li>
