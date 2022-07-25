@@ -263,6 +263,13 @@
             txtKeyword:""
         }
 
+        //js轉換數字為千分位型態方法
+        function toCurrency(num) {
+            var parts = num.toString().split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return parts.join('.');
+        }
+
         //顯示商品
         AllProducts(option);        
         function AllProducts(option) {
@@ -270,6 +277,7 @@
             $.post(url,option, function (datas) {
                 let htmlShowProduct = "";
                 $.each(datas, function (idx, product) {
+                    product.fUnitprice = "NT$" + toCurrency(product.fUnitprice);
                     htmlShowProduct += `<div class="col-lg-4 col-md-6 col-sm-6" ><div id="header" style="cursor:pointer;">
                                 <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
@@ -280,7 +288,7 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6 id="showProductDetail" data-id="${product.fProductId}">${product.fProductName}</h6>
-                                    <h5>$${product.fUnitprice}</h5>
+                                    <h5>${product.fUnitprice}</h5>
                                 </div>
                             </div>
                             </div></div>`
@@ -290,9 +298,13 @@
         }
 
         //按價格排序
+        //class改變箭頭方向
+        //以data-sort的值傳去後端做IF/ELSE判斷
         $(".sort").on("click", sorting);
         function sorting() {
+            //以data-sort當flag
             let dataSort = $(".sort").attr("data-sort");
+            //每次執行function清空sort以外class
             $(".sort").removeClass("sort-asc sort-desc");
             if (dataSort == null || dataSort == "") {
                 dataSort = "asc";
@@ -300,7 +312,7 @@
                 $(".sort").attr("data-sort", dataSort);
             }
             else if (dataSort == "desc") {
-                dataSort = "asc";
+                dataSort = "asc";//改變旗標
                 $(".sort").addClass("sort-asc");
                 $(".sort").attr("data-sort", dataSort);
             }
@@ -320,7 +332,10 @@
             console.log(this);
             option.categoryID = id;
             AllProducts(option);
-            /*showProductByCategory(id);*/
+
+            //清空txtKeyword，斷除2姐關係
+            option.txtKeyword = "";
+            $("#txtKeyword").val("");
         })
 
          //以輸入文字搜產品
@@ -328,6 +343,9 @@
             let keyword = $("#txtKeyword").val();
             option.txtKeyword = keyword;
             AllProducts(option);
+
+            //清空categoryID，斷除2姐關係
+            option.categoryID = 0; 
         })
            
         showProduct();
@@ -353,8 +371,8 @@
                     event.preventDefault();
                     id = $(this).attr("data-id");
                     if (@MemberController.userID== 0) {
-                        alert("請先登入會員");
-                        $("#loginModal").modal("show");
+                        pleaseLogin();
+                        /*$("#loginModal").modal("show");*/
                     }
                     else {
                         alert("已成功加入追蹤清單");
@@ -367,6 +385,7 @@
                     let response = await fetch(url);
                     let datas = await response.json();
                     console.log(datas);
+                    $("#fa-heart").children("span").text(datas);
                 }
 
                 //按購物車會加入到購物車
@@ -374,9 +393,8 @@
                     event.preventDefault();
                     id = $(this).attr("data-id");
                     if (@MemberController.userID == 0) {
-                        alert("請先登入會員");
-                        $("#loginModal").modal("show");
-
+                        pleaseLogin();
+                /*        $("#loginModal").modal("show");*/
                     }
                     else
                     {
@@ -388,6 +406,8 @@
                     var data = {};
                     data.txtFid = id;
                     data.txtCount = 1;
+                    data.discountValue = 0;
+                    data.discountID = 10;
                     $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
                 }
 

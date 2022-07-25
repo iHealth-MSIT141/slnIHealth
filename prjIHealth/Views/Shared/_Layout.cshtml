@@ -67,7 +67,7 @@
                 <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
                 @if (@MemberController.userName == "登入")
                 {
-                    <li class="header__top__right__auth"><a id="btnLogin" data-toggle="modal" data-target="#loginModal" href=""><i class="fa fa-user"></i>@MemberController.userName</a></li>
+                    <li class="header__top__right__auth"><a data-toggle="modal" data-target="#loginModal" href=""><i class="fa fa-user"></i>@MemberController.userName</a></li>
                 }
                 else
                 {
@@ -140,7 +140,7 @@
                                             <li>
                                                 <a data-toggle="modal" href="" id="fa-heart">
                                                     <i class="fa fa-heart" data-toggle="modal" href="" onclick="pleaseLogin();" data-nexthref="~/Member/ShowTrackList">
-                                                    </i> <span></span>
+                                                    </i> <span id="trackCount"></span>
                                                 </a>
                                             </li>
                                             <li>
@@ -202,7 +202,7 @@
                                     <div class="header__top__right__auth">
                                         @if (@MemberController.userName == "登入")
                                         {
-                                            <a id="btnLogin" data-toggle="modal" data-target="#loginModal" href="">
+                                            <a id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal" href="">
                                                 <i class="fa fa-user"></i>@MemberController.userName
                                             </a>
                                         }
@@ -318,7 +318,10 @@
             </div>
         </div>
     </footer>
-    @*會員登入Modal*@
+    
+    
+    @*===================================================================================================
+      會員登入Modal*@
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -330,7 +333,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="~/Member/Login" id="addForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                <form action="~/Member/Login" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
                     <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
                     <div class="form-group">
                         <label for="fUserName" style="font-weight:700">使用者帳號</label>@*color: #ffffff; text-shadow:1px 1px 15px black;*@
@@ -342,7 +345,7 @@
                         <input type="password" class="form-control" id="inpLogInPassword" name="fPassword" placeholder="密碼">
                     </div>
                     <div style="justify-content: center; display: flex; ">
-                        <button id="btnLogin1" type="submit" class="btn btn-success center"><i class="fa fa-sign-in" aria-hidden="true"></i>會員登入</button></i>
+                        <button type="submit" class="btn btn-success center"><i class="fa fa-sign-in" aria-hidden="true"></i>會員登入</button></i>
                     </div>
                 </form>
                 <br />
@@ -377,7 +380,6 @@
                 <form asp-action="Register" asp-controller="Member">
                     <div class="modal-body row">
                         <div class="col-lg-6">
-                            <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
                             <div class="form-group">
                                 <label for="fUserName">使用者帳號</label>
                                 <input type="text" class="form-control" id="inpRegisterUserName" name="fUserName" placeholder="帳號,至少需二個字(含)以上">
@@ -422,17 +424,17 @@
                             </div>
                         </div>
                         <div class="form-outline mb-4">
-                            <input type="hidden" class="form-check-input" id="fAuthorityId" name="fAuthorityId" value="5">
+                            <input type="hidden" class="form-check-input" name="fAuthorityId" value="5">
                         </div>
                         <div class="form-outline mb-4">
                             <input type="hidden" class="form-check-input" id="fRegisterDate" name="fRegisterDate">
                         </div>
                         <div class="form-outline mb-4">
-                            <input type="hidden" value="false" name="fDisabled" class="form-control" id="fDisabled" />
+                            <input type="hidden" value="false" name="fDisabled" class="form-control" />
                         </div>
                     </div>
                     <div style="justify-content: center; display: flex; ">
-                        <button id="btnSubmit" type="submit" class="btn btn-success"><i class="fa fa-paper-plane" aria-hidden="true"></i> 送出</button>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-paper-plane" aria-hidden="true"></i> 送出</button>
                     </div>
                     <br />
                     <div class="modal-footer" style="justify-content: center; display: flex; ">
@@ -455,23 +457,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="~/Member/ForgotPassword" id="passwordForgotForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                    <form action="~/Member/ForgotPassword" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
                         <div class="form-group">
                             <label for="fEmail">請輸入註冊時的電子信箱</label>
                             <input type="text" class="form-control" id="inpForgotPassword" name="fEmail" placeholder="email">
                         </div>
                         <div style="justify-content: center; display: flex;">
                             
-                            <button id="btnSubmit" type="submit" class="btn btn-success"><i class="fa fa-paper-plane"></i>送出</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-paper-plane"></i>送出</button>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer"  style="justify-content: center; display: flex; ">
                     <button id="btnDemoForgotPassword" class="btn btn-outline-success">Demo</button>
-                        <button id="btnResetPwd" class="btn btn-secondary" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
+                        <button class="btn btn-secondary" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
                             <i class="fa fa-key"></i> 重設密碼 
                         </button>
-                        <button id="btnLogin3" class="btn btn-light" data-toggle="modal" data-target="#loginModal" data-dismiss="modal" style="margin-left:5px">
+                        <button class="btn btn-light" data-toggle="modal" data-target="#loginModal" data-dismiss="modal" style="margin-left:5px">
                             <i class="fa fa-user"></i> 回到登入頁面
                         </button>
                 </div>
@@ -516,7 +518,7 @@
                         <br />
                         <div class="modal-footer" style="justify-content: center; display: flex;">
                             <button type="button" id="btnDemoResetPassword" class="btn btn-outline-success" style="margin-right:5px">Demo</button>
-                            <button type="button" id="btnLogin" class="btn btn-light" data-toggle="modal" data-target="#loginModal" data-dismiss="modal" style="margin-left:5px">
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#loginModal" data-dismiss="modal" style="margin-left:5px">
                                 <i class="fa fa-user"></i> 回到登入頁面
                             </button>
                         </div>
@@ -614,7 +616,7 @@
                 }
             })
         }
-        $("btnLogin").click(function () {
+        $("#btnLayOutLogin").click(function () {
             $("#inpReturnUrl").val("");
         })
 
@@ -640,8 +642,16 @@
         var str = year + month + day;
         $("#fRegisterDate").val(str);
 
-    @*商城部份*@
-    @*$(".fa-heart").click(function () {
+        //商城部份
+        @*showTrackCount();
+        function showTrackCount() {
+             url = "@Url.Content("~/Member/ShowTrackCount/")" + @MemberController.userID;
+                    //let response = await fetch(url);
+                    //let datas = await response.json();
+                    console.log(datas);
+                    $("#fa-heart").children("span").text(datas);
+        }*@
+        @*$(".fa-heart").click(function () {
         if (@MemberController.userID == 0) {
                 alert("請先登入帳號");
             }

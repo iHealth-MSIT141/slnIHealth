@@ -123,11 +123,23 @@ namespace prjIHealth.Controllers
         //載入食物列表
         public IActionResult loadAllFoods()
         {
-            return Json(new CDiaryViewModel(db).AllFoods);
+            //取得登入者ID
+            int userId = 8;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
+            CDiaryViewModel diaryViewModel = new CDiaryViewModel(db)
+            {
+                userId = userId
+            };
+
+            //依照使用次數排序
+            return Json(diaryViewModel.AllFoods);
         }
 
         //新增飲食紀錄
-        //TODO對同餐別同樣食物不做新增做數量修改
         public IActionResult addCalorieIntake(TCalorieIntake intake)
         {
             //取得登入者ID
@@ -137,21 +149,32 @@ namespace prjIHealth.Controllers
                 string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
                 userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
             }
-
+            //TODO tryparse
             if (intake.FIntakeTime != null && intake.FFoodId != null && intake.FQuantity != null&& intake.FMeal!=null)
             {
-                //TODO tryparse
-                TCalorieIntake calorieIntake = new TCalorieIntake()
+                //對同餐別同樣食物不做新增做數量修改
+                if (db.TCalorieIntakes.Where(c => c.FMemberId == userId && c.FIntakeTime.Substring(0,8) == intake.FIntakeTime.Replace("-", "") && c.FMeal == intake.FMeal && c.FFoodId == intake.FFoodId).Any())
                 {
-                    FIntakeTime=intake.FIntakeTime.Replace("-", "") + DateTime.Now.ToString("HHmmss"),
-                    FMemberId = userId,
-                    FFoodId = intake.FFoodId,
-                    FQuantity = intake.FQuantity,
-                    FMeal = intake.FMeal
-                };
-                db.TCalorieIntakes.Add(calorieIntake);
+                    db.TCalorieIntakes.FirstOrDefault(c => c.FMemberId == userId && c.FIntakeTime.Substring(0,8) == intake.FIntakeTime.Replace("-", "") && c.FMeal == intake.FMeal && c.FFoodId == intake.FFoodId).FQuantity += intake.FQuantity;;
+                }
+                else
+                {
+                    TCalorieIntake calorieIntake = new TCalorieIntake()
+                    {
+                        FIntakeTime = intake.FIntakeTime.Replace("-", "") + DateTime.Now.ToString("HHmmss"),
+                        FMemberId = userId,
+                        FFoodId = intake.FFoodId,
+                        FQuantity = intake.FQuantity,
+                        FMeal = intake.FMeal
+                    };
+                    db.TCalorieIntakes.Add(calorieIntake);
+                }
                 db.SaveChanges();
             }
+            
+            
+            
+            
             return Content("finish", "text/plain", System.Text.Encoding.UTF8);
         }     
         

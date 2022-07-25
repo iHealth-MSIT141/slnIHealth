@@ -10,6 +10,7 @@
 <hr />
 
 
+
     <div class="container">
         <div class="row">
 
@@ -24,14 +25,14 @@
                     <div class="form-group col-md-8">
                         <div class="row">
                             <div class="col-md-4"><label for="FProductName" class="control-label" style="font-size:30px;">商品名稱</label></div>
-                            <div class="col-md-8"><input id="FProductName" name="FProductName" class="form-control" /></div>
+                            <div class="col-md-8"><input id="FProductName" name="FProductName" class="form-control" style="text-align: center;"/></div>
 
                         </div>
                     </div>
 
                     <div class="form-group col-md-8">
                         <div class="row">
-                            <div class="col-md-4"><label class="control-label" style="font-size:30px;">種類</label></div>
+                            <div class="col-md-4"><label class="control-label" style="font-size:30px;text-align:center;">種類</label></div>
                             <div class="col-md-8">
                                 <select name="qtype" id="qtype" class="custom-select" style="text-align:center;">
                                     <option value="999" disabled selected hidden>商品種類</option>
@@ -48,14 +49,14 @@
                     <div class="form-group col-md-8">
                         <div class="row">
                             <div class="col-md-4"> <label for="FUnitprice" class="control-label" style="font-size:30px;">價錢</label></div>
-                            <div class="col-md-8"><input id="FUnitprice" name="FUnitprice" class="form-control" /></div>
+                            <div class="col-md-8"><input id="FUnitprice" name="FUnitprice" class="form-control" style="text-align: center;"/></div>
 
                         </div>
                     </div>
                     <div class="form-group col-md-8">
                         <div class="row">
                             <div class="col-md-4"><label for="FDescription" class="control-label" style="font-size:30px;">描述</label></div>
-                            <div class="col-md-8"> <input id="FDescription" name="FDescription" class="form-control" /></div>
+                            <div class="col-md-8"> <input id="FDescription" name="FDescription" class="form-control" style="text-align: center;"/></div>
 
                         </div>
                     </div>
@@ -84,12 +85,13 @@
                         </div>
                     </div><br /><br />
 
-                    <div class="form-group col-md-11">
-                        <div id="AddFCategory"></div>
-                        <div id="AddFVisible"></div>
-                        <input type="submit" value="確定新增" class="btn btn-primary" />
-                        <a asp-action="ProductList" class="btn btn-primary">返回清單</a>
-                    </div>
+                       <div class="form-group col-md-11">
+                          <div id="AddFCategory"></div>
+                          <div id="AddFVisible"></div>
+                          <input type="submit" value="確定新增" class="btn btn-primary" />
+                          <a asp-action="ProductList" class="btn btn-primary">返回清單</a>
+                          <button id="btncreate" class="btn btn-primary">Create Demo</button>
+                       </div>
                 </form>
 
             </div>
@@ -131,6 +133,14 @@
             $('#AddFCategory').append(inputt)
         };
         $('#qtypee').on("change", SelectedFVisible)
+
+        //=============================================================================================
+        //Create Demo
+        $("#btncreate").click(function () {
+            $("#FProductName").val("啞鈴");
+            $("#FUnitprice").val("500");
+            $("#FDescription").val("健身用品");         
+        });
     </script>
 }
 

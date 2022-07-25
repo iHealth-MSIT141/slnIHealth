@@ -39,7 +39,7 @@ namespace prjIHealth.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(CLoginViewModel vModel,string ReturnUrl)
+        public IActionResult Login(CLoginViewModel vModel)
         {
             var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
             if (q != null)
@@ -49,10 +49,10 @@ namespace prjIHealth.Controllers
                     string loginSession = JsonSerializer.Serialize(q);
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
-                    userName = $"{loginUser.FMemberName}";
+                    userName = $"{loginUser.FUserName}";
                     userID = loginUser.FMemberId;
-                    if (!string.IsNullOrEmpty(ReturnUrl))
-                    { return LocalRedirect(ReturnUrl); }
+                    if (!string.IsNullOrEmpty(vModel.ReturnUrl))
+                    { return LocalRedirect(vModel.ReturnUrl); }
                    return RedirectToAction( "Edit","Member" );
                 }
             }
@@ -120,7 +120,7 @@ namespace prjIHealth.Controllers
                 _context.TMembers.Add(tm);
                 _context.SaveChanges();
                 //return RedirectToRoute(new { controller = "Member", action = "Login" });
-                return RedirectToAction("Login", "Member");
+                return RedirectToAction("Index", "Home");
             }
             else { return RedirectToAction("Index", "Home"); }
         }
@@ -154,7 +154,7 @@ namespace prjIHealth.Controllers
             if (q != null)
             {
                 utilities.sendMail(q.FUserName, q.FEmail);
-                return RedirectToAction("Login","Member" );
+                return RedirectToAction("Index", "Home");
             }
             else { return RedirectToAction("Index","Home");
             }
@@ -186,7 +186,7 @@ namespace prjIHealth.Controllers
                 if (vmodel.firstPassword == vmodel.confirmPassword) {
                     q.FPassword = vmodel.firstPassword;
                     _context.SaveChanges();
-                    return RedirectToAction("Login", "Member");
+                    return RedirectToAction("Index", "Home");
                 }
             } 
                         return RedirectToAction("Index", "Home");
@@ -201,7 +201,6 @@ namespace prjIHealth.Controllers
 
         public IActionResult ShowTrackProduct(int? id)//MemberID
         {
-            //id = loginUser.FMemberId;
             if (id == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -214,6 +213,19 @@ namespace prjIHealth.Controllers
                                    where a.FMemberId == id
                                    select b;
                 return Json(showProducts);
+            }
+        }
+
+        public IActionResult ShowTrackCount(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                int trackNum = _context.TTrackLists.Where(t => t.FMemberId == userID).Select(t=>t).Count();
+                return Json(trackNum);
             }
         }
 

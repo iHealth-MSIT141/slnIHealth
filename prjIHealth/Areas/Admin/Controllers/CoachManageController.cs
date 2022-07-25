@@ -155,5 +155,45 @@ namespace prjIHealth.Areas.Admin.Controllers
             db.SaveChanges();
             return Content("");
         }
+
+        public IActionResult loadRate(int? IsDesc , string Keyword)
+        {
+            IEnumerable<TCoachRate> tRates;
+            if (IsDesc == 0)
+                tRates = db.TCoachRates.OrderBy(r => r.FRateDate);
+            if (IsDesc == 2)
+                tRates = db.TCoachRates.OrderByDescending(r => r.FRateStar);
+            if (IsDesc == 3)
+                tRates = db.TCoachRates.OrderBy(r => r.FRateStar);
+            else
+                tRates = db.TCoachRates.OrderByDescending(r => r.FRateDate);
+            if (!String.IsNullOrEmpty(Keyword))
+                tRates = tRates.Where(r => r.FRateText.Contains(Keyword));
+            if (tRates.Count() != 0)
+            {
+                List<CCoachRateViewModel> rates = new List<CCoachRateViewModel>();
+                foreach (var r in tRates)
+                {
+                    CCoachRateViewModel coachRateViewModel = new CCoachRateViewModel(db)
+                    {
+                        FRateId = r.FRateId,
+                        FMemberId = r.FMemberId,
+                        FCoachId = r.FCoachId,
+                        FRateStar = r.FRateStar,
+                        FRateText = r.FRateText,
+                        FRateDate = r.FRateDate,
+                        FVisible = r.FVisible
+                    };
+                    rates.Add(coachRateViewModel);
+                }
+                return Json(rates);
+            }
+            else
+                return Json(null);
+        }
+
+
+
+
     }
 }
