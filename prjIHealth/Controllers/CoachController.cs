@@ -317,7 +317,7 @@ namespace prjiHealth.Controllers
                 MemberController.userName = "登入";
             }
 
-            var contacts = db.TCoachContacts.Where(c =>c.FCoach.FMemberId==theMemberId);
+            var contacts = db.TCoachContacts.Where(c =>c.FCoach.FMemberId==theMemberId).OrderByDescending(c=>c.FContactDate);
             List<CContactViewModel> contactViewModels = new List<CContactViewModel>();
             foreach(var c in contacts)
             {
