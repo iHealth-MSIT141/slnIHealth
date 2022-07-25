@@ -30,7 +30,7 @@ namespace prjIHealth.ViewModels
             }
         }
 
-        //public int MemberID { get; set; }
+
 
         public int FProductId
         {
