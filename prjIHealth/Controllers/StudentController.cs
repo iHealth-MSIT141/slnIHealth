@@ -82,13 +82,13 @@ namespace prjiHealth.Controllers
             if (coach == null)
                 return RedirectToAction("CoachList");
 
-            var data = _context.TCoaches
+            var data = _context.TCoaches.Where(c => c.FVisible == true && c.FCoachId == id)
                 .Include(c => c.FCity)
                 .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill)
                 .Include(c => c.TCoachAvailableTimes).ThenInclude(t => t.FAvailableTime)
                 .Include(c => c.TCoachExperiences)
                 .Include(c => c.TCoachLicenses).AsEnumerable()
-                .Where(c => c.FVisible == true && c.FCoachId == id).FirstOrDefault();
+                .FirstOrDefault();
 
             CCoachViewModel vModel = new CCoachViewModel
             {
@@ -137,11 +137,11 @@ namespace prjiHealth.Controllers
             var cityId = _context.TCoaches.FirstOrDefault(c => c.FCoachId == id).FCityId;
             var skills = _context.TCoachSkills.Where(cs => cs.FCoachId == id).Select(cs => cs.FSkillId).ToArray();
             var datas = _context.TCoaches
+                .Where(c => c.FVisible == true && c.FCityId == cityId && c.FCoachId != id &&
+                (c.TCoachSkills.Select(cs => cs.FSkillId).ToArray().Intersect(skills)).Count() > 0)
                 .Include(c => c.FMember)
                 .Include(c => c.FCity)
                 .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill).AsEnumerable()
-                .Where(c => c.FVisible == true && c.FCityId == cityId && c.FCoachId != id &&
-                (c.TCoachSkills.Select(cs => cs.FSkillId).ToArray().Intersect(skills)).Count() > 0)
                 .OrderBy(c => Guid.NewGuid()).Take(5);
 
             var coaches = CCoachViewModel.CoachList(datas.ToList());
@@ -150,7 +150,7 @@ namespace prjiHealth.Controllers
         //取得推薦教練專長
         public IActionResult GetSkillName(int id)
         {
-            var data = _context.TCoachSkills.Include(cs => cs.FSkill).Where(cs => cs.FCoachId == id).Select(cs => cs.FSkill.FSkillName).ToArray();
+            var data = _context.TCoachSkills.Where(cs => cs.FCoachId == id).Include(cs => cs.FSkill).Select(cs => cs.FSkill.FSkillName).ToArray();
             return Json(data);
         }
         
