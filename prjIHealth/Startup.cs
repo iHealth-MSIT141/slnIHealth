@@ -64,11 +64,11 @@ namespace prjIHealth
             {
                 endpoints.MapControllerRoute(
                    name: "areas",
-                   pattern: "{area:exists}/{controller=Admin}/{action=�޲z��Demo}/{id?}");
+                   pattern: "{area:exists}/{controller=Admin}/{action=AdminHome}/{id?}");
              
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Coach}/{action=TeachingList}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                  endpoints.MapHub<ChatHub>("/chatHub");
             });   
            
