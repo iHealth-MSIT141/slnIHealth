@@ -22,7 +22,7 @@
         .nice-select {
             display: none;
         }
-
+  
         .divFilter {
             padding-right: 40px;
         }
@@ -460,7 +460,37 @@
         </script>
         }
     }
-<script>          
+<script>    
+    let modelCount =@Model.Count();
+    let pageCount = modelCount / 10
+    $(".divCoachCard").hide();
+    for (let j = 1; j <= 10; j++) {
+        $(`#coach_${j}`).show();
+    }
+
+    for (let i = 1; i <= pageCount; i++) {
+        $(".divPage").append(`<button id="btn${i}">${i}</button>`);
+
+        $(".divPage").on("click", `#btn${i}`, function () {
+            console.log($(`#btn${i}`).text());
+            $(".divCoachCard").hide();
+            $('html,body').animate({ scrollTop: 0 }, 'slow');
+            for (let num = 10 * (i - 1) + 1; num <= 10 * i; num++) {            
+            $(`#coach_${num}`).show();
+        }
+        })
+    }
+    
+    //$(".divPage").append("<button id='btnNext'><i class='fa fa-long-arrow-right'></i></button>");
+    
+    function DisplayCoach(i) {
+        
+        //for (let num = 10 * (i - 1) + 1; num <= 10 * i; num++) {
+        //    $(".divCoachCard").hide();
+        //    $(`#coach_${num}`).show();
+        //}
+    }
+
         //Ajax篩選後顯示教練
         function GetCoach() {
             $.ajax({
