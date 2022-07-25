@@ -175,7 +175,8 @@ namespace prjiHealth.Controllers
 
             if (q != 0)
             {
-                return Json(q);
+                int trackNum = dblIHealth.TTrackLists.Where(t => t.FMemberId == userID).Select(t=>t).Count();
+                return Json(trackNum);
             }
             else
             {
@@ -192,7 +193,7 @@ namespace prjiHealth.Controllers
                         dblIHealth.SaveChanges();
 
                         Dictionary<string, int> trackCount = new Dictionary<string, int>();
-                        int trackNum = dblIHealth.TTrackLists.Where(t => t.FMemberId == userID).Count();
+                        int trackNum = dblIHealth.TTrackLists.Where(t => t.FMemberId == userID).Select(t => t).Count();
                         trackCount.Add("trackNum", trackNum);
                         return Json(trackNum);
                     }

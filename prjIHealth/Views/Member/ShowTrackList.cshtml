@@ -64,6 +64,7 @@
                 let htmlShowProduct = "";
                 //顯示追蹤清單
                 $.each(datas, function (idx, list) {
+                    list.fUnitprice = "NT$"+toCurrency(list.fUnitprice);
                     htmlShowProduct += `<tr class="product_item">
                                          <td class="shoping__cart__item" style="col-lg-4" data-id="${list.fProductId}">
                                             <img src="/img/product/${list.fCoverImage}" alt="" style="width:40%"><br><br><h5>${list.fProductName}</h5>
@@ -83,7 +84,14 @@
                 })
                 $("#showTrack").html(htmlShowProduct);
              })
-         }
+        }
+
+        //js轉換數字為千分位型態方法
+        function toCurrency(num) {
+            var parts = num.toString().split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return parts.join('.');
+        }
 
         //以MemberID去找他所追蹤的商品
         showTrackProduct();
