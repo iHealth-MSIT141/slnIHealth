@@ -120,7 +120,7 @@ namespace prjIHealth.Controllers
                 _context.TMembers.Add(tm);
                 _context.SaveChanges();
                 //return RedirectToRoute(new { controller = "Member", action = "Login" });
-                return RedirectToAction("Login", "Member");
+                return RedirectToAction("Index", "Home");
             }
             else { return RedirectToAction("Index", "Home"); }
         }
@@ -154,7 +154,7 @@ namespace prjIHealth.Controllers
             if (q != null)
             {
                 utilities.sendMail(q.FUserName, q.FEmail);
-                return RedirectToAction("Login","Member" );
+                return RedirectToAction("Index", "Home");
             }
             else { return RedirectToAction("Index","Home");
             }
@@ -186,7 +186,7 @@ namespace prjIHealth.Controllers
                 if (vmodel.firstPassword == vmodel.confirmPassword) {
                     q.FPassword = vmodel.firstPassword;
                     _context.SaveChanges();
-                    return RedirectToAction("Login", "Member");
+                    return RedirectToAction("Index", "Home");
                 }
             } 
                         return RedirectToAction("Index", "Home");
