@@ -140,7 +140,7 @@
                                             <li>
                                                 <a data-toggle="modal" href="" id="fa-heart">
                                                     <i class="fa fa-heart" data-toggle="modal" href="" onclick="pleaseLogin();" data-nexthref="~/Member/ShowTrackList">
-                                                    </i> <span></span>
+                                                    </i> <span id="trackCount"></span>
                                                 </a>
                                             </li>
                                             <li>
@@ -640,8 +640,16 @@
         var str = year + month + day;
         $("#fRegisterDate").val(str);
 
-    @*商城部份*@
-    @*$(".fa-heart").click(function () {
+        //商城部份
+        showTrackCount();
+        function showTrackCount() {
+             url = "@Url.Content("~/Member/ShowTrackCount/")" + @MemberController.userID;
+                    //let response = await fetch(url);
+                    //let datas = await response.json();
+                    console.log(datas);
+                    $("#fa-heart").children("span").text(datas);
+        }
+        @*$(".fa-heart").click(function () {
         if (@MemberController.userID == 0) {
                 alert("請先登入帳號");
             }

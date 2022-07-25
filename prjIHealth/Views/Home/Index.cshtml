@@ -240,62 +240,56 @@
                     <h4>乳清蛋白</h4>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f1.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>金牌巧克力乳清蛋白</h6>
-                                    <span>$1999</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f2.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>多效乳清蛋白飲</h6>
-                                    <span>$1380</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f3.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>無添加濃縮乳清蛋白</h6>
-                                    <span>$539</span>
-                                </div>
-                            </a>
+                            @{
+                                IHealthContext dblHealth = new IHealthContext();
+                                var product = dblHealth.TProducts.Where(p => p.FCategoryId == 1).Take(3);
+                                foreach (var item in product)
+                                {
+                                    <a href="/Shopping/ShowProductDetail/@item.FProductId" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="/img/product/@item.FCoverImage" alt="" style="width:110px;height:110px">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>@item.FProductName</h6>
+                                            <span>@item.FUnitprice.ToString("C0")</span>
+                                        </div>
+                                    </a>
+                                }
+                            }
                         </div>
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f1.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>金牌巧克力乳清蛋白</h6>
-                                    <span>$1999</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f2.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>多效乳清蛋白飲</h6>
-                                    <span>$1380</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f3.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>無添加濃縮乳清蛋白</h6>
-                                    <span>$539</span>
-                                </div>
-                            </a>
+                            @{
+                                product = dblHealth.TProducts.Where(p => p.FCategoryId == 1).Skip(3).Take(3);
+                                foreach (var item in product)
+                                {
+                                    <a href="/Shopping/ShowProductDetail/@item.FProductId" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="/img/product/@item.FCoverImage" alt="" style="width:110px;height:110px">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>@item.FProductName</h6>
+                                            <span>@item.FUnitprice.ToString("C0")</span>
+                                        </div>
+                                    </a>
+                                }
+                            }
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            @{
+                                product = dblHealth.TProducts.Where(p => p.FCategoryId == 1).Skip(6).Take(3);
+                                foreach (var item in product)
+                                {
+                                    <a href="/Shopping/ShowProductDetail/@item.FProductId" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="/img/product/@item.FCoverImage" alt="" style="width:110px;height:110px">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>@item.FProductName</h6>
+                                            <span>@item.FUnitprice.ToString("C0")</span>
+                                        </div>
+                                    </a>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
@@ -305,62 +299,55 @@
                     <h4>健康食品</h4>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f1.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>金牌巧克力乳清蛋白</h6>
-                                    <span>$1999</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f2.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>多效乳清蛋白飲</h6>
-                                    <span>$1380</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f3.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>無添加濃縮乳清蛋白</h6>
-                                    <span>$539</span>
-                                </div>
-                            </a>
+                            @{
+                                product = dblHealth.TProducts.Where(p => p.FCategoryId == 2).Take(3);
+                                foreach (var item in product)
+                                {
+                                    <a href="/Shopping/ShowProductDetail/@item.FProductId" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="/img/product/@item.FCoverImage" alt="" style="width:110px;height:110px">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>@item.FProductName</h6>
+                                            <span>@item.FUnitprice.ToString("C0")</span>
+                                        </div>
+                                    </a>
+                                }
+                            }
                         </div>
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f1.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>金牌巧克力乳清蛋白</h6>
-                                    <span>$1999</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f2.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>多效乳清蛋白飲</h6>
-                                    <span>$1380</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f3.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>無添加濃縮乳清蛋白</h6>
-                                    <span>$539</span>
-                                </div>
-                            </a>
+                            @{
+                                product = dblHealth.TProducts.Where(p => p.FCategoryId == 2).Skip(3).Take(3);
+                                foreach (var item in product)
+                                {
+                                    <a href="/Shopping/ShowProductDetail/@item.FProductId" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="/img/product/@item.FCoverImage" alt="" style="width:110px;height:110px">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>@item.FProductName</h6>
+                                            <span>@item.FUnitprice.ToString("C0")</span>
+                                        </div>
+                                    </a>
+                                }
+                            }
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            @{
+                                product = dblHealth.TProducts.Where(p => p.FCategoryId == 2).Skip(6).Take(3);
+                                foreach (var item in product)
+                                {
+                                    <a href="/Shopping/ShowProductDetail/@item.FProductId" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="/img/product/@item.FCoverImage" alt="" style="width:110px;height:110px">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>@item.FProductName</h6>
+                                            <span>@item.FUnitprice.ToString("C0")</span>
+                                        </div>
+                                    </a>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
@@ -370,62 +357,55 @@
                     <h4>運動用具</h4>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f1.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>金牌巧克力乳清蛋白</h6>
-                                    <span>$1999</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f2.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>多效乳清蛋白飲</h6>
-                                    <span>$1380</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f3.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>無添加濃縮乳清蛋白</h6>
-                                    <span>$539</span>
-                                </div>
-                            </a>
+                            @{
+                                product = dblHealth.TProducts.Where(p => p.FCategoryId == 3).Take(3);
+                                foreach (var item in product)
+                                {
+                                    <a href="/Shopping/ShowProductDetail/@item.FProductId" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="/img/product/@item.FCoverImage" alt="" style="width:110px;height:110px">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>@item.FProductName</h6>
+                                            <span>@item.FUnitprice.ToString("C0")</span>
+                                        </div>
+                                    </a>
+                                }
+                            }
                         </div>
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f1.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>金牌巧克力乳清蛋白</h6>
-                                    <span>$1999</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f2.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>多效乳清蛋白飲</h6>
-                                    <span>$1380</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="/img/prjproduct/f3.jpg" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>無添加濃縮乳清蛋白</h6>
-                                    <span>$539</span>
-                                </div>
-                            </a>
+                            @{
+                                product = dblHealth.TProducts.Where(p => p.FCategoryId == 3).Skip(3).Take(3);
+                                foreach (var item in product)
+                                {
+                                    <a href="/Shopping/ShowProductDetail/@item.FProductId" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="/img/product/@item.FCoverImage" alt="" style="width:110px;height:110px">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>@item.FProductName</h6>
+                                            <span>@item.FUnitprice.ToString("C0")</span>
+                                        </div>
+                                    </a>
+                                }
+                            }
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            @{
+                                product = dblHealth.TProducts.Where(p => p.FCategoryId == 3).Skip(6).Take(3);
+                                foreach (var item in product)
+                                {
+                                    <a href="/Shopping/ShowProductDetail/@item.FProductId" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="/img/product/@item.FCoverImage" alt="" style="width:110px;height:110px">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>@item.FProductName</h6>
+                                            <span>@item.FUnitprice.ToString("C0")</span>
+                                        </div>
+                                    </a>
+                                }
+                            }
                         </div>
                     </div>
                 </div>

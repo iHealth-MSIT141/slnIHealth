@@ -94,7 +94,7 @@ namespace prjiHealth.Controllers
                 if (vModel.txtKeyword != "")
                 {
                     dataShoppingItems = dataShoppingItems.Where(t => t.FProductName.Contains(vModel.txtKeyword));
-                }               
+                }
             }
             return Json(dataShoppingItems);
         }
@@ -105,6 +105,7 @@ namespace prjiHealth.Controllers
             int userID = TakeMemberID();
             var p = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
 
+            //TODO
             //判定產品有沒有曾出現於該會員的追蹤清單內
             var q = (from a in dblIHealth.TTrackLists
                      where a.FMemberId == userID && a.FProductId == id
@@ -112,7 +113,7 @@ namespace prjiHealth.Controllers
 
             if (q != 0)
             {
-                return Content("你已加入追蹤清單");
+                return Json(q);
             }
             else
             {
@@ -127,7 +128,11 @@ namespace prjiHealth.Controllers
                         };
                         dblIHealth.TTrackLists.Add(trackList);
                         dblIHealth.SaveChanges();
-                        return Json(p);
+
+                        Dictionary<string, int> trackCount = new Dictionary<string, int>();
+                        int trackNum = dblIHealth.TTrackLists.Where(t => t.FMemberId == userID).Count();
+                        trackCount.Add("trackNum", trackNum);
+                        return Json(trackNum);
                     }
                 }
                 return RedirectToAction("ShowShoppingMall");

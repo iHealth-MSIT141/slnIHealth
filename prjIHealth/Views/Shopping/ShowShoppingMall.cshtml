@@ -324,6 +324,10 @@
             console.log(this);
             option.categoryID = id;
             AllProducts(option);
+
+            //清空txtKeyword，斷除2姐關係
+            option.txtKeyword = "";
+            $("#txtKeyword").val("");
         })
 
          //以輸入文字搜產品
@@ -331,6 +335,9 @@
             let keyword = $("#txtKeyword").val();
             option.txtKeyword = keyword;
             AllProducts(option);
+
+            //清空categoryID，斷除2姐關係
+            option.categoryID = 0; 
         })
            
         showProduct();
@@ -356,8 +363,8 @@
                     event.preventDefault();
                     id = $(this).attr("data-id");
                     if (@MemberController.userID== 0) {
-                        alert("請先登入會員");
-                        $("#loginModal").modal("show");
+                        pleaseLogin();
+                        /*$("#loginModal").modal("show");*/
                     }
                     else {
                         alert("已成功加入追蹤清單");
@@ -370,6 +377,7 @@
                     let response = await fetch(url);
                     let datas = await response.json();
                     console.log(datas);
+                    $("#fa-heart").children("span").text(datas);
                 }
 
                 //按購物車會加入到購物車
@@ -377,8 +385,8 @@
                     event.preventDefault();
                     id = $(this).attr("data-id");
                     if (@MemberController.userID == 0) {
-                        alert("請先登入會員");
-                        $("#loginModal").modal("show");
+                        pleaseLogin();
+                /*        $("#loginModal").modal("show");*/
                     }
                     else
                     {
