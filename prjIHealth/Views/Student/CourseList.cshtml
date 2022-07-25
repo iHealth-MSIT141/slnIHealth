@@ -171,6 +171,14 @@
         #txtaText{
             height:140px
         }
+
+        td a {
+            color: #212529;
+        }
+
+            td a:hover {
+                color: #7fad39;
+            }
     </style>
 }
 
@@ -263,7 +271,9 @@
                                         @courseCount
                                     </td>
                                     <td>
-                                        @c.CoachName
+                                        <a href="~/Student/ViewCoachDetails/@c.CoachId">
+                                            @c.CoachName
+                                        </a>
                                     </td>
                                     <td>
                                         @c.FCourseName

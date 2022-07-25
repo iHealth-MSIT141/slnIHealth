@@ -39,7 +39,7 @@ namespace prjIHealth.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(CLoginViewModel vModel,string ReturnUrl)
+        public IActionResult Login(CLoginViewModel vModel)
         {
             var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
             if (q != null)
@@ -49,10 +49,10 @@ namespace prjIHealth.Controllers
                     string loginSession = JsonSerializer.Serialize(q);
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
-                    userName = $"{loginUser.FMemberName}";
+                    userName = $"{loginUser.FUserName}";
                     userID = loginUser.FMemberId;
-                    if (!string.IsNullOrEmpty(ReturnUrl))
-                    { return LocalRedirect(ReturnUrl); }
+                    if (!string.IsNullOrEmpty(vModel.ReturnUrl))
+                    { return LocalRedirect(vModel.ReturnUrl); }
                    return RedirectToAction( "Edit","Member" );
                 }
             }

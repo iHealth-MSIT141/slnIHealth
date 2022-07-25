@@ -332,8 +332,7 @@
                                                 @count
                                             </td>
                                             <td>
-                                                <a href="~/Student/ViewCoachDetails">
-                                                    @*上列要換成這個<a href="~/Coach/ViewCoachDetails/@c.FCoachId">*@
+                                                <a href="~/Student/ViewCoachDetails/@c.FCoachId">
                                                     @c.CoachName
                                                 </a>
                                             </td>
@@ -378,8 +377,7 @@
                         {
                             <div class="card col-3 divCard reveal_b1">
                                 <div class="divCandImg">
-                                    <a href="~/Student/ViewCoachDetails">
-                                        @*上列要換成這個<a href="~/Coach/ViewCoachDetails/@c.FCoachId">*@
+                                    <a href="~/Student/ViewCoachDetails/@c.FCoachId">
                                         <img src="~/img/Coach/coachImage/@c.CoachImage" class="card-img-top" alt="...">
                                     </a>
                                 </div>
@@ -449,8 +447,7 @@
                                                             @modalCount
                                                         </td>
                                                         <td>
-                                                            <a href="~/Student/ViewCoachDetails">
-                                                                @*上列要換成這個<a href="~/Coach/ViewCoachDetails/@c.FCoachId">*@
+                                                            <a href="~/Student/ViewCoachDetails/@c.FCoachId">
                                                                 @c.CoachName
                                                             </a>
                                                         </td>
@@ -494,7 +491,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="height:70vh;overflow-y:scroll">
+            <div class="modal-body" style="height:60vh;overflow-y:scroll" id="divModalScroll">
                 <input type="hidden" id="inpChatContactId" />
                 <div class="row" id="divChatBox">
 
@@ -506,6 +503,12 @@
                     <div class="col-2" style="justify-content: center; display: flex;">
                         <button type="button" class="btn btn-success" id="btnSendText" style="height:40px">送出</button>
                     </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button id="btnChatDemo1" class="btn btn-light">Demo1</button>
+                    <button id="btnChatDemo2" class="btn btn-light">Demo2</button>
                 </div>
             </div>
         </div>
@@ -545,7 +548,7 @@
                 $.get("@Url.Content("~/Student/loadContact")", { flag: 0, statusNum:$("#selStatus").val() }, function (contacts) {
                     $.each(contacts, function (index, value) {
                         html += `<tr><td>${index+1}</td>`;
-                        html += `<td><a href="/Student/ViewCoachDetails">${value.coachName}</a></td>`; //換成<a href="~/Coach/ViewCoachDetails/${value.fCoachId}">
+                        html += `<td><a href="/Student/ViewCoachDetails/${value.fCoachId}">${value.coachName}</a></td>`; 
                         html += `<td>${value.availableTime}</td>`;
                         html += `<td>${value.strContactDate}</td>`;
                         html += `<td>${value.status}</td>`;
@@ -559,7 +562,7 @@
                 $.get("@Url.Content("~/Student/loadContact")", { flag: 1, statusNum: $("#selStatus").val() }, function (contacts) {
                     $.each(contacts, function (index, value) {
                         html += `<tr><td>${index+1}</td>`;
-                        html += `<td><a href="/Student/ViewCoachDetails">${value.coachName}</a></td>`; //換成<a href="~/Coach/ViewCoachDetails/${value.fCoachId}">
+                        html += `<td><a href="/Student/ViewCoachDetails/${value.fCoachId}">${value.coachName}</a></td>`;
                         html += `<td>${value.availableTime}</td>`;
                         html += `<td>${value.strContactDate}</td>`;
                         html += `<td>${value.status}</td>`;
@@ -580,7 +583,6 @@
         function loadChatText() {
             if (theContactId != undefined) {
                 $.get("@Url.Content("~/Student/loadChatText")", { id: theContactId }, function (texts) {
-                    console.log(theContactId)
                     let html = "";
                     $.each(texts, function (idx, text) {
                         if (text.fIsCoach == false) {//學員自己
@@ -600,14 +602,34 @@
         }
 
         //開啟setInterval(TODO改用SIGNALR)
-        window.setInterval(() => { loadChatText(); }, 500);
+        var intervalID;
+        
+        $("#modalChat").on("show.bs.modal", function () {
+            intervalID = setInterval(() => { loadChatText(); }, 500);
+        })
+        $("#modalChat").on("hide.bs.modal", function () {
+            clearInterval(intervalID);
+        })
+        
 
         //送出訊息
         $("#btnSendText").click(function () {
             let id = $("#inpChatContactId").val();
             let text = $("#txtNewText").val();
-            $.get("@Url.Content("~/Student/saveText")", { FCoachContactId: id, FContactText: text })
+            $.get("@Url.Content("~/Student/saveText")", { FCoachContactId: id, FContactText: text }, function () {
+                $("#txtNewText").val("");
+            })
         })
+
+        //訊息Demo鍵
+        $("#btnChatDemo1").click(function () {
+            $("#txtNewText").val("那我可以改更早的時間嗎？")
+        })
+
+        $("#btnChatDemo2").click(function () {
+            $("#txtNewText").val("OKOK~再麻煩教練排課，謝謝！")
+        })
+
 
     </script>
 }
