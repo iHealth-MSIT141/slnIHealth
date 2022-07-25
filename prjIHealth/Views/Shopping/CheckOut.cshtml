@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<prjIHealth.ViewModels.CShoppingCartItem>
 @{
     ViewData["Title"] = "CheckOut";
 }
@@ -33,14 +33,20 @@
         </div>
         <div class="checkout__form">
             <h4>帳單明細</h4>
-            <form action="#">
+            <form asp-action="CheckOut" >
                 <div class="row">
+                    <input type="hidden" value=@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") name="FDate" id="FDate" />
+                    <input type="hidden" value=8 name="FMemberId" id="FMemberId" />
+                    <input type="hidden" value=70 name="FStatusNumber" id="FStatusNumber" />
+                    <input type="hidden"  name="FPaymentCategoryId" id="FPaymentCategoryId" />
+                    <input type="hidden"  name="FAddress" id="FAddress" />
+
                     <div class="col-lg-7 col-md-6">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>姓名<span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" id="FContact" name="FContact">
                                 </div>
                             </div>
                         </div>
@@ -48,68 +54,78 @@
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>郵遞區號<span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" id="pcode">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>縣市<span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" id="city">
                                 </div>
                             </div>
                         </div>
                         <div class="checkout__input">
                             <p>地址<span>*</span></p>
-                            <input type="text" placeholder="" class="checkout__input__add">
+                            <input type="text" placeholder="" class="checkout__input__add" id="address">
                         </div>
 
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>電話<span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" id="FPhone" name="FPhone">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="checkout__input">
-                                    <p>Email<span>*</span></p>
-                                    <input type="text">
+                                    <p>Email<span></span></p>
+                                    <input type="text" id="email">
                                 </div>
                             </div>
                         </div>
                         <div class="checkout__input">
-                            <p>訂單備註<span>*</span></p>
+                            <p>訂單備註<span></span></p>
                             <input type="text"
-                                   placeholder="寫下訂單備註,例如:指定送達時間">
+                                   placeholder="寫下訂單備註,例如:指定送達時間" id="FRemarks" name="FRemarks">
                         </div>
+                        <input type="button" class="site-btn" id="demo" value="DEMO">
                     </div>
                     <div class="col-lg-5 col-md-6">
                         <div class="checkout__order">
                             <h4>您的訂單</h4>
-                            <div class="checkout__order__products">產品 <span>總金額</span></div>
-                            <ul>
-                                <li>金牌巧克力乳清蛋白 <span>$1999</span></li>
-                                <li>MUSCLETECH™ WHEY GOLD耐如鐵 <span>$1999</span></li>
-                                <li>【加拿大ALLMAX】奧美仕經典乳清蛋白 <span>$1880</span></li>
-                            </ul>
-                            <div class="checkout__order__subtotal">小計 <span>$5878</span></div>
-                            <div class="checkout__order__total">總金額 <span>$5878</span></div>
+                            @{
+                                decimal pay = 0;
+                                decimal discount = 0;
+                                <div class="checkout__order__products">產品 <span>總金額</span></div>
+                                @foreach (var item in Model)
+                                {
+                                    pay += item.小計;
+                                    discount = item.discount;
+                                    <ul>
+                                        <li>@item.product.FProductName <span>@item.小計.ToString("C0")</span><span style="display:none">@item.discount.ToString("C0")</span></li>
+                                    </ul>
+                                }
+                                decimal total = pay - discount;
+                                <div class="checkout__order__subtotal">小計 <span>@pay.ToString("C0")</span></div>
+                                <div class="checkout__order__total">折扣金額 <span>@discount.ToString("C0")</span></div>
+                                <div class="checkout__order__total">總金額 <span>@total.ToString("C0")</span></div>
 
-                            <div class="checkout__input__checkbox">
-                                <label for="payment">
-                                    現金付款
-                                    <input type="checkbox" id="payment">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="paypal">
-                                    信用卡
-                                    <input type="checkbox" id="paypal">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <button type="submit" class="site-btn">結帳</button>
+                                <div class="checkout__input__checkbox">
+                                    <label for="payment">
+                                        現金付款
+                                        <input type="checkbox" id="payment">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="checkout__input__checkbox">
+                                    <label for="paypal">
+                                        信用卡
+                                        <input type="checkbox" id="paypal">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="site-btn" id="pay" onclick="return confirm('1.請確認必填欄位已填2.請確認付款方式已選')">結帳</button>
+                            }
                         </div>
                     </div>
                 </div>
@@ -118,3 +134,86 @@
     </div>
 </section>
 
+@section Scripts{
+    <script>
+        //demo用按鈕
+        $('#demo').on('click', Demo)
+        function Demo() {
+            $('#FContact').val("jay0513").css("color","black")
+            $('#pcode').val("106").css("color", "black")
+            $('#city').val("台北市大安區").css("color", "black")
+            $('#address').val("復興南路一段390號2樓").css("color", "black")
+            $('#FPhone').val("02-6631-6588").css("color", "black")
+            $('#email').val("jay0513@gmail.com").css("color", "black")
+            $('#FRemarks').val("請於下午6點後送達").css("color", "black")
+            $('#FAddress').val("106台北市大安區復興南路一段390號2樓")
+        }
+        //設定付款方式的值且設定不可同時選取，未選擇付款方式時alert
+        let PaymentCategoryID = 0;
+        $('#payment').on('click', CheckPayment)
+        let cash = false;
+        function CheckPayment() {
+            if ($(this).val() && !cash) {
+                $('#paypal').attr("disabled", "true")
+                cash = true
+                PaymentCategoryID = 1
+                $('#FPaymentCategoryId').attr("value",1)
+            } else
+            {
+                $('#paypal').removeAttr("disabled")
+                cash = false
+                PaymentCategoryID = 0
+            }
+        }
+        $('#paypal').on('click', CheckPayment2)
+        let card = false;
+        function CheckPayment2() {
+            if ($(this).val() && !card) {
+                $('#payment').attr("disabled", "true")
+                card = true
+                PaymentCategoryID = 2
+                $('#FPaymentCategoryId').attr("value", 2)
+            } else {
+                $('#payment').removeAttr("disabled")
+                card = false
+                PaymentCategoryID = 0
+            }
+        }
+        //$('#pay').on('click', paymentcheck)
+        //function paymentcheck() {
+        //    if (PaymentCategoryID = 0) {
+        //        alert("請選擇付款方式")
+        //    }
+        //    if ($('FContact').length = 0) {
+        //        alert("請填寫姓名")
+        //    }
+        //    if ($('#pcode').length < 3 || $('#pcode').length > 5) {
+        //        alert("請填寫姓名")
+        //    }
+        //}
+
+        //取得使用者輸入的地址並代入隱藏欄位寫入資料庫用
+        let temppcoed = '';
+        let tempcity = '';
+        let tempaddress = '';
+        function fAddress() {
+            addressdata = temppcoed + tempcity + tempaddress
+            $('#FAddress').val(addressdata)
+        }
+        $('#pcode').on('blur', writepcode)
+        function writepcode() {
+            temppcoed = document.getElementById("pcode").value
+            fAddress()
+        }
+        $('#city').on('blur', writetempcity)
+        function writetempcity() {
+            tempcity = document.getElementById("city").value
+            fAddress()
+        }
+        $('#address').on('blur', writetempaddress)
+        function writetempaddress() {
+            tempaddress = document.getElementById("address").value
+            fAddress()
+        }
+    </script>
+}

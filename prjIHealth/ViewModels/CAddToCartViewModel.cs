@@ -9,6 +9,7 @@ namespace prjIHealth.ViewModels
     {
         public int txtFid { get; set; }
         public int txtCount { get; set; }
-        //public string discountCode { get; set;}
+        public int discountValue { get; set;}
+        public int discountID { get; set; }
     }
 }

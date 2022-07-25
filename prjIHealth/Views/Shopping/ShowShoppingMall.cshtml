@@ -398,6 +398,8 @@
                     var data = {};
                     data.txtFid = id;
                     data.txtCount = 1;
+                    data.discountValue = 0;
+                    data.discountID = 10;
                     $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
                 }
 

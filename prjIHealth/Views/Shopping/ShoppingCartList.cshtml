@@ -51,31 +51,32 @@
 
                                 @foreach (var item in Model)
                                 {
-
+                                    discount = item.discount;
                                     pay += item.小計;
-                                    <tr>
-                                        <td style="display:none" id="productid">@item.productId</td>
-                                        <td class="shoping__cart__item">
-                                            <img src="/img/product/@item.product.FCoverImage" alt="" style="width:10%;height:10%">
-                                            <h5>@item.product.FProductName</h5>
-                                        </td>
-                                        <td class="shoping__cart__price">
-                                            @item.price.ToString("C0")
-                                        </td>
-                                        <td class="shoping__cart__quantity">
-                                            <div class="quantity">
-                                                <div class="pro-qty">
-                                                    <input type="text" value="@Html.DisplayFor(modelItem => item.count)" id="productqty">
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="shoping__cart__total" id="tempprice" name="shoping__cart__total">
-                                            @item.小計.ToString("C0")
-                                        </td>
-                                        <td class="shoping__cart__item__close">
-                                            <span class="icon_close"></span>
-                                        </td>
-                                    </tr>
+                            <tr>
+                                <td style="display:none" id="productid">@item.productId</td>
+                                <td class="shoping__cart__item">
+                                    <img src="/img/product/@item.product.FCoverImage" alt="" style="width:10%;height:10%">
+                                    <h5>@item.product.FProductName</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    @item.price.ToString("C0")
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="@Html.DisplayFor(modelItem => item.count)" id="productqty">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total" id="tempprice" name="shoping__cart__total">
+                                    @item.小計.ToString("C0")
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <span class="icon_close"></span>
+                                </td>
+                                <td style="display:none" id="productdiscount">@item.discount</td>
+                            </tr>
                                 }
                                 decimal total = pay - discount;
                             }
@@ -106,7 +107,7 @@
                     <h5>結帳明細</h5>
                     <ul>
                         <li>小計<span id="originprice">@pay.ToString("C0")</span></li>
-                        <li style="display:none" id="discounthint">折扣金額<span id="pricehint"></span></li>
+                        <li  id="discounthint">折扣金額<span id="pricehint">@discount.ToString("C0")</span></li>
                         <li>總金額<span id="total">@total.ToString("C0")</span></li>
                     </ul>
                     @Html.ActionLink("開始結帳", "CheckOut", new { @*id =checkout*@}, new { @class = "primary-btn", @id = "checkout" })
@@ -183,13 +184,24 @@
             else {
         //讀取折扣額並計算總金額後，再將數字用方法轉回千分位型態字串且加上NT$
                 $('#discounthint').css('display', 'block')
-                let discountvalue = "NT$" +toCurrency(parseInt(datas[0], 10))
+                let discountvalue = "NT$" + toCurrency(parseInt(datas[0].fDiscountValue, 10))
                 $('#pricehint').html(discountvalue)
-                let total = originprice - parseInt(datas[0], 10)
+                let total = originprice - parseInt(datas[0].fDiscountValue, 10)
                 let stringtotal = "NT$" + toCurrency(total)
                 $('#total').html(stringtotal)
                 hasdiscount = true;
             }
+        //為現有商品加上折扣金額的值供結帳頁面使用
+            var data = {};
+            data.txtFid = $('#productid').text()
+            data.discountValue = parseInt($('#discounthint').text().replace(',', '').substring(7))
+            data.discountID = datas[0].fDiscountId
+            $.ajax({
+             type: "POST",
+             url: "@Url.Action("AttachDiscount")",
+             data: data
+            })
+            console.log(data.discountID)
         }
         $('#checkdiscount').on('click', CheckDiscount);
 
@@ -230,13 +242,19 @@
             //變更seesion內產品數量
              var data = {};
             data.txtFid = parseInt($(this).parent().parent().parent().prev().prev().prev().text());
-            data.txtCount = parseInt($(this).prev().val())+1;
-
+            data.txtCount = parseInt($(this).prev().val()) + 1;
+            if (hasdiscount) {
+                data.discountValue = discountprice = parseInt($('#discounthint').text().replace(',', '').substring(7))
+            }
+            else {
+                data.discountValue = 0;
+            }
             $.ajax({
              type: "POST",
              url: "@Url.Action("ShoppingCartSession")",
              data: data
             })
+            console.log(data.discountValue)
         }
         //按-時變更總價,小計,總金額,並對模板預設input值與顯示值差1進行處理
         $("span[class='dec qtybtn']").on('click', changepriceminus)
@@ -266,7 +284,7 @@
                 let strfinaltotal = "NT$" + toCurrency(finaltotal)
                 $('#total').html(strfinaltotal)
             }
-            else { 
+            else {
             let count = parseInt($(this).next().val())
             let newprice = 0
             let oldprice = parseInt(($(this).parent().parent().parent().prev().text()).replace(",", "").trim().substring(3))
@@ -301,7 +319,12 @@
              var data = {};
             data.txtFid = parseInt($(this).parent().parent().parent().prev().prev().prev().text());
             data.txtCount = parseInt($(this).next().val())-1;
-
+            if (hasdiscount) {
+                data.discountValue = discountprice = parseInt($('#discounthint').text().replace(',', '').substring(7))
+            }
+            else {
+                data.discountValue = 0;
+            }
             $.ajax({
              type: "POST",
              url: "@Url.Action("ShoppingCartSession")",
