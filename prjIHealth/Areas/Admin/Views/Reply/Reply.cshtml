@@ -53,7 +53,7 @@
                 </form>
                 <div class="col-lg-12 text-center">
                     <button id="buttonAdd" class="site-btn" data-toggle="modal" data-target="#bModal">讀取附件</button>
-                    <input type="button" value="DEMO" class="site-btn" style="margin-right: 10px;margin-top:20px" />
+                    <input type="button" value="DEMO" class="site-btn" style="margin-right: 10px;margin-top:20px" id="demo"/>
                 </div>
             </div>
             <div class="col-8">
@@ -99,7 +99,7 @@
 
         </div>
         <div class="blog__item__text">
-            <a asp-action="ProblemReplyList" class="blog__btn">返回問題回覆<span class="arrow_right"></span></a>
+            <a asp-action="ProblemReplyList" class="blog__btn">返回客服回覆<span class="arrow_right"></span></a>
         </div>
 
     }
@@ -166,6 +166,10 @@
             $('#AddFReplyType').append(input)   /*change事件發生時才產生存放資料的input*/
         };
         $('#rtype').on("change", SelectedFReplyType) /*選擇類別時會產生寫入資料庫所需的FReplyType*/
-
+        //demo用按鈕
+        $('#demo').on('click', demo)
+        function demo() {
+            $('#FReplyContent').val("金牌乳清蛋白香草冰淇淋口味將於近期上架商城，敬請密切關注商城更新，以便及時購買")
+        }
     </script>
 }

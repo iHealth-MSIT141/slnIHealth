@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using prjiHealth.Models;
 using prjiHealth.ViewModels;
 using prjIHealth.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace prjiHealth.Controllers
@@ -43,6 +46,7 @@ namespace prjiHealth.Controllers
             }
             else
             {
+                int userID = TakeMemberID();
                 TProblem prob = new TProblem();
                 IHealthContext db = new IHealthContext();
                 if (p.photo != null)
@@ -54,7 +58,14 @@ namespace prjiHealth.Controllers
                 prob.FProblemTime = p.FProblemTime;
                 prob.FProblemCategoryId = p.FProblemCategoryId;
                 prob.FProblemContent = p.FProblemContent;
-                prob.FMemberId = p.FMemberId;
+                if (userID == 0)
+                {
+                    prob.FMemberId = p.FMemberId;
+                }
+                else
+                {
+                    prob.FMemberId = userID;
+                }
                 prob.FOrderId = p.FOrderId;
                 prob.FEmail = p.FEmail;
                 prob.FContactPhone = p.FContactPhone;
@@ -95,12 +106,14 @@ namespace prjiHealth.Controllers
 
         public IActionResult CheckReply()
         {
+            int userID = TakeMemberID();
             IHealthContext db = new IHealthContext();
             var datafix = (from t in db.TProblems
                            join p in db.TProblemCategroies
                            on t.FProblemCategoryId equals p.FProblemCategoryId
                            join s in db.TStatuses
                            on t.FStatusNumber equals s.FStatusNumber
+                           where t.FMemberId==userID
                            select new CProblemViewModel()
                            {
                                FProblemId = t.FProblemId,
@@ -123,6 +136,17 @@ namespace prjiHealth.Controllers
                         where t.FProblemId == id
                         select t.FReplyContent).FirstOrDefault();
             return Json(data);
+        }
+        public int TakeMemberID()
+        {
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string loginSession = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
+                int userID = loginUser.FMemberId;
+                return userID;
+            }
+            return 0;
         }
     }
 

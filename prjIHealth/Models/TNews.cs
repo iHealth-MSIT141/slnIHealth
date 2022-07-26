@@ -9,6 +9,7 @@ namespace prjIHealth.Models
     {
         public TNews()
         {
+            TNewsComments = new HashSet<TNewsComment>();
             TNewsImages = new HashSet<TNewsImage>();
         }
 
@@ -24,6 +25,7 @@ namespace prjIHealth.Models
 
         public virtual TMember FMember { get; set; }
         public virtual TNewsCategory FNewsCategory { get; set; }
+        public virtual ICollection<TNewsComment> TNewsComments { get; set; }
         public virtual ICollection<TNewsImage> TNewsImages { get; set; }
     }
 }

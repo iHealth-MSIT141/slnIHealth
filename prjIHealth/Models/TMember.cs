@@ -17,6 +17,7 @@ namespace prjIHealth.Models
             TCoachRates = new HashSet<TCoachRate>();
             TCoaches = new HashSet<TCoach>();
             TNews = new HashSet<TNews>();
+            TNewsComments = new HashSet<TNewsComment>();
             TOrders = new HashSet<TOrder>();
             TProblems = new HashSet<TProblem>();
             TReplies = new HashSet<TReply>();
@@ -59,6 +60,7 @@ namespace prjIHealth.Models
         public virtual ICollection<TCoachRate> TCoachRates { get; set; }
         public virtual ICollection<TCoach> TCoaches { get; set; }
         public virtual ICollection<TNews> TNews { get; set; }
+        public virtual ICollection<TNewsComment> TNewsComments { get; set; }
         public virtual ICollection<TOrder> TOrders { get; set; }
         public virtual ICollection<TProblem> TProblems { get; set; }
         public virtual ICollection<TReply> TReplies { get; set; }

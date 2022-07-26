@@ -134,10 +134,10 @@
                                                 <input type="hidden" value=" @Html.DisplayFor(modelItem => item.fPayment.FPaymentCategoryId)" id="fPayment.FPaymentCategoryId" name="fPayment.FPaymentCategoryId" />
                                                 @Html.DisplayFor(modelItem => item.FContact)
                                             </td>
-                                            <td style="margin-left: auto; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
+                                            <td style="margin-left: auto; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" title=" @Html.DisplayFor(modelItem => item.FPhone)">
                                                 @item.FPhone.Substring(0, Math.Min(item.FPhone.Length, 6))...
                                             </td>
-                                            <td style="margin-left: auto; text-align: center; ">
+                                            <td style="margin-left: auto; text-align: center;" title=" @Html.DisplayFor(modelItem => item.FAddress)">
                                                 @item.FAddress.Substring(0, Math.Min(item.FAddress.Length, 5))...
                                             </td>
                                             <td style="margin-left: auto; text-align: center;">
@@ -150,7 +150,7 @@
                                             <td style="margin-left: auto; text-align: center;">
                                                 @Html.DisplayFor(modelItem => item.fstatus.FStatus)
                                             </td>
-                                            <td style="margin-left: auto; text-align: center;">
+                                            <td style="margin-left: auto; text-align: center;" title=" @Html.DisplayFor(modelItem => item.FRemarks)">
                                                 @item.FRemarks.Substring(0, Math.Min(item.FRemarks.Length, 10))
                                             </td>
                                             <td style="margin-left: auto; text-align: center;">

@@ -64,8 +64,7 @@
                             <td style="margin-left: auto;vertical-align:middle; ">
                                 @Html.DisplayFor(modelItem => item.FUnitprice)
                             </td>
-                            <td style="margin-left: auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; vertical-align: middle; ">
-                                @*@Html.DisplayFor(modelItem => item.FDescription)*@
+                            <td style="margin-left: auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; vertical-align: middle; "title=" @Html.DisplayFor(modelItem => item.FDescription)">             
                                 @item.FDescription.Substring(0, Math.Min(item.FDescription.Length, 20))
                             </td>
                             <td style="margin-left: auto; vertical-align: middle; ">
@@ -113,24 +112,24 @@
                 }
                 
                 tr = `<tr>
-                        <td class="shoping__cart__item" style="margin-left: auto; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                        <td class="shoping__cart__item" style="margin-left: auto; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;vertical-align: middle;">
                                 <img src="/img/product/${datas[i].fCoverImage}" style="width:30%;height:30%;" /> <span>${datas[i].fProductName}</span>
                             </td>
-                            <td style="margin-left:auto; text-align:center;">
+                            <td style="margin-left:auto; text-align:center;vertical-align: middle;">
                                 <input type="hidden" value=" ${datas[i].fCategoryID})" id="fCategoryID" name="fCategoryID" />
                                 <input type="hidden" value=" ${datas[i].fProductID})" id="fProductID" name="fProductID" />
                                 ${datas[i].fCategoryName.fCategoryName}
                             </td>
-                            <td style="margin-left:auto">
+                            <td style="margin-left:auto;vertical-align: middle;">
                                ${datas[i].fUnitprice}
                             </td>
-                            <td style="margin-left: auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
+                            <td style="margin-left: auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; vertical-align: middle; ">
                               ${fixdesr}
                             </td>
-                            <td style="margin-left:auto">
+                            <td style="margin-left:auto; vertical-align: middle;">
                                ${datas[i].fVisible}
                             </td>
-                            <td style="margin-left:auto">
+                            <td style="margin-left:auto;vertical-align: middle;">
                                <a class="primary-btn cart-btn" href="/Admin/ProductManage/ProductEdit/${datas[i].fProductId}">修改產品</a>
                                <a class="primary-btn cart-btn" href="/Admin/ProductManage/ProductImgList/${datas[i].fProductId}">檢視圖片</a>
                             </td>

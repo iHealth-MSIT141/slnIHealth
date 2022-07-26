@@ -347,7 +347,7 @@
                                             </td>
                                             <td>
                                                 <input type="hidden" value="@c.FCoachContactId" />
-                                                <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="@c.FCoachId" onclick="getId();">訊息</button>
+                                                <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="@c.CoachName" onclick="getId();">訊息</button>
                                             </td>
                                         </tr>
                                     }
@@ -462,7 +462,7 @@
                                                         </td>
                                                         <td>
                                                             <input type="hidden" value="@c.FCoachContactId" />
-                                                            <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="@c.FCoachId" onclick="getId();">訊息</button>
+                                                            <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="@c.CoachName" onclick="getId();">訊息</button>
                                                         </td>
                                                     </tr>
                                                 }
@@ -516,6 +516,7 @@
 </div>
 
 @section Scripts{
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script>
         //移除候選教練
         $(".aDelCand").on("click", function () {
@@ -548,12 +549,12 @@
                 $.get("@Url.Content("~/Student/loadContact")", { flag: 0, statusNum:$("#selStatus").val() }, function (contacts) {
                     $.each(contacts, function (index, value) {
                         html += `<tr><td>${index+1}</td>`;
-                        html += `<td><a href="/Student/ViewCoachDetails/${value.fCoachId}">${value.coachName}</a></td>`; 
+                        html += `<td><a href="/Student/ViewCoachDetails/${value.fCoachId}">${value.coachName}</a></td>`;
                         html += `<td>${value.availableTime}</td>`;
                         html += `<td>${value.strContactDate}</td>`;
                         html += `<td>${value.status}</td>`;
                         html += `<td><input type="hidden" value="${value.fCoachContactId}" />`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="${value.fCoachId}" onclick="getId();">訊息</button></td></tr>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.fCoachName}" onclick="getId();">訊息</button></td></tr>`;
                     })
                     $("#tbdContact").html(html);
                 })
@@ -567,19 +568,22 @@
                         html += `<td>${value.strContactDate}</td>`;
                         html += `<td>${value.status}</td>`;
                         html += `<td><input type="hidden" value="${value.fCoachContactId}" />`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="${value.fCoachId}" onclick="getId();">訊息</button></td></tr>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.fCoachName}" onclick="getId();">訊息</button></td></tr>`;
                     })
                     $("#tbdContact").html(html);
                 })
             }
         }
 
-        //線上聯繫TODO 改SignalR
+        //SignalR線上聯繫
         var theContactId;
+        var theContactName;
         function getId() {
             theContactId = $(event.target).parent("td").children("input").val();
+            theContactName = $(event.target).attr("data-coachname");
             $("#inpChatContactId").val(theContactId);
         }
+
         function loadChatText() {
             if (theContactId != undefined) {
                 $.get("@Url.Content("~/Student/loadChatText")", { id: theContactId }, function (texts) {
@@ -587,11 +591,11 @@
                     $.each(texts, function (idx, text) {
                         if (text.fIsCoach == false) {//學員自己
                             html += `<div class="col-3" ></div><div class="col-9" style="float:right">`;
-                            html += `<p class="chatText" style="float: right; text-align: end;">${text.fContactText}`;
+                            html += `<p class="chatText" style="float: right; text-align: start;">${text.fContactText}`;
                             html += `<small>${text.time}</small></p></div>`;
                         }
                         else {//對方教練
-                            html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> 教練${text.coachName}</label></div><div class="col-7">`;
+                            html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${text.coachName}</label></div><div class="col-7">`;
                             html += `<p class="chatText" style="float: left; text-align: start;">${text.fContactText}`;
                             html += `<small>${text.time}</small></p></div><div class="col-3"></div></div >`;
                         }
@@ -601,25 +605,52 @@
             }
         }
 
-        //開啟setInterval(TODO改用SIGNALR)
-        var intervalID;
-        
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+        connection.on("ReceiveMessage", function (CoachContactId, IsCoach, ContactText) {
+            var now = new Date();
+            var time = `${now.getHours()}:${now.getMinutes()}`;
+            if (CoachContactId == theContactId) {
+                let html = "";
+                if (IsCoach == false) {//學員自己
+                    html += `<div class="col-3" ></div><div class="col-9" style="float:right">`;
+                    html += `<p class="chatText" style="float: right; text-align: start;">${ContactText}`;
+                    html += `<small>${time}</small></p></div>`;
+                }
+                else {//對方教練
+                    html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${theContactName}</label></div><div class="col-7">`;
+                    html += `<p class="chatText" style="float: left; text-align: start;">${ContactText}`;
+                    html += `<small>${time}</small></p></div><div class="col-3"></div></div >`;
+                }
+                $("#divChatBox").append(html);
+            }
+        });
+
+
         $("#modalChat").on("show.bs.modal", function () {
-            intervalID = setInterval(() => { loadChatText(); }, 500);
+            loadChatText();
+            connection.start();
         })
         $("#modalChat").on("hide.bs.modal", function () {
-            clearInterval(intervalID);
+            connection.stop();
+            $("#divChatBox").html("");
         })
-        
+
 
         //送出訊息
         $("#btnSendText").click(function () {
             let id = $("#inpChatContactId").val();
             let text = $("#txtNewText").val();
-            $.get("@Url.Content("~/Student/saveText")", { FCoachContactId: id, FContactText: text }, function () {
-                $("#txtNewText").val("");
-            })
+
+            connection.invoke("SendMessage", `${id}`, false, `${text}`).catch(function (err) {
+                return console.error(err.toString());
+            }).catch(function (err) {
+                return console.error(err.toString());
+            });
+
+            $("#txtNewText").val("");
+            $.get("@Url.Content("~/Student/saveText")", { FCoachContactId: id, FContactText: text });
         })
+
 
         //訊息Demo鍵
         $("#btnChatDemo1").click(function () {

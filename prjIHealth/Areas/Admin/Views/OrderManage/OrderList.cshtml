@@ -9,9 +9,19 @@
 }
 @section Styles{
     <link href="/css//PagedList.css" rel="stylesheet" />
+   
+<style>
+    .a-ellipsis {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+ 
+</style>
 }
 <h1>訂單管理</h1>
-
+<title></title>
 <section class="product spad">
     <div class="container">
         <div class="row">
@@ -82,10 +92,10 @@
                                         <td style="margin-left: auto;text-align:center;">
                                             @Html.DisplayFor(modelItem => item.FContact)
                                         </td>
-                                        <td style="margin-left: auto; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
+                                        <td style="margin-left: auto; text-align: center;" class="a-ellipsis" title="@Html.DisplayFor(modelItem => item.FPhone)">                                           
                                             @item.FPhone.Substring(0, Math.Min(item.FPhone.Length, 6))...
                                         </td>
-                                        <td style="margin-left: auto; text-align: center; ">
+                                        <td style="margin-left: auto; text-align: center;" class="a-ellipsis" title="@Html.DisplayFor(modelItem => item.FAddress)">                    
                                             @item.FAddress.Substring(0, Math.Min(item.FAddress.Length, 5))...
                                         </td>
                                         <td style="margin-left: auto; text-align: center;">
@@ -98,7 +108,7 @@
                                         <td style="margin-left: auto; text-align: center;">
                                             @Html.DisplayFor(modelItem => item.fstatus.FStatus)
                                         </td>
-                                        <td style="margin-left: auto; text-align: center;">
+                                        <td style="margin-left: auto; text-align: center;" title="  @Html.DisplayFor(modelItem => item.FRemarks)">
                                             @item.FRemarks.Substring(0, Math.Min(item.FRemarks.Length, 10))
 
                                         </td>
@@ -246,5 +256,12 @@
                 $('#ListPro').append(tr);
             }
         }
+        //===========================================================================================================================================================
+
+        //$(function () {
+        //    $("#ListPro").on("mouseenter", ".a-ellipsis", function () {
+        //        if (!this.title) this.title = $(this).text();
+        //    });
+        //});
     </script>
 }
