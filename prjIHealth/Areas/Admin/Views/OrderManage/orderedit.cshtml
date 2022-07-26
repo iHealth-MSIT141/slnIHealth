@@ -22,7 +22,7 @@
 
                 <div class="form-group col-md-4">
                     <div class="row">
-                        <div class="col-md-4"> <label for="FContact" class="control-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => Model.FContact)</label></div>
+                        <div class="col-md-4"> <label class="control-label" style="font-size:30px;">收件人</label></div>
                         <div class="col-md-8"><input id="FContact" name="FContact" class="form-control" value="@Html.DisplayFor(modelItem => Model.FContact)" /></div>
 
                     </div>
@@ -30,7 +30,7 @@
 
                 <div class="form-group col-md-4">
                     <div class="row">
-                        <div class="col-md-4"> <label for="FPhone" class="control-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => Model.FPhone)</label></div>
+                        <div class="col-md-4"> <label for="FPhone" class="control-label" style="font-size:30px;">電話</label></div>
                         <div class="col-md-8"> <input name="FPhone" id="FPhone" class="form-control" value="@Html.DisplayFor(modelItem => Model.FPhone)" /></div>
 
                     </div>
@@ -38,14 +38,14 @@
 
                 <div class="form-group col-md-4">
                     <div class="row">
-                        <div class="col-md-4"> <label for="FAddress" class="control-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => Model.FAddress)</label></div>
+                        <div class="col-md-4"> <label for="FAddress" class="control-label" style="font-size:30px;">地址</label></div>
                         <div class="col-md-8"> <input id="FAddress" name="FAddress" class="form-control" value="@Html.DisplayFor(modelItem => Model.FAddress)" /></div>
                     </div>
                 </div>
 
                 <div class="form-group col-md-4">
                     <div class="row">
-                        <div class="col-md-4"><label for="FDate" class="control-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => Model.FDate)</label></div>
+                        <div class="col-md-4"><label for="FDate" class="control-label" style="font-size:30px;">日期</label></div>
                         <div class="col-md-8"> <input name="FDate" id="FDate" class="form-control" value="@Html.DisplayFor(modelItem => Model.FDate)" /></div>
                         <span for="FDate" class="text-danger"></span>
                     </div>
@@ -67,7 +67,7 @@
 
                 <div class="form-group col-md-4">
                     <div class="row">
-                        <div class="col-md-4"> <label for="FRemarks" class="control-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => Model.FRemarks)</label></div>
+                        <div class="col-md-4"> <label for="FRemarks" class="control-label" style="font-size:30px;">備註</label></div>
                         <div class="col-md-8"> <textarea name="FRemarks" id="FRemarks" class="form-control" value="">@Html.DisplayFor(modelItem => Model.FRemarks)</textarea></div>
                         <span for="FRemarks" class="text-danger"></span>
                     </div>
@@ -75,7 +75,7 @@
 
                 <div class="form-group col-md-4">
                     <div class="row">
-                        <div class="col-md-4"><label class="control-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => Model.FStatusNumber)</label></div>
+                        <div class="col-md-4"><label class="control-label" style="font-size:30px;">狀態</label></div>
                         <div class="col-md-8">
                             <select name="qtypee" id="qtypee" class="custom-select">
                                 <option value="999" disabled selected hidden>狀態</option>

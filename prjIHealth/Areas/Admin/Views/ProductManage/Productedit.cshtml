@@ -26,7 +26,7 @@
 
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FCategoryId)" id="FCategoryId" name="FCategoryId" />
+                            @*<input type="hidden" value=" @Html.DisplayFor(modelItem => item.FCategoryId)" id="FCategoryId" name="FCategoryId" />*@
                             <label for="FCategoryId" class="control-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => item.FCategoryId)</label>
                             <select name="qtype" id="qtype" class="custom-select" style="text-align:center;">
                                 <option value="999" disabled selected hidden>商品種類</option>
@@ -84,15 +84,15 @@
         function SelectedfCategory() {          /*判斷所選類別對應的ID*/
             $('#AddFCategory>input').remove();
             if ($('#qtype').val() == "乳清蛋白")
-                FCategoryId = 1;
+                FCategoryId =1;
             if ($('#qtype').val() == "健康食品")
-                FCategoryId = 2;
+                FCategoryId =2;
             if ($('#qtype').val() == "運動用品")
-                FCategoryId = 3;
+                FCategoryId =3;
             if ($('#qtype').val() == "男裝")
-                FCategoryId = 4;
+                FCategoryId =4;
             if ($('#qtype').val() == "女裝")
-                FCategoryId = 5;
+                FCategoryId =5;
             input = `<input type="hidden" id="FCategoryId" value="${FCategoryId}" name="FCategoryId" />`
             $('#AddFCategory').append(input)   /*change事件發生時才產生存放資料的input*/
         };
