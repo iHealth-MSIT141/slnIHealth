@@ -36,7 +36,7 @@
             <form asp-action="CheckOut" >
                 <div class="row">
                     <input type="hidden" value=@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") name="FDate" id="FDate" />
-                    <input type="hidden" value=8 name="FMemberId" id="FMemberId" />
+                    @*<input type="hidden" value=8 name="FMemberId" id="FMemberId" />*@
                     <input type="hidden" value=70 name="FStatusNumber" id="FStatusNumber" />
                     <input type="hidden"  name="FPaymentCategoryId" id="FPaymentCategoryId" />
                     <input type="hidden"  name="FAddress" id="FAddress" />

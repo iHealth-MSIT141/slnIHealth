@@ -51,13 +51,14 @@ namespace prjiHealth.Controllers
         [HttpPost]
         public IActionResult CheckOut(CShoppingCartItem vmodel)
         {
+            int userID = TakeMemberID();
             if (ModelState.IsValid)
             {
                 IHealthContext db = new IHealthContext();
                 TOrder order = new TOrder();
                 order.FPaymentCategoryId = vmodel.FPaymentCategoryId;
                 order.FDate = vmodel.FDate;
-                order.FMemberId = vmodel.FMemberId;
+                order.FMemberId = userID;
                 order.FAddress = vmodel.FAddress;
                 order.FContact = vmodel.FContact;
                 order.FPhone = vmodel.FPhone;
@@ -75,7 +76,7 @@ namespace prjiHealth.Controllers
                 jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
                 list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
                 var orderid = (from p in dbod.TOrders
-                               where p.FMemberId == vmodel.FMemberId
+                               where p.FMemberId == userID
                                orderby p.FOrderId descending
                                select p.FOrderId).FirstOrDefault();
                 for (int i = 0; i < list.Count; i++)
@@ -102,7 +103,7 @@ namespace prjiHealth.Controllers
             {
                 return RedirectToAction("CheckOut");
             }
-            return RedirectToAction("ShowShoppingMall");
+            return RedirectToAction("OrderList","Member",1);
         }
         //商城主頁界面
         public IActionResult ShowShoppingMall()
