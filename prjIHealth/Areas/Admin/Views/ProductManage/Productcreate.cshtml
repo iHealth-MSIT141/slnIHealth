@@ -25,7 +25,7 @@
                     <div class="form-group col-md-8">
                         <div class="row">
                             <div class="col-md-4"><label for="FProductName" class="control-label" style="font-size:30px;">商品名稱</label></div>
-                            <div class="col-md-8"><input id="FProductName" name="FProductName" class="form-control" style="text-align: center;"/></div>
+                            <div class="col-md-8"><input id="FProductName" name="FProductName" class="form-control" style="text-align: center;" /></div>
 
                         </div>
                     </div>
@@ -49,14 +49,14 @@
                     <div class="form-group col-md-8">
                         <div class="row">
                             <div class="col-md-4"> <label for="FUnitprice" class="control-label" style="font-size:30px;">價錢</label></div>
-                            <div class="col-md-8"><input id="FUnitprice" name="FUnitprice" class="form-control" style="text-align: center;"/></div>
+                            <div class="col-md-8"><input id="FUnitprice" name="FUnitprice" class="form-control" style="text-align: center;" /></div>
 
                         </div>
                     </div>
                     <div class="form-group col-md-8">
                         <div class="row">
                             <div class="col-md-4"><label for="FDescription" class="control-label" style="font-size:30px;">描述</label></div>
-                            <div class="col-md-8"> <input id="FDescription" name="FDescription" class="form-control" style="text-align: center;"/></div>
+                            <div class="col-md-8"> <input id="FDescription" name="FDescription" class="form-control" style="text-align: center;" /></div>
 
                         </div>
                     </div>
@@ -85,15 +85,15 @@
                         </div>
                     </div><br /><br />
 
-                       <div class="form-group col-md-11">
-                          <div id="AddFCategory"></div>
-                          <div id="AddFVisible"></div>
-                          <input type="submit" value="確定新增" class="btn btn-primary" />
-                          <a asp-action="ProductList" class="btn btn-primary">返回清單</a>
-                          <button id="btncreate" class="btn btn-primary">Create Demo</button>
-                       </div>
+                                <div class="form-group col-md-11">
+                                    <div id="AddFCategory"></div>
+                                    <div id="AddFVisible"></div>
+                                    <input type="submit" value="確定新增" class="btn btn-primary" />
+                                    <a asp-action="ProductList" class="btn btn-primary">返回清單</a>
+                                    <button id="btncreate" class="btn btn-primary">Demo</button>
+                                </div>
                 </form>
-
+             
             </div>
         </div>
     </div>
@@ -136,7 +136,8 @@
 
         //=============================================================================================
         //Create Demo
-        $("#btncreate").click(function () {
+        $("#btncreate").click(function (event) {
+            event.preventDefault();
             $("#FProductName").val("啞鈴");
             $("#FUnitprice").val("500");
             $("#FDescription").val("健身用品");         

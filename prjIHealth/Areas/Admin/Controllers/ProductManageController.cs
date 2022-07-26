@@ -114,7 +114,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                 pro.FVisible = c.FVisible;
                 pd.FProductName = pro.FProductName;
                 pd.FCategoryId = pro.FCategoryId;
-                pd.FCategory.FCategoryId = pro.FCategoryId;
+               // pd.FCategory.FCategoryId = pro.FCategoryId;
                 pd.FDescription = pro.FDescription;
                 pd.FUnitprice = pro.FUnitprice;
                 pd.FVisible = pro.FVisible;
