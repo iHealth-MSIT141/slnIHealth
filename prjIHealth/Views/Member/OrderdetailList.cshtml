@@ -47,7 +47,7 @@
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -55,8 +55,8 @@
                     @*h2內容請自行更換*@
                     <h2 class="reveal_t1">訂單明細</h2>
                     <div class="breadcrumb__option reveal_t1">
-                        <a href="./index.html">Home</a>
-                        <span>Shop</span>
+                        <a href="~/Shopping/ShowShoppingMall">Home</a>
+                        <span>Shopping</span>
                     </div>
                 </div>
             </div>
@@ -68,12 +68,12 @@
 <section class="product spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-5">
-                <div class="sidebar">
+            @*會員專區垂直導覽列*@
+            <div class="col-lg-3 col-md-5 reveal_b1">
+                <div class="sidebar" style="position:sticky;top:150px;">
                     <div class="sidebar__item">
                         <h4>會員專區</h4>
                         <ul>
-
                             <li><a href="~/member/edit">個人資料</a></li>
                             <li><a href="~/Diary/DiaryMain">飲食日誌</a></li>
                             <li><a href="~/Member/OrderList">訂單查詢</a></li>
@@ -84,7 +84,7 @@
 
                         </ul>
                         <br />
-                        <a href="~/Coach/ManageResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
+                        <a href="~/Coach/CreateResume" class="blog__btn"><span class="arrow_right"></span>教練專區</a>
                     </div>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                                     foreach (var item in Model)
                                     {
                                         int discount = Convert.ToInt32(item.fdiscount.FDiscountValue);
-                                        pay += item.FUnitprice-discount;
+                                        pay += item.FUnitprice - discount;
                                         count++;
                                         <tr>
                                             <td style="margin-left:auto">
