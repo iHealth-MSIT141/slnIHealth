@@ -215,6 +215,13 @@
             obj.value = "";
             document.selection.clear();
         })
+        //demo用按鈕
+        $('#demo').on('click', demo)
+        function demo() {
+            $('#FContactPhone').val("0944678566").css("color", "black")
+            $('#FEmail').val("jay0513@gmail.com").css("color", "black")
+            $('#FProblemContent').val("請問有賣金牌乳清蛋白香草冰淇淋口味嗎，像圖片的那種")
+        }
     </script>
 
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
