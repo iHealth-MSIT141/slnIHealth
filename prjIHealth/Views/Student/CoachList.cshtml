@@ -288,7 +288,18 @@
             #gotop :hover {
                 background: #5F822B;
             }
-       
+        .btnPage {
+            background-color:white;
+            border: 1px solid #7fad39;
+            width:35px;
+            height:35px;
+            margin:0px 8px;
+            transition:.4s;
+        }
+            .btnPage:hover {
+                background-color: #7fad39;
+                color: white;               
+            }
     </style>
 }
 
@@ -485,25 +496,33 @@
         </script>
         }
     }
-<script>    
-    @*let modelCount =@Model.Count();
-    let pageCount = modelCount / 10
-    $(".divCoachCard").hide();
-    for (let j = 1; j <= 10; j++) {
-        $(`#coach_${j}`).show();
-    }
+<script>
+    //產生頁碼
+    //$(document).ready(UpdatePage());    
+    //function UpdatePage() {
+    //    $(".divPage").empty();
+    //    let coachCount = $(".divCoachList .divCoachCard").length;
+    //    console.log(coachCount);
 
-    for (let i = 1; i <= pageCount; i++) {
-        $(".divCoachPage").append(`<button id="btnPage${i}">${i}</button>`);
+    //    let pageCount = coachCount / 10;
+    //    console.log(pageCount);
 
-        $(".divCoachPage").on("click", $(`#btnPage${i}`), function () {
-            $(".divCoachCard").hide();
-            $('html,body').animate({ scrollTop: 0 }, 'slow');
-            for (let num = 10 * (i - 1) + 1; num <= 10 * i; num++) {            
-            $(`#coach_${num}`).show();
-        }
-        })
-    }*@
+    //    for (let i = 1; i <= pageCount; i++) {
+    //        $(".divPage").append(`<button class="btnPage">${i}</button>`);
+    //    }
+
+    //    $(".btnPage").on("click", function () {
+    //        let coachCards = $(".divCoachCard");
+    //        coachCards.hide();
+
+    //        let index = 10 * parseInt($(this).text());
+    //        //console.log(index);
+    //        coachCards.slice(index - 10, index).show();
+    //        $('html,body').animate({ scrollTop: 0 }, 'slow');
+    //    })
+    //    $(".btnPage").eq(0).trigger("click");
+    //}
+
     /* GoTop btn */
     $('#gotop').click(function () {
         $('html,body').animate({ scrollTop: 0 }, 'slow');   /* 返回到最頂上 */
@@ -518,17 +537,6 @@
             $('#gotop').fadeOut();
         }
     });
-    
-
-    //$(".divPage").append("<button id='btnNext'><i class='fa fa-long-arrow-right'></i></button>");
-    
-    //function DisplayCoach(i) {
-        
-    //    //for (let num = 10 * (i - 1) + 1; num <= 10 * i; num++) {
-    //    //    $(".divCoachCard").hide();
-    //    //    $(`#coach_${num}`).show();
-    //    //}
-    //}
 
         //Ajax篩選後顯示教練
         function GetCoach() {
@@ -594,9 +602,11 @@
         //多重篩選觸發事件
         $("#selCity").change(() => {
             GetCoach();
+            //UpdatePage();
         })
         $("input[name='fGender[]'],input[name='fCoachSkill[]'],input[name='fCoachTime[]']").click(() => {
             GetCoach();
+            //UpdatePage();
         })
 
         //清除條件
@@ -604,7 +614,8 @@
         evt.preventDefault();
         $("#selCity").val("0");
             $("input[type='checkbox']").prop("checked", false);
-            GetCoach();
+        GetCoach();
+        UpdatePage();
         })
 
 </script>
