@@ -166,11 +166,11 @@ namespace prjiHealth.Controllers
             var cityId = _context.TCoaches.FirstOrDefault(c => c.FCoachId == id).FCityId;
             var skills = _context.TCoachSkills.Where(cs => cs.FCoachId == id).Select(cs => cs.FSkillId).ToArray();
             var datas = _context.TCoaches
-                .Where(c => c.FVisible == true && c.FCityId == cityId && c.FCoachId != id &&
-                (c.TCoachSkills.Select(cs => cs.FSkillId).ToArray().Intersect(skills)).Count() > 0)
                 .Include(c => c.FMember)
                 .Include(c => c.FCity)
                 .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill).AsEnumerable()
+                .Where(c => c.FVisible == true && c.FCityId == cityId && c.FCoachId != id &&
+                (c.TCoachSkills.Select(cs => cs.FSkillId).ToArray().Intersect(skills)).Count() > 0)
                 .OrderBy(c => Guid.NewGuid()).Take(5);
 
             var coaches = CCoachViewModel.CoachList(datas.ToList());

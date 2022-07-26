@@ -139,7 +139,7 @@
         //demo用按鈕
         $('#demo').on('click', Demo)
         function Demo() {
-            $('#FContact').val("jay0513").css("color","black")
+            $('#FContact').val("邱小文").css("color","black")
             $('#pcode').val("106").css("color", "black")
             $('#city').val("台北市大安區").css("color", "black")
             $('#address').val("復興南路一段390號2樓").css("color", "black")
@@ -179,19 +179,6 @@
                 PaymentCategoryID = 0
             }
         }
-        //$('#pay').on('click', paymentcheck)
-        //function paymentcheck() {
-        //    if (PaymentCategoryID = 0) {
-        //        alert("請選擇付款方式")
-        //    }
-        //    if ($('FContact').length = 0) {
-        //        alert("請填寫姓名")
-        //    }
-        //    if ($('#pcode').length < 3 || $('#pcode').length > 5) {
-        //        alert("請填寫姓名")
-        //    }
-        //}
-
         //取得使用者輸入的地址並代入隱藏欄位寫入資料庫用
         let temppcoed = '';
         let tempcity = '';
