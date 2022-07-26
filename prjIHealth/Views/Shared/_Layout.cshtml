@@ -597,12 +597,15 @@
                 method: "Post"
             }).then(Response => Response.text()).then(data =>
             {
-                if (data == "false")
+                    if (data == "false")
                 {
                     alert("登入資料錯誤, 請重新登入");
                     $('#inpLogInUserName').val("");
                     $('#inpLogInPassword').val("");
-                } else if (data = "empty") { alert("必填欄位, 不得空白, 請重新輸入"); }else
+                } else if (data == "empty")
+                {
+                    alert("必填欄位, 不得空白, 請重新輸入");
+                } else
                 {
                     let userName = data.substring(1);
                     let userAdmin = data.substring(0, 1);
@@ -636,7 +639,6 @@
                 success: function (data)
                 {
                     let userName = $("#inpRegisterUserName").val();
-
                     if (data == "empty")
                     {
                         alert("請注意必填欄位不可空白, 請重新填入");
@@ -647,7 +649,6 @@
                         $('#registerModal').modal('hide');
                         $('#loginModal').modal('show');
                     }
-
                 }
             });
         });
