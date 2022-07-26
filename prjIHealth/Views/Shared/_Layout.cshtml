@@ -34,17 +34,30 @@
             background-size:cover;*/
             /*background-color: #F0FFF0;*/
         }
+
         .btn-success {
             background-color: #7fad39;
         }
+
         .btn-light:hover {
             color: #7fad39;
         }
+
         .btn-secondary:hover {
             color: #7fad39;
         }
-        .btn-outline-success{
-            
+
+        .btn-outline-success {
+        }
+
+        .disabled {
+            pointer-events: none;
+            cursor: default;
+            color: Gray;
+        }
+
+        .active {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -199,23 +212,37 @@
                         <div class="header__menu">
                             <ul>
                                 <li>
+
                                     <div class="header__top__right__auth">
-                                        @if (@MemberController.userName == "登入")
-                                        {
-                                            <a id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal" href="">
-                                                <i class="fa fa-user"></i>@MemberController.userName
-                                            </a>
-                                        }
-                                        else
-                                        {
-                                            <a href="~/Member/Edit"><i class="fa fa-user"></i>Hi~@MemberController.userName</a>
-                                            <ul class="header__menu__dropdown">
-                                                <li><a href="~/Member/Edit">會員專區</a></li>
-                                                <li><a href="~/Coach/CreateResume">教練專區</a></li>
-                                                <li><a href="~/Member/Logout">登出<i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
-                                            </ul>
-                                        }
+                                        <button type="button" id="btnLayOutLogin" class="btn btn-primary mb-3" data-toggle="modal" data-target="#loginModal">
+                                            <i class="fa fa-user"></i>
+                                            <span>@MemberController.userName</span>
+                                            <p style="display:none">@MemberController.userID</p>
+                                        </button>
+                                        <ul class="header__menu__dropdown">
+                                            <li><a href="~/Member/Edit">會員專區</a></li>
+                                            <li><a href="~/Coach/ManageResume">教練專區</a></li>
+                                            <li><a href="~/Member/Logout"><i class="fa fa-user"></i>登出</a></li>
+                                        </ul>
                                     </div>
+
+                                    @*<div class="header__top__right__auth">
+                                            @if (@MemberController.userName == "登入")
+                                            {
+                                                <a id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal" href="">
+                                                    <i class="fa fa-user"></i>@MemberController.userName
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="~/Member/Edit"><i class="fa fa-user"></i>Hi~@MemberController.userName</a>
+                                                <ul class="header__menu__dropdown">
+                                                    <li><a href="~/Member/Edit">會員專區</a></li>
+                                                    <li><a href="~/Coach/CreateResume">教練專區</a></li>
+                                                    <li><a href="~/Member/Logout">登出<i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            }
+                                        </div>*@
                                 </li>
                             </ul>
                         </div>
@@ -252,7 +279,7 @@
                             <li><h6>會員中心</h6></li>
                             <li><a data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">註冊會員</a></li>
                             <li><a data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">會員登入</a></li>
-                            <li><a  data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal">忘記密碼</a></li>
+                            <li><a data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal">忘記密碼</a></li>
                             <li><a href="~/Member/Edit">個人資料</a></li>
                         </ul>
                         <ul style="width:20%">
@@ -319,56 +346,58 @@
             </div>
         </div>
     </footer>
-    
-    
+
+
     @*===================================================================================================
-      會員登入Modal*@
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content iHealthBackground">
-            <div class="modal-header">
-                <h4 class="modal-title col-11 text-center" id="exampleModalLabel" style="color: #ffffff; text-shadow:1px 1px 10px black;font-weight:800">歡迎登入iHEALTH會員!</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="~/Member/Login" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
-                    <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
-                    <div class="form-group">
-                        <label for="fUserName" style="font-weight:700">使用者帳號</label>@*color: #ffffff; text-shadow:1px 1px 15px black;*@
-                        <input type="text" class="form-control" id="inpLogInUserName" name="fUserName" placeholder="帳號">
-                    </div>
-                    <div class="form-group">
-                        <label for="fPassword" style="font-weight:700">密碼 @*color: #ffffff; text-shadow:1px 1px 15px black;*@
-                        <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showPassword"></i></label>
-                        <input type="password" class="form-control" id="inpLogInPassword" name="fPassword" placeholder="密碼">
-                    </div>
-                    <div style="justify-content: center; display: flex; ">
-                        <button type="submit" class="btn btn-success center"><i class="fa fa-sign-in" aria-hidden="true"></i>會員登入</button></i>
-                    </div>
-                </form>
-                <br />
-                <div style="justify-content: center; display: flex; ">
-                    <button class="btn btn-secondary" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal" style="margin-right:5px">
-                        <i class="fa fa-key"></i> 忘記密碼? 
-                    </button>
-                    <button class="btn btn-light" data-toggle="modal" data-target="#register1Modal" data-dismiss="modal" style="margin-left:5px">
-                        <i class="fa fa-user"></i> 加入會員 
+        會員登入Modal*@
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content iHealthBackground">
+                <div class="modal-header">
+                    <h4 class="modal-title col-11 text-center" id="exampleModalLabel" style="color: #ffffff; text-shadow:1px 1px 10px black;font-weight:800">歡迎登入iHEALTH會員!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button id="btnDemoUserLog" class="btn btn-outline-success">Demo會員</button>
-                <button id="btnDemoCoachLog" class="btn btn-outline-success">Demo教練</button>
-                <button id="btnDemoAdminLog" class="btn btn-outline-success">Demo管理者</button>
+                <div class="modal-body">
+                    <form action="~/Member/Login" method="post" enctype="application/x-www-form-urlencoded" name="userInfo" id="loginForm">
+                        <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
+                        <div class="form-group">
+                            <label for="fUserName" style="font-weight:700">使用者帳號</label>@*color: #ffffff; text-shadow:1px 1px 15px black;*@
+                            <input type="text" class="form-control" id="inpLogInUserName" name="fUserName" placeholder="帳號">
+                        </div>
+                        <div class="form-group">
+                            <label for="fPassword" style="font-weight:700">
+                                密碼 @*color: #ffffff; text-shadow:1px 1px 15px black;*@
+                                <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showPassword"></i>
+                            </label>
+                            <input type="password" class="form-control" id="inpLogInPassword" name="fPassword" placeholder="密碼">
+                        </div>
+                        <div style="justify-content: center; display: flex; ">
+                            <button class="btn btn-success center" id="btnLoginModal"><i class="fa fa-sign-in" aria-hidden="true"></i>會員登入</button></i>
+                        </div>
+                    </form>
+                    <br />
+                    <div style="justify-content: center; display: flex; ">
+                        <button class="btn btn-secondary" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal" style="margin-right:5px">
+                            <i class="fa fa-key"></i> 忘記密碼?
+                        </button>
+                        <button class="btn btn-light" data-toggle="modal" data-target="#registerModal" data-dismiss="modal" style="margin-left:5px">
+                            <i class="fa fa-user"></i> 加入會員
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnDemoUserLog" class="btn btn-outline-success">Demo會員</button>
+                    <button id="btnDemoCoachLog" class="btn btn-outline-success">Demo教練</button>
+                    <button id="btnDemoAdminLog" class="btn btn-outline-success">Demo管理者</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
     @*會員註冊Modal*@
-    <div class="modal fade" id="register1Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -464,19 +493,19 @@
                             <input type="text" class="form-control" id="inpForgotPassword" name="fEmail" placeholder="email">
                         </div>
                         <div style="justify-content: center; display: flex;">
-                            
+
                             <button type="submit" class="btn btn-success"><i class="fa fa-paper-plane"></i>送出</button>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer"  style="justify-content: center; display: flex; ">
+                <div class="modal-footer" style="justify-content: center; display: flex; ">
                     <button id="btnDemoForgotPassword" class="btn btn-outline-success">Demo</button>
-                        <button class="btn btn-secondary" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
-                            <i class="fa fa-key"></i> 重設密碼 
-                        </button>
-                        <button class="btn btn-light" data-toggle="modal" data-target="#loginModal" data-dismiss="modal" style="margin-left:5px">
-                            <i class="fa fa-user"></i> 回到登入頁面
-                        </button>
+                    <button class="btn btn-secondary" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
+                        <i class="fa fa-key"></i> 重設密碼
+                    </button>
+                    <button class="btn btn-light" data-toggle="modal" data-target="#loginModal" data-dismiss="modal" style="margin-left:5px">
+                        <i class="fa fa-user"></i> 回到登入頁面
+                    </button>
                 </div>
             </div>
         </div>
@@ -542,7 +571,54 @@
     <script src="~/js/ScrollReveal.js"></script>
     <script src="~/js/sweetalert2.js"></script>
     <script>
-        //SweetAlert Button樣式調整
+        //==================登入時menu_dropdown顯示, 否則隱藏=====================
+        let spanTextUsername = $("#btnLayOutLogin span").text();
+
+        //let spanTextAutor = $('#header__top__right__auth>p').text();
+        if (spanTextUsername == "登入")
+        {
+            console.log(spanTextUsername + "aa")
+            $(".header__menu__dropdown").css("display", "none");
+
+        } else
+        {
+            console.log(spanTextUsername + "BB")
+        }
+
+      //====================ajax 會員登入(fetch)==================================
+        $(".footer__about__logo a").addClass("disabled")
+
+        const btnUserName = document.querySelector('#btnLoginModal');
+        btnUserName.addEventListener('click', (event) =>
+        {
+            event.preventDefault();
+            var formData = new FormData(document.querySelector("#loginForm"));
+            fetch("/Member/login", {
+                body: formData,
+                method: "Post"
+            }).then(Response => Response.text()).then(data =>
+            {
+                if (data == "false")
+                {
+                    alert("登入資料錯誤, 請重新登入");
+                    $('#inpLogInUserName').val("");
+                    $('#inpLogInPassword').val("");
+                } else
+                {
+                    let userName = data.substring(1);
+                    let userAdmin = data.substring(0, 1);
+                    $("#btnLayOutLogin span").text(userName);
+                    $('#loginModal').modal('hide');
+                    alert(`${userName} :歡迎登入`);
+                    $(".header__menu__dropdown").css("display", "");
+                    $('#inpLogInUserName').val("");
+                    $('#inpLogInPassword').val("");
+                    if (userAdmin >= 1 && userAdmin <= 4) { $('.footer__about__logo a').removeClass("disabled").addClass("active"); }
+                }
+            })
+        });
+
+        //==================================SweetAlert Button樣式調整========================
         const SwalGreen = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-success',

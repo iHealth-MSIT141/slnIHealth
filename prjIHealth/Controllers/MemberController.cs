@@ -51,13 +51,42 @@ namespace prjIHealth.Controllers
                     loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
                     userName = $"{loginUser.FUserName}";
                     userID = loginUser.FMemberId;
-                    if (!string.IsNullOrEmpty(vModel.ReturnUrl))
-                    { return LocalRedirect(vModel.ReturnUrl); }
-                   return RedirectToAction( "Edit","Member" );
+                    int authorId = (int)loginUser.FAuthorityId;
+                    string loginContent = loginUser.FAuthorityId + loginUser.FUserName;
+                    return Content(loginContent, "text/plain", System.Text.Encoding.UTF8);
+                    //return RedirectToAction( "Edit","Member" );
                 }
             }
-            return RedirectToAction("Index", "Home");
+            return Content("false", "text/plain", System.Text.Encoding.UTF8);
+
+            //return RedirectToAction("Index", "Home");
         }
+
+        public IActionResult Login(CLoginViewModel vModel, string ReturnUrl)
+        {
+            var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
+            if (q != null)
+            {
+                if (q.FPassword == vModel.fPassword)
+                {
+                    string loginSession = JsonSerializer.Serialize(q);
+                    HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
+                    loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
+                    int authorId = (int)loginUser.FAuthorityId;
+                    userName = $"{loginUser.FUserName}";
+                    string loginContent = loginUser.FAuthorityId + loginUser.FUserName;
+                    return Content(loginContent, "text/plain", System.Text.Encoding.UTF8);
+
+                }
+            }
+            return Content("false", "text/plain", System.Text.Encoding.UTF8);
+        }
+
+
+
+
+
+
         public IActionResult Logout()
         {
             HttpContext.Session.Remove(CDictionary.SK_Logined_User);
