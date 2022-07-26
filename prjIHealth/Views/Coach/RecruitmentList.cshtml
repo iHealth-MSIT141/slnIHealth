@@ -288,7 +288,7 @@
                                     <td class="tdBtn">
                                         <input type="hidden" value="@c.FCoachContactId" />
                                         <button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse">排課</button>
-                                        <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="@c.FMemberId" onclick="getId();">聯繫</button>
+                                        <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-membername="@c.MemberName" onclick="getId();">聯繫</button>
                                     </td>
                                 </tr>
                             }
@@ -546,7 +546,7 @@
                         }
                         html += `</select></td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
                         html += `<button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse" onclick="btnCreateCourseClick();">排課</button>`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="${value.FMemberId}" onclick="getId();">聯繫</button>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" onclick="getId();">聯繫</button>`;
                     })
                     $("#tbdContact").html(html);
                 })
@@ -578,7 +578,7 @@
                         }
                         html += `</select></td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
                         html += `<button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse" onclick="btnCreateCourseClick();">排課</button>`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachid="${value.FMemberId}" onclick="getId();">聯繫</button>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" onclick="getId();">聯繫</button>`;
                     })
                     $("#tbdContact").html(html);
                 })
@@ -595,15 +595,14 @@
         });
         $("#selStatus").on("change", loadContact);
 
-        //線上聯繫TODO 改SignalR
-        //var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-        //connection.on("ReceiveMessage");
-
         var theContactId;
+        var theContactName;
         function getId() {
             theContactId = $(event.target).parent("td").children("input").val();
+            theContactName = $(event.target).attr("data-membername");
             $("#inpChatContactId").val(theContactId);
         }
+
         function loadChatText() {
             if (theContactId != undefined) {
                 $.get("@Url.Content("~/Coach/loadChatText")", { id: theContactId }, function (texts) {
@@ -611,7 +610,7 @@
                     $.each(texts, function (idx, text) {
                         if (text.fIsCoach == true) {//教練自己
                             html += `<div class="col-3" ></div><div class="col-9" style="float:right">`;
-                            html += `<p class="chatText" style="float: right; text-align: end;">${text.fContactText}`;
+                            html += `<p class="chatText" style="float: right; text-align: start;">${text.fContactText}`;
                             html += `<small>${text.time}</small></p></div>`;
                         }
                         else {//對方學員
@@ -626,23 +625,49 @@
         }
 
 
-        //開啟setInterval(TODO改用SIGNALR)
-        var intervalID;
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+        //傳入
+        connection.on("ReceiveMessage", function (CoachContactId, IsCoach, ContactText) {
+            var now = new Date();
+            var time = `${now.getHours()}:${now.getMinutes()}`;
+            if (CoachContactId == theContactId) {
+                let html = "";
+                if (IsCoach == true) {//教練自己
+                    html += `<div class="col-3" ></div><div class="col-9" style="float:right">`;
+                    html += `<p class="chatText" style="float: right; text-align: start;">${ContactText}`;
+                    html += `<small>${time}</small></p></div>`;
+                }
+                else {//對方學員
+                    html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${theContactName}</label></div><div class="col-7">`;
+                    html += `<p class="chatText" style="float: left; text-align: start;">${ContactText}`;
+                    html += `<small>${time}</small></p></div><div class="col-3"></div></div >`;
+                }
+                $("#divChatBox").append(html);
+            }
+        });
 
         $("#modalChat").on("show.bs.modal", function () {
-            intervalID = setInterval(() => { loadChatText(); }, 500);
+            loadChatText();
+            connection.start();
         })
         $("#modalChat").on("hide.bs.modal", function () {
-            clearInterval(intervalID);
+            connection.stop();
+            $("#divChatBox").html("");
         })
 
         //送出訊息
         $("#btnSendText").click(function () {
             let id = $("#inpChatContactId").val();
             let text = $("#txtNewText").val();
-            $.get("@Url.Content("~/Coach/saveText")", { FCoachContactId: id, FContactText: text }, function () {
-                $("#txtNewText").val("")
-            })
+
+            connection.invoke("SendMessage", `${id}`, true, `${text}`).catch(function (err) {
+                return console.error(err.toString());
+            }).catch(function (err) {
+                return console.error(err.toString());
+            });
+
+            $("#txtNewText").val("");
+            $.get("@Url.Content("~/Coach/saveText")", { FCoachContactId: id, FContactText: text })
         })
 
         //訊息Demo鍵
