@@ -41,6 +41,8 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Login(CLoginViewModel vModel)
         {
+            if (vModel.fUserName == null || vModel.fPassword == null) { return Content("empty", "text/plain", System.Text.Encoding.UTF8); }
+
             var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
             if (q != null)
             {
@@ -54,38 +56,10 @@ namespace prjIHealth.Controllers
                     int authorId = (int)loginUser.FAuthorityId;
                     string loginContent = loginUser.FAuthorityId + loginUser.FUserName;
                     return Content(loginContent, "text/plain", System.Text.Encoding.UTF8);
-                    //return RedirectToAction( "Edit","Member" );
-                }
-            }
-            return Content("false", "text/plain", System.Text.Encoding.UTF8);
-
-            //return RedirectToAction("Index", "Home");
-        }
-
-        public IActionResult Login(CLoginViewModel vModel, string ReturnUrl)
-        {
-            var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
-            if (q != null)
-            {
-                if (q.FPassword == vModel.fPassword)
-                {
-                    string loginSession = JsonSerializer.Serialize(q);
-                    HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
-                    loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
-                    int authorId = (int)loginUser.FAuthorityId;
-                    userName = $"{loginUser.FUserName}";
-                    string loginContent = loginUser.FAuthorityId + loginUser.FUserName;
-                    return Content(loginContent, "text/plain", System.Text.Encoding.UTF8);
-
                 }
             }
             return Content("false", "text/plain", System.Text.Encoding.UTF8);
         }
-
-
-
-
-
 
         public IActionResult Logout()
         {
@@ -111,8 +85,6 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Edit(CLoginViewModel vModel)
         {
-            //var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-            //loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
             var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == vModel.fMemberId);
             if (q != null)
             {
@@ -141,19 +113,22 @@ namespace prjIHealth.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Register(TMember tm)
+              public IActionResult Register(TMember tm)
         {
-            var q = _context.TMembers.FirstOrDefault(m => m.FUserName == tm.FUserName);
-            if (q == null)
+           
+            if (tm.FPassword == null || tm.FUserName == null) { return Content("empty", "text/plain", System.Text.Encoding.UTF8); }
+            else
             {
-                _context.TMembers.Add(tm);
-                _context.SaveChanges();
-                //return RedirectToRoute(new { controller = "Member", action = "Login" });
-                return RedirectToAction("Index", "Home");
+                var q = _context.TMembers.FirstOrDefault(m => m.FUserName == tm.FUserName);
+                if (q == null)
+                {
+                    _context.TMembers.Add(tm);
+                    _context.SaveChanges();
+                    return Content("true", "text/plain", System.Text.Encoding.UTF8);
+                }
+                else { return Content("user", "text/plain", System.Text.Encoding.UTF8); }
             }
-            else { return RedirectToAction("Index", "Home"); }
         }
-
         public IActionResult Delete(int? id)
         {
             IHealthContext dblIHealth = new IHealthContext();
@@ -165,60 +140,44 @@ namespace prjIHealth.Controllers
             }
             return RedirectToAction("ShowTrackList");
         }
-
-     
-
         public IActionResult ForgotPassword()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult ForgotPassword([Bind("fEmail,")]CLoginViewModel vModel)
+        public IActionResult ForgotPassword([Bind("fEmail,")] CLoginViewModel vModel)
         {
-            //var exists = _context.Members.Any(m => m.Name == name);
-            //return Content(exists.ToString(), "text/plain");
-            //var q = _context.TMembers.Any(m => m.FEmail == vModel.fEmail);
+            if (vModel.fEmail == null) { return Content("empty", "text/plain", System.Text.Encoding.UTF8); } else { 
+
             var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
 
             if (q != null)
             {
                 utilities.sendMail(q.FUserName, q.FEmail);
-                return RedirectToAction("Index", "Home");
+                return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
+
             }
-            else { return RedirectToAction("Index","Home");
+            else
+            {
+                return Content("false", "text/plain", System.Text.Encoding.UTF8);
             }
-            //labForgotPWD.BackColor = Color.AliceBlue;
-            //if (string.IsNullOrEmpty(txtAccountName.Text)) { MessageBox.Show("請輸入使用者名稱!"); labForgotPWD.BackColor = Color.Transparent; }
-            //var q = this.dbContext.Members.AsEnumerable().Where(m => m.AccountName == txtAccountName.Text).FirstOrDefault();
-            //if (q != null)
-            //{
-            //    if (string.IsNullOrEmpty(q.Email))
-            //    {
-            //        MessageBox.Show("電子信箱錯誤或註冊時未輸入電子信箱地址 !");
-            //        return;
-            //    }
-            //    else
-            //    {
-            //        q.Password = utilities.getCryptPWD(txtAccountName.Text, txtAccountName.Text, q.Birthday.ToString());
-            //        dbContext.SaveChanges();
-            //        utilities.sendMail(txtAccountName.Text, q.Email);
-            //        MessageBox.Show($"{txtAccountName.Text}, 您密碼已重設成功, 敬請到您的註冊信箱收取,使用新的密碼登入後, 並修改您的密碼,以確保資安!!");
-            //        labForgotPWD.BackColor = Color.Transparent;
-            //    }
-            //}
+            }
+
         }
         public IActionResult ResetPassword() { return View(); }
         [HttpPost]
         public IActionResult ResetPassword(CLoginViewModel vmodel) {
-            var q = _context.TMembers.FirstOrDefault(m => m.FEmail ==vmodel.fEmail&& m.FPassword==vmodel.fPassword);
-            if (q != null) {
-                if (vmodel.firstPassword == vmodel.confirmPassword) {
+            var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vmodel.fEmail && m.FPassword == vmodel.fPassword);
+            if (q != null)
+            {
+                if (vmodel.firstPassword == vmodel.confirmPassword)
+                {
                     q.FPassword = vmodel.firstPassword;
                     _context.SaveChanges();
-                    return RedirectToAction("Index", "Home");
+                    return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
                 }
-            } 
-                        return RedirectToAction("Index", "Home");
+            }
+            return Content("false", "text/plain", System.Text.Encoding.UTF8);
         }
 
         //========================追蹤清單===========================    

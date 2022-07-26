@@ -388,10 +388,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button id="btnDemoUserLog" class="btn btn-outline-success">Demo會員</button>
-                    <button id="btnDemoCoachLog" class="btn btn-outline-success">Demo教練</button>
-                    <button id="btnDemoAdminLog" class="btn btn-outline-success">Demo管理者</button>
+                <div class="modal-footer row">
+                    <div class="text-center col">  <button id="btnDemoUserLog" class="btn btn-outline-success">Demo會員</button></div>
+                    <div class="text-center col"> <button id="btnDemoCoachLog" class="btn btn-outline-success">Demo教練</button></div>
+                    <div class="text-center col">   <button id="btnDemoAdminLog" class="btn btn-outline-success">Demo管理者</button></div>
                 </div>
             </div>
         </div>
@@ -407,7 +407,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form asp-action="Register" asp-controller="Member">
+                <form asp-action="Register" asp-controller="Member" id="registerForm">
                     <div class="modal-body row">
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -464,7 +464,7 @@
                         </div>
                     </div>
                     <div style="justify-content: center; display: flex; ">
-                        <button type="submit" class="btn btn-success"><i class="fa fa-paper-plane" aria-hidden="true"></i> 送出</button>
+                        <button id="btnRegister" class="btn btn-success"><i class="fa fa-paper-plane" aria-hidden="true"></i> 送出</button>
                     </div>
                     <br />
                     <div class="modal-footer" style="justify-content: center; display: flex; ">
@@ -487,14 +487,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="~/Member/ForgotPassword" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                    <form action="~/Member/ForgotPassword" method="post" enctype="application/x-www-form-urlencoded" name="userInfo" id="passwordForgotForm">
                         <div class="form-group">
                             <label for="fEmail">請輸入註冊時的電子信箱</label>
                             <input type="text" class="form-control" id="inpForgotPassword" name="fEmail" placeholder="email">
                         </div>
                         <div style="justify-content: center; display: flex;">
 
-                            <button type="submit" class="btn btn-success"><i class="fa fa-paper-plane"></i>送出</button>
+                            <button id="btnForgotPassword" class="btn btn-success"><i class="fa fa-paper-plane"></i>送出</button>
                         </div>
                     </form>
                 </div>
@@ -523,7 +523,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <form action="~/Member/ResetPassword" id="passwordForgotForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
+                    <form action="~/Member/ResetPassword" id="resetPasswordForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
                         <div class="form-group">
                             <label for="fEmail">請輸入註冊時的電子信箱</label>
                             <input type="text" class="form-control" id="inpResetPasswordEmail" name="fEmail" placeholder="email">
@@ -541,7 +541,7 @@
                             <input type="text" class="form-control" id="inpConfirmPassword" name="confirmPassword" placeholder="確認密碼 ">
                         </div>
                         <div style="justify-content: center; display: flex;">
-                            <button id="btnResetPassword" type="submit" value="送出" class="btn btn-success">
+                            <button id="btnResetPassword" value="送出" class="btn btn-success">
                                 <i class="fa fa-paper-plane"></i> 送出
                             </button>
                         </div>
@@ -571,7 +571,7 @@
     <script src="~/js/ScrollReveal.js"></script>
     <script src="~/js/sweetalert2.js"></script>
     <script>
-        //==================登入時menu_dropdown顯示, 否則隱藏=====================
+        //==================登入時menu_dropdown顯示, 否則隱藏===============================
         let spanTextUsername = $("#btnLayOutLogin span").text();
 
         //let spanTextAutor = $('#header__top__right__auth>p').text();
@@ -584,8 +584,7 @@
         {
             console.log(spanTextUsername + "BB")
         }
-
-      //====================ajax 會員登入(fetch)==================================
+      //============================ajax 會員登入(fetch)====================================
         $(".footer__about__logo a").addClass("disabled")
 
         const btnUserName = document.querySelector('#btnLoginModal');
@@ -603,7 +602,7 @@
                     alert("登入資料錯誤, 請重新登入");
                     $('#inpLogInUserName').val("");
                     $('#inpLogInPassword').val("");
-                } else
+                } else if (data = "empty") { alert("必填欄位, 不得空白, 請重新輸入"); }else
                 {
                     let userName = data.substring(1);
                     let userAdmin = data.substring(0, 1);
@@ -617,8 +616,96 @@
                 }
             })
         });
+        //==========================註冊取得系統日期========================================
+        var registerD = new Date();
+        var year = registerD.getFullYear().toString();
+        var month = (registerD.getMonth() + 101).toString().substring(1);
+        var day = (registerD.getDate() + 100).toString().substring(1);
+        var str = year + month + day;
+        $("#fRegisterDate").val(str);
+        //=========================註冊會員後,popup 登入頁面 by bootstrap modal==============
+        const btn = document.querySelector('#btnRegister');
+        btn.addEventListener('click', (event) =>
+        {
+            event.preventDefault();
+            let data = $("#registerForm").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Member/Register",
+                data: data,
+                success: function (data)
+                {
+                    let userName = $("#inpRegisterUserName").val();
 
-        //==================================SweetAlert Button樣式調整========================
+                    if (data == "empty")
+                    {
+                        alert("請注意必填欄位不可空白, 請重新填入");
+
+                    } else if (data == "user") { alert(`${userName}:此帳號已有人使用`) }else
+                    {
+                        alert("歡迎您成為IHealth會員!,請登入會員")
+                        $('#registerModal').modal('hide');
+                        $('#loginModal').modal('show');
+                    }
+
+                }
+            });
+        });
+        //=========================忘記密碼,輸入電子郵件正確,popup至重設密碼頁面=============
+        const btnFP = document.querySelector('#btnForgotPassword');
+        btnFP.addEventListener('click', (event) =>
+        {
+            event.preventDefault();
+            let data = $("#passwordForgotForm").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Member/ForgotPassword",
+                data: data,
+                success: function (data)
+                {
+                    if (data == "false")
+                    {
+                        alert("電件郵件錯誤, 請重新填寫");
+                        $('#fEmailInput').val("");
+                    } else if (data = "empty") { alert("電子信箱必填, 請重填"); }else
+                    {
+                        alert(`${data}請收信,重設密碼`);
+                        $('#passwordForgotModal').modal('hide');
+                        $('#resetPasswordModal').modal('show');
+                    }
+                }
+            });
+        });
+        //=========================ajax重設密碼,popup登入頁面================================
+        const btnRP = document.querySelector('#btnResetPassword');
+        btnRP.addEventListener('click', (event) =>
+        {
+            event.preventDefault();
+            let data = $("#resetPasswordForm").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Member/ResetPassword",
+                data: data,
+                success: function (data)
+                {
+                    if (data == "false")
+                    {
+                        alert("輸入的資料錯誤,請重新輸入");
+                        $('#fEmailReset').val("");
+                        $('#fPasswordReset').val("");
+                        $('#firstPassword').val("");
+                        $('#confirmPassword').val("");
+
+                    } else
+                    {
+                        alert(`${data},密碼重設成功, 請登入`);
+                        $('#resetPasswordModal').modal('hide');
+                        $('#loginModal').modal('show');
+                    }
+                }
+            });
+        });
+        //==========================SweetAlert Button樣式調整================================
         const SwalGreen = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-success',
@@ -626,8 +713,7 @@
             },
             buttonsStyling: false
         })
-
-        //密碼顯示切換
+        //================================密碼顯示切換=======================================
         $("#showPassword").click(function () {
             if ($(this).hasClass("fa-eye-slash")) {
                 $(this).removeClass("fa-eye-slash").addClass("fa-eye");
@@ -712,12 +798,7 @@
         $(function () {
             onResize();
         });
-        var registerD = new Date();
-        var year = registerD.getFullYear().toString();
-        var month = (registerD.getMonth() + 101).toString().substring(1);
-        var day = (registerD.getDate() + 100).toString().substring(1);
-        var str = year + month + day;
-        $("#fRegisterDate").val(str);
+
 
         //商城部份
         @*showTrackCount();
