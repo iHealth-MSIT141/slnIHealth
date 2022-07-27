@@ -27,12 +27,12 @@ namespace HealthyLifeApp
         }
         public static string getCryptPWD(string pwd, string userName)
         {
+
             char[] passwordChar = pwd.ToCharArray();//string convert to char
             string str1 = new string(passwordChar);//convert char to string 
             //==================================================
             //byte[] passwordAscii = Encoding.ASCII.GetBytes(pwd);//convert string to ascii
             byte[] passwordAscii = Encoding.Unicode.GetBytes(pwd);//convert string to ascii
-
             string str_password = "";
             for (int i = 0; i < passwordAscii.Length; i++)//pwd convert to char add( i+1)*2  salt define
             {
@@ -43,11 +43,11 @@ namespace HealthyLifeApp
             //==================================================
             byte[] userNameAscii = Encoding.Unicode.GetBytes(userName);//userName
             string str_userName = "";
-            for (int j = 0; j < userName.Length; j++)
+            for (int j = 0; j < userNameAscii.Length; j++)
             {
                 char cha_userName = (char)(userNameAscii[j]);
                 char cha_userNameSalt = (char)(userNameAscii[j] + (j + 2) * 3);
-                str_userName += cha_userName + cha_userNameSalt;
+                str_userName += cha_userName.ToString() + cha_userNameSalt.ToString();
             }
             //==================================================
             //byte[] birthdayAscii = Encoding.Unicode.GetBytes(birthday);//userName

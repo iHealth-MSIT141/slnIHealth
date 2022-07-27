@@ -46,10 +46,7 @@ namespace prjIHealth.Controllers
             var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
             if (q != null)
             {
-
-                //if (q.FPassword == utilities.getCryptPWD(vModel.fUserName, vModel.fPassword))
-                if (q.FPassword == vModel.fPassword)
-
+                if (q.FPassword == utilities.getCryptPWD(vModel.fPassword, vModel.fUserName))
                 {
                     string loginSession = JsonSerializer.Serialize(q);
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
@@ -92,14 +89,14 @@ namespace prjIHealth.Controllers
             var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == vModel.fMemberId);
             if (q != null)
             {
-                if (vModel.photo!= null)
+                if (vModel.photo != null)
                 {
                     string pName = Guid.NewGuid().ToString() + ".jpg";
                     vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
                     q.FPicturePath = pName;
                 }
                 q.FMemberName = vModel.fMemberName;
-                q.FPassword = utilities.getCryptPWD(vModel.fUserName, vModel.fPassword);
+                q.FPassword = utilities.getCryptPWD(vModel.fPassword, q.FUserName);
                 q.FBirthday = vModel.fBirthday;
                 q.FAddress = vModel.fAddress;
                 q.FPhone = vModel.fPhone;
@@ -107,9 +104,9 @@ namespace prjIHealth.Controllers
                 q.FRemarks = vModel.fRemarks;
                 q.FPhone = vModel.fPhone;
 
-            }       
+            }
             _context.SaveChanges();
-            return RedirectToAction("Edit","Member");
+            return RedirectToAction("Edit", "Member");
         }
         // GET: Member
         public IActionResult Register()
@@ -160,6 +157,9 @@ namespace prjIHealth.Controllers
                 if (q != null)
                 {
                     utilities.sendMail(q.FUserName, q.FEmail);
+                    //=============================================================
+                    q.FPassword = utilities.getCryptPWD(q.FUserName, q.FUserName);
+                    _context.SaveChanges();
                     return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
 
                 }
@@ -184,16 +184,16 @@ namespace prjIHealth.Controllers
                 var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vmodel.fEmail);
                 if (q != null)
                 {
-                    if (q.FPassword==vmodel.fPassword)
+                    if (q.FPassword == utilities.getCryptPWD(vmodel.fPassword, q.FUserName))
                     {
                         if (vmodel.firstPassword == vmodel.confirmPassword)
                         {
-                            q.FPassword = vmodel.firstPassword;
+                            q.FPassword = utilities.getCryptPWD(vmodel.firstPassword, q.FUserName);
                             _context.SaveChanges();
                             return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
                         }
                         else { return Content("ConfirmPasswordError", "text/plain", System.Text.Encoding.UTF8); }
-                        
+
                     }
                     else
                     {
