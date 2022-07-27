@@ -512,7 +512,7 @@
 
         //DEMO鍵
         $("#btnDemo").click(function () {
-            $("#inpCourseName").val("體態雕塑初階");
+            $("#inpCourseName").val("增肌減脂課程2");
             $("#inpTotal").val(8);
         });
 
@@ -653,6 +653,7 @@
         $("#modalChat").on("hide.bs.modal", function () {
             connection.stop();
             $("#divChatBox").html("");
+            $("#txtNewText").val("");
         })
 
         //送出訊息

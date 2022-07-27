@@ -288,7 +288,7 @@
                                         @c.Status
                                     </td>
                                     <td class="tdBtns">
-                                        <button class=" accordion-toggle btnView" data-toggle="collapse" data-target="#@c.CoachName@courseCount"><i class="fa-solid fa-eye"></i>&nbsp&nbsp上課紀錄</button>
+                                        <button class=" accordion-toggle btnView" data-toggle="collapse" data-target="#@c.CoachName.Trim()@courseCount"><i class="fa-solid fa-eye"></i>&nbsp&nbsp上課紀錄</button>
                                         <button class="btnRate" data-toggle="modal" data-target="#addModal"><i class="fa-solid fa-clipboard-check"></i>&nbsp&nbsp評價教練</button>
                                         <input hidden value="@c.CoachId" />
                                     </td>
@@ -297,7 +297,7 @@
                                 @*展開上課紀錄*@
                                 <tr>
                                     <td colspan="12" class="hiddenRow">
-                                        <div class="accordian-body collapse" id="@c.CoachName@courseCount">
+                                        <div class="accordian-body collapse" id="@c.CoachName.Trim()@courseCount">
                                             <table class="table tbToggle">
                                                 <thead>
                                                     <tr class="info">
@@ -314,7 +314,7 @@
                                                             reservationCount++;
                                                             <tr data-toggle="collapse" class="accordion-toggle" data-target="#demo10">
                                                                 <td>@reservationCount</td>
-                                                                <td>@r.FCourseTime</td>
+                                                                <td>@r.FCourseTime.Substring(0, 4)-@r.FCourseTime.Substring(4, 2)-@r.FCourseTime.Substring(6, 2) @r.FCourseTime.Substring(8, 2):@r.FCourseTime.Substring(10, 2)</td>
                                                                 <td>@r.Status</td>
                                                             </tr>
                                                         }
