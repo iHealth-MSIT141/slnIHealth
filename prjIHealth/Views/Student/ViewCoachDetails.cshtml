@@ -186,14 +186,14 @@
 
         .coach_img {
             border-radius: 50%;
-            border: 2px solid white;
+            border: 3px solid white;
             width: 100px;
             height: 100px;
             transition: .3s;
         }
 
             .coach_img:hover {
-                border: 2px solid gray;
+                border: 3px solid #7fad39;
             }
 
         .divRecList {
@@ -654,13 +654,11 @@
 
 @section Scripts{
     <script>   
-        /* GoTop btn */
+        //GoTop
         $('#gotop').click(function () {
             $('html,body').animate({ scrollTop: 0 }, 'slow');   /* 返回到最頂上 */
             return false;
         });
-
-        /* 偵測卷軸滑動時，往下滑超過400px讓GoTop按鈕出現 */
         $(window).scroll(function () {
             if ($(this).scrollTop() > 400) {
                 $('#gotop').fadeIn();
@@ -677,7 +675,7 @@
                     $.each(data, function (index, rate) {
                         countSum = countSum + rate.cr.fRateStar;
                     })
-                    let avg = countSum / data.length;
+                    let avg = (countSum / data.length).toFixed(1);
                     for (let i = 1; i <= avg; i++) {
                         $(`#star${i}`).removeClass("starOrig");
                     }
