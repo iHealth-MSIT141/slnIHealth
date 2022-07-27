@@ -301,7 +301,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">經歷<br /><span class="spRemind">*最多填寫10項</span></label>
                                 <div class="col-sm-10" id="divExp">
-                                    <input class="form-control newInput" name="fExperience[]" />
+                                    <input class="form-control newInput" name="fExperience[]" id="exp1"/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -327,7 +327,8 @@
                             </div>
                             <div class="form-group divSubmit">
                                 <input type="submit" value="送出" id="btnSubmit" class="btn btn-success" />
-                                <input type="button" value="Demo" id="btnDemo" class="btn btn-success" />
+                                <input type="button" value="Demo1" id="btnDemo1" class="btn btn-light" />
+                                <input type="button" value="Demo2" id="btnDemo2" class="btn btn-light" />
                             </div>
                         </form>
                     </div>
@@ -347,6 +348,24 @@
 @section Scripts{
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        //Demo1
+        $("#btnDemo1").click(() => {
+            $("#inName").val("Jay");
+            $("#selCity").val("1");
+            $("#inFee").val("1400");
+            $("#exp1").val("107年青年盃古典健美賽-新秀古典172+");
+            $("#lic1").val("中華民國健美協會C級體適能");
+            $("#textDes").val("學員們好我是Dylan教練 你們覺得從98公斤體脂36的胖子變成照片中的樣子需要多久時間呢 大約兩年半 增肌減脂的過程非常辛苦 摸索之餘也請教了一些教練的觀念以及訓練的技巧 才能變成今天這樣 不是最頂尖 但相信Dylan教練會是你們最適合的選擇 相信各位學員跟著教練一起成長 一定會得到意想不到的收穫！");
+            $("#textSlogan").val("健身教學4年多，我非常注重學員們有沒有達到他們目標的體態和健康，所以每個人都會客製化諮詢，如果你也很認真想要改變，歡迎私訊我聊聊喔");
+        })
+        //Demo2(新增欄位後)
+        $("#btnDemo2").click(() => {
+            $("#exp2").val("KAT-進階阻力研習");
+            $("#exp3").val("107年青年盃古典健美賽-新秀古典172+");
+            $("#lic2").val("ACSM CPT 美國運動醫學會私人教練");
+            $("#lic3").val("CTSSN運動營養專業認證");
+        })
+
         //無教練權限不可進入其他頁面
         $(".aLimit").click((evt) => {
             evt.preventDefault();
@@ -358,11 +377,7 @@
                 showCloseButton: true
             })
         })
-
-        $("#btnDemo").click(() => {
-            $("#textDes").text("Introduction");
-        })
-
+        
         //對齊新增證照btn位置
         function getBtnPosition() {
             let lblLic = $("#lblLic").offset().top;
@@ -379,9 +394,9 @@
             else {
                 let exp = document.createElement("input");
                 exp.setAttribute("name", "fExperience[]");
+                exp.setAttribute("id", `exp${expCount+1}`);   //for Demo
                 exp.classList = "form-control newInput";
                 $("#divExp").append(exp);
-
                 getBtnPosition();
             }
             expCount++;
@@ -396,6 +411,7 @@
             else {
                 let lic = document.createElement("input");
                 lic.setAttribute("name", "fLicense[]");
+                lic.setAttribute("id", `lic${licCount+1}`);   //for Demo
                 lic.classList = "form-control newInput";
                 $("#divLic").append(lic);
             }

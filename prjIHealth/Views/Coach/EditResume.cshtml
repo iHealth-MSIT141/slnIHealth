@@ -312,9 +312,11 @@
                                 <label class="col-sm-2 col-form-label">經歷<br /><span class="spRemind">*最多填寫10項</span></label>
                                 <div class="col-sm-10" id="divExp">
                                     @{
+                                        int expCount = 0;
                                         foreach (var exp in Model.Coach.TCoachExperiences.ToList())
                                         {
-                                            <input value="@exp.FExperience" class="form-control newInput" name="fExperience[]" />
+                                           expCount++;
+                                           <input value="@exp.FExperience" class="form-control newInput" name="fExperience[]" id="exp_@expCount"/>
                                         }
                                     }
                                 </div>
@@ -325,7 +327,7 @@
                                     @{
                                         foreach (var lic in Model.Coach.TCoachLicenses.ToList())
                                         {
-                                            <input value="@lic.FLicense" class="form-control newInput" name="fLicense[]" />
+                                            <input value="@lic.FLicense" class="form-control newInput" name="fLicense[]"/>
                                         }
                                     }
                                 </div>
@@ -346,10 +348,11 @@
                                 </div>
                             </div>
                             <div class="form-group divSubmit">
+                                <input type="button" value="Demo" id="btnDemo" class="btn btn-light" />
                                 <input type="button" value="設為非公開" id="btnHide" class="btn btn-success" />
                                 <input type="button" value="設為公開" id="btnDisplay" class="btn btn-success" />&nbsp;&nbsp;
                                 <input type="submit" value="送出修改" id="btnSubmit" class="btn btn-success" />
-                            </div>
+                            </div>                            
                         </form>
                     </div>
                     <div class="col-xl-1">
@@ -446,6 +449,11 @@
     }
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        //Demo
+        $("#btnDemo").click(() => {
+            $("#exp_6").val("2021 IFBB PRO 健身工廠菁英賽女子比基尼全場總冠軍");
+        })
+
         //顯示CoachCity
         $("#selCity").val("@Model.FCityId");
 
@@ -472,6 +480,7 @@
             else {
                 let exp = document.createElement("input");
                 exp.setAttribute("name", "fExperience[]");
+                exp.setAttribute("id", `exp_${expCount+1}`);    //for Demo
                 exp.classList = "form-control newInput";
                 $("#divExp").append(exp);
 
