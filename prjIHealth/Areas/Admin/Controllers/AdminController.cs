@@ -13,5 +13,9 @@ namespace prjIHealth.Areas.Admin.Controllers
         {
             return View();
         }
+        public IActionResult PowerBI()
+        {
+            return View();
+        }
     }
 }
