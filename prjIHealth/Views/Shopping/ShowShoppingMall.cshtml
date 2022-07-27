@@ -270,7 +270,7 @@
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             return parts.join('.');
         }
-
+        //$(".productitem").slice((index-1)*9,index*9).show
         //顯示商品
         AllProducts(option);
         function AllProducts(option) {
@@ -336,8 +336,6 @@
             $("#txtKeyword").val("");
             option.categoryID = id;
             AllProducts(option);
-
-
         })
 
          //以輸入文字搜產品
