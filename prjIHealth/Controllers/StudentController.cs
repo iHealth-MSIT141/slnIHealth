@@ -36,19 +36,20 @@ namespace prjiHealth.Controllers
                     .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill)
                     .Include(c => c.TCoachExperiences)
                     .Include(c => c.TCoachLicenses)
-                    .Include(c=>c.TCoachRates).AsEnumerable()
-                    .Where(c => c.FVisible == true &&
-                    c.FCoachName.Contains(v.txtKeyword) || c.FCoachDescription.Contains(v.txtKeyword) || c.FSlogan.Contains(v.txtKeyword) ||
-                        c.TCoachExperiences.Any(ce => ce.FExperience.Contains(v.txtKeyword)) || c.TCoachLicenses.Any(ce => ce.FLicense.Contains(v.txtKeyword)));
+                    .Include(c => c.TCoachRates).AsEnumerable()
+                    .Where(c => c.FVisible == true && 
+                    (c.FCoachName.Contains(v.txtKeyword) || c.FCoachDescription.Contains(v.txtKeyword) || c.FSlogan.Contains(v.txtKeyword) ||
+                        c.TCoachExperiences.Any(ce => ce.FExperience.Contains(v.txtKeyword)) || c.TCoachLicenses.Any(ce => ce.FLicense.Contains(v.txtKeyword))));
             }
             else
+            {
                 datas = _context.TCoaches
-                    .Include(c => c.FMember)
-                    .Include(c => c.FCity)
-                    .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill)
-                    .Include(c => c.TCoachRates).AsEnumerable()
-                    .Where(c => c.FVisible == true);
-
+                                    .Include(c => c.FMember)
+                                    .Include(c => c.FCity)
+                                    .Include(c => c.TCoachSkills).ThenInclude(cs => cs.FSkill)
+                                    .Include(c => c.TCoachRates).AsEnumerable()
+                                    .Where(c => c.FVisible == true);
+            }                
             ViewBag.Keyword = v.txtKeyword;
             var coaches = CCoachViewModel.CoachList(datas.ToList());
             return View(coaches);
@@ -71,7 +72,7 @@ namespace prjiHealth.Controllers
 
             var coaches = CCoachViewModel.CoachList(datas.ToList());
             return Json(coaches);
-        }  
+        }
         //取得教練評價平均
         public IActionResult GetAvgRate(int id)
         {
@@ -465,9 +466,7 @@ namespace prjiHealth.Controllers
             db.SaveChanges();
             return Content("");
         }
-
-
-        int userId = 11;    //TODO 取得登入MemberId
+        
         public IActionResult ViewCourseCalendar()   //課程行事曆
         {
             return View();
@@ -475,21 +474,32 @@ namespace prjiHealth.Controllers
         //取得會員所有排課
         public IActionResult GetAllReservation()
         {
-            var memId = _context.TMembers.FirstOrDefault(m => m.FMemberId == userId).FMemberId;
+            //取得登入者ID
+            int userId = 8;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }            
             var reservations = _context.TReservations
                 .Include(r => r.FCourse).ThenInclude(c => c.FCoachContact).ThenInclude(c => c.FCoach)
-                .Where(r => r.FCourse.FCoachContact.FMemberId == memId).OrderBy(r => r.FCourseTime).ToList();
+                .Where(r => r.FCourse.FCoachContact.FMemberId == userId).OrderBy(r => r.FCourseTime).ToList();
 
             var reservationList = CCalendarViewModel.ReservationList(reservations);
             return Json(reservationList);
         }
         //取得所有有上課的CoachId
         public IActionResult GetReservationCoachId()
-        {
-            var memId = _context.TMembers.FirstOrDefault(m => m.FMemberId == userId).FMemberId;
+        {            
+            int userId = 8;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
             var coachIdList = _context.TReservations
                 .Include(r => r.FCourse).ThenInclude(c => c.FCoachContact).ThenInclude(c => c.FCoach)
-                .Where(r => r.FCourse.FCoachContact.FMemberId == memId)
+                .Where(r => r.FCourse.FCoachContact.FMemberId == userId)
                 .Select(r => r.FCourse.FCoachContact.FCoachId).Distinct().ToList();
             return Json(coachIdList);
         }

@@ -200,6 +200,8 @@ namespace prjIHealth.Models
                 entity.Property(e => e.FCityName)
                     .HasMaxLength(50)
                     .HasColumnName("fCityName");
+
+                entity.Property(e => e.FCityOrder).HasColumnName("fCityOrder");
             });
 
             modelBuilder.Entity<TCoach>(entity =>

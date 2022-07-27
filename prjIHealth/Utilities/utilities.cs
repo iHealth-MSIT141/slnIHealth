@@ -25,7 +25,7 @@ namespace HealthyLifeApp
             Thread.Sleep(1);
             return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        public static string getCryptPWD(string pwd, string userName, string birthday)
+        public static string getCryptPWD(string pwd, string userName)
         {
             char[] passwordChar = pwd.ToCharArray();//string convert to char
             string str1 = new string(passwordChar);//convert char to string 
@@ -50,16 +50,16 @@ namespace HealthyLifeApp
                 str_userName += cha_userName + cha_userNameSalt;
             }
             //==================================================
-            byte[] birthdayAscii = Encoding.Unicode.GetBytes(birthday);//userName
-            string str_birthday = "";
-            for (int k = 0; k < birthday.Length; k++)
-            {
-                char cha_birthday = (char)(birthdayAscii[k]);
-                char cha_birthdaySalt = (char)(birthday[k] + (k + 3) * 2);
-                str_birthday += cha_birthday + cha_birthdaySalt;
-            }
+            //byte[] birthdayAscii = Encoding.Unicode.GetBytes(birthday);//userName
+            //string str_birthday = "";
+            //for (int k = 0; k < birthday.Length; k++)
+            //{
+            //    char cha_birthday = (char)(birthdayAscii[k]);
+            //    char cha_birthdaySalt = (char)(birthday[k] + (k + 3) * 2);
+            //    str_birthday += cha_birthday + cha_birthdaySalt;
+            //}
             Cryptographys cryp = new Cryptographys();
-            string pwdCryp = cryp.SHA256Encode(str_password + str_userName+str_birthday);
+            string pwdCryp = cryp.SHA256Encode(str_password + str_userName);
             return pwdCryp;
         }
         public  bool CheckedPassword(string password)//with Regex to check password
@@ -75,22 +75,21 @@ namespace HealthyLifeApp
             }
             else {  return false; };
         }
-        public static void sendMail(string AccountName, string userMail) {
-            MailMessage mm = new MailMessage("charleschou54138@gmail.com",userMail);
-            mm.Subject = $"{AccountName} 您的密碼已重設, 請登入後,重新修改密碼";
-            mm.Body = $"{AccountName}您好, 重設的密碼為登入帳號,請登入後, 進入會員資料修改您的密碼,以保障您帳號的使用安全\n  HealthyLife 敬上";
+        public static void sendMail(string userName, string userMail)
+        {
+            MailMessage mm = new MailMessage("charleschou54138@gmail.com", userMail);
+            mm.Subject = $"{userName} 您的密碼已重設, 請登入後,重新修改密碼";
+            mm.Body = $"{userName}您好, 重設的密碼為登入帳號,請登入後, 進入會員資料修改您的密碼,以保障您帳號的使用安全\n  HealthyLife 敬上";
             //mm.Attachments.Add(new Attachment(""));//attachment
             SmtpClient smtp = new SmtpClient();
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             //smtp.Host = utilities.Smtp;
             //smtp.Port = utilities.Port;
-            System.Net.NetworkCredential nc = new NetworkCredential("charleschou54138@gmail.com", "bsdzdnzgoxgyegde");
+            System.Net.NetworkCredential nc = new NetworkCredential("charleschou54138@gmail.com", "dhcepudpchktcjrf");
             smtp.Credentials = nc;
             smtp.EnableSsl = true;
             smtp.Send(mm);
         }
-        public static void sendVerifiedMail() { }
-
-}
+    }
 }

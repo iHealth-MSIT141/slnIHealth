@@ -7,6 +7,7 @@
         .sort-asc::after {
             content: "↑";
         }
+
         .sort-desc::after {
             content: "↓";
         }
@@ -40,7 +41,7 @@
                 <div class="sidebar">
                     <div class="sidebar__item">
                         <h4>商品類別</h4>
-                        <ul id="showByCatergory">
+                        <ul id="showByCatergory" class="header__menu">
                             <li><a href="#" data-id="0" class="categoryItem">所有商品</a></li>
                             <li><a href="#" data-id="1" class="categoryItem">乳清蛋白</a></li>
                             <li><a href="#" data-id="2" class="categoryItem">健康食品</a></li>
@@ -271,7 +272,7 @@
         }
 
         //顯示商品
-        AllProducts(option);        
+        AllProducts(option);
         function AllProducts(option) {
             let url = "@Url.Content("~/Shopping/GetProduct/")" + (option.categoryID == 0 ? "" : option.categoryID);
             $.post(url,option, function (datas) {
@@ -330,24 +331,26 @@
             event.preventDefault();
             id = $(this).attr("data-id");
             console.log(this);
-            option.categoryID = id;
-            AllProducts(option);
-
             //清空txtKeyword，斷除2姐關係
             option.txtKeyword = "";
             $("#txtKeyword").val("");
+            option.categoryID = id;
+            AllProducts(option);
+
+
         })
 
          //以輸入文字搜產品
         $("#btnSearch").click(function () {
             let keyword = $("#txtKeyword").val();
+            //清空categoryID，斷除2姐關係
+            option.categoryID = 0;
             option.txtKeyword = keyword;
             AllProducts(option);
 
-            //清空categoryID，斷除2姐關係
-            option.categoryID = 0; 
+
         })
-           
+
         showProduct();
         //在商城主頁執行所有function
         function showProduct() {
@@ -372,7 +375,6 @@
                     id = $(this).attr("data-id");
                     if (@MemberController.userID== 0) {
                         pleaseLogin();
-                        /*$("#loginModal").modal("show");*/
                     }
                     else {
                         alert("已成功加入追蹤清單");
@@ -385,30 +387,36 @@
                     let response = await fetch(url);
                     let datas = await response.json();
                     console.log(datas);
+                    //變更右上追蹤清單顯示數量
                     $("#fa-heart").children("span").text(datas);
                 }
 
                 //按購物車會加入到購物車
-                $("#showProduct").delegate(".addToCart", "click", function (event) {
-                    event.preventDefault();
-                    id = $(this).attr("data-id");
-                    if (@MemberController.userID == 0) {
-                        pleaseLogin();
-                /*        $("#loginModal").modal("show");*/
-                    }
-                    else
-                    {
-                        addCart(id);
-                        alert("已成功加入購物車");
-                    }
+            $("#showProduct").delegate(".addToCart", "click", function (event) {
+                event.preventDefault();
+                id = $(this).attr("data-id");
+                if (@MemberController.userID == 0) {
+                    pleaseLogin();
+                }
+                else {
+                    addCart(id);
+                    alert("已成功加入購物車");
+                }
+                    
                 })
                 async function addCart(id) {
+                    //傳值回AddToCartViewModel
                     var data = {};
                     data.txtFid = id;
                     data.txtCount = 1;
                     data.discountValue = 0;
                     data.discountID = 10;
-                    $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
+                    //變更右上購物車顯示數量
+                    await $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")", data: data });
+                    url = "@Url.Content("~/Shopping/ShowCartCount/")"
+                    let response = await fetch(url);
+                    let datas = await response.json();
+                    await $("#fa-cart").children("span").text(datas);
                 }
 
                 @*//顯示各類別前3名產品
