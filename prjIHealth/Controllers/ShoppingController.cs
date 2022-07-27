@@ -267,7 +267,8 @@ namespace prjiHealth.Controllers
             }
             jsonCart = JsonSerializer.Serialize(list);
             HttpContext.Session.SetString(CDictionary.SK_Shopped_Items, jsonCart);
-            return RedirectToAction("ShowShoppingMall");
+            int cartNum = list.Count();
+            return Json(cartNum);
         }
 
         //以ProductID搜對應的圖片顯示在ProductDetail(沒用到先放著)
@@ -496,6 +497,23 @@ namespace prjiHealth.Controllers
             jsonCart = JsonSerializer.Serialize(list);
             HttpContext.Session.SetString(CDictionary.SK_Shopped_Items, jsonCart);
             return RedirectToAction("ShoppingCartList");
+        }
+        public IActionResult ShowCartCount()
+        {
+            string jsonCart = "";
+            List<CShoppingCartItem> list = null;
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_Shopped_Items))
+            {
+                list = new List<CShoppingCartItem>();
+            }
+            else
+            {
+                jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
+                list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
+            }
+            int cartNum = list.Count();
+            return Json(cartNum);
+            
         }
     }
 }

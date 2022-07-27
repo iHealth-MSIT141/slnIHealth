@@ -48,7 +48,7 @@
                                     foreach (var item in images)
                                     {
                                         <img data-imgbigurl="/img/product/@item.FImage"
-                                             src="/img/product/@item.FImage" alt="">
+                                             src="/img/product/@item.FImage" alt="" style="width:125px;height:125px;">
                                     }
                                 }
                             </div>
@@ -72,6 +72,8 @@
                             </div>
                             <a href="#" class="primary-btn" id="addToCart" data-id="@Model.FProductId">加到購物車</a>
                             <a href="#" class="heart-icon" id="addToTrack" data-id="@Model.FProductId"><span class="icon_heart_alt"></span></a>
+                            @*<br />
+                            <a href="#" class="blog__btn" style="width:400px;">返回商城主頁</a>*@
                         </div>
                     </div>
 
@@ -89,7 +91,7 @@
                             </div>
                         </div>
                         <div class="row" id="suggestProduct">
-                           @*動態生成*@
+                            @*動態生成*@
                         </div>
                     </div>
                 </section>
@@ -111,14 +113,7 @@
                 $("#loginModal").modal("show");
             }
             else {
-                var data = {};
-                data.txtFid = id;
-                data.txtCount = count;
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("ShowProductDetail")",
-                    data: data
-                })
+                addCart(id);
                 alert("已加入購物車");
             }
         })
@@ -143,6 +138,7 @@
                 alert("已成功加入追蹤清單");
                 console.log("text");
                 $(this).prop("style", "background-color:#7fad39");
+
             }
         })
         async function addTrack(id) {
@@ -166,7 +162,7 @@
                                             </ul>
                                         </div>
                                         <div class="product__item__text">
-                                            <h6 id="showProductDetailInDetail" data-id="${product.fProductId}">${product.fProductName}</h6>
+                                            <h6 href="#"id="showProductDetailInDetail" data-id="${product.fProductId}">${product.fProductName}</h6>
                                             <h5>${product.fUnitprice}</h5>
                                         </div>
                                     </div>
@@ -200,6 +196,7 @@
                         $("#loginModal").modal("show");
                     }
                     else {
+
                         alert("已成功加入追蹤清單");
                         addTrack(id);
                     }
@@ -209,8 +206,10 @@
                     url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
                     let response = await fetch(url);
                     let datas = await response.json();
-                    console.log(datas);
+                    //變更右上追蹤清單顯示數量
+                    $("#fa-heart").children("span").text(datas);
                 }
+
 
                 //按購物車會加入到購物車
                 $("#suggestProduct").delegate(".addToCartInDetail", "click", function (event) {
@@ -228,11 +227,19 @@
                     }
                 })
                 async function addCart(id) {
-                    //TODO
+                    //傳值回AddToCartViewModel
                     var data = {};
                     data.txtFid = id;
                     data.txtCount = 1;
-                    $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")",data:data });
+                    data.discountValue = 0;
+                    data.discountID = 10;
+                    await $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")", data: data });
+
+                    //變更右上購物車顯示數量
+                    url = "@Url.Content("~/Shopping/ShowCartCount/")"
+                    let response = await fetch(url);
+                    let datas = await response.json();
+                    await $("#fa-cart").children("span").text(datas);                  
                 }
 
         @*//顯示商品圖片

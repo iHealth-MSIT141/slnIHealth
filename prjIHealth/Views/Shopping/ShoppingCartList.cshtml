@@ -163,6 +163,15 @@
              url: "@Url.Action("ShoppingCartDelete")",
              data: data
             })
+            //變更右上購物車顯示數量            
+            let oricartcount = $("#fa-cart").children("span").text();
+            let newcartcount = oricartcount - 1;
+            if (newcartcount == 0) {
+                $("#fa-cart").children("span").text("");
+            }
+            else {
+                $("#fa-cart").children("span").text(newcartcount);
+            }           
         }
         //判斷是否有折價卷旗標
         let hasdiscount = false;

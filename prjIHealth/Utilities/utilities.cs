@@ -86,7 +86,7 @@ namespace HealthyLifeApp
             smtp.Port = 587;
             //smtp.Host = utilities.Smtp;
             //smtp.Port = utilities.Port;
-            System.Net.NetworkCredential nc = new NetworkCredential("charleschou54138@gmail.com", "bsdzdnzgoxgyegde");
+            System.Net.NetworkCredential nc = new NetworkCredential("charleschou54138@gmail.com", "dhcepudpchktcjrf");
             smtp.Credentials = nc;
             smtp.EnableSsl = true;
             smtp.Send(mm);
