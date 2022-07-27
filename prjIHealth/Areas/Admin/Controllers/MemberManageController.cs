@@ -124,7 +124,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                     vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
                     q.FPicturePath = pName;
                 }
-                if (vModel.fPassword == null) { q.FPassword = utilities.getCryptPWD(q.FUserName, q.FUserName); }
+                if (vModel.fPassword == null) { q.FPassword = utilities.getCryptPWD("jay0513@1388", q.FUserName); }
                 q.FMemberName = vModel.fMemberName;
                 q.FBirthday = vModel.fBirthday;
                 q.FAddress = vModel.fAddress;
