@@ -297,7 +297,7 @@ namespace prjiHealth.Controllers
             {
                 theRate.First().FRateStar = rate.FRateStar;
                 theRate.First().FRateText = rate.FRateText;
-                theRate.First().FRateDate = DateTime.Now.ToString("d");
+                theRate.First().FRateDate = DateTime.Now.ToString("yyyyMMdd");
                 theRate.First().FVisible = true;
                 db.SaveChanges();
             }
