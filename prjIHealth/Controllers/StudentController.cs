@@ -206,11 +206,6 @@ namespace prjiHealth.Controllers
                 string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
                 userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
             }
-            else
-            {
-                MemberController.loginUser = null;
-                MemberController.userName = "登入";
-            }
             coachContact.FMemberId = userId;
             coachContact.FContactDate = DateTime.Now.ToString("yyyyMMddHHmmss");
             coachContact.FStatusNumber = 50;
@@ -228,11 +223,6 @@ namespace prjiHealth.Controllers
             {
                 string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
                 userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
-            }
-            else
-            {
-                MemberController.loginUser = null;
-                MemberController.userName = "登入";
             }
             candidate.FMemberId = userId;
             if (db.TCandidates.Any(c => c.FCoachId == candidate.FCoachId && c.FMemberId == candidate.FMemberId))
@@ -256,11 +246,6 @@ namespace prjiHealth.Controllers
             {
                 string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
                 theMemberId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
-            }
-            else
-            {
-                MemberController.loginUser = null;
-                MemberController.userName = "登入";
             }
 
             var tcourses = db.TCourses.Where(c => c.FCoachContact.FMemberId == theMemberId && c.FVisible == true).OrderByDescending(c=>c.FCourseId);
@@ -343,11 +328,6 @@ namespace prjiHealth.Controllers
             {
                 string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
                 theMemberId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
-            }
-            else
-            {
-                MemberController.loginUser = null;
-                MemberController.userName = "登入";
             }
 
             //載入候選教練

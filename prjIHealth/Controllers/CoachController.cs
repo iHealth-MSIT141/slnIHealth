@@ -361,11 +361,6 @@ namespace prjiHealth.Controllers
                 string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
                 theMemberId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
             }
-            else
-            {
-                MemberController.loginUser = null;
-                MemberController.userName = "登入";
-            }
 
             var contacts = db.TCoachContacts.Where(c =>c.FCoach.FMemberId==theMemberId).OrderByDescending(c=>c.FContactDate);
             List<CContactViewModel> contactViewModels = new List<CContactViewModel>();
