@@ -95,8 +95,12 @@
                     <div class="col-md-8">
                         <select name="qtype" id="qtype" class="custom-select">
                             <option value="999" disabled selected hidden>折扣</option>
-                            <option value="0">0</option>
-                            <option value="200">200</option>
+                            <option value="無折扣用資料">無折扣用資料</option>
+                            <option value="開站優惠活動">開站優惠活動</option>
+                            <option value="母親節優惠">母親節優惠</option>
+                            <option value="父親節優惠">父親節優惠</option>
+                            <option value="情人節優惠">情人節優惠</option>
+                            <option value="會員連續登入優惠">會員連續登入優惠</option>
                         </select>
                     </div>
                 </div>
@@ -120,11 +124,18 @@
         let FDiscountId = 0;
         var input = '';
         function SelectedFDiscountId() {          /*判斷所選類別對應的ID*/
-            $('#AddFdiscount>input').remove();
-            if ($('#qtype').val() == "0")
+            if ($('#qtype').val() == "無折扣用資料")
+                FDiscountId = 10;
+            if ($('#qtype').val() == "開站優惠活動")
                 FDiscountId = 1;
-            if ($('#qtype').val() == "200")
+            if ($('#qtype').val() == "母親節優惠")
                 FDiscountId = 2;
+            if ($('#qtype').val() == "父親節優惠")
+                FDiscountId = 3;
+            if ($('#qtype').val() == "情人節優惠")
+                FDiscountId = 4;
+            if ($('#qtype').val() == "會員連續登入優惠")
+                FDiscountId = 5;
             input = `<input type="hidden" id="FDiscountId" value="${FDiscountId}" name="FDiscountId" />`
             $('#AddFdiscount').append(input)   /*change事件發生時才產生存放資料的input*/
         };
