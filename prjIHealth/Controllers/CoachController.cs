@@ -26,15 +26,30 @@ namespace prjiHealth.Controllers
             _context = context;
             _environment = environment;
         }
-        int userId = 11; //TODO 取登入者的MemberId
+        
         public IActionResult CoachCalendar()
         {
+            int userId = 11; //備用帳號--Alisa
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
+            var coach = _context.TCoaches.Where(c=>c.FStatusNumber==66).FirstOrDefault(c => c.FMemberId == userId);
+            if (coach == null)
+                return RedirectToAction("CreateResume");
             return View();
         }
 
         //取得教練所有排課
         public IActionResult GetAllReservation()
         {
+            int userId = 11;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
             var coachId = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId).FCoachId;
             var reservations = _context.TReservations
                 .Include(r => r.FCourse).ThenInclude(c=>c.FCoachContact).ThenInclude(c => c.FMember)
@@ -46,6 +61,12 @@ namespace prjiHealth.Controllers
         //取得所有有排課的MemberId
         public IActionResult GetReservationMemId()
         {
+            int userId = 11;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
             var coachId = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId).FCoachId;
             var memIdList = _context.TReservations
                 .Include(r => r.FCourse).ThenInclude(c => c.FCoachContact).ThenInclude(c => c.FMember)
@@ -57,7 +78,13 @@ namespace prjiHealth.Controllers
         //教課列表
         public IActionResult TeachingList()
         {
-            var coach = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId);
+            int userId = 11;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
+            var coach = _context.TCoaches.Where(c => c.FStatusNumber == 66).FirstOrDefault(c => c.FMemberId == userId);
             if (coach == null)
                 return RedirectToAction("CreateResume");
 
@@ -107,10 +134,16 @@ namespace prjiHealth.Controllers
             var courses = _context.TCourses.Where(c => c.FStatusNumber == id).Select(c => c.FCourseId).ToList();
             return Json(courses);
         }
-
-        //成為教練--MemberId尚無教練權限
+       
+        //填寫履歷
         public IActionResult CreateResume()
         {
+            int userId = 8; //備用帳號
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
             TCoach c = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId);
             if (c != null)
                 return RedirectToAction("EditResume");
@@ -124,8 +157,14 @@ namespace prjiHealth.Controllers
         [HttpPost] //送出履歷
         public IActionResult CreateResume(TCoach c, IFormFile File, int[] fCoachSkill, int[] fCoachTime, string[] fExperience, string[] fLicense)
         {
+            int userId = 8;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
             c.FMemberId = userId;
-            c.FStatusNumber = 50;
+            c.FStatusNumber = 65;
             c.FVisible = false;
             c.FApplyDate = DateTime.Now.ToString("yyyyMMddHHmmss");
             _context.TCoaches.Add(c);
@@ -193,6 +232,12 @@ namespace prjiHealth.Controllers
         //修改履歷
         public IActionResult EditResume()
         {
+            int userId = 11;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
             TCoach data = _context.TCoaches
                 .Include(c => c.TCoachSkills)
                 .Include(c => c.TCoachAvailableTimes)
@@ -209,6 +254,12 @@ namespace prjiHealth.Controllers
         [HttpPost]  //送出修改
         public IActionResult EditResume(TCoach c, IFormFile File, int[] fCoachSkill, int[] fCoachTime, string[] fExperience, string[] fLicense)
         {
+            int userId = 11;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
             TCoach coach = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId);
             if (coach != null)
             {
@@ -300,7 +351,6 @@ namespace prjiHealth.Controllers
             return Content(coach.FVisible.ToString(), "text/plain");
         }
         
-
         //教練專區-招生紀錄==================================================
         public IActionResult RecruitmentList()
         {

@@ -193,9 +193,9 @@
                         <h4>教練專區</h4>
                         <ul>
                             <li><a href="~/Coach/CreateResume">履歷管理</a></li>
-                            <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
-                            <li><a href="~/Coach/TeachingList">教課列表</a></li>
-                            <li><a href="~/Coach/CoachCalendar">課程行事曆</a></li>
+                            <li><a href="~/Coach/RecruitmentList" class="aLimit">招生紀錄</a></li>
+                            <li><a href="~/Coach/TeachingList" class="aLimit">教課列表</a></li>
+                            <li><a href="~/Coach/CoachCalendar" class="aLimit">課程行事曆</a></li>
                         </ul>
                         <br />
                         <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
@@ -208,7 +208,7 @@
                     <div class="col-xl-11">
                         <div class="divTopic"><h3><b>履歷管理</b></h3></div>
                         <div class="divBar reveal_r1"></div>
-                        <form class="frmResume reveal_b1" method="post" enctype="multipart/form-data" name="Resume">
+                        <form class="frmResume reveal_b1" method="post" enctype="multipart/form-data" name="Resume" id="frmResume">
                             <input type="hidden" value="@Model.FCoachId" name="CoachId" id="CoachId" />
                             <div class="row">
                                 <div class="col-8">
@@ -225,7 +225,7 @@
                                             <select id="selCity" class="selCity" name="FCityId">
                                                 <option selected disabled>請選擇所在城市</option>
                                                 @{
-                                                    foreach (var c in db.TCities.ToList())
+                                                    foreach (var c in db.TCities.OrderBy(c => c.FCityOrder).ToList())
                                                     {
                                                         <option value="@c.FCityId" id="@c.FCityId">@c.FCityName</option>
                                                     }
@@ -269,7 +269,7 @@
                                             </div>
                                             <div class="col-6">
                                                 @{
-                                                    foreach (var q in db.TAvailableTimes.ToList().TakeLast(3))
+                                                    foreach (var q in db.TAvailableTimes.ToList().Skip(3).Take(3))
                                                     {
 
                                                         <input type="checkbox" value="@q.FAvailableTimeId" name="fCoachTime[]" /><label>&nbsp;@q.FAvailableTime</label><br />
@@ -400,20 +400,52 @@
             </script>
         }
 
-        //履歷審核中即無法修改
+        //履歷審核中即無法修改、進入教練專區
         if (Model.FStatusNumber == 65)
         {
             <script>
-                $("#btnSubmit").prop("disabled", true);
+                $("#btnSubmit").hide();
                 $("#btnHide").hide();
                 $("#btnDisplay").hide();
+                $("#btnNewExp").prop("disabled", true);
+                $("#btnNewLic").prop("disabled", true);
+                $("#frmResume :input").prop("disabled", true);
+
+                $(".aLimit").click((evt) => {
+                    evt.preventDefault();
+                    Swal.fire({
+                        title: '您尚無教練權限。',
+                        text: '您的履歷正在審核中，審核通過後方可使用教練專區功能。',
+                        icon: 'warning',
+                        confirmButtonText: '確定',
+                        showCloseButton: true
+                    })
+                })
             </script>
         }
 
+        //退回填寫中
+        if (Model.FStatusNumber == 67)
+        {
+            <script>           
+                $("#btnHide").hide();
+                $("#btnDisplay").hide();
+                $("#btnSubmit").val("送出");
+                $(".aLimit").click((evt) => {
+                    evt.preventDefault();
+                    Swal.fire({
+                        title: '您尚無教練權限。',
+                        text: '請先成為教練後，方可使用教練專區功能。',
+                        icon: 'warning',
+                        confirmButtonText: '確定',
+                        showCloseButton: true
+                    })
+                })
+            </script>
+        }
     }
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-
         //顯示CoachCity
         $("#selCity").val("@Model.FCityId");
 
@@ -515,62 +547,53 @@
         //Submit前檢查欄位是否為空
         $("#btnSubmit").click((evt) => {
             evt.preventDefault();
-            //顯示名稱
-            if ($("#inName").val() == null)
-                return confirm("顯示名稱為必填");
-
-            //城市
-            if ($("#selCity").val() == null)
-                return confirm("請選擇所在城市");
-
-            //專長項目
-            if ($(".divSkill :checked").length <= 0)
-                return confirm("請至少選擇一項專長項目");
-
-            //可上課時段
-            if ($(".divTime :checked").length <= 0)
-                return confirm("請至少選擇一個可上課時段");
-
-            //希望待遇
-            if ($(".divFee input").val()=="")
-                return confirm("希望待遇為必填");
-
-            //介紹
-            if ($("#textDes").val() == "")
-                return confirm("介紹為必填");
-
-            //Slogan
-            if ($("#textSlogan").val() == "")
-                return confirm("Slogan為必填");
-
-            //Ajax submit
-            Swal.fire({
-                title: '確認修改履歷？',
-                icon: 'question',
-                confirmButtonText: '確定',
-                cancelButtonText: '取消',
-                showCancelButton: true,
-                showCloseButton: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const formData = new FormData(document.Resume);
-                    $.ajax({
-                        url: "EditResume",
-                        type: "POST",
-                        data: formData,
-                        contentType: false,
-                        cache: false,
-                        processData: false,
-                    }).done(function (response) {
-                        if (response == "Success") {
-                            Swal.fire({
-                                icon: 'success',
-                                title: '修改成功'
-                            })
-                        }
-                    })
-                }
-            })
+            if ($("#inName").val() == "" || $("#selCity").val() == null || $(".divSkill :checked").length <= 0 || $(".divTime :checked").length <= 0
+                || $(".divFee input").val() == "" || $("#textDes").val() == "" || $("#textSlogan").val() == "") {
+                Swal.fire({
+                    title: '請填寫完整資料',
+                    icon: 'warning',
+                    confirmButtonText: '確定',
+                    showCloseButton: true
+                })
+            }
+            else if ($(".text-danger").text() != "") {
+                Swal.fire({
+                    title: '填寫之資料不符合規定',
+                    icon: 'warning',
+                    confirmButtonText: '確定',
+                    showCloseButton: true
+                })
+            }
+            else {
+                //Ajax submit
+                Swal.fire({
+                    title: '確認修改履歷？',
+                    icon: 'question',
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消',
+                    showCancelButton: true,
+                    showCloseButton: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const formData = new FormData(document.Resume);
+                        $.ajax({
+                            url: "EditResume",
+                            type: "POST",
+                            data: formData,
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                        }).done(function (response) {
+                            if (response == "Success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '修改成功'
+                                })
+                            }
+                        })
+                    }
+                })
+            }
         })
 
         //設為未公開/公開(更改Visible)

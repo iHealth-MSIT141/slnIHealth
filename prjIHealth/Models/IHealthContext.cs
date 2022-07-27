@@ -37,6 +37,7 @@ namespace prjIHealth.Models
         public virtual DbSet<TMember> TMembers { get; set; }
         public virtual DbSet<TNews> TNews { get; set; }
         public virtual DbSet<TNewsCategory> TNewsCategories { get; set; }
+        public virtual DbSet<TNewsComment> TNewsComments { get; set; }
         public virtual DbSet<TNewsImage> TNewsImages { get; set; }
         public virtual DbSet<TOrder> TOrders { get; set; }
         public virtual DbSet<TOrderDetail> TOrderDetails { get; set; }
@@ -88,13 +89,18 @@ namespace prjIHealth.Models
 
                 entity.ToTable("tAvailableTimes");
 
+                entity.HasIndex(e => e.FAvailableTimeNum, "IX_tAvailableTimes")
+                    .IsUnique();
+
                 entity.Property(e => e.FAvailableTimeId).HasColumnName("fAvailableTimeID");
 
                 entity.Property(e => e.FAvailableTime)
                     .HasMaxLength(50)
                     .HasColumnName("fAvailableTime");
 
-                entity.Property(e => e.FAvailableTimeNum).HasColumnName("fAvailableTimeNum");
+                entity.Property(e => e.FAvailableTimeNum)
+                    .IsRequired()
+                    .HasColumnName("fAvailableTimeNum");
             });
 
             modelBuilder.Entity<TBodyRecord>(entity =>
@@ -175,7 +181,7 @@ namespace prjIHealth.Models
                 entity.HasOne(d => d.FCoach)
                     .WithMany(p => p.TCandidates)
                     .HasForeignKey(d => d.FCoachId)
-                    .HasConstraintName("FK_tCandidates_tCoaches1");
+                    .HasConstraintName("FK_tCandidates_tCoaches");
 
                 entity.HasOne(d => d.FMember)
                     .WithMany(p => p.TCandidates)
@@ -194,6 +200,8 @@ namespace prjIHealth.Models
                 entity.Property(e => e.FCityName)
                     .HasMaxLength(50)
                     .HasColumnName("fCityName");
+
+                entity.Property(e => e.FCityOrder).HasColumnName("fCityOrder");
             });
 
             modelBuilder.Entity<TCoach>(entity =>
@@ -291,6 +299,12 @@ namespace prjIHealth.Models
                 entity.Property(e => e.FMemberId).HasColumnName("fMemberID");
 
                 entity.Property(e => e.FStatusNumber).HasColumnName("fStatusNumber");
+
+                entity.HasOne(d => d.FAvailableTimeNumNavigation)
+                    .WithMany(p => p.TCoachContacts)
+                    .HasPrincipalKey(p => p.FAvailableTimeNum)
+                    .HasForeignKey(d => d.FAvailableTimeNum)
+                    .HasConstraintName("FK_tCoachContacts_tAvailableTimes");
 
                 entity.HasOne(d => d.FCoach)
                     .WithMany(p => p.TCoachContacts)
@@ -447,6 +461,12 @@ namespace prjIHealth.Models
                 entity.Property(e => e.FStatusNumber).HasColumnName("fStatusNumber");
 
                 entity.Property(e => e.FVisible).HasColumnName("fVisible");
+
+                entity.HasOne(d => d.FAvailableTimeNumNavigation)
+                    .WithMany(p => p.TCourses)
+                    .HasPrincipalKey(p => p.FAvailableTimeNum)
+                    .HasForeignKey(d => d.FAvailableTimeNum)
+                    .HasConstraintName("FK_tCourses_tAvailableTimes");
 
                 entity.HasOne(d => d.FCoachContact)
                     .WithMany(p => p.TCourses)
@@ -619,6 +639,34 @@ namespace prjIHealth.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("fCategoryName");
+            });
+
+            modelBuilder.Entity<TNewsComment>(entity =>
+            {
+                entity.HasKey(e => e.FNewsCommentId);
+
+                entity.ToTable("tNewsComment");
+
+                entity.Property(e => e.FNewsCommentId).HasColumnName("fNewsCommentID");
+
+                entity.Property(e => e.FMemberId).HasColumnName("fMemberID");
+
+                entity.Property(e => e.FNewsId).HasColumnName("fNewsID");
+
+                entity.Property(e => e.FNewsReply)
+                    .HasMaxLength(50)
+                    .HasColumnName("fNewsReply");
+
+                entity.HasOne(d => d.FMember)
+                    .WithMany(p => p.TNewsComments)
+                    .HasForeignKey(d => d.FMemberId)
+                    .HasConstraintName("FK_tNewsComment_tMember");
+
+                entity.HasOne(d => d.FNews)
+                    .WithMany(p => p.TNewsComments)
+                    .HasForeignKey(d => d.FNewsId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_tNewsComment_tNews");
             });
 
             modelBuilder.Entity<TNewsImage>(entity =>
@@ -899,7 +947,7 @@ namespace prjIHealth.Models
                     .WithMany(p => p.TProductsImages)
                     .HasForeignKey(d => d.FProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_tProductsImages_tProducts1");
+                    .HasConstraintName("FK_tProductsImages_tProducts");
             });
 
             modelBuilder.Entity<TRegion>(entity =>
