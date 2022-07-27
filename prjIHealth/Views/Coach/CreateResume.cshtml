@@ -369,7 +369,7 @@
         //無教練權限不可進入其他頁面
         $(".aLimit").click((evt) => {
             evt.preventDefault();
-            Swal.fire({
+            SwalGreen.fire({
                 title: '您尚無教練權限。',
                 text:'請先成為教練後，方可使用教練專區功能。',
                 icon: 'warning',
@@ -465,7 +465,7 @@
             evt.preventDefault();
             if ($("#inName").val() == "" || $("#selCity").val() == null || $(".divSkill :checked").length <= 0 || $(".divTime :checked").length <= 0
                 || $(".divFee input").val() == "" || $("#textDes").val() == "" || $("#textSlogan").val() == "") {
-                Swal.fire({
+                SwalGreen.fire({
                     title: '請填寫完整資料',
                     icon: 'warning',
                     confirmButtonText: '確定',
@@ -473,7 +473,7 @@
                 })
             }
             else if ($(".text-danger").text() != "") {
-                Swal.fire({
+                SwalGreen.fire({
                     title: '填寫之資料不符合規定',
                     icon: 'warning',
                     confirmButtonText: '確定',
@@ -481,7 +481,7 @@
                 })
             }
             else {  //Ajax submit
-            Swal.fire({
+                SwalGreen.fire({
                 title: '確認送出履歷？',
                 text: '送出後將進入審核流程，待審核完成前，履歷將不提供修改。',
                 icon: 'question',
@@ -501,7 +501,7 @@
                         processData: false,
                     }).then((result) => {
                         if (result == "Success") {
-                            Swal.fire({
+                            SwalGreen.fire({
                                 icon: 'success',
                                 title: '履歷已送出',
                                 confirmButtonText: '確定',
