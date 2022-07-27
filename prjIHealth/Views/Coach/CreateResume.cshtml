@@ -193,9 +193,9 @@
                         <h4>教練專區</h4>
                         <ul>
                             <li><a href="~/Coach/CreateResume">履歷管理</a></li>
-                            <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
-                            <li><a href="~/Coach/TeachingList">教課列表</a></li>
-                            <li><a href="~/Coach/CoachCalendar">課程行事曆</a></li>
+                            <li><a href="~/Coach/RecruitmentList" class="aLimit">招生紀錄</a></li>
+                            <li><a href="~/Coach/TeachingList" class="aLimit">教課列表</a></li>
+                            <li><a href="~/Coach/CoachCalendar" class="aLimit">課程行事曆</a></li>
                         </ul>
                         <br />
                         <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
@@ -208,7 +208,7 @@
                     <div class="col-xl-11">
                         <div class="divTopic"><h3><b>履歷管理</b></h3></div>
                         <div class="divBar reveal_r1"></div>
-                        <form class="frmResume reveal_b1" method="post" enctype="multipart/form-data" name="Resume">
+                        <form class="frmResume reveal_b1" method="post" enctype="multipart/form-data" name="Resume" id="frmResume">
                             <div class="row">
                                 <div class="col-8">
                                     <div class="form-group row divName">
@@ -224,7 +224,7 @@
                                             <select id="selCity" class="selCity" name="FCityId">
                                                 <option selected disabled>請選擇所在城市</option>
                                                 @{
-                                                    foreach (var c in db.TCities.ToList())
+                                                    foreach (var c in db.TCities.OrderBy(c=>c.FCityOrder).ToList())
                                                     {
                                                         <option value="@c.FCityId" id="@c.FCityId">@c.FCityName</option>
                                                     }
@@ -268,7 +268,7 @@
                                             </div>
                                             <div class="col-6">
                                                 @{
-                                                    foreach (var q in db.TAvailableTimes.ToList().TakeLast(3))
+                                                    foreach (var q in db.TAvailableTimes.ToList().Skip(3).Take(3))
                                                     {
 
                                                         <input type="checkbox" value="@q.FAvailableTimeId" name="fCoachTime[]" /><label>&nbsp;@q.FAvailableTime</label><br />
@@ -301,13 +301,13 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">經歷<br /><span class="spRemind">*最多填寫10項</span></label>
                                 <div class="col-sm-10" id="divExp">
-                                    <input class="form-control newInput" name="fExperience[]" />
+                                    <input class="form-control newInput" name="fExperience[]" id="exp1"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label" id="lblLic">相關證照<br /><span class="spRemind">*最多填寫10項</span></label>
                                 <div class="col-sm-10" id="divLic">
-                                    <input class="form-control newInput" name="fLicense[]" />
+                                    <input class="form-control newInput" name="fLicense[]" id="lic1"/>
                                 </div>
 
                             </div>
@@ -327,6 +327,8 @@
                             </div>
                             <div class="form-group divSubmit">
                                 <input type="submit" value="送出" id="btnSubmit" class="btn btn-success" />
+                                <input type="button" value="Demo1" id="btnDemo1" class="btn btn-light" />
+                                <input type="button" value="Demo2" id="btnDemo2" class="btn btn-light" />
                             </div>
                         </form>
                     </div>
@@ -335,7 +337,7 @@
                             <button id="btnNewExp"><i class="fa-solid fa-circle-plus"></i></button>
                         </div>
                         <div class="col-sm-3 divPlus">
-                            <button id="btnNewLic"><i class="fa-solid fa-circle-plus"></i></button>
+                            <button id="btnNewLic"><i class="fa-solid fa-circle-plus"></i></button>                            
                         </div>
                     </div>
                 </div>
@@ -343,10 +345,39 @@
         </div>
     </div>
 </section>
-
 @section Scripts{
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        //Demo1
+        $("#btnDemo1").click(() => {
+            $("#inName").val("Jay");
+            $("#selCity").val("1");
+            $("#inFee").val("1400");
+            $("#exp1").val("107年青年盃古典健美賽-新秀古典172+");
+            $("#lic1").val("中華民國健美協會C級體適能");
+            $("#textDes").val("學員們好我是Dylan教練 你們覺得從98公斤體脂36的胖子變成照片中的樣子需要多久時間呢 大約兩年半 增肌減脂的過程非常辛苦 摸索之餘也請教了一些教練的觀念以及訓練的技巧 才能變成今天這樣 不是最頂尖 但相信Dylan教練會是你們最適合的選擇 相信各位學員跟著教練一起成長 一定會得到意想不到的收穫！");
+            $("#textSlogan").val("健身教學4年多，我非常注重學員們有沒有達到他們目標的體態和健康，所以每個人都會客製化諮詢，如果你也很認真想要改變，歡迎私訊我聊聊喔");
+        })
+        //Demo2(新增欄位後)
+        $("#btnDemo2").click(() => {
+            $("#exp2").val("KAT-進階阻力研習");
+            $("#exp3").val("107年青年盃古典健美賽-新秀古典172+");
+            $("#lic2").val("ACSM CPT 美國運動醫學會私人教練");
+            $("#lic3").val("CTSSN運動營養專業認證");
+        })
+
+        //無教練權限不可進入其他頁面
+        $(".aLimit").click((evt) => {
+            evt.preventDefault();
+            Swal.fire({
+                title: '您尚無教練權限。',
+                text:'請先成為教練後，方可使用教練專區功能。',
+                icon: 'warning',
+                confirmButtonText: '確定',
+                showCloseButton: true
+            })
+        })
+        
         //對齊新增證照btn位置
         function getBtnPosition() {
             let lblLic = $("#lblLic").offset().top;
@@ -363,9 +394,9 @@
             else {
                 let exp = document.createElement("input");
                 exp.setAttribute("name", "fExperience[]");
+                exp.setAttribute("id", `exp${expCount+1}`);   //for Demo
                 exp.classList = "form-control newInput";
                 $("#divExp").append(exp);
-
                 getBtnPosition();
             }
             expCount++;
@@ -380,6 +411,7 @@
             else {
                 let lic = document.createElement("input");
                 lic.setAttribute("name", "fLicense[]");
+                lic.setAttribute("id", `lic${licCount+1}`);   //for Demo
                 lic.classList = "form-control newInput";
                 $("#divLic").append(lic);
             }
@@ -428,37 +460,27 @@
                 $("#spSlogan").html("");
         })
 
-        //Submit前檢查欄位是否為空
+        //Submit前檢查欄位是否為空&符合規定
         $("#btnSubmit").click((evt) => {
             evt.preventDefault();
-            if ($("#inName").val() == null)
-                return confirm("顯示名稱為必填");
-
-            //城市
-            if ($("#selCity").val() == null)
-                return confirm("請選擇所在城市");
-
-            //專長項目
-            if ($(".divSkill :checked").length <= 0)
-                return confirm("請至少選擇一項專長項目");
-
-            //可上課時段
-            if ($(".divTime :checked").length <= 0)
-                return confirm("請至少選擇一個可上課時段");
-
-            //希望待遇
-            if ($(".divFee input").val() == "")
-                return confirm("希望待遇為必填");
-
-            //介紹
-            if ($("#textDes").val() == "")
-                return confirm("介紹為必填");
-
-            //Slogan
-            if ($("#textSlogan").val() == "")
-                return confirm("Slogan為必填");
-
-            //Ajax submit
+            if ($("#inName").val() == "" || $("#selCity").val() == null || $(".divSkill :checked").length <= 0 || $(".divTime :checked").length <= 0
+                || $(".divFee input").val() == "" || $("#textDes").val() == "" || $("#textSlogan").val() == "") {
+                Swal.fire({
+                    title: '請填寫完整資料',
+                    icon: 'warning',
+                    confirmButtonText: '確定',
+                    showCloseButton: true
+                })
+            }
+            else if ($(".text-danger").text() != "") {
+                Swal.fire({
+                    title: '填寫之資料不符合規定',
+                    icon: 'warning',
+                    confirmButtonText: '確定',
+                    showCloseButton: true
+                })
+            }
+            else {  //Ajax submit
             Swal.fire({
                 title: '確認送出履歷？',
                 text: '送出後將進入審核流程，待審核完成前，履歷將不提供修改。',
@@ -471,7 +493,7 @@
                 if (result.isConfirmed) {
                     const formData = new FormData(document.Resume);
                     $.ajax({
-                        url: "CreateResume",
+                        url: "@Url.Content("~/Coach/CreateResume")",
                         type: "POST",
                         data: formData,
                         contentType: false,
@@ -484,13 +506,20 @@
                                 title: '履歷已送出',
                                 confirmButtonText: '確定',
                             }).then((result) => {
-                                if (result.isConfirmed)
-                                    window.location.reload();
+                                if (result.isConfirmed) {
+                                    //window.location.reload();
+                                    $("#btnSubmit").hide();
+                                    $("#btnDemo").hide();
+                                    $("#btnNewExp").prop("disabled", true);
+                                    $("#btnNewLic").prop("disabled", true);
+                                    $("#frmResume :input").prop("disabled", true);
+                                }
                             })
                         }
                     })
                 }
             })
+            }            
         })
     </script>
 }
