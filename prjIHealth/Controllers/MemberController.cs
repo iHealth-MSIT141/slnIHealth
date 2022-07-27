@@ -121,8 +121,23 @@ namespace prjIHealth.Controllers
             else
             {
                 var q = _context.TMembers.FirstOrDefault(m => m.FUserName == tm.FUserName);
-                if (q == null)
-                {
+                if (q == null) {
+
+                    tm.FPassword = utilities.getCryptPWD(tm.FPassword, tm.FUserName);
+                //{ TMember mem = new TMember {
+                //    q.FUserName = tm.FUserName;
+                //    q.FMemberName = tm.FMemberName;
+                //    q.FPassword = utilities.getCryptPWD(tm.FPassword, tm.FUserName);
+                //    q.FAddress = tm.FAddress
+                //    q.FPhone = tm.FPhone;
+                //    q.FBirthday = tm.FBirthday;
+                //    q.FRegisterDate = tm.FRegisterDate;
+                //    q.FEmail = tm.FEmail;
+                //    q.FGender = tm.FGender;
+                //    q.FDisabled = tm.FDisabled;
+                //    q.FAuthorityId = tm.FAuthorityId;
+                //}
+
                     _context.TMembers.Add(tm);
                     _context.SaveChanges();
                     return Content("true", "text/plain", System.Text.Encoding.UTF8);

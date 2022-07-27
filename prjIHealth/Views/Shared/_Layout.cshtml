@@ -581,11 +581,11 @@
             if (userAdmin >= 1 && userAdmin <= 4) { event.stopPropagation();}
             else { event.preventDefault(); }
         });
-        //================================================
+        //============================登入後,登入頁面不再出現=========================================
         $('#btnLayOutLogin').on("click", (event) =>
         {
             let userName = $("#btnLayOutLogin span").text();
-            if (userName != "登入") {  event.stopPropagation(); }
+            if (userName != "登入") { event.stopPropagation(); window.location.href = `${window.location.protocol}//${window.location.host}/Member/Edit`; }
             else { event.preventDefault(); }
         });
         //============================ajax 會員登入(fetch)============================================
@@ -609,7 +609,7 @@
                     alert("必填欄位, 不得空白, 請重新輸入");
                 } else
                 {
-                     let userName = data.substring(1);
+                    let userName = data.substring(1);
                     let userAdmin = data.substring(0, 1);
                     $("#btnLayOutLogin span").text(userName);
                     $("#btnLayOutLogin p").text(userAdmin);
@@ -669,7 +669,6 @@
                 data: data,
                 success: function (data)
                 {
-                    alert(data);
                     if (data == "false")
                     {
                         alert("電件郵件錯誤, 請重新填寫");
@@ -735,8 +734,8 @@
         //登入Demo
         $("#btnDemoUserLog").click(function ()
         {
-            $("#inpLogInUserName").val("呂亞亮");
-            $("#inpLogInPassword").val("Lu@891032");
+            $("#inpLogInUserName").val("jay0513");
+            $("#inpLogInPassword").val("jay0513");
         });
         $("#btnDemoCoachLog").click(function ()
         {
@@ -768,7 +767,7 @@
         //重設密碼Demo
         $("#btnDemoResetPassword").click(function () {
             $("#inpResetPasswordEmail").val("charles.chou570114@gmail.com");
-            $("#inpResetPassword").val("123");
+            $("#inpResetPassword").val("charles");
             $("#inpFirstPassword").val("321");
             $("#inpConfirmPassword").val("321");
         });
