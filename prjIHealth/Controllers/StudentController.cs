@@ -480,9 +480,10 @@ namespace prjiHealth.Controllers
             {
                 string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
                 userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
-            }            
+            }
+            var memId = _context.TMembers.FirstOrDefault(c => c.FMemberId == userId).FMemberId;
             var reservations = _context.TReservations
-                .Include(r => r.FCourse).ThenInclude(c => c.FCoachContact).ThenInclude(c => c.FCoach)
+                .Include(r => r.FCourse).ThenInclude(c => c.FCoachContact).ThenInclude(c => c.FCoach)            
                 .Where(r => r.FCourse.FCoachContact.FMemberId == userId).OrderBy(r => r.FCourseTime).ToList();
 
             var reservationList = CCalendarViewModel.ReservationList(reservations);
