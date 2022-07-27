@@ -263,7 +263,7 @@ namespace prjiHealth.Controllers
                 MemberController.userName = "登入";
             }
 
-            var tcourses = db.TCourses.Where(c => c.FCoachContact.FMemberId == theMemberId && c.FVisible == true);
+            var tcourses = db.TCourses.Where(c => c.FCoachContact.FMemberId == theMemberId && c.FVisible == true).OrderByDescending(c=>c.FCourseId);
 
             List<CCourseListViewModel> courseList = new List<CCourseListViewModel>();
             foreach(var c in tcourses)
