@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using HealthyLifeApp;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -123,8 +124,8 @@ namespace prjIHealth.Areas.Admin.Controllers
                     vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
                     q.FPicturePath = pName;
                 }
+                if (vModel.fPassword == null) { q.FPassword = utilities.getCryptPWD(q.FUserName, q.FUserName); }
                 q.FMemberName = vModel.fMemberName;
-                q.FPassword = vModel.fPassword;
                 q.FBirthday = vModel.fBirthday;
                 q.FAddress = vModel.fAddress;
                 q.FPhone = vModel.fPhone;
@@ -134,7 +135,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                 q.FGender = vModel.FGender;
                 q.FDisabled = vModel.FDisabled;
                 q.FAuthorityId = vModel.FAuthorityId;
-                
+
             }
             _context.SaveChanges();
             return RedirectToAction("Index", "MemberManage");

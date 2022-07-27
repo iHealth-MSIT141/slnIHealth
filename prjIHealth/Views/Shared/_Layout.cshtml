@@ -204,7 +204,7 @@
                                 <li>
 
                                     <div class="header__top__right__auth">
-                                        <a type="button" id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal">
+                                        <a href="#" type="button" id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal">
                                             <i class="fa fa-user"></i>
                                             <span>@MemberController.userName</span>
                                             <p style="display:none">@MemberController.userID </p>
@@ -574,25 +574,32 @@
         {
             console.log(spanTextUsername + "BB")
         }
-      //============================管理者權限才可以點擊進入後台(1<=authorID <=4====================
+        //============================管理者權限才可以點擊進入後台(1<=authorID <=4====================
         $('#adminAuthorID').on("click", (event) =>
         {
             let userAdmin = $("#btnLayOutLogin p").text();
-            if (userAdmin >= 1 && userAdmin <= 4) { event.stopPropagation(); }
-            else { event.preventDefault();}
+            if (userAdmin >= 1 && userAdmin <= 4) { event.stopPropagation();}
+            else { event.preventDefault(); }
         });
-      //============================ajax 會員登入(fetch)============================================
+        //================================================
+        $('#btnLayOutLogin').on("click", (event) =>
+        {
+            let userName = $("#btnLayOutLogin span").text();
+            if (userName != "登入") {  event.stopPropagation(); }
+            else { event.preventDefault(); }
+        });
+        //============================ajax 會員登入(fetch)============================================
         const btnUserName = document.querySelector('#btnLoginModal');
         btnUserName.addEventListener('click', (event) =>
         {
-            event.preventDefault();
+           /* event.preventDefault();*/
             var formData = new FormData(document.querySelector("#loginForm"));
             fetch("/Member/login", {
                 body: formData,
                 method: "Post"
             }).then(Response => Response.text()).then(data =>
             {
-                    if (data == "false")
+                if (data == "false")
                 {
                     alert("登入資料錯誤, 請重新登入");
                     $('#inpLogInUserName').val("");
@@ -602,12 +609,12 @@
                     alert("必填欄位, 不得空白, 請重新輸入");
                 } else
                 {
-                    let userName = data.substring(1);
+                     let userName = data.substring(1);
                     let userAdmin = data.substring(0, 1);
                     $("#btnLayOutLogin span").text(userName);
                     $("#btnLayOutLogin p").text(userAdmin);
                     $('#loginModal').modal('hide');
-                        window.location.reload(true);//refresh page
+                    window.location.reload(true);//refresh page
                     alert(`${userName} :歡迎登入`);
                     $(".header__menu__dropdown").css("display", "");
                     $('#inpLogInUserName').val("");
@@ -640,7 +647,7 @@
                     {
                         alert("請注意必填欄位不可空白, 請重新填入");
 
-                    } else if (data == "user") { alert(`${userName}:此帳號已有人使用`) }else
+                    } else if (data == "user") { alert(`${userName}:此帳號已有人使用`) } else
                     {
                         alert("歡迎您成為IHealth會員!,請登入會員")
                         $('#registerModal').modal('hide');
@@ -662,11 +669,12 @@
                 data: data,
                 success: function (data)
                 {
+                    alert(data);
                     if (data == "false")
                     {
                         alert("電件郵件錯誤, 請重新填寫");
                         $('#fEmailInput').val("");
-                    } else if (data == "empty") { alert("電子信箱必填, 請重填"); }else
+                    } else if (data == "empty") { alert("電子信箱必填, 請重填"); } else
                     {
                         alert(`${data}請收信,重設密碼`);
                         $('#passwordForgotModal').modal('hide');
@@ -688,14 +696,14 @@
                 success: function (data)
                 {
                     if (data == "empty") { alert(" 電子信箱不得空白,請重新輸入"); }
-                    else if (data =="false")
+                    else if (data == "false")
                     {
                         alert("電子信箱錯誤,請重新輸入");
-                        $('#fEmailReset').val("");                    $('#fPasswordReset').val("");
+                        $('#fEmailReset').val(""); $('#fPasswordReset').val("");
                         $('#firstPassword').val("");
                         $('#confirmPassword').val("");
 
-                    } else if (data == "PasswordError") { alert(`密碼錯誤或空白, 請重新輸入`); } else if (data == "ConfirmPasswordError") { alert(`重設密碼不一致, 請重新輸入`)}else
+                    } else if (data == "PasswordError") { alert(`密碼錯誤或空白, 請重新輸入`); } else if (data == "ConfirmPasswordError") { alert(`重設密碼不一致, 請重新輸入`) } else
                     {
                         alert(`${data},密碼重設成功, 請登入`);
                         $('#resetPasswordModal').modal('hide');
@@ -725,17 +733,20 @@
         });
 
         //登入Demo
-        $("#btnDemoUserLog").click(function () {
-            $("#inpLogInUserName").val("jay0513");
-            $("#inpLogInPassword").val("123");
+        $("#btnDemoUserLog").click(function ()
+        {
+            $("#inpLogInUserName").val("呂亞亮");
+            $("#inpLogInPassword").val("Lu@891032");
         });
-        $("#btnDemoCoachLog").click(function () {
+        $("#btnDemoCoachLog").click(function ()
+        {
             $("#inpLogInUserName").val("Alisa");
-            $("#inpLogInPassword").val("123");
+            $("#inpLogInPassword").val("Alisa&78015343");
         });
-        $("#btnDemoAdminLog").click(function () {
+        $("#btnDemoAdminLog").click(function ()
+        {
             $("#inpLogInUserName").val("crystal");
-            $("#inpLogInPassword").val("123");
+            $("#inpLogInPassword").val("Crystal@8913434aa");
         });
 
         //註冊Demo
