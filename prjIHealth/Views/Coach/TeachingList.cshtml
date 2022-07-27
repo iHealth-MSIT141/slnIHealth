@@ -396,7 +396,7 @@
                 //完成排課
                 $(`#done_@r.FReservationId`).click((evt) => {
                     evt.preventDefault();
-                    Swal.fire({
+                    SwalGreen.fire({
                         title: '確認已完成此次課程？',
                         icon: 'question',
                         confirmButtonText: '確定',
@@ -408,7 +408,7 @@
                             $.get("@Url.Content("~/Coach/ReservationDone")", { "id": "@r.FReservationId" },
                                 function (response) {
                                     if (response == "Success") {
-                                        Swal.fire({
+                                        SwalGreen.fire({
                                             icon: 'success',
                                             title: '已完成'
                                         })
@@ -458,7 +458,7 @@
                     $.get("@Url.Content("~/Coach/EditReservation")", { "id": "@r.FReservationId","date":`${date}`,"time":`${time}`},
                                     function (response) {
                                         if (response == "Success") {
-                                            Swal.fire({
+                                            SwalGreen.fire({
                                                 icon: 'success',
                                                 title: '已完成變更'
                                             })
