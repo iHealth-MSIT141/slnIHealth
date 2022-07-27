@@ -343,37 +343,18 @@
                             </li>
                         </ul>
                         <ul class="ServiceProfile__buttonList___27UCn ulBtns">
-                            @if (MemberController.userName == "登入")
-                            {
                                 <li>
-                                    <a onclick="pleaseLogin();" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">
+                                    <a href="#" id="addCandidate" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">
                                         <i class="fa-solid fa-heart" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId"></i>
                                         <b data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">&nbsp;&nbsp;加入候選</b>
                                     </a>
                                 </li>
                                 <li>
-                                    <a onclick="pleaseLogin();" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">
+                                    <a href="#" id="addContact" data-toggle="modal" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">
                                         <i class="fa-solid fa-comment" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId"></i>
                                         <b data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">&nbsp;&nbsp;我想預約</b>
                                     </a>
                                 </li>
-                            }
-                            else
-                            {
-                                <li>
-                                    <a href="#" id="addCandidate">
-                                        <i class="fa-solid fa-heart"></i>
-                                        <b>&nbsp;&nbsp;加入候選</b>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" data-toggle="modal" data-target="#modalContact">
-                                        <i class="fa-solid fa-comment"></i>
-                                        <b>&nbsp;&nbsp;我想預約</b>
-                                    </a>
-                                </li>
-                            }
-
                         </ul>
                     </div>
                     <div class="intro">
@@ -849,6 +830,10 @@
 
         //加入候選
         $("#addCandidate").click(function () {
+            if ($("#btnLayOutLogin span").text() == "登入") {
+                pleaseLogin();
+            }
+            else {  
             $.get("@Url.Content("~/Student/addCandidate")", { FCoachId:@Model.FCoachId }, function (result) {
                 if (result == "ok") {
                     SwalGreen.fire({
@@ -881,6 +866,16 @@
                     })
                 }
             })
+            }
+        })
+
+        $("#addContact").click(function () {
+            if ($("#btnLayOutLogin span").text() == "登入") {
+                pleaseLogin();
+            }
+            else {
+                $("#modalContact").modal("show");
+            }
         })
 
     </script>
