@@ -381,7 +381,7 @@
                     <br />
                     <div style="justify-content: center; display: flex; ">
                         <button class="btn btn-secondary" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal" style="margin-right:5px">
-                            <i class="fa fa-key"></i> 忘記密碼?
+                            <i class="fa fa-key"></i> 忘記密碼
                         </button>
                         <button class="btn btn-light" data-toggle="modal" data-target="#registerModal" data-dismiss="modal" style="margin-left:5px">
                             <i class="fa fa-user"></i> 加入會員
@@ -586,7 +586,6 @@
         }
       //============================ajax 會員登入(fetch)====================================
         $(".footer__about__logo a").addClass("disabled")
-
         const btnUserName = document.querySelector('#btnLoginModal');
         btnUserName.addEventListener('click', (event) =>
         {
@@ -689,15 +688,15 @@
                 data: data,
                 success: function (data)
                 {
-                    if (data == "false")
+                    if (data == "empty") { alert(" 電子信箱不得空白,請重新輸入"); }
+                    else if (data =="false")
                     {
-                        alert("輸入的資料錯誤,請重新輸入");
-                        $('#fEmailReset').val("");
-                        $('#fPasswordReset').val("");
+                        alert("電子信箱錯誤,請重新輸入");
+                        $('#fEmailReset').val("");                    $('#fPasswordReset').val("");
                         $('#firstPassword').val("");
                         $('#confirmPassword').val("");
 
-                    } else
+                    } else if (data == "PasswordError") { alert(`密碼錯誤或空白, 請重新輸入`); } else if (data == "ConfirmPasswordError") { alert(`重設密碼不一致, 請重新輸入`)}else
                     {
                         alert(`${data},密碼重設成功, 請登入`);
                         $('#resetPasswordModal').modal('hide');

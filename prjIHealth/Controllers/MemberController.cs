@@ -147,41 +147,64 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult ForgotPassword([Bind("fEmail,")] CLoginViewModel vModel)
         {
-            if (vModel.fEmail == null) { return Content("empty", "text/plain", System.Text.Encoding.UTF8); } else { 
-
-            var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
-
-            if (q != null)
+            if (vModel.fEmail == null) { return Content("empty", "text/plain", System.Text.Encoding.UTF8); }
+            else
             {
-                utilities.sendMail(q.FUserName, q.FEmail);
-                return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
 
+                var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
+
+                if (q != null)
+                {
+                    utilities.sendMail(q.FUserName, q.FEmail);
+                    return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
+
+                }
+                else
+                {
+                    return Content("false", "text/plain", System.Text.Encoding.UTF8);
+                }
+            }
+        }
+        public IActionResult ResetPassword() {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ResetPassword(CLoginViewModel vmodel)
+        {
+            if (vmodel.fEmail == null)
+            {
+                return Content("empty", "text/plain", System.Text.Encoding.UTF8);
             }
             else
             {
-                return Content("false", "text/plain", System.Text.Encoding.UTF8);
-            }
-            }
-
-        }
-        public IActionResult ResetPassword() { return View(); }
-        [HttpPost]
-        public IActionResult ResetPassword(CLoginViewModel vmodel) {
-            var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vmodel.fEmail && m.FPassword == vmodel.fPassword);
-            if (q != null)
-            {
-                if (vmodel.firstPassword == vmodel.confirmPassword)
+                var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vmodel.fEmail);
+                if (q != null)
                 {
-                    q.FPassword = vmodel.firstPassword;
-                    _context.SaveChanges();
-                    return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
+                    if (q.FPassword==vmodel.fPassword)
+                    {
+                        if (vmodel.firstPassword == vmodel.confirmPassword)
+                        {
+                            q.FPassword = vmodel.firstPassword;
+                            _context.SaveChanges();
+                            return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
+                        }
+                        else { return Content("ConfirmPasswordError", "text/plain", System.Text.Encoding.UTF8); }
+                        
+                    }
+                    else
+                    {
+                        return Content("PasswordError", "text/plain", System.Text.Encoding.UTF8);
+                    }
+                }
+                else
+                {
+                    return Content("false", "text/plain", System.Text.Encoding.UTF8);
                 }
             }
-            return Content("false", "text/plain", System.Text.Encoding.UTF8);
         }
 
         //========================追蹤清單===========================    
- 
+
         public IActionResult ShowTrackList()
         {
             return View();
