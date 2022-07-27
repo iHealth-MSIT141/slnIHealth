@@ -59,11 +59,11 @@
     <script>
         let MemberID = @MemberController.loginUser.FMemberId; //member id
         function showTrackList(url) {
-            $.get(url, function (datas) {
-                console.log(datas);
+            $.get(url, function (data) {
+                console.log(data);
                 let htmlShowProduct = "";
                 //顯示追蹤清單
-                $.each(datas, function (idx, list) {
+                $.each(data, function (idx, list) {
                     list.fUnitprice = "NT$"+toCurrency(list.fUnitprice);
                     htmlShowProduct += `<tr class="product_item">
                                          <td class="shoping__cart__item" style="col-lg-4" data-id="${list.fProductId}">
@@ -101,28 +101,34 @@
         }
 
         //
-        showTrackCount();
         async function showTrackCount() {
-             url = "@Url.Content("~/Member/ShowTrackCount/")" + MemberID;
-                    let response = await fetch(url);
-                    let datas = await response.json();
-                    console.log(datas);
-                    $("#fa-heart").children("span").text(datas);
+            url = "@Url.Content("~/Member/ShowTrackCount/")" + MemberID;
+            let response = await fetch(url);
+            let datas = await response.json();
+            console.log(datas);
+            $("#fa-heart").children("span").text(datas);
         }
 
         //以ProductID刪除追蹤商品
         $("#showTrack").delegate(".icon_close", "click", function (event) {
             let productID = $(this).attr("data-id");
-            console.log($(this).parent().parent());
             $(event.currentTarget).parent().parent().remove();
             DeleteTrack(productID);
-            ($("#showTrack").delegate(".product_item")).remove();
+            let count = $("#fa-heart").children("span").text();
+            let newCount = count - 1;
+            if (newCount == 0) {
+                $("#fa-heart").children("span").text("");
+            }
+            else {
+                $("#fa-heart").children("span").text(newCount);
+            }           
+            //showTrackCount();
+            //$("#showTrack").delegate(".product_item").remove();         
         })
          function DeleteTrack(id) {
              url = "@Url.Content("~/Member/DeleteTrackList/")" + id;
-             console.log(url);
              showTrackList(url);
-        }
+         }
 
         //顯示商品詳情
         $("#showTrack").delegate(".fa-shopping-bag", "click", function () {

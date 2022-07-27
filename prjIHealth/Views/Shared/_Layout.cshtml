@@ -147,16 +147,16 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a data-toggle="modal" href="">
+                                                <a data-toggle="modal" href="" id="fa-cart">
                                                     <i class="fa fa-shopping-cart" data-toggle="modal" href="" onclick="pleaseLogin();" data-nexthref="~/Shopping/ShoppingCartList">
-                                                    </i> <span></span>
+                                                    </i> <span id="cartCount"></span>
                                                 </a>
                                             </li>
                                         }
                                         else
                                         {
                                             <li><a href="~/Member/ShowTrackList" id="fa-heart"><i class="fa fa-heart"></i> <span></span></a></li>
-                                            <li><a href="~/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
+                                            <li><a href="~/Shopping/ShoppingCartList" id="fa-cart"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
                                         }
                                     </ul>
                                 </div>
@@ -204,11 +204,11 @@
                                 <li>
 
                                     <div class="header__top__right__auth">
-                                        <button type="button" id="btnLayOutLogin" class="btn btn-primary mb-3" data-toggle="modal" data-target="#loginModal">
+                                        <a type="button" id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal">
                                             <i class="fa fa-user"></i>
                                             <span>@MemberController.userName</span>
                                             <p style="display:none">@MemberController.userID </p>
-                                        </button>
+                                        </a>
                                         <ul class="header__menu__dropdown">
                                             <li><a href="~/Member/Edit">會員專區</a></li>
                                             <li><a href="~/Coach/ManageResume">教練專區</a></li>
@@ -612,7 +612,7 @@
                     $(".header__menu__dropdown").css("display", "");
                     $('#inpLogInUserName').val("");
                     $('#inpLogInPassword').val("");
-                        
+
                 }
             })
         });
@@ -645,7 +645,7 @@
                         alert("歡迎您成為IHealth會員!,請登入會員")
                         $('#registerModal').modal('hide');
                         $('#loginModal').modal('show');
-                       
+
                     }
                 }
             });
@@ -666,7 +666,7 @@
                     {
                         alert("電件郵件錯誤, 請重新填寫");
                         $('#fEmailInput').val("");
-                    } else if (data = "empty") { alert("電子信箱必填, 請重填"); }else
+                    } else if (data == "empty") { alert("電子信箱必填, 請重填"); }else
                     {
                         alert(`${data}請收信,重設密碼`);
                         $('#passwordForgotModal').modal('hide');
@@ -726,7 +726,7 @@
 
         //登入Demo
         $("#btnDemoUserLog").click(function () {
-            $("#inpLogInUserName").val("Jay");
+            $("#inpLogInUserName").val("jay0513");
             $("#inpLogInPassword").val("123");
         });
         $("#btnDemoCoachLog").click(function () {
@@ -800,22 +800,42 @@
 
 
         //商城部份
-        @*showTrackCount();
-        function showTrackCount() {
-             url = "@Url.Content("~/Member/ShowTrackCount/")" + @MemberController.userID;
-                    //let response = await fetch(url);
-                    //let datas = await response.json();
-                    console.log(datas);
+        $(document).ready(showTrackCount);
+        async function showTrackCount() {
+            if (@MemberController.userID == 0) {
+                $("#fa-heart").children("span").text("");
+            }
+            else {
+            url = "@Url.Content("~/Member/ShowTrackCount/")" + @MemberController.userID;
+                    let response = await fetch(url);
+                let datas = await response.json();
+                if (datas == 0) {
+                    $("#fa-heart").children("span").text("");
+                }
+                else {
                     $("#fa-heart").children("span").text(datas);
-        }*@
-        @*$(".fa-heart").click(function () {
-        if (@MemberController.userID == 0) {
-                alert("請先登入帳號");
+                }
             }
-        else{
-                $("#fa-heart").attr("href","/member/ShowTrackList/")
+        }
+        $(document).ready(showCartCount);
+        async function showCartCount() {
+            if (@MemberController.userID == 0) {
+                $("#fa-cart").children("span").text("");
             }
-        })*@
+            else {
+            url = "@Url.Content("~/Shopping/ShowCartCount/")";
+                    let response = await fetch(url);
+                let datas = await response.json();
+                if (datas == 0) {
+                    $("#fa-cart").children("span").text("");
+                }
+                else {
+                    $("#fa-cart").children("span").text(datas);
+                }
+                //console.log(datas)
+            }
+        }
+
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
