@@ -22,7 +22,7 @@ namespace prjIHealth.Controllers
 {
     public class MemberController : Controller
     {
-        utilities ul = new utilities();
+        //utilities ul = new utilities();
         public static TMember loginUser = null; 
         public static string userName = "登入";
         public static int userID = 0;
@@ -46,7 +46,10 @@ namespace prjIHealth.Controllers
             var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
             if (q != null)
             {
+
+                //if (q.FPassword == utilities.getCryptPWD(vModel.fUserName, vModel.fPassword))
                 if (q.FPassword == vModel.fPassword)
+
                 {
                     string loginSession = JsonSerializer.Serialize(q);
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
@@ -65,6 +68,7 @@ namespace prjIHealth.Controllers
         {
             HttpContext.Session.Remove(CDictionary.SK_Logined_User);
             userName = "登入";
+            userID = 0;
             return RedirectToAction("Index","Home");
         }
         public IActionResult Edit()
@@ -95,7 +99,7 @@ namespace prjIHealth.Controllers
                     q.FPicturePath = pName;
                 }
                 q.FMemberName = vModel.fMemberName;
-                q.FPassword = vModel.fPassword;
+                q.FPassword = utilities.getCryptPWD(vModel.fUserName, vModel.fPassword);
                 q.FBirthday = vModel.fBirthday;
                 q.FAddress = vModel.fAddress;
                 q.FPhone = vModel.fPhone;
