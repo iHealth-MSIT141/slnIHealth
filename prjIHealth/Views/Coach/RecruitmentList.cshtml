@@ -546,7 +546,7 @@
                         }
                         html += `</select></td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
                         html += `<button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse" onclick="btnCreateCourseClick();">排課</button>`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" onclick="getId();">聯繫</button>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-membername="${value.memberName}" onclick="getId();">聯繫</button>`;
                     })
                     $("#tbdContact").html(html);
                 })
@@ -578,7 +578,7 @@
                         }
                         html += `</select></td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
                         html += `<button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse" onclick="btnCreateCourseClick();">排課</button>`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" onclick="getId();">聯繫</button>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-membername="${value.memberName}" onclick="getId();">聯繫</button>`;
                     })
                     $("#tbdContact").html(html);
                 })
