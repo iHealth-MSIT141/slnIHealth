@@ -66,6 +66,7 @@
                                     <div class="pro-qty">
                                         @*<span class="dec qtybtn">-</span>*@
                                         <input type="text" value="1" id="ProductCount">
+                                        <input type="hidden" data-id="@Model.FProductId" id="productID" />
                                         @*<span class="inc qtybtn">+</span>*@
                                     </div>
                                 </div>
@@ -171,7 +172,10 @@
                     $("#fa-heart").children("span").text(datas);
         }
 
-        $.get("@Url.Content("~/Shopping/SuggestProduct")", function (datas) {
+        //推薦商品的部份
+        let productID = $("#productID").attr("data-id");
+        console.log(productID);
+        $.get("@Url.Content("~/Shopping/SuggestProduct/")" + productID, function (datas) {
             let htmlShowProduct = "";
             $.each(datas, function (idx, product) {
                 product.fUnitprice = "NT$"+toCurrency(product.fUnitprice);
@@ -193,7 +197,6 @@
             $("#suggestProduct").html(htmlShowProduct);
         })
 
-        //推薦商品的部份
         //按品名會彈出相對應商品明細
                 $("#suggestProduct").delegate("#showProductDetailInDetail", "click", function () {
                     id = $(this).attr("data-id");

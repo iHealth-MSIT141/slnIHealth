@@ -108,7 +108,7 @@ namespace prjiHealth.Controllers
             {
                 return RedirectToAction("CheckOut");
             }
-            return RedirectToAction("OrderList","Member",1);
+            return RedirectToAction("OrderList", "Member", 1);
         }
         //商城主頁界面
         public IActionResult ShowShoppingMall()
@@ -181,7 +181,7 @@ namespace prjiHealth.Controllers
 
             if (q != 0)
             {
-                int trackNum = dblIHealth.TTrackLists.Where(t => t.FMemberId == userID).Select(t=>t).Count();
+                int trackNum = dblIHealth.TTrackLists.Where(t => t.FMemberId == userID).Select(t => t).Count();
                 return Json(trackNum);
             }
             else
@@ -316,19 +316,30 @@ namespace prjiHealth.Controllers
         }
 
         //隨機推薦4項商品
-        public ActionResult SuggestProduct()
+        public ActionResult SuggestProduct(int? id)
         {
             ArrayList list = new ArrayList();
             Random rd = new Random(Guid.NewGuid().GetHashCode());
             int count = dblIHealth.TProducts.Count();
             int num = 0;
-            for (int i = 0; i < 4; i++)
+            List<int> items = new List<int>();
+            for (int i = 0; i < 4;)
             {
                 num = rd.Next(1, count);
-                TProduct rdProduct = (from t in dblIHealth.TProducts
-                                      where t.FProductId == num
-                                      select t).FirstOrDefault();
-                list.Add(rdProduct);
+
+                if (items.Contains(num) || num == id)
+                {
+                    continue;
+                }
+                else
+                {
+                    TProduct rdProduct = (from t in dblIHealth.TProducts
+                                          where t.FProductId == num
+                                          select t).FirstOrDefault();
+                    list.Add(rdProduct);
+                    i++;
+                    items.Add(num);
+                }
             }
             return Json(list);
         }
@@ -518,7 +529,7 @@ namespace prjiHealth.Controllers
             }
             int cartNum = list.Count();
             return Json(cartNum);
-            
+
         }
     }
 }
