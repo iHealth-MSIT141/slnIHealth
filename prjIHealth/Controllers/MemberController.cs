@@ -22,10 +22,6 @@ namespace prjIHealth.Controllers
 {
     public class MemberController : Controller
     {
-        //utilities ul = new utilities();
-        //public static TMember loginUser = null; 
-        //public static string userName = "登入";
-        //public static int userID = 0;
         private readonly IHealthContext _context;
         private IWebHostEnvironment _environment;
 
@@ -51,8 +47,6 @@ namespace prjIHealth.Controllers
                     string loginSession = JsonSerializer.Serialize(q);
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
-                    //userName = $"{loginUser.FUserName}";
-                    //userID = loginUser.FMemberId;
                     int authorId = (int)loginUser.FAuthorityId;
                     string loginContent = loginUser.FAuthorityId + loginUser.FMemberName;
                     return Content(loginContent, "text/plain", System.Text.Encoding.UTF8);
@@ -64,8 +58,6 @@ namespace prjIHealth.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove(CDictionary.SK_Logined_User);
-            //userName = "登入";
-            //userID = 0;
             return RedirectToAction("Index","Home");
         }
         public IActionResult Edit()
@@ -108,7 +100,7 @@ namespace prjIHealth.Controllers
             _context.SaveChanges();
             return RedirectToAction("Edit", "Member");
         }
-        // GET: Member
+        // GET: MemberRegister
         public IActionResult Register()
         {
             return View();
@@ -124,20 +116,6 @@ namespace prjIHealth.Controllers
                 if (q == null) {
 
                     tm.FPassword = utilities.getCryptPWD(tm.FPassword, tm.FUserName);
-                //{ TMember mem = new TMember {
-                //    q.FUserName = tm.FUserName;
-                //    q.FMemberName = tm.FMemberName;
-                //    q.FPassword = utilities.getCryptPWD(tm.FPassword, tm.FUserName);
-                //    q.FAddress = tm.FAddress
-                //    q.FPhone = tm.FPhone;
-                //    q.FBirthday = tm.FBirthday;
-                //    q.FRegisterDate = tm.FRegisterDate;
-                //    q.FEmail = tm.FEmail;
-                //    q.FGender = tm.FGender;
-                //    q.FDisabled = tm.FDisabled;
-                //    q.FAuthorityId = tm.FAuthorityId;
-                //}
-
                     _context.TMembers.Add(tm);
                     _context.SaveChanges();
                     return Content("true", "text/plain", System.Text.Encoding.UTF8);
@@ -166,18 +144,15 @@ namespace prjIHealth.Controllers
             if (vModel.fEmail == null) { return Content("empty", "text/plain", System.Text.Encoding.UTF8); }
             else
             {
-
                 var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
-
                 if (q != null)
-                {
+                {                 
+                //============================================================= 
                     string newPassword = utilities.RandomString(6);
                     utilities.sendMail(q.FUserName, newPassword, q.FEmail);
-                    //=============================================================
                     q.FPassword = utilities.getCryptPWD(newPassword, q.FUserName);
                     _context.SaveChanges();
                     return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
-
                 }
                 else
                 {
@@ -209,7 +184,6 @@ namespace prjIHealth.Controllers
                             return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
                         }
                         else { return Content("ConfirmPasswordError", "text/plain", System.Text.Encoding.UTF8); }
-
                     }
                     else
                     {
@@ -222,7 +196,6 @@ namespace prjIHealth.Controllers
                 }
             }
         }
-
         //========================追蹤清單===========================    
 
         public IActionResult ShowTrackList()
