@@ -171,9 +171,10 @@ namespace prjIHealth.Controllers
 
                 if (q != null)
                 {
-                    utilities.sendMail(q.FUserName, q.FEmail);
+                    string newPassword = utilities.RandomString(6);
+                    utilities.sendMail(q.FUserName, newPassword, q.FEmail);
                     //=============================================================
-                    q.FPassword = utilities.getCryptPWD(q.FUserName, q.FUserName);
+                    q.FPassword = utilities.getCryptPWD(newPassword, q.FUserName);
                     _context.SaveChanges();
                     return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
 
