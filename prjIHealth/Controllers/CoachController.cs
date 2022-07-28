@@ -438,7 +438,7 @@ namespace prjiHealth.Controllers
             DateTime date;
             if ((courseDay - day) > 0)
             {
-                int interval = 7 - (courseDay - day);
+                int interval = courseDay - day;
                 date = DateTime.Now.AddDays(interval);
             }
             else
