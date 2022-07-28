@@ -79,7 +79,7 @@ namespace HealthyLifeApp
         {
             MailMessage mm = new MailMessage("charleschou54138@gmail.com", userMail);
             mm.Subject = $"{userName} 您的密碼已重設, 請登入後,重新修改密碼";
-            mm.Body = $"{userName}您好, 重設的密碼為登入帳號,請登入後, {newPassword},進入會員資料修改您的密碼,以保障您帳號的使用安全\n  HealthyLife 敬上";
+            mm.Body = $"{userName}您好\n 重設的密碼為 {newPassword}\n 請盡快重設您的密碼,以保障您帳號的使用安全\n  HealthyLife 敬上";
             //mm.Attachments.Add(new Attachment(""));//attachment
             SmtpClient smtp = new SmtpClient();
             smtp.Host = "smtp.gmail.com";
