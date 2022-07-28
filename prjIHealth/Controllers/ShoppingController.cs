@@ -43,6 +43,11 @@ namespace prjiHealth.Controllers
             {
                 string jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
                 List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
+                for (int i = 0; i < cart.Count; i++)
+                {
+                    if (cart[i].count == 0 || cart[i].count == -1)
+                        cart.Remove(cart[i]);
+                }
                 return View(cart);
             }
             else
