@@ -31,11 +31,6 @@ namespace prjIHealth.Controllers
                 string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
                 userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
             }
-            else
-            {
-                MemberController.loginUser = null;
-                MemberController.userName = "登入";
-            }
             CDiaryViewModel diaryViewModel = new CDiaryViewModel(db)
             {
                 userId = userId

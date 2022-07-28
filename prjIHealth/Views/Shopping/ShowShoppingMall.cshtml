@@ -256,6 +256,29 @@
 
 @section Scripts{
     <script>
+    @using prjIHealth.Models;
+    @using prjiHealth.Models;
+    @using prjIHealth.ViewModels;
+    @using prjiHealth.ViewModels;
+    @using Microsoft.AspNetCore.Http;
+    @using Microsoft.AspNetCore.Mvc;
+    @using System.Linq;
+    @using System.Text.Json;
+
+    @{
+        string LoginbuttonValue = "登入";
+        int loginId = 0;
+        TMember loginMember = null;
+
+        if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
+        {
+            string logJson = Context.Session.GetString(CDictionary.SK_Logined_User);
+            loginMember = JsonSerializer.Deserialize<TMember>(logJson);
+            LoginbuttonValue = loginMember.FMemberName;
+            loginId = loginMember.FMemberId;
+        };
+    }
+
         let option = {
             categoryID: 0,
             sort: "",
@@ -371,7 +394,7 @@
                 $("#showProduct").delegate(".addToTrack", "click", function (event) {
                     event.preventDefault();
                     id = $(this).attr("data-id");
-                    if (@MemberController.userID== 0) {
+                    if (@loginId== 0) {
                         pleaseLogin();
                     }
                     else {
@@ -393,14 +416,14 @@
             $("#showProduct").delegate(".addToCart", "click", function (event) {
                 event.preventDefault();
                 id = $(this).attr("data-id");
-                if (@MemberController.userID == 0) {
+                if (@loginId == 0) {
                     pleaseLogin();
                 }
                 else {
                     addCart(id);
                     alert("已成功加入購物車");
                 }
-                    
+
                 })
                 async function addCart(id) {
                     //傳值回AddToCartViewModel

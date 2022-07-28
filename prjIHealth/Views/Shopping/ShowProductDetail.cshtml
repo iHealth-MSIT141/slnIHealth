@@ -102,13 +102,35 @@
 
 @section Scripts{
     <script>
+    @using prjIHealth.Models;
+    @using prjiHealth.Models;
+    @using prjIHealth.ViewModels;
+    @using prjiHealth.ViewModels;
+    @using Microsoft.AspNetCore.Http;
+    @using Microsoft.AspNetCore.Mvc;
+    @using System.Linq;
+    @using System.Text.Json;
+
+    @{
+        string LoginbuttonValue = "登入";
+        int loginId = 0;
+        TMember loginMember = null;
+
+        if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
+        {
+            string logJson = Context.Session.GetString(CDictionary.SK_Logined_User);
+            loginMember = JsonSerializer.Deserialize<TMember>(logJson);
+            LoginbuttonValue = loginMember.FMemberName;
+            loginId = loginMember.FMemberId;
+        };
+    }
         //加進購物車
         $("#addToCart").click(function (event) {
             event.preventDefault();
             let id = $(this).attr("data-id");
             let count = $("#ProductCount").val();
 
-            if (@MemberController.userID== 0) {
+            if (@loginId== 0) {
                 alert("請先登入會員");
                 $("#loginModal").modal("show");
             }
@@ -129,7 +151,7 @@
         $("#addToTrack").click(function (event) {
             event.preventDefault();
             id = $(this).attr("data-id");
-            if (@MemberController.userID== 0) {
+            if (loginId== 0) {
                 alert("請先登入會員");
                 $("#loginModal").modal("show");
             }
@@ -191,7 +213,7 @@
                 $("#suggestProduct").delegate(".addToTrackInDetail", "click", function (event) {
                     event.preventDefault();
                     id = $(this).attr("data-id");
-                    if (@MemberController.userID== 0) {
+                    if (@loginId== 0) {
                         alert("請先登入會員");
                         $("#loginModal").modal("show");
                     }
@@ -215,7 +237,7 @@
                 $("#suggestProduct").delegate(".addToCartInDetail", "click", function (event) {
                     event.preventDefault();
                     id = $(this).attr("data-id");
-                    if (@MemberController.userID == 0) {
+                    if (@loginId == 0) {
                         alert("請先登入會員");
                         $("#loginModal").modal("show");
 
@@ -239,7 +261,7 @@
                     url = "@Url.Content("~/Shopping/ShowCartCount/")"
                     let response = await fetch(url);
                     let datas = await response.json();
-                    await $("#fa-cart").children("span").text(datas);                  
+                    await $("#fa-cart").children("span").text(datas);
                 }
 
         @*//顯示商品圖片

@@ -57,7 +57,29 @@
 </section>
 @section Scripts{
     <script>
-        let MemberID = @MemberController.loginUser.FMemberId; //member id
+    @using prjIHealth.Models;
+    @using prjiHealth.Models;
+    @using prjIHealth.ViewModels;
+    @using prjiHealth.ViewModels;
+    @using Microsoft.AspNetCore.Http;
+    @using Microsoft.AspNetCore.Mvc;
+    @using System.Linq;
+    @using System.Text.Json;
+
+    @{
+        string LoginbuttonValue = "登入";
+        int loginId = 0;
+        TMember loginMember = null;
+
+        if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
+        {
+            string logJson = Context.Session.GetString(CDictionary.SK_Logined_User);
+            loginMember = JsonSerializer.Deserialize<TMember>(logJson);
+            LoginbuttonValue = loginMember.FMemberName;
+            loginId = loginMember.FMemberId;
+        };
+    }
+        let MemberID = @loginId; //member id
         function showTrackList(url) {
             $.get(url, function (data) {
                 console.log(data);
@@ -121,9 +143,9 @@
             }
             else {
                 $("#fa-heart").children("span").text(newCount);
-            }           
+            }
             //showTrackCount();
-            //$("#showTrack").delegate(".product_item").remove();         
+            //$("#showTrack").delegate(".product_item").remove();
         })
          function DeleteTrack(id) {
              url = "@Url.Content("~/Member/DeleteTrackList/")" + id;
