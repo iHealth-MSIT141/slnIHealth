@@ -554,7 +554,7 @@
                         html += `<td>${value.strContactDate}</td>`;
                         html += `<td>${value.status}</td>`;
                         html += `<td><input type="hidden" value="${value.fCoachContactId}" />`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.fCoachName}" onclick="getId();">訊息</button></td></tr>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.coachName}" onclick="getId();">訊息</button></td></tr>`;
                     })
                     $("#tbdContact").html(html);
                 })
@@ -568,7 +568,7 @@
                         html += `<td>${value.strContactDate}</td>`;
                         html += `<td>${value.status}</td>`;
                         html += `<td><input type="hidden" value="${value.fCoachContactId}" />`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.fCoachName}" onclick="getId();">訊息</button></td></tr>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.coachName}" onclick="getId();">訊息</button></td></tr>`;
                     })
                     $("#tbdContact").html(html);
                 })
