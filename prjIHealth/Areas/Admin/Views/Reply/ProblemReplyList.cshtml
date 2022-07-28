@@ -180,7 +180,17 @@
             const response = await fetch('@Url.Content("~/Admin/Reply/SelectByProblemCategoryID")' + `?id=${ProblemCategoryID}`);
             const datas = await response.json();
             let tr = '';
-            for (i = 0; i < datas.length ; i++) {
+            
+            for (i = 0; i < datas.length; i++) {
+                if (datas[i].fOrderId == null) {
+                    datas[i].fOrderId = ""
+                }
+                if (datas[i].fEmail == null) {
+                    datas[i].fEmail = ""
+                }
+                if (datas[i].fContactPhone == null) {
+                    datas[i].fContactPhone = ""
+                }
                 tr = `<tr><td>${datas[i].fProblemTime}</td><td style="white-space:nowrap">${datas[i].fProblemCategory.fProblemCategory}</td>
                       <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${datas[i].fProblemContent}</td>
                       <td>${datas[i].fMemberId}</td><td>${datas[i].fOrderId}</td><td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${datas[i].fEmail}</td>
@@ -205,7 +215,17 @@
             const response = await fetch('@Url.Content("~/Admin/Reply/SelectByStatus")' + `?id=${StatusID}`);
             const datas = await response.json();
             let tr = '';
-            for (i = 0; i < datas.length ; i++) {
+            
+            for (i = 0; i < datas.length; i++) {
+                if (datas[i].fOrderId == null) {
+                    datas[i].fOrderId = ""
+                }
+                if (datas[i].fEmail == null) {
+                    datas[i].fEmail = ""
+                }
+                if (datas[i].fContactPhone == null) {
+                    datas[i].fContactPhone = ""
+                }
                 tr = `<tr><td>${datas[i].fProblemTime}</td><td style="white-space:nowrap">${datas[i].fProblemCategory.fProblemCategory}</td>
                       <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${datas[i].fProblemContent}</td>
                       <td>${datas[i].fMemberId}</td><td>${datas[i].fOrderId}</td><td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${datas[i].fEmail}</td>
@@ -219,8 +239,18 @@
             $('#changezoon>tr').remove();
              const response = await fetch('@Url.Content("~/Admin/Reply/Reset")');
             const datas = await response.json();
-            let tr = '';
-            for (i = 0; i < datas.length ; i++) {
+             let tr = '';
+             
+             for (i = 0; i < datas.length; i++) {
+                 if (datas[i].fOrderId == null) {
+                     datas[i].fOrderId = ""
+                 }
+                 if (datas[i].fEmail == null) {
+                     datas[i].fEmail = ""
+                 }
+                 if (datas[i].fContactPhone == null) {
+                     datas[i].fContactPhone = ""
+                 }
                 tr = `<tr><td>${datas[i].fProblemTime}</td><td style="white-space:nowrap">${datas[i].fProblemCategory.fProblemCategory}</td>
                       <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${datas[i].fProblemContent}</td>
                       <td>${datas[i].fMemberId}</td><td>${datas[i].fOrderId}</td><td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${datas[i].fEmail}</td>
@@ -251,7 +281,17 @@
             const response = await fetch('@Url.Content("~/Admin/Reply/SelectByDate")' + `?date=${date}`);
             const datas = await response.json();
             let tr = '';
-            for (i = 0; i < datas.length ; i++) {
+            
+            for (i = 0; i < datas.length; i++) {
+                if (datas[i].fOrderId == null) {
+                    datas[i].fOrderId = ""
+                }
+                if (datas[i].fEmail == null) {
+                    datas[i].fEmail = ""
+                }
+                if (datas[i].fContactPhone == null) {
+                    datas[i].fContactPhone = ""
+                }
                 tr = `<tr><td>${datas[i].fProblemTime}</td><td style="white-space:nowrap">${datas[i].fProblemCategory.fProblemCategory}</td>
                       <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${datas[i].fProblemContent}</td>
                       <td>${datas[i].fMemberId}</td><td>${datas[i].fOrderId}</td><td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${datas[i].fEmail}</td>
