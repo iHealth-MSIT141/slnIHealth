@@ -43,7 +43,8 @@ namespace prjiHealth.ViewModels
             set { _news.FTitle = value; }
         }
         [DisplayName("建立時間")]
-        public string FNewsDate {
+        public string FNewsDate
+        {
             get { return _news.FNewsDate; }
             set { _news.FNewsDate = value; }
         }
@@ -77,7 +78,8 @@ namespace prjiHealth.ViewModels
             set { _news.FVideoUrl = value; }
         }
         [DisplayName("會員號碼")]
-        public int? FMemberId {
+        public int? FMemberId
+        {
             get { return _news.FMemberId; }
             set { _news.FMemberId = value; }
         }
@@ -85,7 +87,9 @@ namespace prjiHealth.ViewModels
         //public virtual TNewsCategory FCategory { get; set; }
         //public virtual TMember FMember { get; set; }
         public virtual ICollection<TNewsImage> TNewsImages { get; set; }
-        
+
         public TNewsCategory newsCategory { get; set; }
+
+        public TNewsComment commentCount { get; set; }
     }
 }
