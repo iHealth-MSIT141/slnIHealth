@@ -178,53 +178,28 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6 reveal_b1">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="/img/home/news1.jpg" alt="">
+                @*我要從此處新增首頁專欄*@
+                @{
+                    IHealthContext dblHealth = new IHealthContext();
+                    foreach (var item in dblHealth.TNews.OrderByDescending(t => t.FNewsDate).Take(3))
+                    {
+                        <div class="col-lg-4 col-md-4 col-sm-6 reveal_b1">  
+                            <div class="blog__item">
+                                <div class="blog__item__pic">
+                                    <img src="~/img/blog/@item.FThumbnailPath" alt="">
+                                </div>
+                                <div class="blog__item__text">
+                                    <ul>
+                                        <li><i class="fa fa-calendar-o"></i>@item.FNewsDate.Substring(0, Math.Min(item.FNewsDate.Length, 10))</li>
+                                        <li><i class="fa fa-comment-o"></i>@item.TNewsComments.Count()</li>
+                                    </ul>
+                                    <h5><a href="~/News/BlogDetail?id=@item.FNewsId">@item.FTitle.Substring(0, Math.Min(item.FContent.Length, 18)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")</a></h5>
+                                    <p>@item.FContent.Substring(0, Math.Min(item.FContent.Length, 68)).Replace("<p>", "").Replace("<strong>", "").Replace("<br/>", "").Replace("</p>", "")</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> Jul 4,2022</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">新冠後遺症咳嗽、頭痛、失眠？改善長新冠7招馬上學</a></h5>
-                            <p>新冠肺炎痊癒後，不少人會有後遺症，有研究發現，高達60～70％的康復者會出現症狀輕重不一的後遺症，嚴重影響生活。常見的新冠後遺症有哪些？如何改善？</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 reveal_b2">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="/img/home/news2.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> Jul 4,2022</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">心律不整症狀、原因？嚴重會致死？3大治療方式一次看</a></h5>
-                            <p>心律不整是造成心悸的重要因素，除了心肌梗塞、主動脈剝離外，心律不整其實也是造成青壯年猝死的重要成因之一，心律不整症狀有哪些？原因是什麼？一次看懂心律不整治療與改善方式。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 reveal_b3">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="/img/home/news3.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> Jul 4,2022</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">降血糖食物有哪些？飲食3原則，5招不吃藥自然降血糖</a></h5>
-                            <p>血糖太高怎麼辦？降血糖可以吃什麼？《康健》教你吃10種降血糖食物、培養日常5招穩定血糖值。</p>
-                        </div>
-                    </div>
-                </div>
+                    } }
             </div>
-        </div>
     </section>
     @*熱門教練*@
     <div class="banner">
@@ -263,7 +238,6 @@
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
                                 @{
-                                    IHealthContext dblHealth = new IHealthContext();
                                     var product = dblHealth.TProducts.Where(p => p.FCategoryId == 1).Take(3);
                                     foreach (var item in product)
                                     {
