@@ -208,7 +208,7 @@
                     <div class="col-xl-11">
                         <div class="divTopic"><h3><b>履歷管理</b></h3></div>
                         <div class="divBar reveal_r1"></div>
-                        <form class="frmResume reveal_b1" method="post" enctype="multipart/form-data" name="Resume" id="frmResume">
+                        <form class="frmResume" method="post" enctype="multipart/form-data" name="Resume" id="frmResume">
                             <input type="hidden" value="@Model.FCoachId" name="CoachId" id="CoachId" />
                             <div class="row">
                                 <div class="col-8">
@@ -461,9 +461,9 @@
         function getBtnPosition() {
             let lblLic = $("#lblLic").offset().top;
             $("#btnNewLic").offset({ top: `${lblLic}` });
-        };
+        };        
         getBtnPosition();
-
+       
         //新增Exp欄位
         let expCount=@Model.Coach.TCoachExperiences.Count();
         if (@Model.Coach.TCoachExperiences.Count == 0) {
