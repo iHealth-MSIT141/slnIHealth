@@ -23,9 +23,9 @@ namespace prjIHealth.Controllers
     public class MemberController : Controller
     {
         //utilities ul = new utilities();
-        public static TMember loginUser = null; 
-        public static string userName = "登入";
-        public static int userID = 0;
+        //public static TMember loginUser = null; 
+        //public static string userName = "登入";
+        //public static int userID = 0;
         private readonly IHealthContext _context;
         private IWebHostEnvironment _environment;
 
@@ -50,11 +50,11 @@ namespace prjIHealth.Controllers
                 {
                     string loginSession = JsonSerializer.Serialize(q);
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
-                    loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
-                    userName = $"{loginUser.FUserName}";
-                    userID = loginUser.FMemberId;
+                    TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
+                    //userName = $"{loginUser.FUserName}";
+                    //userID = loginUser.FMemberId;
                     int authorId = (int)loginUser.FAuthorityId;
-                    string loginContent = loginUser.FAuthorityId + loginUser.FUserName;
+                    string loginContent = loginUser.FAuthorityId + loginUser.FMemberName;
                     return Content(loginContent, "text/plain", System.Text.Encoding.UTF8);
                 }
             }
@@ -64,8 +64,8 @@ namespace prjIHealth.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove(CDictionary.SK_Logined_User);
-            userName = "登入";
-            userID = 0;
+            //userName = "登入";
+            //userID = 0;
             return RedirectToAction("Index","Home");
         }
         public IActionResult Edit()
@@ -73,7 +73,7 @@ namespace prjIHealth.Controllers
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
             {
                 var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-                loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+                TMember loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
                 var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == loginUser.FMemberId);
                 return View(q);
             }
@@ -171,9 +171,10 @@ namespace prjIHealth.Controllers
 
                 if (q != null)
                 {
-                    utilities.sendMail(q.FUserName, q.FEmail);
+                    string newPassword = utilities.RandomString(6);
+                    utilities.sendMail(q.FUserName, newPassword, q.FEmail);
                     //=============================================================
-                    q.FPassword = utilities.getCryptPWD(q.FUserName, q.FUserName);
+                    q.FPassword = utilities.getCryptPWD(newPassword, q.FUserName);
                     _context.SaveChanges();
                     return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
 
@@ -248,19 +249,26 @@ namespace prjIHealth.Controllers
 
         public IActionResult ShowTrackCount(int? id)
         {
-            if (id == null)
+            if (id == null||id==0)
             {
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                int trackNum = _context.TTrackLists.Where(t => t.FMemberId == userID).Select(t=>t).Count();
+                int trackNum = _context.TTrackLists.Where(t => t.FMemberId == id).Select(t=>t).Count();
                 return Json(trackNum);
             }
         }
 
         public IActionResult DeleteTrackList(int? id) //ProductID
         {
+            int userID = 8;//演示用ID
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                TMember loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+                userID = loginUser.FMemberId;
+            }
             var trackList = (from t in _context.TTrackLists
                              where t.FMemberId == /*1*/userID && t.FProductId == id
                              select t).FirstOrDefault();
@@ -275,6 +283,13 @@ namespace prjIHealth.Controllers
         //===================購買紀錄=============================
         public IActionResult OrderList(int? page)
         {
+            int userID = 8;//演示用ID
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                TMember loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+                userID = loginUser.FMemberId;
+            }
             var pro = (from o in _context.TOrders
                        join p in _context.TPaymentCategories
                        on o.FPaymentCategoryId equals p.FPaymentCategoryId
@@ -282,7 +297,7 @@ namespace prjIHealth.Controllers
                        on o.FStatusNumber equals s.FStatusNumber
                        join m in _context.TMembers
                        on o.FMemberId equals m.FMemberId
-                       where o.FMemberId == loginUser.FMemberId
+                       where o.FMemberId == userID
                        select new COrderViewModel()
                        {
                            FOrderId = o.FOrderId,
@@ -290,7 +305,7 @@ namespace prjIHealth.Controllers
                            fPayment = o.FPaymentCategory,
                            FDate = o.FDate,
                            FAddress = o.FAddress,
-                           FMemberId = loginUser.FMemberId,
+                           FMemberId = userID,
                            fmember = o.FMember,
                            FContact = o.FContact,
                            FPhone = o.FPhone,

@@ -53,6 +53,28 @@
 </head>
 
 <body>
+    @using prjIHealth.Models;
+    @using prjiHealth.Models;
+    @using prjIHealth.ViewModels;
+    @using prjiHealth.ViewModels;
+    @using Microsoft.AspNetCore.Http;
+    @using Microsoft.AspNetCore.Mvc;
+    @using System.Linq;
+    @using System.Text.Json;
+
+    @{
+        string LoginbuttonValue = "登入";
+        int loginId = 0;
+        TMember loginMember = null;
+
+        if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
+        {
+            string logJson = Context.Session.GetString(CDictionary.SK_Logined_User);
+            loginMember = JsonSerializer.Deserialize<TMember>(logJson);
+            LoginbuttonValue = loginMember.FMemberName;
+            loginId = loginMember.FMemberId;
+        };
+    }
     <!-- 載入動畫 -->
     <div id="preloder">
         <div class="loader"></div>
@@ -68,9 +90,9 @@
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span></span></a></li>
                 <li><a href="/Shopping/ShoppingCartList"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
-                @if (@MemberController.userName == "登入")
+                @if (LoginbuttonValue == "登入")
                 {
-                    <li class="header__top__right__auth"><a data-toggle="modal" data-target="#loginModal" href=""><i class="fa fa-user"></i>@MemberController.userName</a></li>
+                    <li class="header__top__right__auth"><a data-toggle="modal" data-target="#loginModal" href=""><i class="fa fa-user"></i>@LoginbuttonValue</a></li>
                 }
                 else
                 {
@@ -122,7 +144,7 @@
                         <div class="header__top__left">
                             <ul>
                                 <li><a href="~/problem/ReplyProblem" style="color:black;"><i class="fa fa-envelope"></i>聯絡我們</a></li>
-                                @if (@MemberController.userName == "登入")
+                                @if (LoginbuttonValue == "登入")
                                 {
                                     <li>歡迎<a href="" data-toggle="modal" data-target="#register1Modal" data-dismiss="modal" style="color:#7fad39;font-weight:600">加入會員</a>和我們一起迎向健康新生活！</li>
                                 }
@@ -138,7 +160,7 @@
                             <div class="header__top__right__auth">
                                 <div class="header__cart" style="padding:0;">
                                     <ul>
-                                        @if (@MemberController.userName == "登入")
+                                        @if (LoginbuttonValue == "登入")
                                         {
                                             <li>
                                                 <a data-toggle="modal" href="" id="fa-heart">
@@ -206,8 +228,8 @@
                                     <div class="header__top__right__auth">
                                         <a type="button" id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal">
                                             <i class="fa fa-user"></i>
-                                            <span>@MemberController.userName</span>
-                                            <p style="display:none">@MemberController.userID </p>
+                                            <span>@LoginbuttonValue</span>
+                                            <p style="display:none">@loginId </p>
                                         </a>
                                         <ul class="header__menu__dropdown">
                                             <li><a href="~/Member/Edit">會員專區</a></li>
@@ -365,7 +387,7 @@
                             <input type="password" class="form-control" id="inpLogInPassword" name="fPassword" placeholder="密碼" autocomplete="off">
                         </div>
                         <div style="justify-content: center; display: flex; ">
-                            <button class="btn btn-success center" id="btnLoginModal"><i class="fa fa-sign-in" aria-hidden="true"></i>會員登入</button></i>
+                            <button class="btn btn-success center" id="btnLoginModal"><i class="fa fa-sign-in" aria-hidden="true"></i>會員登入</button>
                         </div>
                     </form>
                     <br />
@@ -438,7 +460,7 @@
                                     <label class="form-check-label" for="fGender">女性</label>
                                 </div>
                                 <div class="form-check form-check-inline mb-0 me-4">
-                                    <input type="radio" class="form-check-input" id="maleGender" name="fGender" value="true" >
+                                    <input type="radio" class="form-check-input" id="maleGender" name="fGender" value="true">
                                     <label class="form-check-label" for="fGender">男性</label>
                                 </div>
                             </div>
@@ -773,8 +795,8 @@
 
         //需登入的頁面導去登入
         function pleaseLogin() {
-            $("#inpReturnUrl").val($(event.target).attr("data-nexthref"));
-            console.log($("#inpReturnUrl").val());
+            //$("#inpReturnUrl").val($(event.target).attr("data-nexthref"));
+            //console.log($("#inpReturnUrl").val());
             SwalGreen.fire({
                 title: `您尚未登入`,
                 showDenyButton: false,
@@ -811,11 +833,11 @@
         //商城部份
         $(document).ready(showTrackCount);
         async function showTrackCount() {
-            if (@MemberController.userID == 0) {
+            if (@loginId == 0) {
                 $("#fa-heart").children("span").text("");
             }
             else {
-            url = "@Url.Content("~/Member/ShowTrackCount/")" + @MemberController.userID;
+            url = "@Url.Content("~/Member/ShowTrackCount/")" + @loginId;
                     let response = await fetch(url);
                 let datas = await response.json();
                 if (datas == 0) {
@@ -828,7 +850,7 @@
         }
         $(document).ready(showCartCount);
         async function showCartCount() {
-            if (@MemberController.userID == 0) {
+            if (@loginId == 0) {
                 $("#fa-cart").children("span").text("");
             }
             else {
