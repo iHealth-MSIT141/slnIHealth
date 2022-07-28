@@ -19,13 +19,6 @@
 <hr />
 <div class="contact-form spad">
     <div class="container" style="height:100%">
-        @*<div class="row">
-                <div class="col-lg-12">
-                    <div class="contact__form__title">
-                        <h2>建立文章</h2>
-                    </div>
-                </div>
-            </div>*@
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
@@ -63,33 +56,16 @@
                 <div class="col-lg-6 col-md-6">
                     <label class="control-label">專欄縮圖</label>
                     <input type="file" name="photo" class="form-control" id="imageFile" />
-                    @*<div>
-                            <div class="form-group">
-                                <div class="col-md-10">
-                                    <p>Upload one or more files using this form:</p>
-                                    <input type="file" name="files" multiple />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-10">
-                                    <input type="submit" value="Upload" />
-                                </div>
-                            </div>
-                        </div>*@
                 </div>
                 <div class="col-lg-6 col-md-6">
                 </div>
                 <div class="col-lg-6 col-md-6">
-                    @*<label asp-for="FThumbnailPath" class="control-label"></label>
-                        <input asp-for="FThumbnailPath" class="form-control" />
-                        <span asp-validation-for="FThumbnailPath" class="text-danger"></span>*@
                     <label>預覽縮圖</label>
                     <br />
                     <img id="imgPreivew" style="width:150px" />
                 </div>
                 <div class="col-lg-12 text-center">
                     <label asp-for="FContent" class="control-label">文章內容</label>
-                    @*<textarea asp-for="FNewsContent" placeholder="請輸入內容"></textarea>*@
                     <textarea id="editor" asp-for="FContent" class="form-control" placeholder="請輸入內容" style="height:300px" required></textarea>
                     <span asp-validation-for="FContent" class="text-danger"></span>
                 </div>
@@ -106,18 +82,17 @@
     </div>
 </div>
 
-@* <form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="Index"> *@
-@* </form> *@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+        //使用ckeditor5
         ClassicEditor
             .create(document.querySelector('#editor'))
             .then(editor => {
                 console.log(editor);
             })
-
+        //預覽圖片jquery
         var arrayBuffer = null;
         document.querySelector("#imageFile").addEventListener("change", function () {
             var reader = new FileReader();
@@ -131,77 +106,15 @@
             };
             reader.readAsArrayBuffer(this.files[0]);
         }, false);
-
-        const txtCategory = document.querySelector('#inputCategory');
-        const btnValue = document.querySelector('#btnSubmit');
-        btnSubmit.addEventListener('click', (evt) => {
-            if (txtCategory.value.trim() === "") {
-                txtCategory.innerHTML = "1312312";
-                txtCategory.style.color = "RED";
-            }
-        })
+        //沒寫好的防呆
+        //const txtCategory = document.querySelector('#inputCategory');
+        //const btnValue = document.querySelector('#btnSubmit');
+        //btnSubmit.addEventListener('click', (evt) => {
+        //    if (txtCategory.value.trim() === "") {
+        //        txtCategory.innerHTML = "1312312";
+        //        txtCategory.style.color = "RED";
+        //    }
+        //})
 
     </script>
 }
-
-@*<script runat="server">
-
-            protected void UploadButton_Click(object sender, EventArgs e)
-            {
-                // Before attempting to save the file, verify
-                // that the FileUpload control contains a file.
-                if (FileUpload1.HasFile)
-                    // Call a helper method routine to save the file.
-                    SaveFile(FileUpload1.PostedFile);
-                else
-                    // Notify the user that a file was not uploaded.
-                    UploadStatusLabel.Text = "You did not specify a file to upload.";
-            }
-
-            void SaveFile(HttpPostedFile file)
-            {
-                // Specify the path to save the uploaded file to.
-                string savePath = "c:\\temp\\uploads\\";
-
-                // Get the name of the file to upload.
-                string fileName = FileUpload1.FileName;
-
-                // Create the path and file name to check for duplicates.
-                string pathToCheck = savePath + fileName;
-
-                // Create a temporary file name to use for checking duplicates.
-                string tempfileName = "";
-
-                // Check to see if a file already exists with the
-                // same name as the file to upload.
-                if (System.IO.File.Exists(pathToCheck)) {
-                    int counter = 2;
-                    while (System.IO.File.Exists(pathToCheck)) {
-                        // if a file with this name already exists,
-                        // prefix the filename with a number.
-                        tempfileName = counter.ToString() + fileName;
-                        pathToCheck = savePath + tempfileName;
-                        counter++;
-                    }
-
-                    fileName = tempfileName;
-
-                    // Notify the user that the file name was changed.
-                    UploadStatusLabel.Text = "A file with the same name already exists." +
-                        "<br />Your file was saved as " + fileName;
-                }
-                else {
-                    // Notify the user that the file was saved successfully.
-                    UploadStatusLabel.Text = "Your file was uploaded successfully.";
-                }
-
-                // Append the name of the file to upload to the path.
-                savePath += fileName;
-
-                // Call the SaveAs method to save the uploaded
-                // file to the specified directory.
-                FileUpload1.SaveAs(savePath);
-
-            }
-
-    </script>*@

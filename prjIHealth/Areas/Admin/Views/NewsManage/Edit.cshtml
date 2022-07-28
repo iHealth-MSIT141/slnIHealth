@@ -19,13 +19,6 @@
 <hr />
 <div class="contact-form spad">
     <div class="container">
-        @*<div class="row">
-                <div class="col-lg-12">
-                    <div class="contact__form__title">
-                        <h2>編輯文章</h2>
-                    </div>
-                </div>
-            </div>*@
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" value="@Model.FNewsId" name="FNewsId" />
@@ -90,23 +83,18 @@
     </div>
 </div>
 
-@*<div class="col-lg-6 col-md-6">
-        <input type="submit" class="site-btn" value="儲存變更">
-    </div>
-    <div class="col-lg-6 col-md-6">
-        <a asp-action="List" class="site-btn">返回列表</a>
-    </div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+        //使用ckeditor套件
         ClassicEditor
             .create(document.querySelector('#editor'))
             .then(editor => {
                 console.log(editor);
             })
-
+        //預覽圖片jquery
         var arrayBuffer = null;
         document.querySelector("#imageFile").addEventListener("change", function () {
             var reader = new FileReader();

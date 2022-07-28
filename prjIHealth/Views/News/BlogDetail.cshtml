@@ -167,12 +167,12 @@
                         <input type="hidden" name="FNewsId" id="testInput" />
                         <br />
                         @*<label>@Model.FMember.FMemberName</label>*@
-                        <input type="hidden" id="FMemberID" name="FMemberID" value="8" />
+                        <input type="hidden" id="FMemberID" name="FMemberID" value="9 " />
                         @*<label value="" >@item.MemberName.FMemberName</label>*@
                         <label>留言回覆</label>
                         <input id="FNewsReply" name="FNewsReply" />
                         <br />
-                        <input id="btnSubmit" type="submit" value="發送回覆" class="site-btn" onclick="return confirm('確定要留言嗎?')" />
+                        <input id="btnSubmit" type="submit" value="發送回覆" class="site-btn" onclick="return confirm('確定要留言嗎?')" /><button id="btnDEMO" class="site-btn">DEMO</button>
                     </form>
                     <button id="btnShow" class="site-btn" onclick="showPartial">顯示回覆</button>
                     <br />
@@ -248,7 +248,10 @@
 @section Scripts{
     <script>
 
-
+        $("#btnDEMO").click(function (event) {
+            event.preventDefault();
+            $("#FNewsReply").val("這是DEMO測試唷");
+        })
         //let testInput = $('#testInput');
         //var formData = new FormData(document.querySelector("#blogForm"));
         //fetch("/News/BlogDetail", { body: formData, method: "Post" }).then(Response => Response.text()).(data => {
@@ -262,10 +265,10 @@
         console.log(dd);
         $("#testInput").val(dd);
 
-        let btn = document.querySelector('#btnShow');
+        let btnShow = document.querySelector('#btnShow');
 
         //$('#btnShow').click
-        btn.addEventListener('click', showPartial)
+        btnShow.addEventListener('click', showPartial)
 
         function showPartial() {
             let divPartial = document.querySelector('#divReplyPartial');
