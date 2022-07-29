@@ -248,6 +248,10 @@
                 <div class="row" id="showProduct">
 
                 </div>
+                <div class="product__pagination">
+
+                    
+                </div>
             </div>
         </div>
     </div>
@@ -302,7 +306,7 @@
                 let htmlShowProduct = "";
                 $.each(datas, function (idx, product) {
                     product.fUnitprice = "NT$" + toCurrency(product.fUnitprice);
-                    htmlShowProduct += `<div class="col-lg-4 col-md-6 col-sm-6" ><div id="header" style="cursor:pointer;">
+                    htmlShowProduct += `<div class="col-lg-4 col-md-6 col-sm-6 productitem" ><div id="header" style="cursor:pointer;">
                                 <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
                                     <ul class="product__item__pic__hover">
@@ -318,8 +322,37 @@
                             </div></div>`
                 })
                 $("#showProduct").html(htmlShowProduct);
+
+                //頁碼動態生成，一開始只顯示前9個商品
+                $(".productitem").hide();
+                let XNum = 0;
+                let YNum = 9;
+                $(".productitem").slice(XNum, YNum).show();
+                let productCount = $(".productitem").length;
+                console.log(productCount);
+                let pageNum = "";
+                let page = productCount / 9;
+                if (page % 9 != 0) {
+                    page = page + 1;
+                }
+                for (let i = 1; i < page; i++) {
+                    pageNum += `<a href="#" class="pageSelect">${i}</a>`;
+                }
+                $(".product__pagination").html(pageNum);
+
+                $(".pageSelect").click(function () {
+                    let newPageNum = $(this).text();
+                    console.log(newPageNum);
+                    $(".productitem").hide();
+                    XNum = (newPageNum - 1)*9;
+                    YNum = newPageNum*9;
+                    console.log(XNum,YNum);
+                    $(".productitem").slice(XNum, YNum).show();
+                })
             })
         }
+
+        
 
         //按價格排序
         //class改變箭頭方向

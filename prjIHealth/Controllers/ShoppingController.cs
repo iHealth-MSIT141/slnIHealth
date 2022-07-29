@@ -162,7 +162,12 @@ namespace prjiHealth.Controllers
                 if (vModel.txtKeyword != "")
                 {
                     dataShoppingItems = dataShoppingItems.Where(t => t.FProductName.Contains(vModel.txtKeyword));
-                }
+                    if (dataShoppingItems.Count() == 0)
+                    {
+                        dataShoppingItems = from t in dblIHealth.TProducts
+                                            select t;
+                    }
+                }             
             }
             return Json(dataShoppingItems);
         }
