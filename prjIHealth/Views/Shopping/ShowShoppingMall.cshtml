@@ -329,7 +329,6 @@
                 let YNum = 9;
                 $(".productitem").slice(XNum, YNum).show();
                 let productCount = $(".productitem").length;
-                console.log(productCount);
                 let pageNum = "";
                 let page = productCount / 9;
                 if (page % 9 != 0) {
@@ -342,11 +341,9 @@
 
                 $(".pageSelect").click(function () {
                     let newPageNum = $(this).text();
-                    console.log(newPageNum);
                     $(".productitem").hide();
                     XNum = (newPageNum - 1)*9;
                     YNum = newPageNum*9;
-                    console.log(XNum,YNum);
                     $(".productitem").slice(XNum, YNum).show();
                 })
             })
