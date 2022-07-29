@@ -27,95 +27,28 @@ namespace prjIHealth.Areas.Admin.Controllers
         {
             _enviroment = n;
         }
-        //IHealthContext db = new IHealthContext();
-
-
-        //public IActionResult List(CKeywordViewModel vModel)
-        //{
-        //    //int currentPage = vModel.page < 1 ? 1 : vModel.page;
-        //    IHealthContext db = new IHealthContext();
-        //    Trace.WriteLine(db.TMembers);
-
-        //    var news = db.TMembers.OrderBy(n => n.FMemberId).ToList();
-
-        //    return View(news);
-
-
-        //IEnumerable<TNews> datas = null;
-        //if (string.IsNullOrEmpty(vModel.txtKeyword))
-        //{
-        //    datas = from t in db.TNews
-        //            select t;
-        //    //data = db.TNews.OrderBy(t => t.FNewsId).ToList();
-        //    //datas = db.TNews.ToPagedList(currentPage, pageListSize);
-        //}
-        //else
-        //{
-        //    datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword));
-        //}
-        //return View(datas);
-        //}
+        //專欄表單生成，利用x.pagedlist套件和搜尋viewmodel
         public IActionResult List(CNewsViewModel vModel, int? page)
         {
-            //int currentPage = vModel.page < 1 ? 1 : vModel.page;
             IHealthContext db = new IHealthContext();
-            //int currentPage = page < 1 ? 1 : page;
-            var pageNumber = page ?? 1;
-            // Trace.WriteLine(db.TNews);
-            var news = db.TNews.OrderBy(n => n.FNewsId).ToList();
-            var testNews = db.TNews.Include(t => t.FNewsCategory).ToList();
-            var onePageOfNews = news.ToPagedList(pageNumber, 5);
-            IEnumerable<TNews> datas = null;
+            IPagedList<TNews> datas;
 
-            //CNewsViewModel vModel = new CNewsViewModel();
-
-            //var news = db.TNews.OrderBy(n => n.FNewsId).Include(t => t.FNewsCategory).ToList();
-
-            if (news != null)
+            if (string.IsNullOrEmpty(vModel.txtKeyword))
             {
-                if (string.IsNullOrEmpty(vModel.txtKeyword))
-                {
-                    datas = from t in db.TNews
-                            select t;
-                    onePageOfNews = datas.ToPagedList(pageNumber, 5);
-                }
-                else
-                {
-                    datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword));
-                    onePageOfNews = datas.ToPagedList(pageNumber, 5);
-                }
-
-                ViewBag.OnePageOfNews = onePageOfNews;
-                return View(onePageOfNews);
+                datas = db.TNews.Select(t => t).OrderBy(t => t.FNewsId).Include(t => t.FNewsCategory)
+                    .ToPagedList(page ?? 1, 5);
             }
-            return View(news);
-            //return View(datas.ToPagedList(currentPage.pageSize));
+
+            else
+            {
+                datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword)).Include(t => t.FNewsCategory)
+                    .ToPagedList(page ?? 1, 5);
+            }
+
+            ViewBag.OnePageOfNews = datas;
+            return View(datas);
         }
-
-        //public IActionResult Blog(CNewsViewModel vModel)
-        //{
-        //    //IHealthyContext db = new IHealthyContext();
-        //    IEnumerable<TNews> datas = null;
-        //    if (string.IsNullOrEmpty(vModel.txtKeyword))
-        //    {
-        //        datas = from t in db.TNews
-        //                select t;
-        //    }
-        //    else
-        //    {
-        //        datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword));
-        //    }
-        //    return View(datas);
-        //}
-
-        //public IActionResult BlogDetail(int? id)
-        //{
-        //    TNews news = db.TNews.FirstOrDefault(t => t.FNewsId == id);
-        //    if (news == null)
-        //        return RedirectToAction("Blog");
-        //    return View(news);
-        //}
-
+        //專欄後台詳細內容顯示
         public IActionResult Details(int? id)
         {
             IHealthContext db = new IHealthContext();
@@ -124,7 +57,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                 return RedirectToAction("List");
             return View(news);
         }
-
+        //專欄新增，利用viewmodel存入圖檔至根目錄
         public IActionResult Create()
         {
             return View();
@@ -154,7 +87,7 @@ namespace prjIHealth.Areas.Admin.Controllers
 
             return RedirectToAction("List");
         }
-
+        //專欄編輯，利用viewmodel帶過categoryname
         public IActionResult Edit(int? id)
         {
             IHealthContext db = new IHealthContext();
@@ -167,11 +100,6 @@ namespace prjIHealth.Areas.Admin.Controllers
         public IActionResult Edit(CNewsViewModel n)
         {
             IHealthContext db = new IHealthContext();
-            // foreach (var dbNew in db.TNews)
-            // {
-            //     Console.WriteLine(dbNew.FNewsId);
-            //     Console.WriteLine(n.FNewsId);
-            // }
             TNews news = db.TNews.FirstOrDefault(t => t.FNewsId == n.FNewsId);
             if (news != null)
             {
@@ -191,7 +119,7 @@ namespace prjIHealth.Areas.Admin.Controllers
             db.SaveChanges();
             return RedirectToAction("List");
         }
-
+        //專欄刪除
         public IActionResult Delete(int? id)
         {
             IHealthContext db = new IHealthContext();
@@ -204,36 +132,10 @@ namespace prjIHealth.Areas.Admin.Controllers
             return RedirectToAction("List");
         }
 
-        //[HttpPost("FileUpload")]
-        //public async Task<IActionResult> Index(List<IFormFile> files)
-        //{
-        //    long size = files.Sum(f => f.Length);
-
-        //    var filePaths = new List<string>();
-        //    foreach (var formFile in files)
-        //    {
-        //        if (formFile.Length > 0)
-        //        {
-        //            // full path to file in temp location
-        //            var filePath = Path.GetTempFileName();
-        //            filePaths.Add(filePath);
-
-        //            using (var stream = new FileStream(filePath, FileMode.Create))
-        //            {
-        //                await formFile.CopyToAsync(stream);
-        //            }
-        //        }
-        //    }
-        //    // process uploaded files
-        //    // Don't rely on or trust the FileName property without validation.
-        //    return Ok(new { count = files.Count, size, filePaths });
-        //}
-
+        //選取類別api，尚無法完成連動分頁
         public IActionResult SelectCategoryIDAPI(int id)
         {
             IHealthContext db = new IHealthContext();
-
-            //var selCatID = db.TNews.Where(n => n.FNewsCategoryId == id).Select(t => t);/*.Select(t => t.FNewsCategory.FNewsCategoryId)*/
 
             var selCateID = (from n in db.TNews
                              join c in db.TNewsCategories
@@ -255,7 +157,7 @@ namespace prjIHealth.Areas.Admin.Controllers
 
             return Json(selCateID);
         }
-
+        //重置類別選項api
         public IActionResult ResetList()
         {
             IHealthContext db = new IHealthContext();

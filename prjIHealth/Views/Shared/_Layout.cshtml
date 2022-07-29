@@ -1,11 +1,4 @@
-﻿@using prjIHealth.Models;
-@using prjiHealth.Models;
-@using prjIHealth.ViewModels;
-@using prjiHealth.ViewModels;
-@using Microsoft.AspNetCore.Http;
-@using Microsoft.AspNetCore.Mvc;
-@using System.Linq;
-@using System.Text.Json;
+﻿@using prjIHealth.Controllers
 
 <!DOCTYPE html>
 <html lang="zxx">
@@ -60,11 +53,18 @@
 </head>
 
 <body>
+    @using prjIHealth.Models;
+    @using prjiHealth.Models;
+    @using prjIHealth.ViewModels;
+    @using prjiHealth.ViewModels;
+    @using Microsoft.AspNetCore.Http;
+    @using Microsoft.AspNetCore.Mvc;
+    @using System.Linq;
+    @using System.Text.Json;
+
     @{
         string LoginbuttonValue = "登入";
         int loginId = 0;
-        int loginAuthorId =0;
-        string loginUserName = null;
         TMember loginMember = null;
 
         if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
@@ -73,8 +73,6 @@
             loginMember = JsonSerializer.Deserialize<TMember>(logJson);
             LoginbuttonValue = loginMember.FMemberName;
             loginId = loginMember.FMemberId;
-            loginAuthorId = (int)loginMember.FAuthorityId;
-            loginUserName = loginMember.FUserName;
         };
     }
     <!-- 載入動畫 -->
@@ -291,8 +289,8 @@
                     <div class="footer__widget">
                         <ul style="width:20%">
                             <li><h6>會員中心</h6></li>
-                            <li><a data-toggle="modal" data-target="#registerModal" data-dismiss="modal">註冊會員</a></li>
-                            <li><a data-toggle="modal" data-target="#loginModal" data-dismiss="modal">會員登入</a></li>
+                            <li><a data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">註冊會員</a></li>
+                            <li><a data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">會員登入</a></li>
                             <li><a data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal">忘記密碼</a></li>
                             <li><a href="~/Member/Edit">個人資料</a></li>
                         </ul>
@@ -400,14 +398,14 @@
                         <button class="btn btn-light" data-toggle="modal" data-target="#registerModal" data-dismiss="modal" style="margin-left:5px">
                             <i class="fa fa-user"></i> 加入會員
                         </button>
-                    </div>  
-                    <div class="modal-footer  row">
+                    </div>     
+                    <div class="modal-footer row">
                         <div class="text-center col">  <button id="btnDemoUserLog" class="btn btn-outline-success">Demo會員</button></div>
                         <div class="text-center col"> <button id="btnDemoCoachLog" class="btn btn-outline-success">Demo教練</button></div>
                         <div class="text-center col">   <button id="btnDemoAdminLog" class="btn btn-outline-success">Demo管理者</button></div>
                     </div>
                 </div>
-             
+         
             </div>
         </div>
     </div>
@@ -588,8 +586,11 @@
     <script>
         //==================登入時menu_dropdown顯示, 否則隱藏===============================
         let spanTextUsername = $("#btnLayOutLogin span").text();
+
+        //let spanTextAutor = $('#header__top__right__auth>p').text();
         if (spanTextUsername == "登入")
         {
+            console.log(spanTextUsername + "aa")
             $(".header__menu__dropdown").css("display", "none");
 
         } else
@@ -599,14 +600,15 @@
         //============================管理者權限才可以點擊進入後台(1<=authorID <=4====================
         $('#adminAuthorID').on("click", (event) =>
         {
-            if (@loginAuthorId >= 1 && @loginAuthorId <= 4) { event.stopPropagation();}
+            let userAdmin = $("#btnLayOutLogin p").text();
+            if (userAdmin >= 1 && userAdmin <= 4) { event.stopPropagation();}
             else { event.preventDefault(); }
         });
         //============================登入後,登入頁面不再出現=========================================
         $('#btnLayOutLogin').on("click", (event) =>
-        {   
+        {
             let userName = $("#btnLayOutLogin span").text();
-            if (userName != "登入") { event.stopPropagation(); window.location.href = '/Member/Edit'; }
+            if (userName != "登入") { event.stopPropagation(); window.location.href = `${window.location.protocol}//${window.location.host}/Member/Edit`; }
             else { event.preventDefault(); }
         });
         //============================ajax 會員登入(fetch)============================================

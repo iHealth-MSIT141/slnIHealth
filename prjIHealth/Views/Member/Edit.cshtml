@@ -88,6 +88,12 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
+                <div class="offset-md-10 col-md-4">
+                    <button class="btn btn-success " data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
+
+                        <i class="fa fa-key"></i> 重設密碼
+                    </button>
+                </div>
                 <form asp-action="Edit" asp-controller="Member" enctype="multipart/form-data">
                     <div class="container">
                         <div class="row">
@@ -140,15 +146,6 @@
                                 </div>
                                 <div class="form-group row justify-content-center">
                                     <div class="col-md-3">
-                                        <label asp-for="FPassword" class="control-label"></label>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <input asp-for="FPassword" class="form-control" />
-                                    </div>
-                                    <span asp-validation-for="FPassword" class="text-danger"></span>
-                                </div>
-                                <div class="form-group row justify-content-center">
-                                    <div class="col-md-3">
                                         <label asp-for="FBirthday" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
@@ -192,14 +189,17 @@
                                     </div>
                                     <span asp-validation-for="FRemarks" class="text-danger"></span>
                                 </div>
-                                <div class="form-group offset-md-6">
-                                    <input type="submit" value="送出" class="col-md-7 btn btn-primary" />
-                                </div>
+                                <div class="text-center" style="justify-content: center; display: flex; ">
+                                    <div class="col-md-6">
+                                        <input type="submit" value="會員資料修改" class="col-md-7 btn btn-primary" />
+                                    </div>
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

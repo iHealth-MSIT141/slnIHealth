@@ -88,7 +88,7 @@ namespace prjIHealth.Controllers
                     q.FPicturePath = pName;
                 }
                 q.FMemberName = vModel.fMemberName;
-                q.FPassword = utilities.getCryptPWD(vModel.fPassword, q.FUserName);
+                //q.FPassword = utilities.getCryptPWD(vModel.fPassword, q.FUserName);
                 q.FBirthday = vModel.fBirthday;
                 q.FAddress = vModel.fAddress;
                 q.FPhone = vModel.fPhone;

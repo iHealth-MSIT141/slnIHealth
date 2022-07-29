@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<prjiHealth.Models.TNews>*@
-@using X.PagedList
+﻿@using X.PagedList
 @using X.PagedList.Mvc.Core
 @model IPagedList<prjIHealth.Models.TNews>
 
@@ -23,7 +22,6 @@
         <div class="row">
             <div class="container">
                 <div class="row">
-                    @*<div style="margin-right:90%">*@
                     <div class="col-lg-3 col-md-3" style="margin-left:0%">
                         <a asp-action="Create" class="primary-btn" style="width:150px">新增專欄</a>
                     </div>
@@ -42,8 +40,6 @@
                     <div class="col-lg-3 col-md-3" style="margin-right:0%">
                         <button name="btnReset" id="btnReset" class="site-btn" style="width:150px">清空篩選</button>
                     </div>
-
-                    @*</div>*@
                 </div>
             </div>
         </div>
@@ -53,32 +49,29 @@
                 <table class="table" style="table-layout: fixed">
                     <thead>
                         <tr style="margin-left:auto">
-                            @*<th>
-                                    @Html.DisplayNameFor(model => model.FNewsId)
-                                </th>*@
                             <th style="margin-left:auto">
-                                標題@*@Html.DisplayNameFor(model => model.FNewsTitle)*@
+                                標題
                             </th>
                             <th style="margin-left:auto">
-                                時間@*@Html.DisplayNameFor(model => model.FNewsDate)*@
+                                時間
                             </th>
                             <th style="margin-left:auto">
-                                內容@*@Html.DisplayNameFor(model => model.FNewsContent)*@
+                                內容
                             </th>
                             <th style="margin-left:auto">
-                                縮圖@*@Html.DisplayNameFor(model => model.FNewsThumbnailImage)*@
+                                縮圖
                             </th>
                             <th style="margin-left:auto">
-                                類別@*@Html.DisplayNameFor(model => model.FCategoryId)*@
+                                類別
                             </th>
                             <th style="margin-left:auto">
-                                @*@Html.DisplayNameFor(model => model.FNewsCount)*@
+                                
                             </th>
                             <th style="margin-left:auto">
-                                影片連結@*@Html.DisplayNameFor(model => model.FNewsVideoUrl)*@
+                                影片連結
                             </th>
                             <th style="margin-left:auto">
-                                會員號碼@*@Html.DisplayNameFor(model => model.FMemberId)*@
+                                作者名稱
                             </th>
                             <th></th>
                         </tr>
@@ -135,13 +128,7 @@
                         </div>
                     </div>
                 </div>
-                @*<div class="product__pagination" style="text-align:center">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                    </div>*@
                 @Html.PagedListPager((IPagedList)ViewBag.OnePageOfNews, page => Url.Action("List", new { page }))
-                @*@Html.PagedListPager(Model, page => Url.Action("List", new { page }))*@
             </div>
         </div>
     </div>
@@ -151,8 +138,8 @@
     <script>
         $('#selectCate').on('change', CategoriesChange);
         $('#btnReset').on('click', ResetClick);
-
-    async function CategoriesChange() {
+        //專欄類別篩選ajax
+    async function CategoriesChange() {    
         $('#ListZone>tr').remove();
         const changeCate = selectCate.options[selectCate.selectedIndex].value;
         const response = await fetch("@Url.Content("~/Admin/NewsManage/SelectCategoryIDAPI")" + `?id=${changeCate}`);
@@ -204,7 +191,7 @@
             $(`#ListZone`).append(tr);
         }
         };
-
+        //專欄類別篩選復歸ajax
         async function ResetClick() {
               $('#ListZone>tr').remove();
         const response = await fetch('@Url.Content("~/Admin/NewsManage/ResetList")');

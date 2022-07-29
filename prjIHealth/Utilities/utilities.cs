@@ -31,6 +31,7 @@ namespace HealthyLifeApp
             char[] passwordChar = pwd.ToCharArray();//string convert to char
             string str1 = new string(passwordChar);//convert char to string 
             //==================================================
+            //byte[] passwordAscii = Encoding.ASCII.GetBytes(pwd);//convert string to ascii
             byte[] passwordAscii = Encoding.Unicode.GetBytes(pwd);//convert string to ascii
             string str_password = "";
             for (int i = 0; i < passwordAscii.Length; i++)//pwd convert to char add( i+1)*2  salt define
@@ -49,6 +50,14 @@ namespace HealthyLifeApp
                 str_userName += cha_userName.ToString() + cha_userNameSalt.ToString();
             }
             //==================================================
+            //byte[] birthdayAscii = Encoding.Unicode.GetBytes(birthday);//userName
+            //string str_birthday = "";
+            //for (int k = 0; k < birthday.Length; k++)
+            //{
+            //    char cha_birthday = (char)(birthdayAscii[k]);
+            //    char cha_birthdaySalt = (char)(birthday[k] + (k + 3) * 2);
+            //    str_birthday += cha_birthday + cha_birthdaySalt;
+            //}
             Cryptographys cryp = new Cryptographys();
             string pwdCryp = cryp.SHA256Encode(str_password + str_userName);
             return pwdCryp;
@@ -70,7 +79,8 @@ namespace HealthyLifeApp
         {
             MailMessage mm = new MailMessage("charleschou54138@gmail.com", userMail);
             mm.Subject = $"{userName} 您的密碼已重設, 請登入後,重新修改密碼";
-            mm.Body = $"{userName}您好\n  重設的密碼為: {newPassword}\n ,請儘速重設您的密碼,以保障您帳號的使用安全\n  HealthyLife 敬上";
+            mm.Body = $"{userName}您好\n 重設的密碼為 {newPassword}\n 請盡快重設您的密碼,以保障您帳號的使用安全\n  HealthyLife 敬上";
+            //mm.Attachments.Add(new Attachment(""));//attachment
             SmtpClient smtp = new SmtpClient();
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
