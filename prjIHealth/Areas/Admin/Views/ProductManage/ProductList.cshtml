@@ -86,7 +86,7 @@
                     <div class="col-lg-2">
                         <a asp-action="ProductCreate" class="primary-btn cart-btn">新增產品</a>
                     </div>
-                    <div @*class="product__pagination"*@ style="text-align:center">
+                    <div @*class="product__pagination"*@ style="text-align:center" >
                         @Html.PagedListPager((IPagedList)ViewBag.OnePageOfPro, page => Url.Action("ProductList", new { page }))
                     </div>
                 </div>
@@ -104,13 +104,13 @@
             const response = await fetch("@Url.Content("~/Admin/ProductManage/Categoryselect")" + `?id=${changecat}`);
             const datas = await response.json();
            /* console.log(datas);*/
-            let tr = '';
+            let tr = '';           
             for (i = 0; i < datas.length; i++) {
-                let fixdesr = '';           
+                let fixdesr = '';
                 if (datas[i].fDescription != null) {
                     fixdesr = datas[i].fDescription.substr(0,10);
                 }
-                
+
                 tr = `<tr>
                         <td class="shoping__cart__item" style="margin-left: auto; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;vertical-align: middle;">
                                 <img src="/img/product/${datas[i].fCoverImage}" style="width:30%;height:30%;" /> <span>${datas[i].fProductName}</span>
@@ -133,8 +133,8 @@
                                <a class="primary-btn cart-btn" href="/Admin/ProductManage/ProductEdit/${datas[i].fProductId}">修改產品</a>
                                <a class="primary-btn cart-btn" href="/Admin/ProductManage/ProductImgList/${datas[i].fProductId}">檢視圖片</a>
                             </td>
-                        </tr> `
-                $('#ListPro').append(tr);
+                        </tr> `               
+                $('#ListPro').append(tr);             
             }
         }
     </script>
