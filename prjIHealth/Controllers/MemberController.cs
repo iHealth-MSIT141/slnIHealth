@@ -28,7 +28,7 @@ namespace prjIHealth.Controllers
         public MemberController(IHealthContext context, IWebHostEnvironment iwhe)
         {
             _context = context;
-            _environment=iwhe;
+            _environment = iwhe;
         }
         public IActionResult Login()
         {
@@ -58,7 +58,7 @@ namespace prjIHealth.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove(CDictionary.SK_Logined_User);
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Edit()
         {
@@ -106,15 +106,15 @@ namespace prjIHealth.Controllers
             return View();
         }
         [HttpPost]
-              public IActionResult Register(TMember tm)
+        public IActionResult Register(TMember tm)
         {
-           
+
             if (tm.FPassword == null || tm.FUserName == null) { return Content("empty", "text/plain", System.Text.Encoding.UTF8); }
             else
             {
                 var q = _context.TMembers.FirstOrDefault(m => m.FUserName == tm.FUserName);
-                if (q == null) {
-
+                if (q == null)
+                {
                     tm.FPassword = utilities.getCryptPWD(tm.FPassword, tm.FUserName);
                     _context.TMembers.Add(tm);
                     _context.SaveChanges();
@@ -123,16 +123,49 @@ namespace prjIHealth.Controllers
                 else { return Content("user", "text/plain", System.Text.Encoding.UTF8); }
             }
         }
-        public IActionResult Delete(int? id)
+        public IActionResult getUserName([Bind("fUserName")] CLoginViewModel vModel)
         {
-            IHealthContext dblIHealth = new IHealthContext();
-            TTrackList trackList = dblIHealth.TTrackLists.FirstOrDefault(t => t.FProductId == id);
-            if (trackList != null)
+            var q = _context.TMembers.FirstOrDefault(m => m.FUserName == vModel.fUserName);
+            if (q != null)
             {
-                dblIHealth.TTrackLists.Remove(trackList);
-                dblIHealth.SaveChanges();
+                return Content("true", "text/plain", System.Text.Encoding.UTF8);
             }
-            return RedirectToAction("ShowTrackList");
+            else
+            {
+                return Content("false", "text/plain", System.Text.Encoding.UTF8);
+            }
+        }
+        public IActionResult getEmail([Bind("fEmail")] CLoginViewModel vModel)
+        {
+            var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
+            if (q != null)
+            {
+                return Content("true", "text/plain", System.Text.Encoding.UTF8);
+            }
+            else
+            {
+                return Content("false", "text/plain", System.Text.Encoding.UTF8);
+            }
+        }
+        public IActionResult getPassword([Bind("fEmail,fPassword")] CLoginViewModel vModel)
+        {
+            var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
+            if (vModel.fPassword != null && q!=null)
+            { 
+                if (q.FPassword == utilities.getCryptPWD(vModel.fPassword, q.FUserName))
+                {
+                    return Content("true", "text/plain", System.Text.Encoding.UTF8);
+                }
+                else
+                {
+                    return Content("false", "text/plain", System.Text.Encoding.UTF8);
+                };
+            }
+            else
+            {
+                return Content("false2", "text/plain", System.Text.Encoding.UTF8);
+            }
+
         }
         public IActionResult ForgotPassword()
         {
@@ -146,8 +179,8 @@ namespace prjIHealth.Controllers
             {
                 var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
                 if (q != null)
-                {                 
-                //============================================================= 
+                {
+                    //============================================================= 
                     string newPassword = utilities.RandomString(6);
                     utilities.sendMail(q.FUserName, newPassword, q.FEmail);
                     q.FPassword = utilities.getCryptPWD(newPassword, q.FUserName);
@@ -160,7 +193,8 @@ namespace prjIHealth.Controllers
                 }
             }
         }
-        public IActionResult ResetPassword() {
+        public IActionResult ResetPassword()
+        {
             return View();
         }
         [HttpPost]
@@ -196,6 +230,17 @@ namespace prjIHealth.Controllers
                 }
             }
         }
+        public IActionResult Delete(int? id)
+        {
+            IHealthContext dblIHealth = new IHealthContext();
+            TTrackList trackList = dblIHealth.TTrackLists.FirstOrDefault(t => t.FProductId == id);
+            if (trackList != null)
+            {
+                dblIHealth.TTrackLists.Remove(trackList);
+                dblIHealth.SaveChanges();
+            }
+            return RedirectToAction("ShowTrackList");
+        }
         //========================追蹤清單===========================    
 
         public IActionResult ShowTrackList()
@@ -222,13 +267,13 @@ namespace prjIHealth.Controllers
 
         public IActionResult ShowTrackCount(int? id)
         {
-            if (id == null||id==0)
+            if (id == null || id == 0)
             {
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                int trackNum = _context.TTrackLists.Where(t => t.FMemberId == id).Select(t=>t).Count();
+                int trackNum = _context.TTrackLists.Where(t => t.FMemberId == id).Select(t => t).Count();
                 return Json(trackNum);
             }
         }
