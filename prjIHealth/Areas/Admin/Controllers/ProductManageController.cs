@@ -28,23 +28,22 @@ namespace prjIHealth.Areas.Admin.Controllers
         {
             var pageNumber = page ?? 1;
             var proid = db.TProducts.OrderBy(n => n.FProductId).ToList();
-            //var pro = db.TProducts.Include(p => p.FCategory).ToList();        
-            //IEnumerable<TProduct> datas = null;*/
-            var pro = (from p in db.TProducts
-                       join c in db.TProductCategories
-                       on p.FCategoryId equals c.FCategoryId
-                       select new CProductViewModel()
-                       {
-                           FProductId = p.FProductId,
-                           FProductName = p.FProductName,
-                           FCategoryId = p.FCategoryId,
-                           FCategoryName = p.FCategory,
-                           FUnitprice = p.FUnitprice,
-                           FDescription = p.FDescription,
-                           FVisible = p.FVisible,
-                           FCoverImage = p.FCoverImage
-                       }).ToList();
-
+            //var pro = db.TProducts.Include(p => p.FCategory).ToList();
+            //IEnumerable<TProduct> datas = null; */
+             var pro = (from p in db.TProducts
+                        join c in db.TProductCategories
+                        on p.FCategoryId equals c.FCategoryId
+                        select new CProductViewModel()
+                        {
+                            FProductId = p.FProductId,
+                            FProductName = p.FProductName,
+                            FCategoryId = p.FCategoryId,
+                            FCategoryName = p.FCategory,
+                            FUnitprice = p.FUnitprice,
+                            FDescription = p.FDescription,
+                            FVisible = p.FVisible,
+                            FCoverImage = p.FCoverImage
+                        }).ToList();
             var onePageOfPro = pro.ToPagedList(pageNumber, 10);
             ViewBag.onePageOfPro = onePageOfPro;
             return View(onePageOfPro);
@@ -237,6 +236,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                            FCategoryId = p.FCategoryId,
                            FCategoryName = p.FCategory
                        }).ToList();
+       
             return Json(pro);
         }
     }
