@@ -53,7 +53,7 @@
             margin-bottom: 1vh;
         }
 
-        /*列表*/        
+        /*列表*/
         .btn-success {
             background-color: #7FAD39;
             border: none;
@@ -102,13 +102,13 @@
                 color: #DFEACE;
             }
 
-            .divUrl a {
+            .divUrl span {
                 color: #7FAD39;
                 text-decoration: none;
                 transition: .3s;
             }
 
-                .divUrl a:hover {
+                .divUrl span:hover {
                     color: #5F822B;
                 }
 
@@ -135,6 +135,127 @@
         .nice-select {
             display: none !important;
         }
+
+        /*行事曆*/
+        .divDate {
+            width: 70%;
+            margin: 30px auto;
+            padding: 0px 100px;
+            display: flex;
+        }
+
+            .divDate button {
+                width: 30px;
+                margin: 0px 10px;
+                background-color: whitesmoke;
+                border:1px solid white;
+                border-radius: 50px;
+            }
+
+                .divDate button:hover {
+                    border: 1px solid #7FAD39;
+                }
+
+        #inputMon {
+            display: inline;
+            width: 300px;
+        }
+
+        #tableCal {
+            width: 100%;
+            border: 1px solid #BFBFBF;
+        }
+
+            #tableCal thead {
+                background-color: #404040;
+                color: white;
+                font-family: Consolas;
+                font-size: 18px;
+                text-align: center;
+            }
+
+            #tableCal tbody {
+                font-size: 18px;
+                text-align: center;
+                color: #7fad39;
+            }
+
+                #tableCal tbody tr {
+                    height: 120px;
+                }
+
+                    #tableCal tbody tr td {
+                        vertical-align: top;
+                        transition:.2s;
+                    }
+
+            #tableCal th, #tableCal td, .orig {
+                border: 1px solid #BFBFBF;
+                width: 120px;
+            }
+
+        .false {
+            background-color: #F3F3F3;
+        }
+
+        .true {
+            background-color: white;
+        }
+
+        .today {
+            background-color: #EFF5E6;
+        }
+
+        .color1 {
+            background-color: #005F73;
+        }
+
+        .color2 {
+            background-color: #0A9396;
+        }
+
+        .color3 {
+            background-color: #94D2BD;
+        }
+
+        .color4 {
+            background-color: #B5A882;
+        }
+
+        .color5 {
+            background-color: #EE9B00;
+        }
+
+        .color6 {
+            background-color: #CA6702;
+        }
+
+        .color7 {
+            background-color: #007A24;
+        }
+
+        .color8 {
+            background-color: #6CA25A;
+        }
+
+        .color9 {
+            background-color: #870005;
+        }
+
+        .color10 {
+            background-color: #003039;
+        }
+
+        .divRecord {
+            display: inline-block;
+            margin: 0px;
+            width: 100%;
+            border-radius:5px;
+            font-size: 14px;
+            font-weight: 300;
+            color: white;
+        }
+
     </style>
 }
 
@@ -168,7 +289,6 @@
                             <li><a href="~/Coach/CreateResume">履歷管理</a></li>
                             <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
                             <li><a href="~/Coach/TeachingList">教課列表</a></li>
-                            <li><a href="~/Coach/CoachCalendar">課程行事曆</a></li>
                         </ul>
                         <br />
                         <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
@@ -260,7 +380,8 @@
                 </table>
                 <div class="divLink reveal_b2">
                     <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span><b>&nbsp;&nbsp;想一覽所有課程？</b></span></div>
-                    <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CoachCalendar">&nbsp;&nbsp;前往<b>課程行事曆</b></a></div>
+                    <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><span data-toggle="modal" data-target="#addModal_cal">&nbsp;&nbsp;查看<b>課程行事曆</b></span></div>
+                    @*<div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CoachCalendar">&nbsp;&nbsp;前往<b>課程行事曆</b></a></div>*@
                 </div>
             </div>
         </div>
@@ -371,11 +492,57 @@
     }
 }
 
+<!--Modal-Calendar-->
+<div class="modal fade" id="addModal_cal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h5Records"><b>課程行事曆</b><span></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="divDate">
+                        <button id="btnPre"><i class="fa-solid fa-caret-left"></i></button>
+                        <input type="month" id="inputMon" />
+                        <button id="btnNext"><i class="fa-solid fa-caret-right"></i></button>
+                    </div>
+                    <div class="result">
+                        <div class="divCal">
+                            <div>
+                                <table id="tableCal">
+                                    <thead>
+                                        <tr>
+                                            <th>Sun</th>
+                                            <th>Mon</th>
+                                            <th>Tue</th>
+                                            <th>Wed</th>
+                                            <th>Thu</th>
+                                            <th>Fri</th>
+                                            <th>Sat</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btnClose" id="btnClose" data-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts{
     @{
         //課程狀態變更
         foreach (var course in Model)
-        {           
+        {
             foreach (var r in course.Reservations)
             {
                 string time = r.CourseTime.Substring(0, 2);
@@ -475,7 +642,7 @@
             }
         }
     }
-<script>
+    <script>
     //篩選課程狀態
     let filter = $("#selStatus");
     filter.change(() => {
@@ -509,7 +676,150 @@
                         $(`#tr_${course}`).show();
                     });
                 })
-        }        
+        }
     })
-</script>
+    </script>
+
+    <!--行事曆-->
+    <script>
+    let fullDate = new Date();  //取得今天日期
+    let Year = fullDate.getFullYear();
+    let Month = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
+    let date = fullDate.getDate();
+    let totalDate = (new Date(Year, Month, 0)).getDate();   //取得該月總天數
+    let weekDay, firstDay;
+    $("#inputMon").val(`${Year}-${Month}`);
+        CreateCalendar();
+        GetReservations()
+
+    //年月改變時重新載入月曆
+    $("#inputMon").change(() => {
+        Year = $("#inputMon").val().substr(0, 4);
+        Month = $("#inputMon").val().substr(5, 2);
+        totalDate = (new Date(Year, Month, 0)).getDate();
+        CreateCalendar();
+        GetReservations()
+    })
+
+    //click下個月
+    $("#btnNext").click(() => {
+        if (Month == 12) {
+            Year++;
+            Month = "01";
+        }
+        else {
+            let m = parseInt($("#inputMon").val().substr(5, 2));
+            let newMon = m + 1 >= 10 ? m + 1 : "0" + (m + 1)
+            Month = newMon;
+        }
+        $("#inputMon").val(`${Year}-${Month}`);
+        CreateCalendar();
+        GetReservations()
+    })
+    //click上個月
+    $("#btnPre").click(() => {
+        if (Month == 1) {
+            Year--;
+            Month = "12";
+        }
+        else {
+            let m = parseInt($("#inputMon").val().substr(5, 2));
+            let newMon = m - 1 >= 10 ? m - 1 : "0" + (m - 1);
+            Month = newMon;
+        }
+        $("#inputMon").val(`${Year}-${Month}`);
+        CreateCalendar();
+        GetReservations()
+    })
+
+    //建立月曆
+    function CreateCalendar() {
+        let recent = document.querySelector("#tbody");
+        if (recent)
+            recent.remove();    //移除舊的月曆
+
+        //新增tbody、第一行
+        var tbody = document.createElement("tbody");
+        tbody.setAttribute("id", "tbody");
+        var fragtable = document.createDocumentFragment();
+        var row = document.createElement("tr");
+        var count = 0;
+
+        //新增第一行空格
+        firstDay = (new Date(Year, Month - 1, 1)).getDay(); //取得該月份第一天星期幾
+        for (let i = 1; i <= firstDay; i++) {
+            let td = document.createElement("td");
+            td.className = "false";
+            row.appendChild(td);
+            count += 1;
+        }
+
+        //新增日期
+        for (let i = 1; i <= totalDate; i++) {
+            if (count >= 7) { //已大於7天則新增至下一週
+                fragtable.appendChild(row);
+                row = document.createElement("tr");
+                var td = document.createElement("td");
+                td.setAttribute("id", `${Year + Month + i}`);
+                td.className = "true";
+                let text = document.createTextNode(i);
+                td.appendChild(text);
+                row.appendChild(td);
+                count = 1; //以新的一行計算
+            }
+            else {
+                var td = document.createElement("td");
+                td.setAttribute("id", `${Year + Month + i}`);
+                td.className = "true";
+                let text = document.createTextNode(i);
+                td.appendChild(text);
+                row.appendChild(td);
+                count += 1;
+            }
+        }
+
+        //新增最後一行空格
+        let d = new Date(Year, Month - 1, totalDate);
+        let lastDay = d.getDay();
+        for (i = 1; i <= 6 - lastDay; i++) {
+            let td = document.createElement("td");
+            td.className = "false";
+            row.appendChild(td);
+        }
+        fragtable.appendChild(row);
+        tbody.appendChild(fragtable);
+        document.querySelector("#tableCal").appendChild(tbody);
+
+        //當天日期的邊框變色
+        let thisYear = fullDate.getFullYear();
+        let thisMon = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
+        if (thisYear == Year && thisMon == Month)
+            $(`#${thisYear +thisMon+date}`).addClass("today");
+    }
+
+        //顯示當月排課
+        function GetReservations() {
+            $.getJSON("@Url.Content("~/Coach/GetAllReservation")", function (data) {
+                $.each(data, function (index, record) {
+                if (record.courseDate.substr(0, 4) == Year && record.courseDate.substr(4, 2) == Month) {
+                    let theDate = record.courseDate.substr(6, 2) < 10 ? record.courseDate.substr(7, 1) : record.courseDate.substr(6, 2);
+                    let time = record.courseTime.substr(0, 2) + ":" + record.courseTime.substr(2, 2);
+                    $(`#${Year + Month + theDate}`).append(`<div class="divRecord r${record.memberId}"><b>${record.memberName}</b>-${time}</div>`);
+                    }
+                })
+            }).done(() => {
+                //取得所有MemberId，不同Member設定不同顏色
+                $.getJSON("@Url.Content("~/Coach/GetReservationMemId")", function (data) {
+                    let classCount = 1;
+                    for (let i = 0; i < data.length; i++) {
+                        $(`.r${data[i]}`).addClass(`color${classCount}`);
+                        classCount++;
+                        if (classCount == 11) {
+                            classCount = 1;
+                        }
+                    }
+            })
+            })
+        }
+    </script>
 }
