@@ -161,9 +161,9 @@ namespace prjIHealth.Areas.Admin.Controllers
             IEnumerable<TCoachRate> tRates;
             if (IsDesc == 0)
                 tRates = db.TCoachRates.OrderBy(r => r.FRateDate);
-            if (IsDesc == 2)
+            else if (IsDesc == 2)
                 tRates = db.TCoachRates.OrderByDescending(r => r.FRateStar);
-            if (IsDesc == 3)
+            else if (IsDesc == 3)
                 tRates = db.TCoachRates.OrderBy(r => r.FRateStar);
             else
                 tRates = db.TCoachRates.OrderByDescending(r => r.FRateDate);
