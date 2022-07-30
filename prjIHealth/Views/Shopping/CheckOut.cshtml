@@ -54,26 +54,26 @@
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>郵遞區號<span>*</span></p>
-                                    <input type="text" id="pcode">
+                                    <input type="text" id="pcode" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>縣市<span>*</span></p>
-                                    <input type="text" id="city">
+                                    <input type="text" id="city" required>
                                 </div>
                             </div>
                         </div>
                         <div class="checkout__input">
                             <p>地址<span>*</span></p>
-                            <input type="text" placeholder="" class="checkout__input__add" id="address">
+                            <input type="text" placeholder="" class="checkout__input__add" id="address" required>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>電話<span>*</span></p>
-                                    <input type="text" id="FPhone" name="FPhone">
+                                    <input type="text" id="FPhone" name="FPhone" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -119,12 +119,19 @@
                                 </div>
                                 <div class="checkout__input__checkbox">
                                     <label for="paypal">
-                                        信用卡
+                                        ATM轉帳
                                         <input type="checkbox" id="paypal">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                                <button type="submit" class="site-btn" id="pay" onclick="return confirm('1.請確認必填欄位已填2.請確認付款方式已選')">結帳</button>
+                                <div class="checkout__input__checkbox">
+                                    <label for="ttp">
+                                        歐付寶
+                                        <input type="checkbox" id="ttp">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="site-btn" id="pay">結帳</button>
                             }
                         </div>
                     </div>
@@ -132,9 +139,9 @@
             </form>
             @{ 
                         <form id="formCreditCard" method="post" accept-charset="UTF-8"
-                              action="https://payment-stage.opay.tw/Cashier/AioCheckOut/V5">
+                              action="https://payment-stage.opay.tw/Cashier/AioCheckOut/V5" onsubmit="return CheckTTP()">
                             @*//第三方金流串接用欄位
-        //MerchantID 商店代號:*@
+                            //MerchantID 商店代號:*@
                             <input hidden="hidden" type="text" name="MerchantID" value="2000132" />
                             @*MerchantTradeNo 商店交易編號:*@
                             <input hidden="hidden" type="text" name="MerchantTradeNo" value="@ViewBag.MerchantTradeNo" />
@@ -167,7 +174,7 @@
                             @*CheckMacValue 檢查碼:*@
                             <input hidden="hidden" type="text" name="CheckMacValue" value="@ViewBag.CheckMacValue" />
 
-                            <button type="submit" class="site-btn" id="thirdpayment" style="float:right" onclick="return confirm('1.請確認必填欄位已填2.請確認付款方式已選')">
+                            <button type="submit" class="site-btn" id="thirdpayment" style="float:right;display:none">
                                 <img src="~/img/product/allpay.png" />
                             </button>
                         </form>
@@ -180,6 +187,16 @@
 
 @section Scripts{
     <script>
+        //第三方金流欄位驗證
+        function CheckTTP() {
+            if ($('#FContact').val() == '' || $('#address').val() == '' || $('#pcode').val() == '' || $('#city').val() == '' || $('#FPhone').val()=='')
+            {
+                alert("必填欄位未填寫");
+                return false;
+            } else {
+                return true;
+            }
+        }
         //將第三分金流資料存入session
         $('#thirdpayment').on('click', tppsession)
         async function tppsession() {
@@ -206,35 +223,43 @@
             $('#FRemarks').val("請於下午6點後送達").css("color", "black")
             $('#FAddress').val("106台北市大安區復興南路一段390號2樓")
         }
-        //設定付款方式的值且設定不可同時選取，未選擇付款方式時alert
-        let PaymentCategoryID = 0;
+        //設定付款方式的值且設定不可同時選取
         $('#payment').on('click', CheckPayment)
-        let cash = false;
         function CheckPayment() {
-            if ($(this).val() && !cash) {
-                $('#paypal').attr("disabled", "true")
-                cash = true
-                PaymentCategoryID = 1
-                $('#FPaymentCategoryId').attr("value",1)
-            } else
-            {
-                $('#paypal').removeAttr("disabled")
-                cash = false
-                PaymentCategoryID = 0
-            }
+            $('#FPaymentCategoryId').attr("value", 1)
+            $('#ttp').prop("checked", false);
+            $('#paypal').prop("checked", false);
+            $('#thirdpayment').attr("style", "float:right;display:none")
+            $('#pay').attr("style", "display:block")
+            ofbselected = false;
         }
         $('#paypal').on('click', CheckPayment2)
-        let card = false;
         function CheckPayment2() {
-            if ($(this).val() && !card) {
-                $('#payment').attr("disabled", "true")
-                card = true
-                PaymentCategoryID = 2
-                $('#FPaymentCategoryId').attr("value", 2)
+            $('#FPaymentCategoryId').attr("value", 2)
+            $('#ttp').prop("checked", false);
+            $('#payment').prop("checked", false);
+            $('#thirdpayment').attr("style", "float:right;display:none")
+            $('#pay').attr("style", "display:block")
+            ofbselected = false;
+        }
+        let ofbselected=false
+        $('#ttp').on('click', CheckPayment3)
+        function CheckPayment3() {
+            if (!ofbselected) {
+                $('#payment').prop("checked", false);
+                $('#paypal').prop("checked", false);
+                $('#FPaymentCategoryId').attr("value", 3);
+                $('#thirdpayment').attr("style", "float:right;display:block");
+                $('#pay').attr("style", "display:none")
+                //$('#pay').attr("disabled", true);
+                ofbselected = true;
             } else {
-                $('#payment').removeAttr("disabled")
-                card = false
-                PaymentCategoryID = 0
+                $('#thirdpayment').attr("style", "float:right;display:none");
+                //$('#pay').attr("disabled", false);
+                $('#pay').attr("style", "display:block")
+                $('#payment').prop("checked", false);
+                $('#paypal').prop("checked", false);
+                ofbselected = false;
             }
         }
         //取得使用者輸入的地址並代入隱藏欄位寫入資料庫用
