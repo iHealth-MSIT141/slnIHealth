@@ -61,7 +61,7 @@ namespace prjiHealth.Controllers
                 string merchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");//現在時間格式
                 ViewBag.TradeDate = merchantTradeDate;//輸出至前端
                 string checkMacValue1 = $"HashKey=5294y06JbISpM5x9&ChoosePayment=Credit&ClientBackURL=" +
-                $"{ Request.Scheme}://{Request.Host}/Member/OrderList/1&CreditInstallment=&EncryptType=1&" +
+                $"{ Request.Scheme}://{Request.Host}/Shopping/TPPSessionToDB&CreditInstallment=&EncryptType=1&" +
                 $"InstallmentAmount=&ItemName={itemName}&MerchantID=2000132&MerchantTradeDate={merchantTradeDate}&" +
                 $"MerchantTradeNo={merchantTradeNo}&PaymentType=aio&Redeem=&ReturnURL={Request.Scheme}://{Request.Host}/Shopping/TPPSessionToDB" +
                 $"&StoreID=&TotalAmount={totalAmount}&TradeDesc=建立信用卡測試訂單&" +
@@ -172,7 +172,8 @@ namespace prjiHealth.Controllers
             jsonCart = JsonSerializer.Serialize(list);
             HttpContext.Session.SetString(CDictionary.SK_Third_Party_Payment, jsonCart);
             //歐付寶目前未知原因不會自動導向存入DB的ACTION故手動改為在此導向，正常應等交易完成後歐付寶自動導向
-            return RedirectToAction("TPPSessionToDB"); ;
+            //return RedirectToAction("TPPSessionToDB");
+            return Json("ok");
         }
         //交易完成後，將session中的第三方金流資料存入db
         public IActionResult TPPSessionToDB()
@@ -240,7 +241,8 @@ namespace prjiHealth.Controllers
             {
                 return RedirectToAction("CheckOut");
             }
-            return Json("交易完成");
+            //return Json("交易完成");
+            return RedirectToAction("OrderList", "Member", 1);
         }
         //商城主頁界面
         public IActionResult ShowShoppingMall()
