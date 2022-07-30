@@ -2,6 +2,15 @@
 @{
     ViewData["Title"] = "CheckOut";
 }
+@section Styles{
+    <style>
+        .ttp{
+            background-color:white;
+            color:white;
+            border:none;
+        }
+    </style>
+}
 @*banner大圖*@
 <section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
@@ -38,15 +47,15 @@
                     <input type="hidden" value=@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") name="FDate" id="FDate" />
                     <input type="hidden" value=8 name="FMemberId" id="FMemberId" />
                     <input type="hidden" value=70 name="FStatusNumber" id="FStatusNumber" />
-                    <input type="hidden"  name="FPaymentCategoryId" id="FPaymentCategoryId" />
-                    <input type="hidden"  name="FAddress" id="FAddress" />
+                    <input type="hidden" name="FPaymentCategoryId" id="FPaymentCategoryId" />
+                    <input type="hidden" name="FAddress" id="FAddress" />
 
                     <div class="col-lg-7 col-md-6">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>姓名<span>*</span></p>
-                                    <input type="text" id="FContact" name="FContact">
+                                    <input type="text" id="FContact" name="FContact" required>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +97,7 @@
                             <input type="text"
                                    placeholder="寫下訂單備註,例如:指定送達時間" id="FRemarks" name="FRemarks">
                         </div>
-                        
+
                     </div>
                     <div class="col-lg-5 col-md-6">
                         <div class="checkout__order">
@@ -137,47 +146,47 @@
                     </div>
                 </div>
             </form>
-            @{ 
-                        <form id="formCreditCard" method="post" accept-charset="UTF-8"
-                              action="https://payment-stage.opay.tw/Cashier/AioCheckOut/V5" onsubmit="return CheckTTP()">
-                            @*//第三方金流串接用欄位
-                            //MerchantID 商店代號:*@
-                            <input hidden="hidden" type="text" name="MerchantID" value="2000132" />
-                            @*MerchantTradeNo 商店交易編號:*@
-                            <input hidden="hidden" type="text" name="MerchantTradeNo" value="@ViewBag.MerchantTradeNo" />
-                            @*MerchantTradeDate 商店交易時間:*@
-                            <input hidden="hidden" type="text" name="MerchantTradeDate" value="@ViewBag.TradeDate" />
-                            @*PaymentType 交易類型:*@
-                            <input hidden="hidden" type="text" name="PaymentType" value="aio" />
-                            @*TotalAmount 交易金額:*@
-                            <input hidden="hidden" type="text" name="TotalAmount" value="@ViewBag.TotalAmout" />
-                            @*TradeDesc 交易描述:*@
-                            <input hidden="hidden" type="text" name="TradeDesc" value="建立信用卡測試訂單" />
-                            @*ItemName 商品名稱:*@
-                            <input hidden="hidden" type="text" name="ItemName" value="@ViewBag.ItemName" />
-                            @*ReturnURL 付款完成通知回傳網址:*@
-                            <input hidden="hidden" type="text" name="ReturnURL" value="@ViewBag.Url" />
-                            @*ChoosePayment 預設付款方式:*@
-                            <input hidden="hidden" type="text" name="ChoosePayment" value="Credit" />
-                            @*會員商店代碼:*@
-                            <input hidden="hidden" type="text" name="StoreID" value="" />
-                            @*ClientBackURL Client端返回廠商網址:*@
-                            <input hidden="hidden" type="text" name="ClientBackURL" value="@ViewBag.UrlBack" />
-                            @*CreditInstallment 刷卡分期期數:*@
-                            <input hidden="hidden" type="text" name="CreditInstallment" value="" />
-                            @*InstallmentAmount 使用刷卡分期的付款金額:*@
-                            <input hidden="hidden" type="text" name="InstallmentAmount" value="" />
-                            @*Redeem 信用卡是否使用紅利折抵:*@
-                            <input hidden="hidden" type="text" name="Redeem" value="" />
-                            @*CheckMacValue 簽章類型:*@
-                            <input hidden="hidden" type="text" name="EncryptType" value="1" />
-                            @*CheckMacValue 檢查碼:*@
-                            <input hidden="hidden" type="text" name="CheckMacValue" value="@ViewBag.CheckMacValue" />
+            @{
+                <form id="formCreditCard" method="post" accept-charset="UTF-8"
+                      action="https://payment-stage.opay.tw/Cashier/AioCheckOut/V5" onsubmit="return CheckTTP()">
+                    @*//第三方金流串接用欄位
+                        //MerchantID 商店代號:*@
+                    <input hidden="hidden" type="text" name="MerchantID" value="2000132" />
+                    @*MerchantTradeNo 商店交易編號:*@
+                    <input hidden="hidden" type="text" name="MerchantTradeNo" value="@ViewBag.MerchantTradeNo" />
+                    @*MerchantTradeDate 商店交易時間:*@
+                    <input hidden="hidden" type="text" name="MerchantTradeDate" value="@ViewBag.TradeDate" />
+                    @*PaymentType 交易類型:*@
+                    <input hidden="hidden" type="text" name="PaymentType" value="aio" />
+                    @*TotalAmount 交易金額:*@
+                    <input hidden="hidden" type="text" name="TotalAmount" value="@ViewBag.TotalAmout" />
+                    @*TradeDesc 交易描述:*@
+                    <input hidden="hidden" type="text" name="TradeDesc" value="建立信用卡測試訂單" />
+                    @*ItemName 商品名稱:*@
+                    <input hidden="hidden" type="text" name="ItemName" value="@ViewBag.ItemName" />
+                    @*ReturnURL 付款完成通知回傳網址:*@
+                    <input hidden="hidden" type="text" name="ReturnURL" value="@ViewBag.Url" />
+                    @*ChoosePayment 預設付款方式:*@
+                    <input hidden="hidden" type="text" name="ChoosePayment" value="Credit" />
+                    @*會員商店代碼:*@
+                    <input hidden="hidden" type="text" name="StoreID" value="" />
+                    @*ClientBackURL Client端返回廠商網址:*@
+                    <input hidden="hidden" type="text" name="ClientBackURL" value="@ViewBag.UrlBack" />
+                    @*CreditInstallment 刷卡分期期數:*@
+                    <input hidden="hidden" type="text" name="CreditInstallment" value="" />
+                    @*InstallmentAmount 使用刷卡分期的付款金額:*@
+                    <input hidden="hidden" type="text" name="InstallmentAmount" value="" />
+                    @*Redeem 信用卡是否使用紅利折抵:*@
+                    <input hidden="hidden" type="text" name="Redeem" value="" />
+                    @*CheckMacValue 簽章類型:*@
+                    <input hidden="hidden" type="text" name="EncryptType" value="1" />
+                    @*CheckMacValue 檢查碼:*@
+                    <input hidden="hidden" type="text" name="CheckMacValue" value="@ViewBag.CheckMacValue" />
 
-                            <button type="submit" class="site-btn" id="thirdpayment" style="float:right;display:none">
-                                <img src="~/img/product/allpay.png" />
-                            </button>
-                        </form>
+                    <button type="submit" class="ttp" id="thirdpayment" style="float:right;display:none">
+                        <img src="~/img/product/allpay.png" />
+                    </button>
+                </form>
             }
             <br>
             <input type="button" class="site-btn" id="demo" value="DEMO">
