@@ -140,11 +140,23 @@
             filter: grayscale(1);
         }
 
+        .divMore{
+            text-align:center;
+        }
+        #btnMore{
+            border:none;
+            background-color:transparent;
+            transition:.2s;
+        }
+            #btnMore:hover {
+                color: #7fad39;
+            }
+
         /*推薦教練*/
         .divRecContent {
             margin-top: 80px;
             margin-left: 40px;
-        }
+        }     
 
         .divRecTopic > span {
             margin: 10px 0px;
@@ -167,10 +179,13 @@
             margin-bottom: 30px;
             border-radius: 10px;
             padding: 20px 15px 10px 15px;
-            border: 2px solid #F1F1F1;
-            box-shadow: 1px 1px 5px #F1F1F1;
+            border: 1px solid whitesmoke;
+            box-shadow: 2px 2px 5px lightgray;
+            transition: .3s;
         }
-
+            .divRec:hover {
+                border: 1px solid #7FAD39;
+            }
             .divRec span {
                 font-size: 14px;
             }
@@ -179,7 +194,7 @@
             padding: 0px;
             padding-right: 10px;
         }
-
+      
         .divRecName h4 {
             margin-bottom: 10px;
         }
@@ -192,10 +207,15 @@
             transition: .3s;
         }
 
-            .coach_img:hover {
-                border: 3px solid #7fad39;
+        .aRec {
+            color: #404040;
+        }
+            .aRec:hover {
+                color: #404040;
             }
-
+        .spRec{
+            text-align:justify;
+        }
         .divRecList {
             padding: 10px 30px;
         }
@@ -653,7 +673,8 @@
 </div>
 
 @section Scripts{
-    <script>   
+    <script>
+
         //GoTop
         $('#gotop').click(function () {
             $('html,body').animate({ scrollTop: 0 }, 'slow');   /* 返回到最頂上 */
@@ -726,21 +747,36 @@
                 $(".divRate").css("text-align", "center").css("color","dimgray");
             }
             $.each(data, function (index, item) {
-                console.log(data);
-                        $(".divRate").append(`<div class="feedback-item"><p><b>${item.fMemberName}</b></p><div class="rate" id=r${index}></div></div>`);
-                        for (let i = 1; i <= 5; i++) {
-                            $(`#r${index}`).append(`<img class="star starOrig" id="star${index}${i}"/>`);
-                            $(".star").attr("src", "@Url.Content("~/img/coach/icon/star.png")");
-                        }
-                        for (let i = 1; i <= item.cr.fRateStar; i++) {
-                            $(`#star${index}${i}`).removeClass("starOrig");
-                        }
-                        let year = `${item.cr.fRateDate}`.substr(0, 4);
-                        let month = `${item.cr.fRateDate}`.substr(4, 2);
-                        let day = `${item.cr.fRateDate}`.substr(6, 2);
-                        $(`#r${index}`).after(`<div id="t${index}"><p>${item.cr.fRateText}<p></div>`);
-                        $(`#t${index}`).after(`<p class="created">${year}年${month}月${day}日</p><hr>`);
-                    })
+                $(".divRate").append(`<div class="feedback-item" id=div${index}><p><b>${item.fMemberName}</b></p><div class="rate" id=r${index}></div></div>`);
+                for (let i = 1; i <= 5; i++) {
+                    $(`#r${index}`).append(`<img class="star starOrig" id="star${index}${i}"/>`);
+                    $(".star").attr("src", "@Url.Content("~/img/coach/icon/star.png")");
+                }
+                for (let i = 1; i <= item.cr.fRateStar; i++) {
+                    $(`#star${index}${i}`).removeClass("starOrig");
+                }
+                let year = `${item.cr.fRateDate}`.substr(0, 4);
+                let month = `${item.cr.fRateDate}`.substr(4, 2);
+                let day = `${item.cr.fRateDate}`.substr(6, 2);
+                $(`#r${index}`).after(`<div id="t${index}"><p>${item.cr.fRateText}<p></div>`);
+                $(`#t${index}`).after(`<p class="created">${year}年${month}月${day}日</p><hr>`);                
+            })
+            //顯示更多
+            if (data.length > 5) {
+                for (let i = 5; i <= data.length - 1; i++) {
+                    $(`#div${i}`).hide();
+                }
+                $(".divRate").append('<div class="divMore"><button id=btnMore>顯示更多&nbsp;&nbsp;<i class="fa-solid fa-angle-down"></i></button></div>')
+            }
+            let click = 1;
+            $("#btnMore").click(() => {
+                for (let i = 5 * click; i <= 5*(click+1)-1; i++) {
+                    $(`#div${i}`).show();
+                }
+                if (5 * (click + 1) - 1 >= data.length)
+                    $("#btnMore").hide();
+                click++;               
+            })           
         }
 
         //推薦教練
@@ -749,14 +785,13 @@
                 function (data) {
                     $(".divCoaches").empty();
                     $.each(data, function (index, item) {
-                        $(".divCoaches").append(`<div class="row divRec reveal_b1" id=rec${index}></div>`);
+                        $(".divCoaches").append(`<a href="/Student/ViewCoachDetails/${item.fCoachId}" id=a${index} class="aRec"></a>`);
+                        $(`#a${index}`).append(`<div class="row divRec" id=rec${index}></div>`);
                         $(`#rec${index}`).append(`<div class="col-5" id=d1${index}></div>`).append(`<div class="col-7 divRecCoach" id=d2${index}></div>`)
                             .append(`<div class="divRecList" id=d3${index}></div>`);
-                        $(`#d1${index}`).append(`<a href="/Student/ViewCoachDetails/${item.fCoachId}" id=a${index}></a>`);
-                        $(`#a${index}`).append(`<img id=img${index} class="coach_img">`);
+                        $(`#d1${index}`).append(`<img id=img${index} class="coach_img">`);
                         $(`#img${index}`).attr("src", `../../img/Coach/coachImage/${item.fCoachImage}`);
-
-                        $(`#d2${index}`).append(`<div class="divRecName"><h4><b>${item.fCoachName}</b></h4></div>`).append(`<div><span>${item.fSlogan}</span></div>`);
+                        $(`#d2${index}`).append(`<div class="divRecName"><h4><b>${item.fCoachName}</b></h4></div>`).append(`<div><span class="spRec">${item.fSlogan}</span></div>`);
                         $(`#d3${index}`).append(`<ul class="ulRec" id=ul${index}>`);
                         $(`#ul${index}`).append(`<li style="list-style:none" class="li" id=l1${index}></li>`).append(`<li style="list-style:none" class="li" id=l2${index}></li>`);
                         $(`#l1${index}`).append(`<img class="icon location"/><span><b>&nbsp;&nbsp;&nbsp;授課地區： </b>&nbsp;&nbsp;${item.cityName}</span>`);
@@ -831,7 +866,7 @@
             if ($("#btnLayOutLogin span").text() == "登入") {
                 pleaseLogin();
             }
-            else {  
+            else {
             $.get("@Url.Content("~/Student/addCandidate")", { FCoachId:@Model.FCoachId }, function (result) {
                 if (result == "ok") {
                     SwalGreen.fire({
