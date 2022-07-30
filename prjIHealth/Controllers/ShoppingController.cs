@@ -10,6 +10,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -31,14 +33,15 @@ namespace prjiHealth.Controllers
                 List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
                 return View(cart);
             }
-            //待有資料後改回以下兩行
             else
                 return RedirectToAction("ShowShoppingMall");
-            //return View();
         }
 
         public IActionResult CheckOut()
         {
+            //第三方支付用變數
+            string itemName = "";
+            int totalAmount = 0;
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_Shopped_Items))
             {
                 string jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
@@ -47,7 +50,35 @@ namespace prjiHealth.Controllers
                 {
                     if (cart[i].count == 0 || cart[i].count == -1)
                         cart.Remove(cart[i]);
+                    itemName += cart[i].product.FProductName + " " + "X" + cart[i].count + "#";
+                    totalAmount += (int)cart[i].price;
                 }
+                totalAmount = (totalAmount - (int)cart[0].discount);
+                //第三方支付用變數
+                string randomNumber = Guid.NewGuid().ToString();//產生編號亂數
+                string merchantTradeNo = randomNumber.Substring(0, 24).Replace("-", "");//取訂單編號格式二十碼和去掉-符號
+                ViewBag.MerchantTradeNo = merchantTradeNo;//輸出至前端
+                string merchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");//現在時間格式
+                ViewBag.TradeDate = merchantTradeDate;//輸出至前端
+                string checkMacValue1 = $"HashKey=5294y06JbISpM5x9&ChoosePayment=Credit&ClientBackURL=" +
+                $"{ Request.Scheme}://{Request.Host}/Member/OrderList/1&CreditInstallment=&EncryptType=1&" +
+                $"InstallmentAmount=&ItemName={itemName}&MerchantID=2000132&MerchantTradeDate={merchantTradeDate}&" +
+                $"MerchantTradeNo={merchantTradeNo}&PaymentType=aio&Redeem=&ReturnURL={Request.Scheme}://{Request.Host}/Shopping/TPPSessionToDB" +
+                $"&StoreID=&TotalAmount={totalAmount}&TradeDesc=建立信用卡測試訂單&" +
+                $"HashIV=v77hoKGq4kWxNNIS";
+                string checkMacValue2 = System.Web.HttpUtility.UrlEncode(checkMacValue1, Encoding.UTF8).ToLower();//轉為UTF-8的編碼UrlEncode完轉小寫
+                                                                                                                  //string checkMacValue3 = checkMacValue2.ToLower();//轉為小寫
+
+                using var hashCode = SHA256.Create(); //建立SHA256個體
+                var hashingCode = hashCode.ComputeHash(Encoding.UTF8.GetBytes(checkMacValue2));//計算指定雜湊值
+
+                string checkMacValue3 = Convert.ToHexString(hashingCode).ToUpper();//轉換為使用大寫十六進位字元編碼的相等字串表示法，轉為大寫
+                                                                                   //string checkMacValue5 = checkMacValue4.ToUpper(); //轉為大寫最後一步
+                ViewBag.CheckMacValue = checkMacValue3;//輸出至前端
+                ViewBag.ItemName = itemName;//輸出至前端
+                ViewBag.TotalAmout = totalAmount;//輸出至前端
+                ViewBag.Url = $"{Request.Scheme}://{Request.Host}/Shopping/TPPSessionToDB";
+                ViewBag.UrlBack = $"{ Request.Scheme}://{Request.Host}/Member/OrderList/1";
                 return View(cart);
             }
             else
@@ -109,6 +140,106 @@ namespace prjiHealth.Controllers
                 return RedirectToAction("CheckOut");
             }
             return RedirectToAction("OrderList", "Member", 1);
+        }
+        //將第三方金流用資料存入session
+        public IActionResult ThirdPartyPaymentSession(TOrder vmodel)
+        {
+            int userID = TakeMemberID();
+            string jsonCart = "";
+            List<TOrder> list = null;
+           
+                if (!HttpContext.Session.Keys.Contains(CDictionary.SK_Third_Party_Payment))
+            {
+                list = new List<TOrder>();
+            }
+            else
+            {
+                jsonCart = HttpContext.Session.GetString(CDictionary.SK_Third_Party_Payment);
+                list = JsonSerializer.Deserialize<List<TOrder>>(jsonCart);
+            }
+            TOrder item = new TOrder()
+            {
+                FPaymentCategoryId = vmodel.FPaymentCategoryId,
+                FDate = vmodel.FDate,
+                FMemberId = userID,
+                FAddress = vmodel.FAddress,
+                FContact = vmodel.FContact,
+                FPhone = vmodel.FPhone,
+                FRemarks = vmodel.FRemarks,
+                FStatusNumber = vmodel.FStatusNumber
+            };
+            list.Add(item);
+            jsonCart = JsonSerializer.Serialize(list);
+            HttpContext.Session.SetString(CDictionary.SK_Third_Party_Payment, jsonCart);
+            //歐付寶目前未知原因不會自動導向存入DB的ACTION故手動改為在此導向，正常應等交易完成後歐付寶自動導向
+            return RedirectToAction("TPPSessionToDB"); ;
+        }
+        //交易完成後，將session中的第三方金流資料存入db
+        public IActionResult TPPSessionToDB()
+        {
+            int userID = TakeMemberID();
+            if (ModelState.IsValid)
+            {
+                if (HttpContext.Session.Keys.Contains(CDictionary.SK_Third_Party_Payment))
+                {
+                string jsonTPP = HttpContext.Session.GetString(CDictionary.SK_Third_Party_Payment);
+                List<TOrder> cart = JsonSerializer.Deserialize<List<TOrder>>(jsonTPP);
+                IHealthContext db = new IHealthContext();
+                TOrder order = new TOrder();
+                order.FPaymentCategoryId = cart[0].FPaymentCategoryId;
+                order.FDate = cart[0].FDate;
+                order.FMemberId = userID;
+                order.FAddress = cart[0].FAddress;
+                order.FContact = cart[0].FContact;
+                order.FPhone = cart[0].FPhone;
+                order.FRemarks = cart[0].FRemarks;
+                order.FStatusNumber = cart[0].FStatusNumber;
+                db.TOrders.Add(order);
+
+                db.SaveChanges();
+
+
+                //第一次寫入資料庫產生orderid後，開啟第二dbcontext處理orderdetail，取用session的list進行迴圈寫入
+                IHealthContext dbod = new IHealthContext();
+                TOrderDetail orderdetail = new TOrderDetail();
+                string jsonCart = "";
+                List<CShoppingCartItem> list = null;
+                jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
+                list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
+                var orderid = (from p in dbod.TOrders
+                               where p.FMemberId == userID
+                               orderby p.FOrderId descending
+                               select p.FOrderId).FirstOrDefault();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    //每次迴圈時識別欄位值會異動，故重新設為0
+                    orderdetail.FOrderDetailsId = 0;
+                    orderdetail.FOrderId = orderid;
+                    orderdetail.FProductId = list[i].productId;
+                    orderdetail.FQuantity = list[i].count;
+                    orderdetail.FUnitprice = (int)list[i].price;
+                    if (list[i].discountID == 0)
+                    {
+                        orderdetail.FDiscountId = 10;
+                    }
+                    else
+                    {
+                        orderdetail.FDiscountId = list[i].discountID;
+                    }
+                    dbod.TOrderDetails.Add(orderdetail);
+                    dbod.SaveChanges();
+                }
+                }
+                else
+                {
+                    return RedirectToAction("CheckOut");
+                }
+            }
+            else
+            {
+                return RedirectToAction("CheckOut");
+            }
+            return Json("交易完成");
         }
         //商城主頁界面
         public IActionResult ShowShoppingMall()
@@ -228,7 +359,6 @@ namespace prjiHealth.Controllers
         public ActionResult ShowProductDetail(CAddToCartViewModel vModel)
         {
             IHealthContext db = new IHealthContext();
-            //TDiscount discount = db.TDiscounts.FirstOrDefault(t => t.FDiscountCode == vModel.discountCode);
             TProduct prod = db.TProducts.FirstOrDefault(t => t.FProductId == vModel.txtFid);
             if (prod == null)
             {
@@ -249,7 +379,6 @@ namespace prjiHealth.Controllers
             CShoppingCartItem item = new CShoppingCartItem()
             {
                 count = vModel.txtCount,
-                //discount=Convert.ToDecimal(discount.FDiscountValue),
                 price = (decimal)prod.FUnitprice,
                 productId = vModel.txtFid,
                 product = prod

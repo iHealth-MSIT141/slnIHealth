@@ -33,10 +33,10 @@
         </div>
         <div class="checkout__form">
             <h4>帳單明細</h4>
-            <form asp-action="CheckOut" >
+            <form asp-action="CheckOut">
                 <div class="row">
                     <input type="hidden" value=@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") name="FDate" id="FDate" />
-                    @*<input type="hidden" value=8 name="FMemberId" id="FMemberId" />*@
+                    <input type="hidden" value=8 name="FMemberId" id="FMemberId" />
                     <input type="hidden" value=70 name="FStatusNumber" id="FStatusNumber" />
                     <input type="hidden"  name="FPaymentCategoryId" id="FPaymentCategoryId" />
                     <input type="hidden"  name="FAddress" id="FAddress" />
@@ -88,7 +88,7 @@
                             <input type="text"
                                    placeholder="寫下訂單備註,例如:指定送達時間" id="FRemarks" name="FRemarks">
                         </div>
-                        <input type="button" class="site-btn" id="demo" value="DEMO">
+                        
                     </div>
                     <div class="col-lg-5 col-md-6">
                         <div class="checkout__order">
@@ -99,10 +99,10 @@
                                 <div class="checkout__order__products">產品 <span>總金額</span></div>
                                 @foreach (var item in Model)
                                 {
-                                    pay += item.小計;
+                                    pay += item.price;
                                     discount = item.discount;
                                     <ul>
-                                        <li>@item.product.FProductName <span>@item.小計.ToString("C0")</span><span style="display:none">@item.discount.ToString("C0")</span></li>
+                                        <li>@item.product.FProductName <span>@item.price.ToString("C0")</span><span style="display:none">@item.discount.ToString("C0")</span></li>
                                     </ul>
                                 }
                                 decimal total = pay - discount;
@@ -130,12 +130,70 @@
                     </div>
                 </div>
             </form>
+            @{ 
+                        <form id="formCreditCard" method="post" accept-charset="UTF-8"
+                              action="https://payment-stage.opay.tw/Cashier/AioCheckOut/V5">
+                            @*//第三方金流串接用欄位
+        //MerchantID 商店代號:*@
+                            <input hidden="hidden" type="text" name="MerchantID" value="2000132" />
+                            @*MerchantTradeNo 商店交易編號:*@
+                            <input hidden="hidden" type="text" name="MerchantTradeNo" value="@ViewBag.MerchantTradeNo" />
+                            @*MerchantTradeDate 商店交易時間:*@
+                            <input hidden="hidden" type="text" name="MerchantTradeDate" value="@ViewBag.TradeDate" />
+                            @*PaymentType 交易類型:*@
+                            <input hidden="hidden" type="text" name="PaymentType" value="aio" />
+                            @*TotalAmount 交易金額:*@
+                            <input hidden="hidden" type="text" name="TotalAmount" value="@ViewBag.TotalAmout" />
+                            @*TradeDesc 交易描述:*@
+                            <input hidden="hidden" type="text" name="TradeDesc" value="建立信用卡測試訂單" />
+                            @*ItemName 商品名稱:*@
+                            <input hidden="hidden" type="text" name="ItemName" value="@ViewBag.ItemName" />
+                            @*ReturnURL 付款完成通知回傳網址:*@
+                            <input hidden="hidden" type="text" name="ReturnURL" value="@ViewBag.Url" />
+                            @*ChoosePayment 預設付款方式:*@
+                            <input hidden="hidden" type="text" name="ChoosePayment" value="Credit" />
+                            @*會員商店代碼:*@
+                            <input hidden="hidden" type="text" name="StoreID" value="" />
+                            @*ClientBackURL Client端返回廠商網址:*@
+                            <input hidden="hidden" type="text" name="ClientBackURL" value="@ViewBag.UrlBack" />
+                            @*CreditInstallment 刷卡分期期數:*@
+                            <input hidden="hidden" type="text" name="CreditInstallment" value="" />
+                            @*InstallmentAmount 使用刷卡分期的付款金額:*@
+                            <input hidden="hidden" type="text" name="InstallmentAmount" value="" />
+                            @*Redeem 信用卡是否使用紅利折抵:*@
+                            <input hidden="hidden" type="text" name="Redeem" value="" />
+                            @*CheckMacValue 簽章類型:*@
+                            <input hidden="hidden" type="text" name="EncryptType" value="1" />
+                            @*CheckMacValue 檢查碼:*@
+                            <input hidden="hidden" type="text" name="CheckMacValue" value="@ViewBag.CheckMacValue" />
+
+                            <button type="submit" class="site-btn" id="thirdpayment" style="float:right" onclick="return confirm('1.請確認必填欄位已填2.請確認付款方式已選')">
+                                <img src="~/img/product/allpay.png" />
+                            </button>
+                        </form>
+            }
+            <br>
+            <input type="button" class="site-btn" id="demo" value="DEMO">
         </div>
     </div>
 </section>
 
 @section Scripts{
     <script>
+        //將第三分金流資料存入session
+        $('#thirdpayment').on('click', tppsession)
+        async function tppsession() {
+            var data = {};
+            data.FPaymentCategoryId = $('#FPaymentCategoryId').val();
+            data.FDate = $('#FDate').val();
+            data.FMemberId = $('#FPaymentCategoryId').val();
+            data.FAddress = $('#FAddress').val();
+            data.FContact = $('#FContact').val();
+            data.FPhone = $('#FPhone').val();
+            data.FRemarks = $('#FRemarks').val();
+            data.FStatusNumber = $('#FStatusNumber').val();
+          await $.ajax({ type: "POST", url: "@Url.Action("ThirdPartyPaymentSession")", data: data });
+        }
         //demo用按鈕
         $('#demo').on('click', Demo)
         function Demo() {
