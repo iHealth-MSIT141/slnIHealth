@@ -178,13 +178,18 @@ namespace prjiHealth.Controllers
         public IActionResult TPPSessionToDB()
         {
             int userID = TakeMemberID();
-            if (ModelState.IsValid)
+
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Third_Party_Payment))
             {
-                if (HttpContext.Session.Keys.Contains(CDictionary.SK_Third_Party_Payment))
-                {
                 string jsonTPP = HttpContext.Session.GetString(CDictionary.SK_Third_Party_Payment);
                 List<TOrder> cart = JsonSerializer.Deserialize<List<TOrder>>(jsonTPP);
                 IHealthContext db = new IHealthContext();
+                if (cart[0].FAddress == null || cart[0].FContact == null || cart[0].FPhone == null) 
+                {
+                    return RedirectToAction("CheckOut");
+                }
+                else
+                {
                 TOrder order = new TOrder();
                 order.FPaymentCategoryId = cart[0].FPaymentCategoryId;
                 order.FDate = cart[0].FDate;
@@ -229,10 +234,6 @@ namespace prjiHealth.Controllers
                     dbod.TOrderDetails.Add(orderdetail);
                     dbod.SaveChanges();
                 }
-                }
-                else
-                {
-                    return RedirectToAction("CheckOut");
                 }
             }
             else
