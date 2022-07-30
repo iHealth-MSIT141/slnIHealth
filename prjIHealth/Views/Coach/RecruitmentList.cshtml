@@ -153,15 +153,19 @@
 
 
         .chatText {
-            border: 1px solid #7FAD39;
+            border: 1px solid cornflowerblue;
             border-radius: 10px;
             padding: 3px 8px 3px 8px;
             background-color: ghostwhite;
         }
             .chatText small {
-                color: #7fad39;
-                margin-left:5px;
+                color: cornflowerblue;
+                margin-left: 5px;
             }
+        .modal-title {
+            color: cornflowerblue;
+            font-weight: 800;
+        }
     </style>
 }
 
@@ -613,7 +617,7 @@
                             html += `<small>${text.time}</small></p></div>`;
                         }
                         else {//對方學員
-                            html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${text.memberName}</label></div><div class="col-7">`;
+                            html += `<div class="col-2"><label style="float:right;color:navy"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${text.memberName}</label></div><div class="col-7">`;
                             html += `<p class="chatText" style="float: left; text-align: start;">${text.fContactText}`;
                             html += `<small>${text.time}</small></p></div><div class="col-3"></div></div >`;
                         }
@@ -637,7 +641,7 @@
                     html += `<small>${time}</small></p></div>`;
                 }
                 else {//對方學員
-                    html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${theContactName}</label></div><div class="col-7">`;
+                    html += `<div class="col-2"><label style="float:right;color:navy"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${theContactName}</label></div><div class="col-7">`;
                     html += `<p class="chatText" style="float: left; text-align: start;">${ContactText}`;
                     html += `<small>${time}</small></p></div><div class="col-3"></div></div >`;
                 }
