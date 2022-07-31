@@ -124,15 +124,15 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">年齡</label><span class="text-danger"></span>
-                    <input class="form-control" name="Age" id="inpAge" type="number" placeholder="請輸入年齡" required />
+                    <input class="form-control inputTdee" name="Age" id="inpAge" type="number" placeholder="請輸入年齡" required />
                 </div>
                 <div class="form-group">
                     <label class="control-label">身高(cm)</label><span class="text-danger"></span>
-                    <input class="form-control" name="FHeight" id="inpHeight" type="number" pattern="^[0-9]+(.[0-9])?$$" placeholder="請輸入身高(cm)" required />
+                    <input class="form-control inputTdee" name="FHeight" id="inpHeight" type="number" pattern="^[0-9]+(.[0-9])?$$" placeholder="請輸入身高(cm)" required />
                 </div>
                 <div class="form-group">
                     <label class="control-label">體重(kg)</label><span class="text-danger"></span>
-                    <input class="form-control" name="FWeight" id="inpWeight" type="number" pattern="^[0-9]+(.[0-9])?$" placeholder="請輸入體重(kg)" required />
+                    <input class="form-control inputTdee" name="FWeight" id="inpWeight" type="number" pattern="^[0-9]+(.[0-9])?$" placeholder="請輸入體重(kg)" required />
                 </div>
 
                 <div class="section-title product__discount__title" style="margin-bottom:2vh">
@@ -178,7 +178,7 @@
     $("#divWorkload").html('<label class="control-label">活動量</label><span class="text-danger"></span><br /><select name="FWorkload" id="selWorkload" required><option value="1.2">趨於靜態</option><option value="1.375">每周運動1~3天</option><option value="1.55">每周運動3~5天</option><option value="1.72">每周運動6~7天</option><option value="1.9">長時間運動或體力勞動工作者</option></select>');
 
     //驗證空值+數字
-        $("input").blur(function () {
+        $(".inputTdee").blur(function () {
             let isNum = /^[0-9]+(.[0-9])?$/;
             if ($(this).val() == "") {
                 $(this).prev("span").text("此為必填欄位");
@@ -196,7 +196,7 @@
     //計算TDEE
     $("#btnGetTDEE").click(function () {
         event.preventDefault();
-        $("input").blur();
+        $(".inputTdee").blur();
         if ($(".text-danger").text() == "") {
             //let w = $("#inpWeight").val();
             //let h = $("#inpHeight").val();
@@ -225,7 +225,7 @@
         $("#inpAge").val("40");
         $("#inpHeight").val("171");
         $("#inpWeight").val("85");
-        $("input").blur();
+        $(".inputTdee").blur();
     })
 </script>
 }

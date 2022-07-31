@@ -554,7 +554,7 @@
                         html += `<td>${value.strContactDate}</td>`;
                         html += `<td>${value.status}</td>`;
                         html += `<td><input type="hidden" value="${value.fCoachContactId}" />`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.fCoachName}" onclick="getId();">訊息</button></td></tr>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.coachName}" onclick="getId();">訊息</button></td></tr>`;
                     })
                     $("#tbdContact").html(html);
                 })
@@ -568,7 +568,7 @@
                         html += `<td>${value.strContactDate}</td>`;
                         html += `<td>${value.status}</td>`;
                         html += `<td><input type="hidden" value="${value.fCoachContactId}" />`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.fCoachName}" onclick="getId();">訊息</button></td></tr>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.coachName}" onclick="getId();">訊息</button></td></tr>`;
                     })
                     $("#tbdContact").html(html);
                 })
@@ -595,7 +595,7 @@
                             html += `<small>${text.time}</small></p></div>`;
                         }
                         else {//對方教練
-                            html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${text.coachName}</label></div><div class="col-7">`;
+                            html += `<div class="col-2"><label style="float:right;color:seagreen"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${text.coachName}</label></div><div class="col-7">`;
                             html += `<p class="chatText" style="float: left; text-align: start;">${text.fContactText}`;
                             html += `<small>${text.time}</small></p></div><div class="col-3"></div></div >`;
                         }
@@ -617,7 +617,7 @@
                     html += `<small>${time}</small></p></div>`;
                 }
                 else {//對方教練
-                    html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${theContactName}</label></div><div class="col-7">`;
+                    html += `<div class="col-2"><label style="float:right;color:seagreen"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${theContactName}</label></div><div class="col-7">`;
                     html += `<p class="chatText" style="float: left; text-align: start;">${ContactText}`;
                     html += `<small>${time}</small></p></div><div class="col-3"></div></div >`;
                 }

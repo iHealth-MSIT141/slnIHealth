@@ -153,15 +153,19 @@
 
 
         .chatText {
-            border: 1px solid #7FAD39;
+            border: 1px solid cornflowerblue;
             border-radius: 10px;
             padding: 3px 8px 3px 8px;
             background-color: ghostwhite;
         }
             .chatText small {
-                color: #7fad39;
-                margin-left:5px;
+                color: cornflowerblue;
+                margin-left: 5px;
             }
+        .modal-title {
+            color: cornflowerblue;
+            font-weight: 800;
+        }
     </style>
 }
 
@@ -195,8 +199,7 @@
                         <ul>
                             <li><a href="~/Coach/CreateResume">履歷管理</a></li>
                             <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
-                            <li><a href="~/Coach/TeachingList">教課列表</a></li>
-                            <li><a href="~/Coach/CoachCalendar">課程行事曆</a></li>
+                            <li><a href="~/Coach/TeachingList">教課列表</a></li>   
                         </ul>
                         <br />
                         <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
@@ -288,7 +291,7 @@
                                     <td class="tdBtn">
                                         <input type="hidden" value="@c.FCoachContactId" />
                                         <button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse">排課</button>
-                                        <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-membername="@c.MemberName" onclick="getId();">聯繫</button>
+                                        <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-membername="@c.MemberName" onclick="getId();">訊息</button>
                                     </td>
                                 </tr>
                             }
@@ -454,7 +457,7 @@
                 html += `<dt class="col-sm-3">性別</dt><dd class="col-sm-9">${member.memberGender}</dd>`;
                 html += `<dt class="col-sm-3">年齡</dt><dd class="col-sm-9">${member.memberAge}</dd>`;
                 //TODO 改圖片路徑:member.memberPicturePath
-                html += `<dt class="col-sm-3">相片</dt><dd class="col-sm-9"><div class="ddImg" style="background-image: url(/img/coach/coachImage/Alisa.jpg);"/></dd>`;
+                html += `<dt class="col-sm-3">相片</dt><dd class="col-sm-9"><div class="ddImg" style="background-image: url(/img/member/${member.memberPicturePath});"/></dd>`;
                 html += `<dt class="col-sm-3">連絡電話</dt><dd class="col-sm-9">${member.memberPhone}</dd>`;
                 html += `<dt class="col-sm-3">Email</dt><dd class="col-sm-9">${member.memberEmail}</dd>`;
                 $("#dlMember").html(html);
@@ -546,7 +549,7 @@
                         }
                         html += `</select></td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
                         html += `<button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse" onclick="btnCreateCourseClick();">排課</button>`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" onclick="getId();">聯繫</button>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-membername="${value.memberName}" onclick="getId();">訊息</button>`;
                     })
                     $("#tbdContact").html(html);
                 })
@@ -578,7 +581,7 @@
                         }
                         html += `</select></td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
                         html += `<button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse" onclick="btnCreateCourseClick();">排課</button>`;
-                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" onclick="getId();">聯繫</button>`;
+                        html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-membername="${value.memberName}" onclick="getId();">訊息</button>`;
                     })
                     $("#tbdContact").html(html);
                 })
@@ -614,7 +617,7 @@
                             html += `<small>${text.time}</small></p></div>`;
                         }
                         else {//對方學員
-                            html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${text.memberName}</label></div><div class="col-7">`;
+                            html += `<div class="col-2"><label style="float:right;color:navy"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${text.memberName}</label></div><div class="col-7">`;
                             html += `<p class="chatText" style="float: left; text-align: start;">${text.fContactText}`;
                             html += `<small>${text.time}</small></p></div><div class="col-3"></div></div >`;
                         }
@@ -638,7 +641,7 @@
                     html += `<small>${time}</small></p></div>`;
                 }
                 else {//對方學員
-                    html += `<div class="col-2"><label style="float:right"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${theContactName}</label></div><div class="col-7">`;
+                    html += `<div class="col-2"><label style="float:right;color:navy"><i class="fa fa-commenting-o" aria-hidden="true"></i> ${theContactName}</label></div><div class="col-7">`;
                     html += `<p class="chatText" style="float: left; text-align: start;">${ContactText}`;
                     html += `<small>${time}</small></p></div><div class="col-3"></div></div >`;
                 }

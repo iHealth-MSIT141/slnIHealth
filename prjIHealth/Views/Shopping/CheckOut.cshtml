@@ -2,6 +2,15 @@
 @{
     ViewData["Title"] = "CheckOut";
 }
+@section Styles{
+    <style>
+        .ttp{
+            background-color:white;
+            color:white;
+            border:none;
+        }
+    </style>
+}
 @*banner大圖*@
 <section class="breadcrumb-section set-bg" data-setbg="/img/Coach/Banner.jpg" id="bannerTop">
     <div class="container">
@@ -33,20 +42,20 @@
         </div>
         <div class="checkout__form">
             <h4>帳單明細</h4>
-            <form asp-action="CheckOut" >
+            <form asp-action="CheckOut">
                 <div class="row">
                     <input type="hidden" value=@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") name="FDate" id="FDate" />
-                    @*<input type="hidden" value=8 name="FMemberId" id="FMemberId" />*@
+                    <input type="hidden" value=8 name="FMemberId" id="FMemberId" />
                     <input type="hidden" value=70 name="FStatusNumber" id="FStatusNumber" />
-                    <input type="hidden"  name="FPaymentCategoryId" id="FPaymentCategoryId" />
-                    <input type="hidden"  name="FAddress" id="FAddress" />
+                    <input type="hidden" name="FPaymentCategoryId" id="FPaymentCategoryId" />
+                    <input type="hidden" name="FAddress" id="FAddress" />
 
                     <div class="col-lg-7 col-md-6">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>姓名<span>*</span></p>
-                                    <input type="text" id="FContact" name="FContact">
+                                    <input type="text" id="FContact" name="FContact" required>
                                 </div>
                             </div>
                         </div>
@@ -54,26 +63,26 @@
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>郵遞區號<span>*</span></p>
-                                    <input type="text" id="pcode">
+                                    <input type="text" id="pcode" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>縣市<span>*</span></p>
-                                    <input type="text" id="city">
+                                    <input type="text" id="city" required>
                                 </div>
                             </div>
                         </div>
                         <div class="checkout__input">
                             <p>地址<span>*</span></p>
-                            <input type="text" placeholder="" class="checkout__input__add" id="address">
+                            <input type="text" placeholder="" class="checkout__input__add" id="address" required>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>電話<span>*</span></p>
-                                    <input type="text" id="FPhone" name="FPhone">
+                                    <input type="text" id="FPhone" name="FPhone" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -88,7 +97,7 @@
                             <input type="text"
                                    placeholder="寫下訂單備註,例如:指定送達時間" id="FRemarks" name="FRemarks">
                         </div>
-                        <input type="button" class="site-btn" id="demo" value="DEMO">
+
                     </div>
                     <div class="col-lg-5 col-md-6">
                         <div class="checkout__order">
@@ -99,10 +108,10 @@
                                 <div class="checkout__order__products">產品 <span>總金額</span></div>
                                 @foreach (var item in Model)
                                 {
-                                    pay += item.小計;
+                                    pay += item.price;
                                     discount = item.discount;
                                     <ul>
-                                        <li>@item.product.FProductName <span>@item.小計.ToString("C0")</span><span style="display:none">@item.discount.ToString("C0")</span></li>
+                                        <li>@item.product.FProductName <span>@item.price.ToString("C0")</span><span style="display:none">@item.discount.ToString("C0")</span></li>
                                     </ul>
                                 }
                                 decimal total = pay - discount;
@@ -119,23 +128,98 @@
                                 </div>
                                 <div class="checkout__input__checkbox">
                                     <label for="paypal">
-                                        信用卡
+                                        ATM轉帳
                                         <input type="checkbox" id="paypal">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                                <button type="submit" class="site-btn" id="pay" onclick="return confirm('1.請確認必填欄位已填2.請確認付款方式已選')">結帳</button>
+                                <div class="checkout__input__checkbox">
+                                    <label for="ttp">
+                                        歐付寶
+                                        <input type="checkbox" id="ttp">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="site-btn" id="pay">結帳</button>
                             }
                         </div>
                     </div>
                 </div>
             </form>
+            @{
+                <form id="formCreditCard" method="post" accept-charset="UTF-8"
+                      action="https://payment-stage.opay.tw/Cashier/AioCheckOut/V5" onsubmit="return CheckTTP()">
+                    @*//第三方金流串接用欄位
+                        //MerchantID 商店代號:*@
+                    <input hidden="hidden" type="text" name="MerchantID" value="2000132" />
+                    @*MerchantTradeNo 商店交易編號:*@
+                    <input hidden="hidden" type="text" name="MerchantTradeNo" value="@ViewBag.MerchantTradeNo" />
+                    @*MerchantTradeDate 商店交易時間:*@
+                    <input hidden="hidden" type="text" name="MerchantTradeDate" value="@ViewBag.TradeDate" />
+                    @*PaymentType 交易類型:*@
+                    <input hidden="hidden" type="text" name="PaymentType" value="aio" />
+                    @*TotalAmount 交易金額:*@
+                    <input hidden="hidden" type="text" name="TotalAmount" value="@ViewBag.TotalAmout" />
+                    @*TradeDesc 交易描述:*@
+                    <input hidden="hidden" type="text" name="TradeDesc" value="建立信用卡測試訂單" />
+                    @*ItemName 商品名稱:*@
+                    <input hidden="hidden" type="text" name="ItemName" value="@ViewBag.ItemName" />
+                    @*ReturnURL 付款完成通知回傳網址:*@
+                    <input hidden="hidden" type="text" name="ReturnURL" value="@ViewBag.Url" />
+                    @*ChoosePayment 預設付款方式:*@
+                    <input hidden="hidden" type="text" name="ChoosePayment" value="Credit" />
+                    @*會員商店代碼:*@
+                    <input hidden="hidden" type="text" name="StoreID" value="" />
+                    @*ClientBackURL Client端返回廠商網址:*@
+                    <input hidden="hidden" type="text" name="ClientBackURL" value="@ViewBag.Url" />
+                    @*CreditInstallment 刷卡分期期數:*@
+                    <input hidden="hidden" type="text" name="CreditInstallment" value="" />
+                    @*InstallmentAmount 使用刷卡分期的付款金額:*@
+                    <input hidden="hidden" type="text" name="InstallmentAmount" value="" />
+                    @*Redeem 信用卡是否使用紅利折抵:*@
+                    <input hidden="hidden" type="text" name="Redeem" value="" />
+                    @*CheckMacValue 簽章類型:*@
+                    <input hidden="hidden" type="text" name="EncryptType" value="1" />
+                    @*CheckMacValue 檢查碼:*@
+                    <input hidden="hidden" type="text" name="CheckMacValue" value="@ViewBag.CheckMacValue" />
+
+                    <button type="submit" class="ttp" id="thirdpayment" style="float:right;display:none">
+                        <img src="~/img/product/allpay.png" />
+                    </button>
+                </form>
+            }
+            <br>
+            <input type="button" class="site-btn" id="demo" value="DEMO">
         </div>
     </div>
 </section>
 
 @section Scripts{
     <script>
+        //第三方金流欄位驗證
+        function CheckTTP() {
+            if ($('#FContact').val() == '' || $('#address').val() == '' || $('#pcode').val() == '' || $('#city').val() == '' || $('#FPhone').val()=='')
+            {
+                alert("必填欄位未填寫");
+                return false;
+            } else {
+                return true;
+            }
+        }
+        //將第三分金流資料存入session
+        $('#thirdpayment').on('click', tppsession)
+        async function tppsession() {
+            var data = {};
+            data.FPaymentCategoryId = $('#FPaymentCategoryId').val();
+            data.FDate = $('#FDate').val();
+            data.FMemberId = $('#FPaymentCategoryId').val();
+            data.FAddress = $('#FAddress').val();
+            data.FContact = $('#FContact').val();
+            data.FPhone = $('#FPhone').val();
+            data.FRemarks = $('#FRemarks').val();
+            data.FStatusNumber = $('#FStatusNumber').val();
+          await $.ajax({ type: "POST", url: "@Url.Action("ThirdPartyPaymentSession")", data: data });
+        }
         //demo用按鈕
         $('#demo').on('click', Demo)
         function Demo() {
@@ -148,35 +232,43 @@
             $('#FRemarks').val("請於下午6點後送達").css("color", "black")
             $('#FAddress').val("106台北市大安區復興南路一段390號2樓")
         }
-        //設定付款方式的值且設定不可同時選取，未選擇付款方式時alert
-        let PaymentCategoryID = 0;
+        //設定付款方式的值且設定不可同時選取
         $('#payment').on('click', CheckPayment)
-        let cash = false;
         function CheckPayment() {
-            if ($(this).val() && !cash) {
-                $('#paypal').attr("disabled", "true")
-                cash = true
-                PaymentCategoryID = 1
-                $('#FPaymentCategoryId').attr("value",1)
-            } else
-            {
-                $('#paypal').removeAttr("disabled")
-                cash = false
-                PaymentCategoryID = 0
-            }
+            $('#FPaymentCategoryId').attr("value", 1)
+            $('#ttp').prop("checked", false);
+            $('#paypal').prop("checked", false);
+            $('#thirdpayment').attr("style", "float:right;display:none")
+            $('#pay').attr("style", "display:block")
+            ofbselected = false;
         }
         $('#paypal').on('click', CheckPayment2)
-        let card = false;
         function CheckPayment2() {
-            if ($(this).val() && !card) {
-                $('#payment').attr("disabled", "true")
-                card = true
-                PaymentCategoryID = 2
-                $('#FPaymentCategoryId').attr("value", 2)
+            $('#FPaymentCategoryId').attr("value", 2)
+            $('#ttp').prop("checked", false);
+            $('#payment').prop("checked", false);
+            $('#thirdpayment').attr("style", "float:right;display:none")
+            $('#pay').attr("style", "display:block")
+            ofbselected = false;
+        }
+        let ofbselected=false
+        $('#ttp').on('click', CheckPayment3)
+        function CheckPayment3() {
+            if (!ofbselected) {
+                $('#payment').prop("checked", false);
+                $('#paypal').prop("checked", false);
+                $('#FPaymentCategoryId').attr("value", 3);
+                $('#thirdpayment').attr("style", "float:right;display:block");
+                $('#pay').attr("style", "display:none")
+                //$('#pay').attr("disabled", true);
+                ofbselected = true;
             } else {
-                $('#payment').removeAttr("disabled")
-                card = false
-                PaymentCategoryID = 0
+                $('#thirdpayment').attr("style", "float:right;display:none");
+                //$('#pay').attr("disabled", false);
+                $('#pay').attr("style", "display:block")
+                $('#payment').prop("checked", false);
+                $('#paypal').prop("checked", false);
+                ofbselected = false;
             }
         }
         //取得使用者輸入的地址並代入隱藏欄位寫入資料庫用

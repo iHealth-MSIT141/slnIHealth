@@ -226,7 +226,7 @@
                                 <li>
 
                                     <div class="header__top__right__auth">
-                                        <a type="button" id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal">
+                                        <a id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal">
                                             <i class="fa fa-user"></i>
                                             <span>@LoginbuttonValue</span>
                                             <p style="display:none">@loginId </p>
@@ -399,12 +399,13 @@
                             <i class="fa fa-user"></i> 加入會員
                         </button>
                     </div>
+                    <div class="modal-footer row">
+                        <div class="text-center col">  <button id="btnDemoUserLog" class="btn btn-outline-success">Demo會員</button></div>
+                        <div class="text-center col"> <button id="btnDemoCoachLog" class="btn btn-outline-success">Demo教練</button></div>
+                        <div class="text-center col">   <button id="btnDemoAdminLog" class="btn btn-outline-success">Demo管理者</button></div>
+                    </div>
                 </div>
-                <div class="modal-footer row">
-                    <div class="text-center col">  <button id="btnDemoUserLog" class="btn btn-outline-success">Demo會員</button></div>
-                    <div class="text-center col"> <button id="btnDemoCoachLog" class="btn btn-outline-success">Demo教練</button></div>
-                    <div class="text-center col">   <button id="btnDemoAdminLog" class="btn btn-outline-success">Demo管理者</button></div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -432,14 +433,23 @@
                             </div>
                             <div class="form-group">
                                 <label for="fPassword">密碼</label>
+                                <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showRegisterPassword"></i>
                                 <input type="password" class="form-control" id="inpRegisterPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母" autocomplete="off">
+                                <span id="passwordSpan1">密碼長度6~12位,要包含大小寫英文字, 數字,符號[!#$%^&*],至少各含一或以上</span>
                             </div>
+                               <div class="form-group">
+                                <label for="confirmPassword">請輸入確認密碼</label>
+                                <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showRegisterConfirmPassword"></i>
+                                <input type="password" class="form-control" id="inpRegisterConfirmPassword" name="confirmPassword" placeholder="確認密碼 " autocomplete="off">
+                                <h6 id="confirmH6"></h6>
+                            </div>
+                         
+                        </div>
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="fEmail">電子郵件信箱</label>
                                 <input type="text" class="form-control" id="inpRegisterEmail" name="fEmail" placeholder="電子郵件信箱" autocomplete="off">
                             </div>
-                        </div>
-                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="fBirthday">生日</label>
                                 <input type="number" class="form-control" id="inpRegisterBirthday" name="fBirthday" placeholder="生日,請依格式19991231輸入" autocomplete="off">
@@ -460,7 +470,7 @@
                                     <label class="form-check-label" for="fGender">女性</label>
                                 </div>
                                 <div class="form-check form-check-inline mb-0 me-4">
-                                    <input type="radio" class="form-check-input" id="maleGender" name="fGender" value="true">
+                                    <input type="radio" class="form-check-input" id="maleGender" name="fGender" value="true" checked>
                                     <label class="form-check-label" for="fGender">男性</label>
                                 </div>
                             </div>
@@ -503,6 +513,7 @@
                         <div class="form-group">
                             <label for="fEmail">請輸入註冊時的電子信箱</label>
                             <input type="text" class="form-control" id="inpForgotPassword" name="fEmail" placeholder="email" autocomplete="off">
+                            <h6 id="result"></h6>
                         </div>
                         <div style="justify-content: center; display: flex;">
 
@@ -542,15 +553,20 @@
                         </div>
                         <div class="form-group">
                             <label for="fPassword">請輸入密碼</label>
-                            <input type="text" class="form-control" id="inpResetPassword" name="fPassword" placeholder="登入密碼" autocomplete="off">
+                            <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showPassword1"></i>
+                            <input type="password" class="form-control" id="inpResetPassword" name="fPassword" placeholder="登入密碼" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="firstPassword">請輸入新的密碼</label>
-                            <input type="text" class="form-control" id="inpFirstPassword" name="firstPassword" placeholder="重設密碼 " autocomplete="off">
+                            <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showFirstPassword"></i>
+                            <input type="password" class="form-control" id="inpFirstPassword" name="firstPassword" placeholder="重設密碼 " autocomplete="off">
+                            <span id="passwordSpan">密碼長度6~12位,要包含大小寫英文字, 數字,符號[!#$%^&*],至少各含一或以上</span>
                         </div>
                         <div class="form-group">
                             <label for="confirmPassword">請輸入確認密碼</label>
-                            <input type="text" class="form-control" id="inpConfirmPassword" name="confirmPassword" placeholder="確認密碼 " autocomplete="off">
+                            <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showConfirmPassword"></i>
+                            <input type="password" class="form-control" id="inpConfirmPassword" name="confirmPassword" placeholder="確認密碼 " autocomplete="off">
+                            <h6 id="confirmH6"></h6>
                         </div>
                         <div style="justify-content: center; display: flex;">
                             <button id="btnResetPassword" value="送出" class="btn btn-success">
@@ -607,10 +623,37 @@
         $('#btnLayOutLogin').on("click", (event) =>
         {
             let userName = $("#btnLayOutLogin span").text();
-            if (userName != "登入") { event.stopPropagation(); window.location.href = `${window.location.protocol}//${window.location.host}/Member/Edit`; }
+            if (userName != "登入") { event.stopPropagation(); window.location.href = `/Member/Edit`; }
             else { event.preventDefault(); }
         });
         //============================ajax 會員登入(fetch)============================================
+        $('#inpLogInUserName').on('blur', () =>
+        {
+            event.preventDefault();
+           var loginVal = $('#inpLogInUserName').val();
+            if (loginVal=="")
+            {
+                alert("帳號不得空白");
+            } else
+            {
+                var formData = new FormData(document.querySelector("#loginForm"));
+                fetch("/Member/getUserName", {
+                    body: formData,
+                    method: "Post"
+                }).then(Response => Response.text()).then(data =>
+                {
+                    if (data == "false")
+                    {
+                        alert("此帳號錯誤, 請重新輸入");
+                        $('#inpLogInUserName').val("");
+                        $('#inpLogInPassword').val("");
+                    } else
+                    {
+                        alert("帳號正確, 請繼續");
+                    }
+                }); };
+        });
+
         const btnUserName = document.querySelector('#btnLoginModal');
         btnUserName.addEventListener('click', (event) =>
         {
@@ -652,6 +695,74 @@
         var str = year + month + day;
         $("#fRegisterDate").val(str);
         //=========================註冊會員後,popup 登入頁面 by bootstrap modal==============
+        $("#showRegisterPassword").click(function ()
+        {
+            if ($(this).hasClass("fa-eye-slash"))
+            {
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+                $("#inpRegisterPassword").attr("type", "text");
+            }
+            else
+            {
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+                $("#inpRegisterPassword").attr("type", "password");
+            }
+        });
+        $("#showRegisterConfirmPassword").click(function ()
+        {
+            if ($(this).hasClass("fa-eye-slash"))
+            {
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+                $("#inpRegisterConfirmPassword").attr("type", "text");
+            }
+            else
+            {
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+                $("#inpRegisterConfirmPassword").attr("type", "password");
+            }
+        });
+        $('#inpRegisterUserName').on('blur', () =>
+        {
+            event.preventDefault();
+            var loginVal = $('#inpRegisterUserName').val();
+            if (loginVal == "")
+            {
+                alert("帳號不得空白");
+            } else
+            {
+                var formData = new FormData(document.querySelector("#registerForm"));
+                fetch("/Member/getUserName", {
+                    body: formData,
+                    method: "Post"
+                }).then(Response => Response.text()).then(data =>
+                {
+                    if (data == "false")
+                    {
+                        alert("此帳號可使用");
+                      
+                    } else
+                    {
+                        alert("此帳號已有人使用, 請換個帳號");
+                    }
+                });
+            };
+        });
+        $('#inpRegisterPassword').on('blur', () =>
+        {
+            var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!#$%^&*]).{6,12}$/;
+            var resultReg = regEx.test($('#inpRegisterPassword').val());
+            if (resultReg) { $('#passwordSpan1').text("符合要求,請繼續"); } else
+            { alert("密碼格式不符") };
+        });
+        $('#inpRegisterConfirmPassword').on('blur', () =>
+        {
+            $('#confirmH6').empty();
+            let firstPassword = $('#inpRegisterPassword').val();
+            let confirmPassword = $('#inpRegisterConfirmPassword').val();
+            if (firstPassword != confirmPassword) { $('#confirmH6').text("輸入密碼不一致"); }
+            else { $('#confirmH6').text('密碼一致,請繼續'); }
+        });
+        //inpRegisterConfirmPassword
         const btn = document.querySelector('#btnRegister');
         btn.addEventListener('click', (event) =>
         {
@@ -679,6 +790,28 @@
             });
         });
         //=========================忘記密碼,輸入電子郵件正確,popup至重設密碼頁面=============
+
+        $('#inpForgotPassword').on('input', () =>
+        {
+            const emailReg = /^(?=.*[a-z]) (?=.*[A-Z])(?=.*[0-9]){6,15}/;
+            const validateEmail = (emailReg) =>
+            {
+                return email.match(re);
+            }
+            const $result = $('#result');
+            const email = $('#inpForgotPassword').val();
+            $result.text('');
+            if (validateEmail(email))
+            {
+                $result.text(email + ' is valid :)');
+                $result.css('color', 'green');
+            } else
+            {
+                $result.text(email + ' is not valid :(');
+                $result.css('color', 'red');
+            }
+            return false; });
+
         const btnFP = document.querySelector('#btnForgotPassword');
         btnFP.addEventListener('click', (event) =>
         {
@@ -704,6 +837,100 @@
             });
         });
         //=========================ajax重設密碼,popup登入頁面================================
+             //=========================驗證電子信箱ajax===============================
+        $("#inpResetPasswordEmail").on('blur', () =>
+        {
+            let data = $("#resetPasswordForm").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Member/getEmail",
+                data: data,
+                success: function (data)
+                {
+                    if (data == "false")
+                    {
+                        alert("電子信箱錯誤或空白,請重新輸入");
+                        $('#fEmailReset').val(""); $('#fPasswordReset').val("");
+
+                    } else
+                    {
+                        alert("電子信箱正確,請繼續");
+                    }
+                }
+            });
+        });
+             //=========================驗證密碼ajax===================================
+        $("#showPassword1").click(function ()
+        {
+            if ($(this).hasClass("fa-eye-slash"))
+            {
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+                $("#inpResetPassword").attr("type", "text");
+            }
+            else
+            {
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+                $("#inpResetPassword").attr("type", "password");
+            }
+        });
+        $('#inpResetPassword').on('blur', () =>
+        {
+            let data = $("#resetPasswordForm").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Member/getPassword",
+                data: data,
+                success: function (data)
+                {
+                    if (data == "true") { alert('密碼正確, 請繼續'); }
+                    else if (data == "false") { alert('密碼錯誤, 請重新輸入'); }
+                    else { alert('密碼或電子信箱空白, 請重新輸入');  }
+                }
+            });
+        });
+            //=========================驗證新密碼(前端驗證)====================================
+        $("#showFirstPassword").click(function ()
+        {
+            if ($(this).hasClass("fa-eye-slash"))
+            {
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+                $("#inpFirstPassword").attr("type", "text");
+            }
+            else
+            {
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+                $("#inpFirstPassword").attr("type", "password");
+            }
+        });
+        $('#inpFirstPassword').on('blur', () =>
+        {
+            var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!#$%^&*]).{6,12}$/;
+            var resultReg=regEx.test($('#inpFirstPassword').val());
+            if (resultReg) { $('#passwordSpan').text("符合要求,請繼續"); } else
+            {  alert("密碼格式不符")};
+        });
+              $("#showConfirmPassword").click(function ()
+        {
+            if ($(this).hasClass("fa-eye-slash"))
+            {
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+                $("#inpConfirmPassword").attr("type", "text");
+            }
+            else
+            {
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+                $("#inpConfirmPassword").attr("type", "password");
+            }
+        });
+        $('#inpConfirmPassword').on('blur', () =>
+        {
+            $('#confirmH6').empty();
+            let firstPassword = $('#inpFirstPassword').val();
+            let confirmPassword = $('#inpConfirmPassword').val();
+            if (firstPassword != confirmPassword) { $('#confirmH6').text("輸入密碼不一致"); }
+            else { $('#confirmH6').text('密碼一致,請繼續'); }
+        });
+
         const btnRP = document.querySelector('#btnResetPassword');
         btnRP.addEventListener('click', (event) =>
         {

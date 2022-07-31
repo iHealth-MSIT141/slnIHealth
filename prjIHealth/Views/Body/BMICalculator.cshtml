@@ -124,11 +124,11 @@
                 <br />
                 <div class="form-group">
                     <label class="control-label">身高(cm)</label><span class="text-danger"></span>
-                    <input class="form-control" id="FHeight" type="number" pattern="^[0-9]+(.[0-9])?$$" placeholder="請輸入身高(cm)" required />
+                    <input class="form-control inpBmi" id="FHeight" type="number" pattern="^[0-9]+(.[0-9])?$$" placeholder="請輸入身高(cm)" required />
                 </div>
                 <div class="form-group">
                     <label class="control-label">體重(kg)</label><span class="text-danger"></span>
-                    <input class="form-control" id="FWeight" type="number" pattern="^[0-9]+(.[0-9])?$" placeholder="請輸入體重(kg)" required />
+                    <input class="form-control inpBmi" id="FWeight" type="number" pattern="^[0-9]+(.[0-9])?$" placeholder="請輸入體重(kg)" required />
                 </div>
                 <br />
                 <div class="text-center">
@@ -149,7 +149,7 @@
     <script>
 
         //驗證空值+數字
-        $("input").blur(function () {
+        $(".inpBmi").blur(function () {
             let isNum = /^[0-9]+(.[0-9])?$/;
             if ($(this).val() == "") {
                 $(this).prev().text("此為必填欄位");
@@ -166,7 +166,7 @@
 
         //show計算結果
         $("#btnGetBMI").click(function () {
-            $("input").blur();
+            $(".inpBmi").blur();
             $(".divResult").css("background-color", "transparent");
             if ($(".text-danger").text() == "") {
                 $.get("@Url.Content("~/Body/getBMI")", { "FHeight": $("#FHeight").val(), "FWeight": $("#FWeight").val() }, function (numBMI) {
@@ -191,7 +191,7 @@
         $("#btnDemo").click(function () {
             $("#FHeight").val("171");
             $("#FWeight").val("85");
-            $("input").blur();
+            $(".inpBmi").blur();
         })
     </script>
 }

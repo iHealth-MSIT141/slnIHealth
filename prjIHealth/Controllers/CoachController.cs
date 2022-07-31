@@ -27,19 +27,19 @@ namespace prjiHealth.Controllers
             _environment = environment;
         }
         
-        public IActionResult CoachCalendar()
-        {
-            int userId = 11; //備用帳號--Alisa
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
-            {
-                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
-                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
-            }
-            var coach = _context.TCoaches.Where(c=>c.FStatusNumber==66).FirstOrDefault(c => c.FMemberId == userId);
-            if (coach == null)
-                return RedirectToAction("CreateResume");
-            return View();
-        }
+        //public IActionResult CoachCalendar()
+        //{
+        //    int userId = 11; //備用帳號--Alisa
+        //    if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+        //    {
+        //        string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+        //        userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+        //    }
+        //    var coach = _context.TCoaches.Where(c=>c.FStatusNumber==66).FirstOrDefault(c => c.FMemberId == userId);
+        //    if (coach == null)
+        //        return RedirectToAction("CreateResume");
+        //    return View();
+        //}
 
         //取得教練所有排課
         public IActionResult GetAllReservation()
@@ -438,7 +438,7 @@ namespace prjiHealth.Controllers
             DateTime date;
             if ((courseDay - day) > 0)
             {
-                int interval = 7 - (courseDay - day);
+                int interval = courseDay - day;
                 date = DateTime.Now.AddDays(interval);
             }
             else
