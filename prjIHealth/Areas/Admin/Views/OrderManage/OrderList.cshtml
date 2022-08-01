@@ -17,18 +17,43 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
- 
+
+    .btn-light {
+        background-color: #DFEACE !important;
+        color: black;
+    }
+
+    .btn-success {
+        background-color: #7FAD39;
+        color: white;
+        border: none;
+    }
+
+    /*table.table td {
+        vertical-align: middle;
+        text-align: center;
+    }*/
+
+    .selectbox {
+        margin-bottom: 5%;
+        margin-left: -10%;
+    }
+
+    #title {
+        font-weight: 800;
+        color: #599e32;
+        margin-left: 20vw;
+        margin-right: 20vw;
+    }
 </style>
 }
-<h1>訂單管理</h1>
+<h2 id="title">訂單管理</h2>
 <title></title>
 <section class="product spad">
     <div class="container">
         <div class="row">
-
             <div class="col-lg-12">
                 <div class="shoping__cart__table">
-
                     <div class="col-lg-4">
                         <select id="Statussearch" name="Statussearch" class="custom-select">
                             <option disabled selected hidden>依狀態篩選</option>
@@ -44,9 +69,8 @@
                     </div>
 
                     <table style="table-layout:fixed">
-                        <thead>
+                        <thead class="thead-dark">
                             <tr>
-
                                 <th style="margin-left:auto">
                                     @Html.DisplayNameFor(model => model.FMemberId)
                                 </th>

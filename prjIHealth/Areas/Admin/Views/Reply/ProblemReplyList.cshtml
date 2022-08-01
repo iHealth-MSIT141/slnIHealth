@@ -14,11 +14,11 @@
         }
         /*日期選擇器樣式*/
         #divDatepicker {
-            margin-bottom: 20px;
+            /*margin-bottom: 10px;*/
             border: 4px solid #7fad39;
-            border-radius: 20px;
+            border-radius: 20px;    
             padding: 0;
-            display: flex;
+            /*display: flex;*/
             display: flex;
             justify-content: space-between;
         }
@@ -29,23 +29,46 @@
                 border: none;
             }
 
+        #divDateTake{
+            margin-top:4px;
+        }
+
         .fa-caret-left, .fa-caret-right {
             margin-bottom: 4px;
             border: none;
             background-color: transparent;
         }
+
+        .btn-light {
+            background-color: #DFEACE !important;
+            color: black;
+        }
+
+        .btn-success {
+            background-color: #7FAD39;
+            color: white;
+            border: none;
+        }
+
+        table.table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .selectbox {
+            margin-left: -1.2%;
+        }
     </style>
 }
 <h2 id="title">客服回覆</h2>
 <hr />
-<section class="product spad">
+<section class="">
     <div class="container">
         <div class="row">
             @*※※※非會員專區的View的內容請從此處開始※※※*@
             <div class="container">
-
                 <div class="row">
-                    <div class="col-lg-3 col-md-3 ">
+                    <div class="col-lg-3 col-md-3 selectbox">
                         <select name="stype" id="stype" class="custom-select">
                             <option value="999" disabled selected hidden>依處理狀態篩選</option>
                             <option value="未處理">未處理</option>
@@ -81,7 +104,7 @@
             </div>
 
             <table class="table" style="table-layout: fixed">
-                <thead>
+                <thead class="thead-dark">
                     <tr>
                         <th>
                             @Html.DisplayNameFor(model => model.FProblemTime)

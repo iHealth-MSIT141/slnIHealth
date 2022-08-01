@@ -776,27 +776,26 @@
         });
         //inpRegisterConfirmPassword
         const btn = document.querySelector('#btnRegister');
-        btn.addEventListener('click', (event) =>
-        {
+        btn.addEventListener('click', (event) => {
             event.preventDefault();
             let data = $("#registerForm").serialize();
             $.ajax({
                 type: "Post",
                 url: "/Member/Register",
                 data: data,
-                success: function (data)
-                {
+                success: function (data) {
+                  
                     let userName = $("#inpRegisterUserName").val();
-                    if (data == "empty")
-                    {
+                    if (data == "empty") {
                         alert("請注意必填欄位不可空白, 請重新填入");
-
-                    } else if (data == "user") { alert(`${userName}:此帳號已有人使用`) } else
-                    {
+                    } else if (data == "user") {
+                        alert(`${userName}:此帳號已有人使用`)
+                    } else if (data == "FCerror") {
+                        alert("密碼不一致");
+                    } else {
                         alert("歡迎您成為IHealth會員!,請登入會員")
                         $('#registerModal').modal('hide');
                         $('#loginModal').modal('show');
-
                     }
                 }
             });

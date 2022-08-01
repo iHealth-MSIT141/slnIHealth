@@ -109,20 +109,30 @@ namespace prjIHealth.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Register(TMember tm)
+        public IActionResult Register(CLoginViewModel vModel, TMember tm)
         {
-            if (tm.FPassword == null || tm.FUserName == null) { return Content("empty", "text/plain", System.Text.Encoding.UTF8); }
-            else
+            if (vModel.fPassword == null || vModel.fUserName == null)
             {
-                var q = _context.TMembers.FirstOrDefault(m => m.FUserName == tm.FUserName);
-                if (q == null)
+                return Content("empty", "text/plain", System.Text.Encoding.UTF8);
+            }
+            else if (vModel.fPassword == vModel.confirmPassword)
+            {
+                var q = _context.TMembers.FirstOrDefault(m => m.FUserName == vModel.fUserName);
+                if (q != null)
                 {
-                    tm.FPassword = utilities.getCryptPWD(tm.FPassword, tm.FUserName);
-                    _context.TMembers.Add(tm);
+                    return Content("user", "text/plain", System.Text.Encoding.UTF8);
+                }
+                else
+                {
+                    tm.FPassword = utilities.getCryptPWD(vModel.fPassword, vModel.fUserName);
+                    _context.Add(tm);
                     _context.SaveChanges();
                     return Content("true", "text/plain", System.Text.Encoding.UTF8);
                 }
-                else { return Content("user", "text/plain", System.Text.Encoding.UTF8); }
+            }
+            else
+            {
+                return Content("FCerror", "text/plain", System.Text.Encoding.UTF8);
             }
         }
         public IActionResult getUserName([Bind("fUserName")] CLoginViewModel vModel)
