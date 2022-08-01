@@ -12,12 +12,12 @@
                 width: 30px;
                 margin: 0px 10px;
                 background-color: whitesmoke;
-                border: none;
+                border: 1px solid white;
                 border-radius: 50px;
             }
 
                 .divDate button:hover {
-                    border: 2px solid #7FAD39;
+                    border: 1px solid #7FAD39;
                 }
 
         #inputMon {
@@ -27,11 +27,11 @@
 
         #tableCal {
             width: 100%;
-            border: 1px solid #7fad39;
+            border: 1px solid #BFBFBF;
         }
 
         thead {
-            background-color: #7fad39;
+            background-color: #404040;
             color: white;
             font-family: Consolas;
             font-size: 18px;
@@ -41,7 +41,7 @@
         tbody {
             font-size: 18px;
             text-align: center;
-            color: dimgray;
+            color: #7fad39;
         }
 
             tbody tr {
@@ -50,15 +50,16 @@
 
                 tbody tr td {
                     vertical-align: top;
+                    transition: .2s;
                 }
 
         th, td, .orig {
-            border: 1px solid #7fad39;
+            border: 1px solid #BFBFBF;
             width: 120px;
         }
 
         .false {
-            background-color: #F1F1EF;
+            background-color: #F3F3F3;
         }
 
         .true {
@@ -66,7 +67,7 @@
         }
 
         .today {
-            border: 3px solid darkolivegreen;
+            background-color: #EFF5E6;
         }
 
         .color1 {
@@ -113,6 +114,7 @@
             display: inline-block;
             margin: 0px;
             width: 100%;
+            border-radius: 5px;
             font-size: 16px;
             font-weight: 300;
             color: white;
