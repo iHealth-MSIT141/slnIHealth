@@ -239,6 +239,10 @@ namespace prjIHealth.Controllers
         {
             return View();
         }
+        public IActionResult ShowTrackList2()
+        {
+            return View();
+        }
 
         public IActionResult ShowTrackProduct(int? id)//MemberID
         {

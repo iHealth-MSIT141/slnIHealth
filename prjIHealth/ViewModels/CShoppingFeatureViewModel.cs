@@ -12,5 +12,7 @@ namespace prjIHealth.ViewModels
         public string url { get; set; }
         public int page { get; set; }
         public string txtKeyword { get; set; }
+        //public int minPrice { get; set; }
+        //public int maxPrice { get; set; }
     }
 }
