@@ -37,7 +37,10 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Login(CLoginViewModel vModel)
         {
-            if (vModel.fUserName == null || vModel.fPassword == null) { return Content("empty", "text/plain", System.Text.Encoding.UTF8); }
+            if (vModel.fUserName == null || vModel.fPassword == null)
+            {
+                return Content("empty", "text/plain", System.Text.Encoding.UTF8);
+            }
 
             var q = _context.TMembers.FirstOrDefault(tm => tm.FUserName == vModel.fUserName);
             if (q != null)
@@ -108,7 +111,6 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(TMember tm)
         {
-
             if (tm.FPassword == null || tm.FUserName == null) { return Content("empty", "text/plain", System.Text.Encoding.UTF8); }
             else
             {
@@ -150,8 +152,8 @@ namespace prjIHealth.Controllers
         public IActionResult getPassword([Bind("fEmail,fPassword")] CLoginViewModel vModel)
         {
             var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
-            if (vModel.fPassword != null && q!=null)
-            { 
+            if (vModel.fPassword != null && q != null)
+            {
                 if (q.FPassword == utilities.getCryptPWD(vModel.fPassword, q.FUserName))
                 {
                     return Content("true", "text/plain", System.Text.Encoding.UTF8);
@@ -230,17 +232,7 @@ namespace prjIHealth.Controllers
                 }
             }
         }
-        public IActionResult Delete(int? id)
-        {
-            IHealthContext dblIHealth = new IHealthContext();
-            TTrackList trackList = dblIHealth.TTrackLists.FirstOrDefault(t => t.FProductId == id);
-            if (trackList != null)
-            {
-                dblIHealth.TTrackLists.Remove(trackList);
-                dblIHealth.SaveChanges();
-            }
-            return RedirectToAction("ShowTrackList");
-        }
+       
         //========================追蹤清單===========================    
 
         public IActionResult ShowTrackList()
@@ -302,6 +294,18 @@ namespace prjIHealth.Controllers
             return RedirectToAction("ShowTrackList");
         }
 
+        //public IActionResult Delete(int? id)
+        //{
+        //    IHealthContext dblIHealth = new IHealthContext();
+        //    TTrackList trackList = dblIHealth.TTrackLists.FirstOrDefault(t => t.FProductId == id);
+        //    if (trackList != null)
+        //    {
+        //        dblIHealth.TTrackLists.Remove(trackList);
+        //        dblIHealth.SaveChanges();
+        //    }
+        //    return RedirectToAction("ShowTrackList");
+        //}
+
         //===================購買紀錄=============================
         public IActionResult OrderList(int? page)
         {
@@ -334,7 +338,7 @@ namespace prjIHealth.Controllers
                            FRemarks = o.FRemarks,
                            FStatusNumber = o.FStatusNumber,
                            fstatus = o.FStatusNumberNavigation
-                       }).OrderByDescending(a=>a.FDate).ToList();
+                       }).OrderByDescending(a => a.FDate).ToList();
             var pageNumber = page ?? 1;
             var onePageOfPro = pro.ToPagedList(pageNumber, 3);
             ViewBag.onePageOfPro = onePageOfPro;
