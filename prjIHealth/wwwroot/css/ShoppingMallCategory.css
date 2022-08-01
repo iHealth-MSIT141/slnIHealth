@@ -1,0 +1,15 @@
+﻿.selectedCategory {
+    color: #7fad39 !important;
+}
+.sort-asc::after {
+    content: "↑";
+}
+
+.sort-desc::after {
+    content: "↓";
+}
+
+.selectedPage {
+    background-color: #7fad39;
+    color: white;
+}

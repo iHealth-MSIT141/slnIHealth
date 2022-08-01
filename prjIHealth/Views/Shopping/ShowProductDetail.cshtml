@@ -132,12 +132,17 @@
             let count = $("#ProductCount").val();
 
             if (@loginId== 0) {
-                alert("請先登入會員");
-                $("#loginModal").modal("show");
+                pleaseLogin();
             }
             else {
-                addCart(id);
-                alert("已加入購物車");
+                addCart(id,count);
+                SwalGreen.fire({
+                    title: '已成功加入購物車',
+                    text: false,
+                    icon: 'success',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
             }
         })
 
@@ -153,15 +158,19 @@
             event.preventDefault();
             id = $(this).attr("data-id");
             if (@loginId== 0) {
-                alert("請先登入會員");
-                $("#loginModal").modal("show");
+                pleaseLogin();
             }
             else {
                 addTrack(id);
-                alert("已成功加入追蹤清單");
                 console.log("text");
                 $(this).prop("style", "background-color:#7fad39");
-
+                SwalGreen.fire({
+                    title: '已成功加入追蹤清單',
+                    text: false,
+                    icon: 'success',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
             }
         })
         async function addTrack(id) {
@@ -188,8 +197,8 @@
                                             </ul>
                                         </div>
                                         <div class="product__item__text">
-                                            <h6 href="#"id="showProductDetailInDetail" data-id="${product.fProductId}">${product.fProductName}</h6>
-                                            <h5>${product.fUnitprice}</h5>
+                                            <h6 href="#" class="showProductDetailInDetail" data-id="${product.fProductId}">${product.fProductName}</h6>
+                                            <h5 class="showProductDetailInDetail" data-id="${product.fProductId}">${product.fUnitprice}</h5>
                                         </div>
                                     </div>
                                 </div>`
@@ -198,7 +207,7 @@
         })
 
         //按品名會彈出相對應商品明細
-                $("#suggestProduct").delegate("#showProductDetailInDetail", "click", function () {
+                $("#suggestProduct").delegate(".showProductDetailInDetail", "click", function () {
                     id = $(this).attr("data-id");
                     location.href = `/Shopping/ShowProductDetail/${id}`;
                     showProductDetail(id);
@@ -217,12 +226,17 @@
                     event.preventDefault();
                     id = $(this).attr("data-id");
                     if (@loginId== 0) {
-                        alert("請先登入會員");
-                        $("#loginModal").modal("show");
+                        pleaseLogin();
                     }
                     else {
 
-                        alert("已成功加入追蹤清單");
+                        SwalGreen.fire({
+                            title: '已成功加入追蹤清單',
+                            text: false,
+                            icon: 'success',
+                            confirmButtonText: '確認',
+                            showCloseButton: true
+                        })
                         addTrack(id);
                     }
 
@@ -241,21 +255,25 @@
                     event.preventDefault();
                     id = $(this).attr("data-id");
                     if (@loginId == 0) {
-                        alert("請先登入會員");
-                        $("#loginModal").modal("show");
-
+                        pleaseLogin();
                     }
                     else
                     {
-                        addCart(id);
-                        alert("已成功加入購物車");
+                        addCart(id,1);
+                        SwalGreen.fire({
+                            title: '已成功加入購物車',
+                            text: false,
+                            icon: 'success',
+                            confirmButtonText: '確認',
+                            showCloseButton: true
+                        })
                     }
                 })
-                async function addCart(id) {
+                async function addCart(id,count) {
                     //傳值回AddToCartViewModel
                     var data = {};
                     data.txtFid = id;
-                    data.txtCount = 1;
+                    data.txtCount = count;
                     data.discountValue = 0;
                     data.discountID = 10;
                     await $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")", data: data });

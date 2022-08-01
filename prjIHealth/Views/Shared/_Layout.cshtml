@@ -66,6 +66,7 @@
         string LoginbuttonValue = "登入";
         int loginId = 0;
         TMember loginMember = null;
+        string loginEmail = null;
 
         if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
         {
@@ -73,6 +74,7 @@
             loginMember = JsonSerializer.Deserialize<TMember>(logJson);
             LoginbuttonValue = loginMember.FMemberName;
             loginId = loginMember.FMemberId;
+            loginEmail = loginMember.FEmail;
         };
     }
     <!-- 載入動畫 -->
@@ -177,7 +179,7 @@
                                         }
                                         else
                                         {
-                                            <li><a href="~/Member/ShowTrackList" id="fa-heart"><i class="fa fa-heart"></i> <span></span></a></li>
+                                            <li><a href="~/Member/ShowTrackList2" id="fa-heart"><i class="fa fa-heart"></i> <span></span></a></li>
                                             <li><a href="~/Shopping/ShoppingCartList" id="fa-cart"><i class="fa fa-shopping-cart"></i> <span></span></a></li>
                                         }
                                     </ul>
@@ -437,13 +439,13 @@
                                 <input type="password" class="form-control" id="inpRegisterPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母" autocomplete="off">
                                 <span id="passwordSpan1">密碼長度6~12位,要包含大小寫英文字, 數字,符號[!#$%^&*],至少各含一或以上</span>
                             </div>
-                               <div class="form-group">
+                            <div class="form-group">
                                 <label for="confirmPassword">請輸入確認密碼</label>
                                 <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showRegisterConfirmPassword"></i>
                                 <input type="password" class="form-control" id="inpRegisterConfirmPassword" name="confirmPassword" placeholder="確認密碼 " autocomplete="off">
                                 <h6 id="confirmH6"></h6>
                             </div>
-                         
+
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -548,25 +550,35 @@
 
                     <form action="~/Member/ResetPassword" id="resetPasswordForm" method="post" enctype="application/x-www-form-urlencoded" name="userInfo">
                         <div class="form-group">
-                            <label for="fEmail">請輸入註冊時的電子信箱</label>
-                            <input type="text" class="form-control" id="inpResetPasswordEmail" name="fEmail" placeholder="email" autocomplete="off">
+
+                            @if (LoginbuttonValue == "登入")
+                            {<label for="fEmail">請輸入註冊時的電子信箱</label>
+                                <input type="text" class="form-control" id="inpResetPasswordEmail" name="fEmail" placeholder="email" autocomplete="off" value="@loginEmail">
+                            }
+                            else
+                            {<label for="fEmail">@LoginbuttonValue 您好, 請填入以下資料 </label>
+                            <input type="hidden" class="form-control" id="inpResetPasswordEmail" name="fEmail" placeholder="email" autocomplete="off" value="@loginEmail">
+                        }
                         </div>
                         <div class="form-group">
                             <label for="fPassword">請輸入密碼</label>
                             <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showPassword1"></i>
                             <input type="password" class="form-control" id="inpResetPassword" name="fPassword" placeholder="登入密碼" autocomplete="off">
+                            <h6 id="passwordRestH6"></h6>
                         </div>
                         <div class="form-group">
                             <label for="firstPassword">請輸入新的密碼</label>
                             <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showFirstPassword"></i>
                             <input type="password" class="form-control" id="inpFirstPassword" name="firstPassword" placeholder="重設密碼 " autocomplete="off">
                             <span id="passwordSpan">密碼長度6~12位,要包含大小寫英文字, 數字,符號[!#$%^&*],至少各含一或以上</span>
+                            <h6 id="newPasswordRestH6"></h6>
+
                         </div>
                         <div class="form-group">
                             <label for="confirmPassword">請輸入確認密碼</label>
                             <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showConfirmPassword"></i>
                             <input type="password" class="form-control" id="inpConfirmPassword" name="confirmPassword" placeholder="確認密碼 " autocomplete="off">
-                            <h6 id="confirmH6"></h6>
+                            <h6 id="confirmRestH6"></h6>
                         </div>
                         <div style="justify-content: center; display: flex;">
                             <button id="btnResetPassword" value="送出" class="btn btn-success">
@@ -739,7 +751,7 @@
                     if (data == "false")
                     {
                         alert("此帳號可使用");
-                      
+
                     } else
                     {
                         alert("此帳號已有人使用, 請換個帳號");
@@ -838,6 +850,8 @@
         });
         //=========================ajax重設密碼,popup登入頁面================================
              //=========================驗證電子信箱ajax===============================
+
+
         $("#inpResetPasswordEmail").on('blur', () =>
         {
             let data = $("#resetPasswordForm").serialize();
@@ -882,9 +896,19 @@
                 data: data,
                 success: function (data)
                 {
-                    if (data == "true") { alert('密碼正確, 請繼續'); }
-                    else if (data == "false") { alert('密碼錯誤, 請重新輸入'); }
-                    else { alert('密碼或電子信箱空白, 請重新輸入');  }
+                    if (data == "true")
+                    {
+                        $('#passwordRestH6').text("密碼正確, 請繼續");
+                    }
+                    else if (data == "false")
+                    {
+                        $('#passwordRestH6').text('密碼錯誤, 請重新輸入');
+                      
+                    }
+                    else
+                    {
+                        $('#passwordRestH6').text('密碼或電子信箱空白, 請重新輸入');
+                    }
                 }
             });
         });
@@ -906,8 +930,8 @@
         {
             var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!#$%^&*]).{6,12}$/;
             var resultReg=regEx.test($('#inpFirstPassword').val());
-            if (resultReg) { $('#passwordSpan').text("符合要求,請繼續"); } else
-            {  alert("密碼格式不符")};
+            if (resultReg) { $('#passwordSpan').text("格式符合要求,請繼續"); } else
+            { $('#passwordSpan').text("密碼格式不符");  };
         });
               $("#showConfirmPassword").click(function ()
         {
@@ -924,11 +948,17 @@
         });
         $('#inpConfirmPassword').on('blur', () =>
         {
-            $('#confirmH6').empty();
+            $('#confirmRestH6').empty();
             let firstPassword = $('#inpFirstPassword').val();
             let confirmPassword = $('#inpConfirmPassword').val();
-            if (firstPassword != confirmPassword) { $('#confirmH6').text("輸入密碼不一致"); }
-            else { $('#confirmH6').text('密碼一致,請繼續'); }
+            if (firstPassword != confirmPassword)
+            {
+                $('#confirmRestH6').text("輸入密碼不一致");
+            }
+            else
+            {
+                $('#confirmRestH6').text('密碼一致,請繼續');
+            }
         });
 
         const btnRP = document.querySelector('#btnResetPassword');
@@ -946,16 +976,28 @@
                     else if (data == "false")
                     {
                         alert("電子信箱錯誤,請重新輸入");
-                        $('#fEmailReset').val(""); $('#fPasswordReset').val("");
+                        $('#fEmailReset').val("");
+                        $('#fPasswordReset').val("");
                         $('#firstPassword').val("");
                         $('#confirmPassword').val("");
 
-                    } else if (data == "PasswordError") { alert(`密碼錯誤或空白, 請重新輸入`); } else if (data == "ConfirmPasswordError") { alert(`重設密碼不一致, 請重新輸入`) } else
+                    } else if (data == "PasswordError")
                     {
+                        alert(`密碼錯誤或空白, 請重新輸入`);
+                    } else if (data == "ConfirmPasswordError")
+                    {
+                        alert(`重設密碼不一致, 請重新輸入`)
+                    } else
+                    {
+                        $('#fEmailReset').val("");
+                        $('#fPasswordReset').val("");
+                        $('#firstPassword').val("");
+                        $('#confirmPassword').val("");
                         alert(`${data},密碼重設成功, 請登入`);
+                    }
                         $('#resetPasswordModal').modal('hide');
                         $('#loginModal').modal('show');
-                    }
+                      
                 }
             });
         });
@@ -983,7 +1025,7 @@
         $("#btnDemoUserLog").click(function ()
         {
             $("#inpLogInUserName").val("jay0513");
-            $("#inpLogInPassword").val("jay0513@1388");
+            $("#inpLogInPassword").val("Jay0513!1388");
         });
         $("#btnDemoCoachLog").click(function ()
         {
