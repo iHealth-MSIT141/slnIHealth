@@ -4,19 +4,7 @@
 }
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        .divTopic {
-            margin-bottom: 10px;
-        }
-
-        .divBar {
-            width: 200px;
-            height: 3px;
-            margin-left: 30px;
-            margin-bottom: 50px;
-            background-color: #7FAD39;
-        }
-
+    <style>       
         /*會員專區*/
         .blog__btn {
             display: inline-block;
@@ -139,7 +127,7 @@
         /*行事曆*/
         .divDate {
             width: 70%;
-            margin: 30px auto;
+            margin: 20px auto;
             padding: 0px 100px;
             display: flex;
         }
@@ -160,7 +148,13 @@
             display: inline;
             width: 300px;
         }
-
+        .divDL{
+            text-align:right;
+            margin-bottom:10px;
+            position:absolute;
+            right:15px;
+            top:35px;
+        }
         #tableCal {
             width: 100%;
             border: 1px solid #BFBFBF;
@@ -193,7 +187,7 @@
                 border: 1px solid #BFBFBF;
                 width: 120px;
             }
-
+       
         .false {
             background-color: #F3F3F3;
         }
@@ -259,7 +253,7 @@
 }
 
 @*banner大圖*@
-<section class="breadcrumb-section set-bg" data-setbg="/img/banner/banner_mem.png">
+<section class="breadcrumb-section set-bg" data-setbg="/img/banner/banner_coach.png">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -295,9 +289,7 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
-                @*※※※會員專區View內容請從此開始※※※*@
-                <div class="divTopic"><h3><b>教課列表</b></h3></div>
-                <div class="divBar reveal_r1"></div>
+                @*※※※會員專區View內容請從此開始※※※*@                
                 <table class="table reveal_b1">
                     <thead class="thead-dark">
                         <tr>
@@ -306,7 +298,7 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.MemberName)
-                            </th>                            
+                            </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.FCourseName)
                             </th>
@@ -341,7 +333,7 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.MemberName) (@item.MemberId)
-                                    </td>                                    
+                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.FCourseName)
                                     </td>
@@ -392,7 +384,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="addForm">
+                        <form>
                             <div>
                                 <table class="table">
                                     <thead>
@@ -500,11 +492,17 @@
                         <input type="month" id="inputMon" />
                         <button id="btnNext"><i class="fa-solid fa-caret-right"></i></button>
                     </div>
+                    <div class="divDL">
+                        <button type="button" class="btn btn-success" id="btnDownload"><i class="fa-solid fa-download"></i>&nbsp;&nbsp;Download</button>
+                    </div>
                     <div class="result">
                         <div class="divCal">
                             <div>
                                 <table id="tableCal">
                                     <thead>
+                                        <tr id="trHead">
+                                            <th colspan="7" id="thYearMon"></th>
+                                        </tr>
                                         <tr>
                                             <th>Sun</th>
                                             <th>Mon</th>
@@ -521,7 +519,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer">                
                 <button type="button" class="btn btn-secondary btnClose" id="btnClose" data-dismiss="modal">關閉</button>
             </div>
         </div>
@@ -557,7 +555,7 @@
                             <dd class="col-8">@item.Status</dd>
                         </dl>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
     }
@@ -705,16 +703,27 @@
         }
     })
     </script>
-
+    <script src="https://superal.github.io/canvas2image/canvas2image.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     <!--行事曆-->
     <script>
+        //下載圖片
+        document.querySelector("#btnDownload").addEventListener("click", () => {
+            html2canvas(document.querySelector('#tableCal'), {
+                onrendered: function (canvas) {
+                    return Canvas2Image.saveAsPNG(canvas);
+                }
+            });
+        });
+
     let fullDate = new Date();  //取得今天日期
     let Year = fullDate.getFullYear();
     let Month = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
     let date = fullDate.getDate();
     let totalDate = (new Date(Year, Month, 0)).getDate();   //取得該月總天數
     let weekDay, firstDay;
-    $("#inputMon").val(`${Year}-${Month}`);
+        $("#inputMon").val(`${Year}-${Month}`);
+        $("#thYearMon").text(`${Year}-${Month}`);
         CreateCalendar();
         GetReservations()
 
@@ -739,6 +748,7 @@
             Month = newMon;
         }
         $("#inputMon").val(`${Year}-${Month}`);
+        $("#thYearMon").text(`${Year}-${Month}`);
         CreateCalendar();
         GetReservations()
     })
@@ -754,6 +764,7 @@
             Month = newMon;
         }
         $("#inputMon").val(`${Year}-${Month}`);
+        $("#thYearMon").text(`${Year}-${Month}`);
         CreateCalendar();
         GetReservations()
     })
@@ -827,7 +838,6 @@
         function GetReservations() {
             $.getJSON("@Url.Content("~/Coach/GetAllReservation")", function (data) {
                 $.each(data, function (index, record) {
-                    console.log(record);
                 if (record.courseDate.substr(0, 4) == Year && record.courseDate.substr(4, 2) == Month) {
                     let theDate = record.courseDate.substr(6, 2) < 10 ? record.courseDate.substr(7, 1) : record.courseDate.substr(6, 2);
                     let time = record.courseTime.substr(0, 2) + ":" + record.courseTime.substr(2, 2);
@@ -835,7 +845,7 @@
                     }
                 })
 
-                
+
             }).done(() => {
                 //取得所有MemberId，不同Member設定不同顏色
                 $.getJSON("@Url.Content("~/Coach/GetReservationMemId")", function (data) {
