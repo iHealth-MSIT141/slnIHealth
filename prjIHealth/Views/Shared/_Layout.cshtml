@@ -803,26 +803,23 @@
         });
         //=========================忘記密碼,輸入電子郵件正確,popup至重設密碼頁面=============
 
-        $('#inpForgotPassword').on('input', () =>
-        {
-            const emailReg = /^(?=.*[a-z]) (?=.*[A-Z])(?=.*[0-9]){6,15}/;
-            const validateEmail = (emailReg) =>
-            {
-                return email.match(re);
-            }
-            const $result = $('#result');
-            const email = $('#inpForgotPassword').val();
-            $result.text('');
-            if (validateEmail(email))
-            {
-                $result.text(email + ' is valid :)');
-                $result.css('color', 'green');
-            } else
-            {
-                $result.text(email + ' is not valid :(');
-                $result.css('color', 'red');
-            }
-            return false; });
+        $('#inpForgotPassword').on('blur', () => {
+            let data = $("#passwordForgotForm").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Member/getEmail",
+                data: data,
+                success: function (data) {
+                    if (data == "false") {
+                        alert("電子信箱錯誤或空白,請重新輸入");
+                        $('#inpForgotPassword').val("");
+
+                    } else {
+                        alert("電子信箱正確,請繼續");
+                    }
+                }
+            });
+        });
 
         const btnFP = document.querySelector('#btnForgotPassword');
         btnFP.addEventListener('click', (event) =>
@@ -993,11 +990,13 @@
                         $('#fPasswordReset').val("");
                         $('#firstPassword').val("");
                         $('#confirmPassword').val("");
-                        alert(`${data},密碼重設成功, 請登入`);
-                    }
-                        $('#resetPasswordModal').modal('hide');
-                        $('#loginModal').modal('show');
-                      
+                        if (@loginId== 0) {
+                            alert(`${data},密碼重設成功, 請登入`); $('#resetPasswordModal').modal('hide');
+                            $('#loginModal').modal('show');
+                        } else {
+                            alert(`${data},密碼重設成功`); $('#resetPasswordModal').modal('hide');
+                       };                    
+                    }                 
                 }
             });
         });
@@ -1057,9 +1056,9 @@
         //重設密碼Demo
         $("#btnDemoResetPassword").click(function () {
             $("#inpResetPasswordEmail").val("charles.chou570114@gmail.com");
-            $("#inpResetPassword").val("charles");
-            $("#inpFirstPassword").val("321");
-            $("#inpConfirmPassword").val("321");
+            $("#inpResetPassword").val("!QAZ2wsx");
+            $("#inpFirstPassword").val("1qaz%TGB");
+            $("#inpConfirmPassword").val("1qaz%TGB");
         });
 
         //需登入的頁面導去登入
@@ -1083,7 +1082,6 @@
         })
 
         //動畫
-
         ScrollReveal().reveal('.reveal_t1', { duration: 1000, origin: 'top', distance: '100px' });
         ScrollReveal().reveal('.reveal_b1', { duration: 1100, origin: 'bottom', distance: '500px' });
         ScrollReveal().reveal('.reveal_b2', { duration: 1100, origin: 'bottom', distance: '500px', delay: 100 });
@@ -1104,6 +1102,7 @@
         async function showTrackCount() {
             if (@loginId == 0) {
                 $("#fa-heart").children("span").text("");
+                $("#fa-heart").children("span").hide();
             }
             else {
             url = "@Url.Content("~/Member/ShowTrackCount/")" + @loginId;
@@ -1111,9 +1110,11 @@
                 let datas = await response.json();
                 if (datas == 0) {
                     $("#fa-heart").children("span").text("");
+                    $("#fa-heart").children("span").hide();
                 }
                 else {
                     $("#fa-heart").children("span").text(datas);
+                    $("#fa-heart").children("span").show();
                 }
             }
         }
@@ -1121,6 +1122,7 @@
         async function showCartCount() {
             if (@loginId == 0) {
                 $("#fa-cart").children("span").text("");
+                $("#fa-cart").children("span").hide();
             }
             else {
             url = "@Url.Content("~/Shopping/ShowCartCount/")";
@@ -1128,9 +1130,11 @@
                 let datas = await response.json();
                 if (datas == 0) {
                     $("#fa-cart").children("span").text("");
+                    $("#fa-cart").children("span").hide();
                 }
                 else {
                     $("#fa-cart").children("span").text(datas);
+                    $("#fa-cart").children("span").show();
                 }
                 //console.log(datas)
             }

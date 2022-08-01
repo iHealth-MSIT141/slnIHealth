@@ -139,15 +139,23 @@ namespace prjIHealth.Controllers
         }
         public IActionResult getEmail([Bind("fEmail")] CLoginViewModel vModel)
         {
-            var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
-            if (q != null)
+            if (vModel.fEmail != null)
             {
-                return Content("true", "text/plain", System.Text.Encoding.UTF8);
+                var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
+                if (q != null)
+                {
+                    return Content("true", "text/plain", System.Text.Encoding.UTF8);
+                }
+                else
+                {
+                    return Content("false", "text/plain", System.Text.Encoding.UTF8);
+                }
             }
             else
             {
                 return Content("false", "text/plain", System.Text.Encoding.UTF8);
-            }
+            };
+          
         }
         public IActionResult getPassword([Bind("fEmail,fPassword")] CLoginViewModel vModel)
         {
