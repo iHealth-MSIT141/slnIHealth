@@ -26,19 +26,19 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group row justify-content-center">
                 <div class="col-md-3 ">
-                    <label asp-for="FMemberName" class="control-label"></label>
+                    <label asp-for="FMemberName" class="control-label" ></label>
                 </div>
                 <div class="col-md-7">
-                    <input asp-for="FMemberName" class="form-control" />
+                    <input asp-for="FMemberName" class="form-control" autocomplete="off"/>
                 </div>
                 <span asp-validation-for="FMemberName" class="text-danger"></span>
             </div>
             <div class="form-group row justify-content-center">
-                <div class="col-md-3 ">
+                @*<div class="col-md-3 ">
                     <label asp-for="FPassword" class="control-label"></label>
-                </div>
+                </div>*@
                 <div class="col-md-7">
-                    <input asp-for="FPassword" class="form-control" />
+                    <input type="hidden" asp-for="FPassword" class="form-control" value="!QAZ2wsx" autocomplete="off"/>
                 </div>
                 <span asp-validation-for="FPassword" class="text-danger"></span>
             </div>
@@ -47,7 +47,7 @@
                     <label asp-for="FBirthday" class="control-label"></label>
                 </div>
                 <div class="col-md-7">
-                    <input asp-for="FBirthday" class="form-control" />
+                    <input asp-for="FBirthday" class="form-control" autocomplete="off"/>
                 </div>
                 <span asp-validation-for="FBirthday" class="text-danger"></span>
             </div>
@@ -56,16 +56,16 @@
                     <label asp-for="FGender" class="control-label"></label>
                 </div>
                 <div class="col-md-7">
-                    <input asp-for="FGender" class="form-control" />
+                    <input asp-for="FGender" class="form-control" autocomplete="off"/>
                 </div>
                 <span asp-validation-for="FGender" class="text-danger"></span>
             </div>
             <div class="form-group row justify-content-center">
-                <div class="col-md-3 ">
+                @*<div class="col-md-3 ">
                     <label asp-for="FPicturePath" class="control-label"></label>
-                </div>
+                </div>*@
                 <div class="col-md-7">
-                    <input asp-for="FPicturePath" class="form-control" />
+                    <input type="hidden" asp-for="FPicturePath" class="form-control" autocomplete="off"/>
                 </div>
                 <span asp-validation-for="FPicturePath" class="text-danger"></span>
 
@@ -75,7 +75,7 @@
                     <label asp-for="FUserName" class="control-label"></label>
                 </div>
                 <div class="col-md-7">
-                    <input asp-for="FUserName" class="form-control" />
+                    <input asp-for="FUserName" class="form-control" autocomplete="off"/>
                 </div>
                 <span asp-validation-for="FUserName" class="text-danger"></span>
             </div>
@@ -84,7 +84,7 @@
                     <label asp-for="FAddress" class="control-label"></label>
                 </div>
                 <div class="col-md-7">
-                    <input asp-for="FAddress" class="form-control" />
+                    <input asp-for="FAddress" class="form-control" autocomplete="off"/>
                 </div>
                 <span asp-validation-for="FAddress" class="text-danger"></span>
             </div>
@@ -93,25 +93,25 @@
                     <label asp-for="FPhone" class="control-label"></label>
                 </div>
                 <div class="col-md-7">
-                    <input asp-for="FPhone" class="form-control" />
+                    <input asp-for="FPhone" class="form-control" autocomplete="off"/>
                 </div>
                 <span asp-validation-for="FPhone" class="text-danger"></span>
             </div>
             <div class="form-group row justify-content-center">
                 <div class="col-md-3 ">
-                    <label asp-for="FEmail" class="control-label"></label>
+                    <label asp-for="FEmail" class="control-label" ></label>
                 </div>
                 <div class="col-md-7">
-                    <input asp-for="FEmail" class="form-control" />
+                    <input asp-for="FEmail" class="form-control" autocomplete="off"/>
                 </div>
                 <span asp-validation-for="FEmail" class="text-danger"></span>
             </div>
             <div class="form-group row justify-content-center">
-                <div class="col-md-3 ">
-                    <label asp-for="FRegisterDate" class="control-label"></label>
-                </div>
+                @*<div class="col-md-3 ">
+                    <label  asp-for="FRegisterDate" class="control-label" ></label>
+                </div>*@
                 <div class="col-md-7">
-                    <input asp-for="FRegisterDate" class="form-control" />
+                    <input type="hidden" asp-for="FRegisterDate" class="form-control" autocomplete="off" id="fRegisterDate"/>
                 </div>
                 <span asp-validation-for="FRegisterDate" class="text-danger"></span>
 
@@ -129,7 +129,7 @@
                     <label asp-for="FDisabled" class="control-label"></label>
                 </div>
                 <div class="col-md-7">
-                    <input asp-for="FDisabled" class="form-control" />
+                    <input asp-for="FDisabled" class="form-control" autocomplete="off"/>
                 </div>
                 <span asp-validation-for="FDisabled" class="text-danger"></span>
 
@@ -141,7 +141,7 @@
                     <label asp-for="FRemarks" class="control-label"></label>
                 </div>
                 <div class="col-md-7">
-                    <input asp-for="FRemarks" class="form-control" />
+                    <input asp-for="FRemarks" class="form-control" autocomplete="off" />
                 </div>
                 <span asp-validation-for="FRemarks" class="text-danger"></span>
 
@@ -162,5 +162,12 @@
 
 
 @section Scripts {
+<script>        //==========================註冊取得系統日期========================================
+    var registerD = new Date();
+    var year = registerD.getFullYear().toString();
+    var month = (registerD.getMonth() + 101).toString().substring(1);
+    var day = (registerD.getDate() + 100).toString().substring(1);
+    var str = year + month + day;
+    $("#fRegisterDate").val(str);</script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

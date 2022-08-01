@@ -96,7 +96,7 @@
                     <div class="shoping__discount">
                         <h5>折扣代碼</h5>
                         <form action="#">
-                            <input type="text" placeholder="請輸入折扣代碼" id="codestring">
+                            <input type="text" autocomplete="off" placeholder="請輸入折扣代碼" id="codestring">
                             <button type="button" class="site-btn" id="checkdiscount">使用折扣代碼</button>
                         </form>
                     </div>
@@ -168,9 +168,11 @@
             let newcartcount = oricartcount - 1;
             if (newcartcount == 0) {
                 $("#fa-cart").children("span").text("");
+                $("#fa-cart").children("span").hide();
             }
             else {
                 $("#fa-cart").children("span").text(newcartcount);
+                $("#fa-cart").children("span").show();
             }           
         }
         //判斷是否有折價卷旗標
@@ -188,7 +190,13 @@
             const response = await fetch('@Url.Content("~/Shopping/CheckDiscount")' + `?code=${codestring}`);
             const datas = await response.json();
             if (datas.length == 0) {
-                alert("請輸入正確折扣碼");
+                SwalGreen.fire({
+                    title: '請輸入正確折扣碼',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
             }
             else {
         //讀取折扣額並計算總金額後，再將數字用方法轉回千分位型態字串且加上NT$
@@ -199,6 +207,13 @@
                 let stringtotal = "NT$" + toCurrency(total)
                 $('#total').html(stringtotal)
                 hasdiscount = true;
+                SwalGreen.fire({
+                    title: '已成功使用折扣碼',
+                    text: false,
+                    icon: 'success',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
             }
         //為現有商品加上折扣金額的值供結帳頁面使用
             var data = {};

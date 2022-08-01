@@ -200,7 +200,13 @@
         function CheckTTP() {
             if ($('#FContact').val() == '' || $('#address').val() == '' || $('#pcode').val() == '' || $('#city').val() == '' || $('#FPhone').val()=='')
             {
-                alert("必填欄位未填寫");
+                SwalGreen.fire({
+                    title: '必填欄位未填寫',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
                 return false;
             } else {
                 return true;

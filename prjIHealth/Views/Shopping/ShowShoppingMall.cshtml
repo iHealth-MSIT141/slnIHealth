@@ -248,7 +248,7 @@
                     <button type="button" class="hero__search__form site-btn sort" data-sort="" style="width:20%">按價格排序</button>
                     <div class="hero__search__form " style="width:57.3%" id="search">
                         <form method="post">
-                            <input style="width:392.1px;height:46px" id="txtKeyword" name="txtKeyword" type="text" autocomplete="off">
+                            <input style="width:392.1px;height:46px" id="txtKeyword" name="txtKeyword" type="text" placeholder="請輸入關鍵字" autocomplete="off">
                             <button type="button" class="site-btn" id="btnSearch" style="float:right">搜尋</button>
                         </form>
                     </div>
@@ -347,7 +347,13 @@
                     page = page + 1;
                 }
                 for (let i = 1; i < page; i++) {
-                    pageNum += `<a href="#" class="pageSelect">${i}</a>`;
+                    if (i == 1) {
+                        pageNum = `<a href="#" class="pageSelect selectedPage">${i}</a>`;
+                    }
+                    else {
+                        pageNum += `<a href="#" class="pageSelect">${i}</a>`;
+                    }
+                    
                 }
                 $(".product__pagination").html(pageNum);
 
@@ -474,12 +480,13 @@
 
             //按心心會加入追蹤清單
             $("#showProduct").delegate(".addToTrack", "click", function (event) {
-                event.preventDefault();
+                event.preventDefault();              
                 id = $(this).attr("data-id");
                 if (@loginId== 0) {
                     pleaseLogin();
                 }
                 else {
+                    $("#fa-heart").children("span").show();
                     SwalGreen.fire({
                         title: '已成功加入追蹤清單',
                         text: false,
@@ -508,7 +515,8 @@
             pleaseLogin();
             }
             else {
-            addCart(id);
+                addCart(id);
+                $("#fa-cart").children("span").show();
             SwalGreen.fire({
                     title: '已成功加入購物車',
                     text: false,

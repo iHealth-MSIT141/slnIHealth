@@ -219,9 +219,11 @@
                     let newCount = count - 1;
                     if (newCount == 0) {
                         $("#fa-heart").children("span").text("");
+                        $("#fa-heart").children("span").hide();
                     }
                     else {
                         $("#fa-heart").children("span").text(newCount);
+                        $("#fa-heart").children("span").show();
                     }
                 }
             })
