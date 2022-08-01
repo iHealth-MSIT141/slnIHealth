@@ -148,7 +148,7 @@
                 width: 30px;
                 margin: 0px 10px;
                 background-color: whitesmoke;
-                border:1px solid white;
+                border: 1px solid white;
                 border-radius: 50px;
             }
 
@@ -186,7 +186,7 @@
 
                     #tableCal tbody tr td {
                         vertical-align: top;
-                        transition:.2s;
+                        transition: .2s;
                     }
 
             #tableCal th, #tableCal td, .orig {
@@ -250,12 +250,11 @@
             display: inline-block;
             margin: 0px;
             width: 100%;
-            border-radius:5px;
+            border-radius: 5px;
             font-size: 14px;
             font-weight: 300;
             color: white;
         }
-
     </style>
 }
 
@@ -307,10 +306,7 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.MemberName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.MemberPhone)
-                            </th>
+                            </th>                            
                             <th>
                                 @Html.DisplayNameFor(model => model.FCourseName)
                             </th>
@@ -344,11 +340,8 @@
                                         @count
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.MemberName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.MemberPhone)
-                                    </td>
+                                        @Html.DisplayFor(modelItem => item.MemberName) (@item.MemberId)
+                                    </td>                                    
                                     <td>
                                         @Html.DisplayFor(modelItem => item.FCourseName)
                                     </td>
@@ -365,7 +358,6 @@
                                         <td id="remain_@item.FCourseId">
                                             @remain
                                         </td>
-
                                     }
                                     <td id="status_@item.FCourseId">
                                         @Html.DisplayFor(modelItem => item.Status)
@@ -381,7 +373,6 @@
                 <div class="divLink reveal_b2">
                     <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span><b>&nbsp;&nbsp;想一覽所有課程？</b></span></div>
                     <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><span data-toggle="modal" data-target="#addModal_cal">&nbsp;&nbsp;查看<b>課程行事曆</b></span></div>
-                    @*<div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CoachCalendar">&nbsp;&nbsp;前往<b>課程行事曆</b></a></div>*@
                 </div>
             </div>
         </div>
@@ -493,7 +484,7 @@
 }
 
 <!--Modal-Calendar-->
-<div class="modal fade" id="addModal_cal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal_cal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -536,6 +527,41 @@
         </div>
     </div>
 </div>
+
+@{
+    <!--Modal-課程資料-->
+    foreach (var item in Model)
+    {
+        <div class="modal fade modal_@item.FCourseId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title h5Records"><b>@item.FCourseName</b><span></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <dl class="row">
+                            <dt class="col-4">會員編號： </dt>
+                            <dd class="col-8">@item.MemberId</dd>
+                            <dt class="col-4">會員姓名： </dt>
+                            <dd class="col-8">@item.MemberName</dd>
+                            <dt class="col-4">聯絡電話： </dt>
+                            <dd class="col-8">@item.MemberPhone</dd>
+                            <dt class="col-4">總堂數： </dt>
+                            <dd class="col-8">@item.FCourseTotal</dd>
+                            <dt class="col-4">預設上課時段： </dt>
+                            <dd class="col-8">@db.TAvailableTimes.FirstOrDefault(at => at.FAvailableTimeNum == item.FAvailableTimeNum).FAvailableTime</dd>
+                            <dt class="col-4">課程狀態： </dt>
+                            <dd class="col-8">@item.Status</dd>
+                        </dl>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    }
+}
 
 
 @section Scripts{
@@ -801,12 +827,15 @@
         function GetReservations() {
             $.getJSON("@Url.Content("~/Coach/GetAllReservation")", function (data) {
                 $.each(data, function (index, record) {
+                    console.log(record);
                 if (record.courseDate.substr(0, 4) == Year && record.courseDate.substr(4, 2) == Month) {
                     let theDate = record.courseDate.substr(6, 2) < 10 ? record.courseDate.substr(7, 1) : record.courseDate.substr(6, 2);
                     let time = record.courseTime.substr(0, 2) + ":" + record.courseTime.substr(2, 2);
-                    $(`#${Year + Month + theDate}`).append(`<div class="divRecord r${record.memberId}"><b>${record.memberName}</b>-${time}</div>`);
+                    $(`#${Year + Month + theDate}`).append(`<div class="divRecord r${record.memberId} r${record.fCourseId}" data-toggle='modal' data-target=".modal_${record.fCourseId}"><b>${record.memberName}</b>-${time}</div>`);
                     }
                 })
+
+                
             }).done(() => {
                 //取得所有MemberId，不同Member設定不同顏色
                 $.getJSON("@Url.Content("~/Coach/GetReservationMemId")", function (data) {

@@ -48,7 +48,6 @@ namespace prjIHealth.ViewModels
             get { return Course.FCoachContact.FMember.FMemberName; }
             set { Course.FCoachContact.FMember.FMemberName = value; }
         }
-        [DisplayName("聯絡電話")]
         public string MemberPhone
         {
             get { return Course.FCoachContact.FMember.FPhone; }
@@ -66,7 +65,7 @@ namespace prjIHealth.ViewModels
             get { return Course.FCourseName; }
             set { Course.FCourseName = value; }
         }
-        [DisplayName("上課時段")]
+        [DisplayName("預設上課時段")]
         public int? FAvailableTimeNum
         {
             get { return Course.FAvailableTimeNum; }
