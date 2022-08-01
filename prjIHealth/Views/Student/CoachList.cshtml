@@ -150,15 +150,15 @@
 
         .divCoachCard {
             display: flex;
-            border-radius: 10px;
+            border-radius: 15px;
             padding: 20px;
             margin-bottom: 30px;
-            border: 1px solid whitesmoke;
-            box-shadow: 2px 2px 5px lightgray;
+            border: 1px solid lightgray;            
             transition:.3s;
         }
             .divCoachCard:hover {
                 border: 1px solid #7FAD39;
+                box-shadow: 2px 2px 5px lightgray;
             }
 
         .divImg {
@@ -422,7 +422,7 @@
                 <div class="divSearch row">
                     <form class="col-lg-7" method="post">
                         <div class="divKeyword reveal_t1">
-                            <input type="text" name="txtKeyword" id="ipKeyword" class="form-control inKeyword" placeholder="請輸入關鍵字" value="@ViewBag.Keyword">
+                            <input type="text" name="txtKeyword" id="ipKeyword" class="form-control inKeyword" placeholder="Search..." value="@ViewBag.Keyword">
                             <div class="divSubmit">
                                 <button type="submit" class="btn btn-success btnSearch" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
