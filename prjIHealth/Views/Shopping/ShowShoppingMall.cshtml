@@ -42,7 +42,7 @@
                             <li><a href="#" data-id="5" class="categoryItem">女裝</a></li>
                         </ul>
                         <br />
-                        <div class="sidebar__item">
+                        @*<div class="sidebar__item">
                             <h4>以價格搜尋</h4>
                             <br />
                             <div class="price-range-wrap">
@@ -59,11 +59,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                         <br />
                         <div class="sidebar__item">
                             <div class="latest-product__text">
-                                <h4>推薦商品</h4>
+                                <h4>熱門商品</h4>
                                 <div class="latest-product__slider owl-carousel">
                                     <div class="latest-prdouct__slider__item">
                                         @{
@@ -298,11 +298,11 @@
             sort: "",
             url: "",
             page: 1,
-            txtKeyword: "",
-            minPrice:50,
-            maxPrice:5000
+            txtKeyword: ""
+            //minPrice:50,
+            //maxPrice:5000
         }
-
+        
         //js轉換數字為千分位型態方法
         function toCurrency(num) {
             var parts = num.toString().split('.');
@@ -362,7 +362,7 @@
                     $('html,body').animate({ scrollTop: 10 }, 'slow');
                 })
 
-                @*if ($(".productitem").length == 0) {
+                if ($(".productitem").length == 0) {
                     SwalGreen.fire({
                     title: '查無搜尋結果',
                     text: '請重新搜尋或選擇篩選條件。',
@@ -373,7 +373,7 @@
                     if (result.isConfirmed)
                         $(location).prop("href", "@Url.Content("~/Shopping/ShowShoppingMall")");
                 })
-                }*@
+                }
             })
         }
 

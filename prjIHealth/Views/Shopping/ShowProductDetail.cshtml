@@ -135,7 +135,7 @@
                 pleaseLogin();
             }
             else {
-                addCart(id);
+                addCart(id,count);
                 SwalGreen.fire({
                     title: '已成功加入購物車',
                     text: false,
@@ -259,7 +259,7 @@
                     }
                     else
                     {
-                        addCart(id);
+                        addCart(id,1);
                         SwalGreen.fire({
                             title: '已成功加入購物車',
                             text: false,
@@ -269,11 +269,11 @@
                         })
                     }
                 })
-                async function addCart(id) {
+                async function addCart(id,count) {
                     //傳值回AddToCartViewModel
                     var data = {};
                     data.txtFid = id;
-                    data.txtCount = 1;
+                    data.txtCount = count;
                     data.discountValue = 0;
                     data.discountID = 10;
                     await $.ajax({ type: "POST", url: "@Url.Action("ShowProductDetail")", data: data });

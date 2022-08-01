@@ -268,7 +268,7 @@ namespace prjiHealth.Controllers
             IEnumerable<TProduct> dataShoppingItems = null;
             //預設顥示商品
             dataShoppingItems = from t in dblIHealth.TProducts
-                                where t.FUnitprice >= vModel.minPrice && t.FUnitprice <= vModel.maxPrice
+                                //where t.FUnitprice >= vModel.minPrice && t.FUnitprice <= vModel.maxPrice
                                 select t;
 
             //以價格排序
@@ -308,8 +308,6 @@ namespace prjiHealth.Controllers
             int userID = TakeMemberID();
             var p = new CProductViewModel().ProductList.FirstOrDefault(t => t.FProductId == id);
 
-            //TODO
-            //判定產品有沒有曾出現於該會員的追蹤清單內
             var q = (from a in dblIHealth.TTrackLists
                      where a.FMemberId == userID && a.FProductId == id
                      select a).Count();
