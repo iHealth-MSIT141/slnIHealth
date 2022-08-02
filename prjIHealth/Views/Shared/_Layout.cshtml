@@ -37,6 +37,7 @@
 
         .btn-success {
             background-color: #7fad39;
+            border:none;
         }
 
         .btn-light:hover {
@@ -48,6 +49,9 @@
         }
 
         .btn-outline-success {
+        }
+        #btnLayOutLogin{
+            cursor:pointer;
         }
     </style>
 </head>
@@ -148,7 +152,7 @@
                                 <li><a href="~/problem/ReplyProblem" style="color:black;"><i class="fa fa-envelope"></i>聯絡我們</a></li>
                                 @if (LoginbuttonValue == "登入")
                                 {
-                                    <li>歡迎<a href="" data-toggle="modal" data-target="#register1Modal" data-dismiss="modal" style="color:#7fad39;font-weight:600">加入會員</a>和我們一起迎向健康新生活！</li>
+                                    <li>歡迎<a href="" data-toggle="modal" data-target="#registerModal" data-dismiss="modal" style="color:#7fad39;font-weight:600">加入會員</a>和我們一起迎向健康新生活！</li>
                                 }
                                 else
                                 {
@@ -389,22 +393,24 @@
                             <input type="password" class="form-control" id="inpLogInPassword" name="fPassword" placeholder="密碼" autocomplete="off">
                         </div>
                         <div style="justify-content: center; display: flex; ">
-                            <button class="btn btn-success center" id="btnLoginModal"><i class="fa fa-sign-in" aria-hidden="true"></i>會員登入</button>
-                        </div>
+                            <button class="btn btn-light" data-toggle="modal" data-target="#registerModal" data-dismiss="modal" style="margin:0px 2px">
+                                <i class="fa fa-user"></i> 加入會員
+                            </button>
+                            <button class="btn btn-secondary" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal" style="margin:0px 2px">
+                                <i class="fa fa-key"></i> 忘記密碼
+                            </button>
+                            <button class="btn btn-success center" id="btnLoginModal" style="margin:0px 2px"><i class="fa fa-sign-in" aria-hidden="true"></i>會員登入</button>
+                        </div>                        
                     </form>
                     <br />
-                    <div style="justify-content: center; display: flex; ">
-                        <button class="btn btn-secondary" data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal" style="margin-right:5px">
-                            <i class="fa fa-key"></i> 忘記密碼
-                        </button>
-                        <button class="btn btn-light" data-toggle="modal" data-target="#registerModal" data-dismiss="modal" style="margin-left:5px">
-                            <i class="fa fa-user"></i> 加入會員
-                        </button>
-                    </div>
-                    <div class="modal-footer row">
-                        <div class="text-center col">  <button id="btnDemoUserLog" class="btn btn-outline-success">Demo會員</button></div>
-                        <div class="text-center col"> <button id="btnDemoCoachLog" class="btn btn-outline-success">Demo教練</button></div>
-                        <div class="text-center col">   <button id="btnDemoAdminLog" class="btn btn-outline-success">Demo管理者</button></div>
+                    
+                    <div style="justify-content: center; display: flex;">
+                        <button id="btnDemoUserLog" class="btn btn-outline-success" style="margin:0px 2px">Demo會員</button>
+                        <button id="btnDemoCoachLog" class="btn btn-outline-success" style="margin:0px 2px">Demo教練</button>
+                        <button id="btnDemoAdminLog" class="btn btn-outline-success" style="margin:0px 2px">Demo管理者</button>
+                        @*<div class="text-center col">  </div>
+                        <div class="text-center col"> </div>
+                        <div class="text-center col">   </div>*@
                     </div>
                 </div>
 
@@ -690,9 +696,14 @@
                     let userAdmin = data.substring(0, 1);
                     $("#btnLayOutLogin span").text(userName);
                     $("#btnLayOutLogin p").text(userAdmin);
-                    $('#loginModal').modal('hide');
-                    window.location.reload(true);//refresh page
-                    alert(`${userName} :歡迎登入`);
+                    $('#loginModal').modal('hide');                    
+                    SwalGreen.fire({ 
+                        title: `${userName} :歡迎登入`,
+                        icon: 'success'                        
+                    }).then(() => {
+                        window.location.reload(true);//refresh page
+                    })                    
+                    //alert(`${userName} :歡迎登入`);
                     $(".header__menu__dropdown").css("display", "");
                     $('#inpLogInUserName').val("");
                     $('#inpLogInPassword').val("");
