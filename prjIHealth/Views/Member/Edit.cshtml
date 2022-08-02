@@ -96,7 +96,7 @@
                 <form asp-action="Edit" asp-controller="Member" enctype="multipart/form-data">
                     <div class="container">
                         <div class="row">
-                            <div class="col-4 ">
+                            <div class="col-4 reveal_b1">
                                 <div class="col-md-12" style="padding-left: 0px;  padding-right: 0px;">
                                     <div class="form-group row justify-content-center">
                                         <img src="~/img/member/@Model.FPicturePath" onerror="this.src='/img/member/defaultImage.jpg'" alt=" " class="rounded-circle img-responsive  border border-ligt" id="imgShow" />
@@ -111,7 +111,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-8">
+                            <div class="col-8 reveal_b2">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="FMemberId" />
                                 <div class="form-group row justify-content-center mt-5">
@@ -188,7 +188,7 @@
                                 </div>
                                 <div class="text-center" style="justify-content: center; display: flex; margin-top:20px;">
                                     @*<div class="col-md-6">*@
-                                        <button class="btn btn-light" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
+                                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
                                             <i class="fa fa-key"></i> 重設密碼
                                         </button>
                                         <input type="submit" value="會員資料修改" class=" btn btn-success" />
