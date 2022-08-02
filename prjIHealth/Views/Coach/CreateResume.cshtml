@@ -147,6 +147,22 @@
         .text-danger {
             font-size: 16px;
         }
+        #gotop {
+            position: fixed;
+            z-index: 90;
+            right: 30px;
+            bottom: 31px;
+            display: none;
+            width: 50px;
+            height: 50px;
+            color: #fff;
+            background: #7fad39;
+            line-height: 50px;
+            border-radius: 50%;
+            transition: all 0.5s;
+            text-align: center;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+        }
     </style>
 }
 @{
@@ -192,7 +208,7 @@
             <div class="col-lg-9 col-md-7">
                 @*※※※會員專區View內容請從此開始※※※*@
                 <div class="row">
-                    <div class="col-xl-11">                       
+                    <div class="col-xl-11">
                         <form class="frmResume" method="post" enctype="multipart/form-data" name="Resume" id="frmResume">
                             <div class="row">
                                 <div class="col-8">
@@ -209,7 +225,7 @@
                                             <select id="selCity" class="selCity" name="FCityId">
                                                 <option selected disabled>請選擇所在城市</option>
                                                 @{
-                                                    foreach (var c in db.TCities.OrderBy(c=>c.FCityOrder).ToList())
+                                                    foreach (var c in db.TCities.OrderBy(c => c.FCityOrder).ToList())
                                                     {
                                                         <option value="@c.FCityId" id="@c.FCityId">@c.FCityName</option>
                                                     }
@@ -286,13 +302,13 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">經歷<br /><span class="spRemind">*最多填寫10項</span></label>
                                 <div class="col-sm-10" id="divExp">
-                                    <input class="form-control newInput" name="fExperience[]" id="exp1"/>
+                                    <input class="form-control newInput" name="fExperience[]" id="exp1" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label" id="lblLic">相關證照<br /><span class="spRemind">*最多填寫10項</span></label>
                                 <div class="col-sm-10" id="divLic">
-                                    <input class="form-control newInput" name="fLicense[]" id="lic1"/>
+                                    <input class="form-control newInput" name="fLicense[]" id="lic1" />
                                 </div>
 
                             </div>
@@ -322,17 +338,33 @@
                             <button id="btnNewExp"><i class="fa-solid fa-circle-plus"></i></button>
                         </div>
                         <div class="col-sm-3 divPlus">
-                            <button id="btnNewLic"><i class="fa-solid fa-circle-plus"></i></button>                            
+                            <button id="btnNewLic"><i class="fa-solid fa-circle-plus"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <a id="gotop">
+            <i class="fa fa-angle-up"></i>
+        </a>
     </div>
 </section>
 @section Scripts{
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        //GoTop btn
+        $('#gotop').click(function () {
+            $('html,body').animate({ scrollTop: 0 }, 'slow');
+            return false;
+        });
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 400) {
+                $('#gotop').fadeIn();
+            } else {
+                $('#gotop').fadeOut();
+            }
+        });
+
         //Demo1
         $("#btnDemo1").click(() => {
             $("#inName").val("Jay");
