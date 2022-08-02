@@ -4,7 +4,39 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
 
-<h1>圖片檢視</h1>
+@section Styles{ 
+    <style>
+        .btn-light {
+            background-color: #DFEACE !important;
+            color: black;
+        }
+
+        .btn-success {
+            background-color: #7FAD39;
+            color: white;
+            border: none;
+        }
+
+        table.table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .selectbox {
+            margin-bottom: 5%;
+            margin-left: -10%;
+        }
+
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
+}
+
+<h2 id="title">圖片檢視</h2>
 <hr />
 
 <div class="col-lg-8 col-md-7" style="margin-left:15%">
@@ -14,9 +46,10 @@
         {
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg">
-                        <img src="~/img/product/@item.FImage" style="width:250px;height:250px;" />
+                    <div class="">
+                        <img src="~/img/product/@item.FImage" style="width:350px; height: 200px; margin-bottom:10px" />
                     </div>
+                    @*<a class="icon_close"  data-id="@item.FProductImageId"></a>*@
                     @Html.ActionLink("", "ProductImgDelete", new { id = item.FProductImageId },
                      new { @class = "icon_close", onclick = "return confirm('確認要刪除嗎?')" })
                 </div>
@@ -43,10 +76,32 @@
         </div><br />
     </div>
     <div style="margin-right:25%;">
-        <input type="submit" value="確定新增" class="btn btn-primary" />
-        <a asp-action="ProductList" class="btn btn-primary">返回清單</a>
+        <input type="submit" value="確定新增" class="btn btn-success" />
+        <a asp-action="ProductList" class="btn btn-secondary">返回清單</a>
     </div>
 </form>
+
+@section Scripts{
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @*<script>
+        $(".icon_close").click(function () {
+            let id = $(this).attr("data-id");
+                 SwalGreen.fire({
+                title: `確定要刪除嗎?`,
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: '確定',
+                cancelButtonText: "取消",
+                icon: 'question'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(".icon_close").attr("href", `/Admin/ProductManage/ProductImgDelete/${id}`);
+                    }
+                })
+        })
+
+    </script>*@
+ }
 
 
 

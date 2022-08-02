@@ -4,9 +4,37 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
 @section Styles{
+    <style>
+        .btn-light {
+            background-color: #DFEACE !important;
+            color: black;
+        }
 
+        .btn-success {
+            background-color: #7FAD39;
+            color: white;
+            border: none;
+        }
+
+        table.table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .selectbox {
+            margin-bottom: 5%;
+            margin-left: -10%;
+        }
+
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
 }
-<h1>商品修改</h1>
+<h2 id="title">產品修改</h2>
 <hr />
 
     <div class="container">
@@ -65,8 +93,8 @@
                         <div class="form-group col-md-4">
                             <div id="AddFCategory"></div>
                             <div id="AddFVisible"></div>
-                            <input type="submit" class="btn btn-primary" value="確定修改" />
-                            <a asp-action="ProductList" class="btn btn-primary">返回清單</a>
+                            <input type="submit" class="btn btn-success" value="確定修改" />
+                            <a asp-action="ProductList" class="btn btn-secondary">返回清單</a>
                         </div>
                     </form>
                 }
