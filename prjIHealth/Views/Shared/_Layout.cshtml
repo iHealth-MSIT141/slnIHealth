@@ -63,8 +63,10 @@
     @using System.Text.Json;
 
     @{
+
         string LoginbuttonValue = "登入";
         int loginId = 0;
+        int authorID = 0;
         TMember loginMember = null;
         string loginEmail = null;
 
@@ -74,6 +76,7 @@
             loginMember = JsonSerializer.Deserialize<TMember>(logJson);
             LoginbuttonValue = loginMember.FMemberName;
             loginId = loginMember.FMemberId;
+            authorID = (int)loginMember.FAuthorityId;
             loginEmail = loginMember.FEmail;
         };
     }
@@ -231,7 +234,7 @@
                                         <a id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal">
                                             <i class="fa fa-user"></i>
                                             <span>@LoginbuttonValue</span>
-                                            <p style="display:none">@loginId </p>
+                                            <p style="display:none">@authorID </p>
                                         </a>
                                         <ul class="header__menu__dropdown">
                                             <li><a href="~/Member/Edit">會員專區</a></li>
@@ -428,6 +431,7 @@
                             <div class="form-group">
                                 <label for="fUserName">使用者帳號</label>
                                 <input type="text" class="form-control" id="inpRegisterUserName" name="fUserName" placeholder="帳號,至少需二個字(含)以上" autocomplete="off">
+                                <span id="spanRegUsername"></span>
                             </div>
                             <div class="form-group">
                                 <label for="fMemberName">姓名</label>
@@ -437,13 +441,13 @@
                                 <label for="fPassword">密碼</label>
                                 <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showRegisterPassword"></i>
                                 <input type="password" class="form-control" id="inpRegisterPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母" autocomplete="off">
-                                <span id="passwordSpan1">密碼長度6~12位,要包含大小寫英文字, 數字,符號[!#$%^&*],至少各含一或以上</span>
+                                <span id="SpanPasswordReg">密碼長度6~12位,要包含大小寫英文字, 數字,符號[!@@#$%^&*],至少各含一或以上</span>
                             </div>
                             <div class="form-group">
                                 <label for="confirmPassword">請輸入確認密碼</label>
                                 <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showRegisterConfirmPassword"></i>
                                 <input type="password" class="form-control" id="inpRegisterConfirmPassword" name="confirmPassword" placeholder="確認密碼 " autocomplete="off">
-                                <h6 id="confirmH6"></h6>
+                                <span id="SpanConfirmPasswordReg"></span>
                             </div>
 
                         </div>
@@ -451,14 +455,17 @@
                             <div class="form-group">
                                 <label for="fEmail">電子郵件信箱</label>
                                 <input type="text" class="form-control" id="inpRegisterEmail" name="fEmail" placeholder="電子郵件信箱" autocomplete="off">
+                                <span id="spanRegEmail"></span>
                             </div>
                             <div class="form-group">
                                 <label for="fBirthday">生日</label>
-                                <input type="number" class="form-control" id="inpRegisterBirthday" name="fBirthday" placeholder="生日,請依格式19991231輸入" autocomplete="off">
+                                <input type="date" class="form-control" id="inpRegisterBirthday" name="fBirthday">
                             </div>
                             <div class="form-group">
                                 <label for="fPhone">電話</label>
                                 <input type="text" class="form-control" id="inpRegisterPhone" name="fPhone" placeholder="電話" autocomplete="off">
+                                <span id="spanRegPhone"></span>
+
                             </div>
                             <div class="form-group">
                                 <label for="fAddress">地址</label>
@@ -515,7 +522,7 @@
                         <div class="form-group">
                             <label for="fEmail">請輸入註冊時的電子信箱</label>
                             <input type="text" class="form-control" id="inpForgotPassword" name="fEmail" placeholder="email" autocomplete="off">
-                            <h6 id="result"></h6>
+                            <h6 id="h6ForgotPassword"></h6>
                         </div>
                         <div style="justify-content: center; display: flex;">
 
@@ -570,7 +577,7 @@
                             <label for="firstPassword">請輸入新的密碼</label>
                             <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showFirstPassword"></i>
                             <input type="password" class="form-control" id="inpFirstPassword" name="firstPassword" placeholder="重設密碼 " autocomplete="off">
-                            <span id="passwordSpan">密碼長度6~12位,要包含大小寫英文字, 數字,符號[!#$%^&*],至少各含一或以上</span>
+                            <span id="passwordSpan">密碼長度6~12位,要包含大小寫英文字, 數字,符號[!@@#$%^&*],至少各含一或以上</span>
                             <h6 id="newPasswordRestH6"></h6>
 
                         </div>
@@ -614,10 +621,8 @@
         //==================登入時menu_dropdown顯示, 否則隱藏===============================
         let spanTextUsername = $("#btnLayOutLogin span").text();
 
-        //let spanTextAutor = $('#header__top__right__auth>p').text();
         if (spanTextUsername == "登入")
         {
-            console.log(spanTextUsername + "aa")
             $(".header__menu__dropdown").css("display", "none");
 
         } else
@@ -628,14 +633,24 @@
         $('#adminAuthorID').on("click", (event) =>
         {
             let userAdmin = $("#btnLayOutLogin p").text();
-            if (userAdmin >= 1 && userAdmin <= 4) { event.stopPropagation();}
-            else { event.preventDefault(); }
+            if (userAdmin >= 1 && userAdmin <= 4)
+            {
+                event.stopPropagation();
+            }
+            else
+            {
+                event.preventDefault();
+            }
         });
         //============================登入後,登入頁面不再出現=========================================
         $('#btnLayOutLogin').on("click", (event) =>
         {
             let userName = $("#btnLayOutLogin span").text();
-            if (userName != "登入") { event.stopPropagation(); window.location.href = `/Member/Edit`; }
+            if (userName != "登入")
+            {
+                event.stopPropagation();
+                window.location.href = `/Member/Edit`;
+            }
             else { event.preventDefault(); }
         });
         //============================ajax 會員登入(fetch)============================================
@@ -676,7 +691,7 @@
                 method: "Post"
             }).then(Response => Response.text()).then(data =>
             {
-                if (data == "false")
+                    if (data == "false")
                 {
                     alert("登入資料錯誤, 請重新登入");
                     $('#inpLogInUserName').val("");
@@ -684,18 +699,20 @@
                 } else if (data == "empty")
                 {
                     alert("必填欄位, 不得空白, 請重新輸入");
-                } else
+                } else if (data =="admin")
                 {
-                    let userName = data.substring(1);
-                    let userAdmin = data.substring(0, 1);
-                    $("#btnLayOutLogin span").text(userName);
-                    $("#btnLayOutLogin p").text(userAdmin);
+                    window.location.href = "/Admin/Admin/AdminHome"
+                }
+                else
+                {
                     $('#loginModal').modal('hide');
                     window.location.reload(true);//refresh page
-                    alert(`${userName} :歡迎登入`);
+                 /*   alert(`${userName} :歡迎登入`);*/
                     $(".header__menu__dropdown").css("display", "");
                     $('#inpLogInUserName').val("");
                     $('#inpLogInPassword').val("");
+
+
                 }
             });
         });
@@ -739,7 +756,7 @@
             var loginVal = $('#inpRegisterUserName').val();
             if (loginVal == "")
             {
-                alert("帳號不得空白");
+                $('#spanRegUsername').text('帳號不得空白');
             } else
             {
                 var formData = new FormData(document.querySelector("#registerForm"));
@@ -750,31 +767,45 @@
                 {
                     if (data == "false")
                     {
-                        alert("此帳號可使用");
+                        $('#spanRegUsername').text('此帳號可使用');
 
                     } else
                     {
-                        alert("此帳號已有人使用, 請換個帳號");
+                        $('#spanRegUsername').text('此帳號已有人使用, 請換個帳號');
                     }
                 });
             };
         });
         $('#inpRegisterPassword').on('blur', () =>
         {
-            var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!#$%^&*]).{6,12}$/;
+            var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@@!#$%^&*]).{6,12}$/;
             var resultReg = regEx.test($('#inpRegisterPassword').val());
-            if (resultReg) { $('#passwordSpan1').text("符合要求,請繼續"); } else
-            { alert("密碼格式不符") };
+
+            if (resultReg) { $('#SpanPasswordReg').text("符合要求,請繼續"); }
+            else
+            {
+                $('#SpanPasswordReg').text("密碼格式不符");
+            };
         });
+
+        $('#inpRegisterEmail').on('blur', () =>
+        {
+            ///^[_a-zA-Z1-9]+(\.[A-Za-z0-9]*)*@@[A-Za-z0-9]+\\.[A-Za-z0-9]+(\\.[A-Za-z0-9]*)*$
+            var regEx = /^[a-zA-Z0-9_.]+@@[a-zA-Z0-9]+.[a-zA-Z]{2,3}[.] {0,1}[a-zA-Z]+$/;
+            var resultReg = regEx.test($('#inpRegisterEmail').val());
+            if (resultReg) { $('#spanRegEmail').text("格式符合要求,請繼續"); }
+            else
+            {
+                $('#spanRegEmail').text("格式不符,請重新輸入");
+            }; });
         $('#inpRegisterConfirmPassword').on('blur', () =>
         {
             $('#confirmH6').empty();
             let firstPassword = $('#inpRegisterPassword').val();
             let confirmPassword = $('#inpRegisterConfirmPassword').val();
-            if (firstPassword != confirmPassword) { $('#confirmH6').text("輸入密碼不一致"); }
-            else { $('#confirmH6').text('密碼一致,請繼續'); }
+            if (firstPassword != confirmPassword) { $('#SpanConfirmPasswordReg').text("輸入密碼不一致"); }
+            else { $('#SpanConfirmPasswordReg').text('密碼一致,請繼續'); }
         });
-        //inpRegisterConfirmPassword
         const btn = document.querySelector('#btnRegister');
         btn.addEventListener('click', (event) => {
             event.preventDefault();
@@ -784,7 +815,7 @@
                 url: "/Member/Register",
                 data: data,
                 success: function (data) {
-                  
+
                     let userName = $("#inpRegisterUserName").val();
                     if (data == "empty") {
                         alert("請注意必填欄位不可空白, 請重新填入");
@@ -809,21 +840,22 @@
                 url: "/Member/getEmail",
                 data: data,
                 success: function (data) {
-                    if (data == "false") {
-                        alert("電子信箱錯誤或空白,請重新輸入");
+                    if (data == "false")
+                    {
+                        $('#h6ForgotPassword').text('電子信箱錯誤,請重新輸入');
                         $('#inpForgotPassword').val("");
-
-                    } else {
-                        alert("電子信箱正確,請繼續");
+                    } else if (data == "empty") { $('#h6ForgotPassword').text('電子信箱空白,請輸入'); } else
+                    {
+                        $('#h6ForgotPassword').text('電子信箱正確,請繼續');
                     }
                 }
             });
         });
-
         const btnFP = document.querySelector('#btnForgotPassword');
         btnFP.addEventListener('click', (event) =>
         {
             event.preventDefault();
+            $('#h6ForgotPassword').empty();
             let data = $("#passwordForgotForm").serialize();
             $.ajax({
                 type: "Post",
@@ -835,7 +867,10 @@
                     {
                         alert("電件郵件錯誤, 請重新填寫");
                         $('#fEmailInput').val("");
-                    } else if (data == "empty") { alert("電子信箱必填, 請重填"); } else
+                    } else if (data == "empty")
+                    {
+                       alert("電子信箱空白, 請填入");
+                    } else
                     {
                         alert(`${data}請收信,重設密碼`);
                         $('#passwordForgotModal').modal('hide');
@@ -846,8 +881,6 @@
         });
         //=========================ajax重設密碼,popup登入頁面================================
              //=========================驗證電子信箱ajax===============================
-
-
         $("#inpResetPasswordEmail").on('blur', () =>
         {
             let data = $("#resetPasswordForm").serialize();
@@ -859,10 +892,13 @@
                 {
                     if (data == "false")
                     {
-                        alert("電子信箱錯誤或空白,請重新輸入");
+                        alert("電子信箱錯誤,請重新輸入");
                         $('#fEmailReset').val(""); $('#fPasswordReset').val("");
 
-                    } else
+                    } else if (data == "empty")
+                    {
+                        alert("電子信箱空白,請輸入");
+                     }else
                     {
                         alert("電子信箱正確,請繼續");
                     }
@@ -883,15 +919,18 @@
                 $("#inpResetPassword").attr("type", "password");
             }
         });
-        $('#inpResetPassword').on('blur', () =>
+        var resetPassword = $('#inpResetPassword');
+        resetPassword.on('blur', () =>
         {
             let data = $("#resetPasswordForm").serialize();
+
             $.ajax({
                 type: "Post",
                 url: "/Member/getPassword",
                 data: data,
                 success: function (data)
                 {
+                 
                     if (data == "true")
                     {
                         $('#passwordRestH6').text("密碼正確, 請繼續");
@@ -899,11 +938,10 @@
                     else if (data == "false")
                     {
                         $('#passwordRestH6').text('密碼錯誤, 請重新輸入');
-                      
                     }
-                    else
+                    else if (data == "false1") { $('#passwordRestH6').text('密碼空白, 請重新輸入');}else
                     {
-                        $('#passwordRestH6').text('密碼或電子信箱空白, 請重新輸入');
+                        $('#passwordRestH6').text('電子信箱空白, 請重新輸入');
                     }
                 }
             });
@@ -924,7 +962,7 @@
         });
         $('#inpFirstPassword').on('blur', () =>
         {
-            var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!#$%^&*]).{6,12}$/;
+            var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@@#$%^&*]).{6,12}$/;
             var resultReg=regEx.test($('#inpFirstPassword').val());
             if (resultReg) { $('#passwordSpan').text("格式符合要求,請繼續"); } else
             { $('#passwordSpan').text("密碼格式不符");  };
@@ -994,8 +1032,8 @@
                             $('#loginModal').modal('show');
                         } else {
                             alert(`${data},密碼重設成功`); $('#resetPasswordModal').modal('hide');
-                       };                    
-                    }                 
+                       };
+                    }
                 }
             });
         });

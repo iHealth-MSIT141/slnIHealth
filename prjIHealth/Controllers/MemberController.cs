@@ -30,6 +30,7 @@ namespace prjIHealth.Controllers
             _context = context;
             _environment = iwhe;
         }
+ 
         public IActionResult Login()
         {
             return View();
@@ -51,8 +52,15 @@ namespace prjIHealth.Controllers
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
                     int authorId = (int)loginUser.FAuthorityId;
-                    string loginContent = loginUser.FAuthorityId + loginUser.FMemberName;
-                    return Content(loginContent, "text/plain", System.Text.Encoding.UTF8);
+                    if (authorId > 4)
+                    {
+                        return Content("member", "text/plain", System.Text.Encoding.UTF8);
+                    }
+                    else
+                    {
+                        return Content("admin", "text/plain", System.Text.Encoding.UTF8);
+                    };
+
                 }
             }
             return Content("false", "text/plain", System.Text.Encoding.UTF8);
@@ -163,28 +171,33 @@ namespace prjIHealth.Controllers
             }
             else
             {
-                return Content("false", "text/plain", System.Text.Encoding.UTF8);
+                return Content("empty", "text/plain", System.Text.Encoding.UTF8);
             };
-          
+
         }
         public IActionResult getPassword([Bind("fEmail,fPassword")] CLoginViewModel vModel)
         {
-            var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
-            if (vModel.fPassword != null && q != null)
+            if (vModel.fEmail != null)
             {
-                if (q.FPassword == utilities.getCryptPWD(vModel.fPassword, q.FUserName))
+                var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
+                if (vModel.fPassword != null && q != null)
                 {
-                    return Content("true", "text/plain", System.Text.Encoding.UTF8);
+                    if (q.FPassword == utilities.getCryptPWD(vModel.fPassword, q.FUserName))
+                    {
+                        return Content("true", "text/plain", System.Text.Encoding.UTF8);
+                    }
+                    else
+                    {
+                        return Content("false", "text/plain", System.Text.Encoding.UTF8);
+                    };
                 }
                 else
                 {
-                    return Content("false", "text/plain", System.Text.Encoding.UTF8);
-                };
+                    return Content("false1", "text/plain", System.Text.Encoding.UTF8);
+                }
             }
-            else
-            {
-                return Content("false2", "text/plain", System.Text.Encoding.UTF8);
-            }
+            else { return Content("false2", "text/plain", System.Text.Encoding.UTF8); }
+
 
         }
         public IActionResult ForgotPassword()
@@ -220,13 +233,14 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult ResetPassword(CLoginViewModel vmodel)
         {
-            if (vmodel.fEmail == null)
+            if (vmodel.fEmail == null )
             {
                 return Content("empty", "text/plain", System.Text.Encoding.UTF8);
             }
             else
             {
-                var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vmodel.fEmail);
+                if (vmodel.fPassword != null) {  
+                    var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vmodel.fEmail);
                 if (q != null)
                 {
                     if (q.FPassword == utilities.getCryptPWD(vmodel.fPassword, q.FUserName))
@@ -237,7 +251,8 @@ namespace prjIHealth.Controllers
                             _context.SaveChanges();
                             return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
                         }
-                        else { return Content("ConfirmPasswordError", "text/plain", System.Text.Encoding.UTF8); }
+                        else { 
+                                return Content("ConfirmPasswordError", "text/plain", System.Text.Encoding.UTF8); }
                     }
                     else
                     {
@@ -246,11 +261,14 @@ namespace prjIHealth.Controllers
                 }
                 else
                 {
-                    return Content("false", "text/plain", System.Text.Encoding.UTF8);
-                }
+                    return Content("PasswordError", "text/plain", System.Text.Encoding.UTF8);
+                } 
+                } 
+                else { return Content("false", "text/plain", System.Text.Encoding.UTF8); }
+             
             }
         }
-       
+
         //========================追蹤清單===========================    
 
         public IActionResult ShowTrackList()
