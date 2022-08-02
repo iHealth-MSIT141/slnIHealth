@@ -193,7 +193,7 @@ namespace prjiHealth.Controllers
         //教練預約時間表-已額滿
         public IActionResult getAvailableTimeNum(int? id)
         {
-            var nums = db.TCourses.Where(c=>c.FCoachContact.FCoachId==id).Select(c=>c.FAvailableTimeNum).Distinct();
+            var nums = db.TCourses.Where(c=>c.FCoachContact.FCoachId==id&&c.FStatusNumber==55).Select(c=>c.FAvailableTimeNum).Distinct();
             return Json(nums);
         }
         //通知教練
