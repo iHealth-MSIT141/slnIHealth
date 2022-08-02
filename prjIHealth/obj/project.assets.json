@@ -7547,11 +7547,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\ispan\\GitHub\\0801n6\\prjIHealth\\prjIHealth.csproj",
+      "projectUniqueName": "C:\\ispan\\GitHub\\slnIHealth\\0802n7\\prjIHealth\\prjIHealth.csproj",
       "projectName": "prjIHealth",
-      "projectPath": "C:\\ispan\\GitHub\\0801n6\\prjIHealth\\prjIHealth.csproj",
+      "projectPath": "C:\\ispan\\GitHub\\slnIHealth\\0802n7\\prjIHealth\\prjIHealth.csproj",
       "packagesPath": "C:\\Users\\Student\\.nuget\\packages\\",
-      "outputPath": "C:\\ispan\\GitHub\\0801n6\\prjIHealth\\obj\\",
+      "outputPath": "C:\\ispan\\GitHub\\slnIHealth\\0802n7\\prjIHealth\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

@@ -51,8 +51,15 @@ namespace prjIHealth.Controllers
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
                     int authorId = (int)loginUser.FAuthorityId;
-                    string loginContent = loginUser.FAuthorityId + loginUser.FMemberName;
-                    return Content(loginContent, "text/plain", System.Text.Encoding.UTF8);
+                    if (authorId > 4)
+                    {
+                        return Content("member", "text/plain", System.Text.Encoding.UTF8);
+                    }
+                    else
+                    {
+                        return Content("admin", "text/plain", System.Text.Encoding.UTF8);
+                    };
+
                 }
             }
             return Content("false", "text/plain", System.Text.Encoding.UTF8);
@@ -169,22 +176,27 @@ namespace prjIHealth.Controllers
         }
         public IActionResult getPassword([Bind("fEmail,fPassword")] CLoginViewModel vModel)
         {
-            var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
-            if (vModel.fPassword != null && q != null)
+            if (vModel.fEmail != null)
             {
-                if (q.FPassword == utilities.getCryptPWD(vModel.fPassword, q.FUserName))
+                var q = _context.TMembers.FirstOrDefault(m => m.FEmail == vModel.fEmail);
+                if (vModel.fPassword != null && q != null)
                 {
-                    return Content("true", "text/plain", System.Text.Encoding.UTF8);
+                    if (q.FPassword == utilities.getCryptPWD(vModel.fPassword, q.FUserName))
+                    {
+                        return Content("true", "text/plain", System.Text.Encoding.UTF8);
+                    }
+                    else
+                    {
+                        return Content("false", "text/plain", System.Text.Encoding.UTF8);
+                    };
                 }
                 else
                 {
-                    return Content("false", "text/plain", System.Text.Encoding.UTF8);
-                };
+                    return Content("false1", "text/plain", System.Text.Encoding.UTF8);
+                }
             }
-            else
-            {
-                return Content("false2", "text/plain", System.Text.Encoding.UTF8);
-            }
+            else { return Content("false2", "text/plain", System.Text.Encoding.UTF8); }
+
 
         }
         public IActionResult ForgotPassword()

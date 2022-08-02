@@ -65,6 +65,7 @@
     @{
         string LoginbuttonValue = "登入";
         int loginId = 0;
+        int authorID = 0;
         TMember loginMember = null;
         string loginEmail = null;
 
@@ -74,6 +75,7 @@
             loginMember = JsonSerializer.Deserialize<TMember>(logJson);
             LoginbuttonValue = loginMember.FMemberName;
             loginId = loginMember.FMemberId;
+            authorID =(int) loginMember.FAuthorityId;
             loginEmail = loginMember.FEmail;
         };
     }
@@ -231,7 +233,7 @@
                                         <a id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal">
                                             <i class="fa fa-user"></i>
                                             <span>@LoginbuttonValue</span>
-                                            <p style="display:none">@loginId </p>
+                                            <p style="display:none">@authorID </p>
                                         </a>
                                         <ul class="header__menu__dropdown">
                                             <li><a href="~/Member/Edit">會員專區</a></li>
@@ -456,7 +458,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="fBirthday">生日</label>
-                                <input type="number" class="form-control" id="inpRegisterBirthday" name="fBirthday" placeholder="生日,請依格式19991231輸入" autocomplete="off">
+                                <input type="date" class="form-control" id="inpRegisterBirthday" name="fBirthday" >
                             </div>
                             <div class="form-group">
                                 <label for="fPhone">電話</label>
@@ -618,10 +620,8 @@
         //==================登入時menu_dropdown顯示, 否則隱藏===============================
         let spanTextUsername = $("#btnLayOutLogin span").text();
 
-        //let spanTextAutor = $('#header__top__right__auth>p').text();
         if (spanTextUsername == "登入")
         {
-            console.log(spanTextUsername + "aa")
             $(".header__menu__dropdown").css("display", "none");
 
         } else
@@ -632,14 +632,24 @@
         $('#adminAuthorID').on("click", (event) =>
         {
             let userAdmin = $("#btnLayOutLogin p").text();
-            if (userAdmin >= 1 && userAdmin <= 4) { event.stopPropagation();}
-            else { event.preventDefault(); }
+            if (userAdmin >= 1 && userAdmin <= 4)
+            {
+                event.stopPropagation();
+            }
+            else
+            {
+                event.preventDefault();
+            }
         });
         //============================登入後,登入頁面不再出現=========================================
         $('#btnLayOutLogin').on("click", (event) =>
         {
             let userName = $("#btnLayOutLogin span").text();
-            if (userName != "登入") { event.stopPropagation(); window.location.href = `/Member/Edit`; }
+            if (userName != "登入")
+            {
+                event.stopPropagation();
+                window.location.href = `/Member/Edit`;
+            }
             else { event.preventDefault(); }
         });
         //============================ajax 會員登入(fetch)============================================
@@ -680,7 +690,7 @@
                 method: "Post"
             }).then(Response => Response.text()).then(data =>
             {
-                if (data == "false")
+                    if (data == "false")
                 {
                     alert("登入資料錯誤, 請重新登入");
                     $('#inpLogInUserName').val("");
@@ -688,18 +698,20 @@
                 } else if (data == "empty")
                 {
                     alert("必填欄位, 不得空白, 請重新輸入");
-                } else
+                } else if (data =="admin")
                 {
-                    let userName = data.substring(1);
-                    let userAdmin = data.substring(0, 1);
-                    $("#btnLayOutLogin span").text(userName);
-                    $("#btnLayOutLogin p").text(userAdmin);
+                    window.location.href = "/Admin/Admin/AdminHome"
+                }
+                else
+                {
                     $('#loginModal').modal('hide');
                     window.location.reload(true);//refresh page
-                    alert(`${userName} :歡迎登入`);
+                 /*   alert(`${userName} :歡迎登入`);*/
                     $(".header__menu__dropdown").css("display", "");
                     $('#inpLogInUserName').val("");
                     $('#inpLogInPassword').val("");
+                   
+                 
                 }
             });
         });
@@ -879,10 +891,13 @@
                 {
                     if (data == "false")
                     {
-                        alert("電子信箱錯誤或空白,請重新輸入");
+                        alert("電子信箱錯誤,請重新輸入");
                         $('#fEmailReset').val(""); $('#fPasswordReset').val("");
 
-                    } else
+                    } else if (data == "empty")
+                    {
+                        alert("電子信箱空白,請輸入");
+                     }else
                     {
                         alert("電子信箱正確,請繼續");
                     }
@@ -903,9 +918,11 @@
                 $("#inpResetPassword").attr("type", "password");
             }
         });
-        $('#inpResetPassword').on('blur', () =>
+        var resetPassword = $('#inpResetPassword');
+        resetPassword.on('blur', () =>
         {
             let data = $("#resetPasswordForm").serialize();
+            
             $.ajax({
                 type: "Post",
                 url: "/Member/getPassword",
@@ -920,9 +937,9 @@
                     {
                         $('#passwordRestH6').text('密碼錯誤, 請重新輸入');
                     }
-                    else
+                    else if (data == "false1") { $('#passwordRestH6').text('密碼空白, 請重新輸入');}else
                     {
-                        $('#passwordRestH6').text('密碼或電子信箱空白, 請重新輸入');
+                        $('#passwordRestH6').text('電子信箱空白, 請重新輸入');
                     }
                 }
             });

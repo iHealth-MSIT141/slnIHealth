@@ -43,7 +43,7 @@ namespace prjIHealth.Areas.Admin.Controllers
             }
 
             var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
-            var onePageOfMembers = q.ToPagedList(pageNumber, 6); // will only contain 6 items max because of the pageSize
+            var onePageOfMembers = q.ToPagedList(pageNumber, 10); // will only contain 6 items max because of the pageSize
             ViewBag.onePageOfMembers = onePageOfMembers;
             return View(onePageOfMembers);
 

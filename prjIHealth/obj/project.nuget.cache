@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QWqSPAHTx/f8ZQ9fyOnubP3p45uI6VxUplAGjl/5GCnCSMMMc1ShSNAmZWuGRPaaiSlqNZ4UeqyXo6rRzidv4A==",
+  "dgSpecHash": "sQDmlVPlDDOzSozxrJU3OhTlaaiCr/JtkilTTS94p7XKuIsU5Aa7tByCgSar2blqKA1+ybEJqqnyTxczCu2W3w==",
   "success": true,
-  "projectFilePath": "C:\\ispan\\GitHub\\0801n6\\prjIHealth\\prjIHealth.csproj",
+  "projectFilePath": "C:\\ispan\\GitHub\\slnIHealth\\0802n7\\prjIHealth\\prjIHealth.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Student\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Student\\.nuget\\packages\\jetbrains.annotations\\2022.1.0\\jetbrains.annotations.2022.1.0.nupkg.sha512",
