@@ -51,8 +51,15 @@ namespace prjIHealth.Controllers
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
                     int authorId = (int)loginUser.FAuthorityId;
-                    string loginContent = loginUser.FAuthorityId + loginUser.FMemberName;
-                    return Content(loginContent, "text/plain", System.Text.Encoding.UTF8);
+                    if (authorId <5)
+                    {
+                        string admin = "admin" + loginUser.FUserName;
+                        return Content(admin, "text/plain", System.Text.Encoding.UTF8);
+                    }
+                    else
+                    {
+                        return Content(loginUser.FUserName, "text/plain", System.Text.Encoding.UTF8);
+                    }
                 }
             }
             return Content("false", "text/plain", System.Text.Encoding.UTF8);
@@ -91,7 +98,6 @@ namespace prjIHealth.Controllers
                     q.FPicturePath = pName;
                 }
                 q.FMemberName = vModel.fMemberName;
-                //q.FPassword = utilities.getCryptPWD(vModel.fPassword, q.FUserName);
                 q.FBirthday = vModel.fBirthday;
                 q.FAddress = vModel.fAddress;
                 q.FPhone = vModel.fPhone;
@@ -201,7 +207,7 @@ namespace prjIHealth.Controllers
                 if (q != null)
                 {
                     //============================================================= 
-                    string newPassword = utilities.RandomString(6);
+                    string newPassword = utilities.RandomString(8);
                     utilities.sendMail(q.FUserName, newPassword, q.FEmail);
                     q.FPassword = utilities.getCryptPWD(newPassword, q.FUserName);
                     _context.SaveChanges();
@@ -220,7 +226,7 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult ResetPassword(CLoginViewModel vmodel)
         {
-            if (vmodel.fEmail == null)
+            if (vmodel.fEmail == null || vmodel.fPassword==null || vmodel.firstPassword==null)
             {
                 return Content("empty", "text/plain", System.Text.Encoding.UTF8);
             }
