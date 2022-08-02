@@ -424,7 +424,7 @@
                         <div class="divOther reveal_t1"><i class="fa-solid fa-user-plus"></i><span><b>&nbsp;&nbsp;想找學生？</b></span></div>
                         <div class="divUrl reveal_r1"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CreateResume">&nbsp;&nbsp;前往<b>刊登履歷</b></a></div>
                     </div>
-                </div>
+                </div>                
                 <div class="divCoachList">
                     @{
                         int count = 0;
@@ -486,7 +486,7 @@
                 </a>
             </div>
         </div>
-    </div>
+    </div>   
 </section>
 
 @section Scripts{
@@ -524,7 +524,7 @@
         }
     }
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>       
+<script>   
     //Demo
     $("#btnDemo1").click((evt) => {
         evt.preventDefault();
@@ -535,14 +535,13 @@
         evt.preventDefault();
         $("#ipKeyword").val("Alisa");
     })
-        
-        
+
     //Page
     function GetPage() {
         $(".divPage").empty();
         let coachCount = $(".divCoachList .divCoachCard").length;
         let pageCount = coachCount / 10;
-        for (let i = 1; i <pageCount+1; i++) {
+        for (let i = 1; i < pageCount + 1; i++) {
             $(".divPage").append(`<button class="btnPage" id="btn${i}">${i}</button>`);
         }
         $(".btnPage").on("click", function () {
@@ -565,8 +564,16 @@
     }
     GetPage();
 
-   //Ajax篩選後顯示教練
-        function GetCoach() {
+    //多重篩選觸發事件
+    $("#selCity").change(() => {
+        GetCoach();
+    })
+    $("input[name='fGender[]'],input[name='fCoachSkill[]'],input[name='fCoachTime[]']").click(() => {
+        GetCoach();
+    })
+
+    //Ajax篩選後顯示教練
+    function GetCoach() {
             $.ajax({
                 url: '@Url.Content("~/Student/MultiFilter")',
                 type: 'post',
@@ -619,20 +626,12 @@
                                 $(`#spSkill${index}`).text(`${skills}`);
                             })
                         //Slogan
-                        $(`#ul${index}`).append(`<li style="list-style:none" class="liSlogan"><span>${coach.fSlogan}</span></li>`);
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="liSlogan"><span>${coach.fSlogan}</span></li>`);                        
                     })
-                    GetPage();
+                    GetPage();                    
                 }
             });
         }
-
-        //多重篩選觸發事件
-        $("#selCity").change(() => {
-            GetCoach();
-        })
-        $("input[name='fGender[]'],input[name='fCoachSkill[]'],input[name='fCoachTime[]']").click(() => {
-            GetCoach();
-        })
 
     //清除條件
     $("#btnClear").click((evt) => {
@@ -645,7 +644,7 @@
 
     //GoTop btn
     $('#gotop').click(function () {
-        $('html,body').animate({ scrollTop: 0 }, 'slow');   /* 返回到最頂上 */
+        $('html,body').animate({ scrollTop: 0 }, 'slow');
         return false;
     });
     $(window).scroll(function () {
@@ -655,5 +654,5 @@
             $('#gotop').fadeOut();
         }
     });
-    </script>
+</script>
 }
