@@ -42,6 +42,14 @@
             margin-right: 8vw;
             margin-bottom: 1vh;
         }
+
+        .btn-success {
+            background-color: #7FAD39;
+            width:100px;
+            color: white;
+            border: none;
+          
+        }
     </style>
 }
 
@@ -92,9 +100,8 @@
                 @*※※※會員專區View內容請從此開始※※※*@
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
-
-                        <table style="table-layout:fixed">
-                            <thead>
+                        <table class="table" style="table-layout:fixed">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th style="margin-left:auto">
                                         @Html.DisplayNameFor(model => model.FContact)
@@ -108,7 +115,7 @@
                                     <th style="margin-left:auto">
                                         @Html.DisplayNameFor(model => model.FDate)
                                     </th>
-                                    <th style="margin-left:auto">
+                                    <th class="col-lg-2" style="margin-left:auto">
                                         @Html.DisplayNameFor(model => model.FPaymentCategoryId)
                                     </th>
                                     <th style="margin-left:auto">
@@ -117,7 +124,7 @@
                                     <th style="margin-left:auto">
                                         @Html.DisplayNameFor(model => model.FRemarks)
                                     </th>
-                                    <th></th>
+                                    <th class="col-lg-2"></th>
                                 </tr>
                             </thead>
                             <tbody id="ListPro">
@@ -155,7 +162,7 @@
                                             </td>
                                             <td style="margin-left: auto; text-align: center;">
                                                 @Html.ActionLink("訂單明細", "OrderdetailList", new { id = item.FOrderId },
-                                                  new { @class = "primary-btn cart-btn" })
+                                                  new { @class = "btn btn-success" })
                                             </td>
                                         </tr>
                                     }
@@ -166,7 +173,6 @@
                             @Html.PagedListPager((IPagedList)ViewBag.OnePageOfPro, page => Url.Action("OrderList", new { page }))
                         </div>
                     </div>
-
                 </div>
 
             </div>
