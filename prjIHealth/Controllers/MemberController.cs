@@ -163,7 +163,7 @@ namespace prjIHealth.Controllers
             }
             else
             {
-                return Content("false", "text/plain", System.Text.Encoding.UTF8);
+                return Content("empty", "text/plain", System.Text.Encoding.UTF8);
             };
           
         }
