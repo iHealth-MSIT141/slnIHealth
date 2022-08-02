@@ -25,6 +25,9 @@
             margin-left: 20vw;
             margin-right: 20vw;
         }
+        .col{
+            margin-bottom:10px;
+        }
     </style>
 }
 <h2 id="title">會員資料管理列表</h2>
@@ -43,12 +46,12 @@
         </form>
     </div>
     <div class="col">
-        <a asp-action="Create" class="btn btn-primary">會員資料新增</a>
+        <a asp-action="Create" class="btn btn-success">會員資料新增</a>
     </div>
 </div>
 
 <table class="table">
-    <thead>
+    <thead class="thead-dark">
         <tr>
             @*<th>
 

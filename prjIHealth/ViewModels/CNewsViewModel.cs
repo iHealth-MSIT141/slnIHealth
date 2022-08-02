@@ -91,5 +91,7 @@ namespace prjiHealth.ViewModels
         public TNewsCategory newsCategory { get; set; }
 
         public TNewsComment commentCount { get; set; }
+
+        public TMember getMember { get; set; }
     }
 }
