@@ -39,6 +39,12 @@
             margin-right: 8vw;
             margin-bottom: 1vh;
         }
+
+        .btn-success {
+            background-color: #7FAD39;
+            color: white;
+            border: none;
+        }
     </style>
 }
 
@@ -99,7 +105,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-2 col-md-2 " style="padding:0px 0px 0px 0px ">
+                    <div class="col-lg-2 col-md-2 " style="margin:5px 0 5px 0">
                         <select name="stype" id="stype" class="qa-select">
                             <option value="999" disabled selected hidden>依狀態篩選</option>
                             <option value="未處理">未處理</option>
@@ -110,8 +116,8 @@
                     </div>
                 </div>
 
-                <table class="table" style="table-layout: fixed">
-                    <thead>
+                <table class="table" style="table-layout: fixed ">
+                    <thead class="thead-dark" >
                         <tr>
                             <th>
                                 問題編號
@@ -157,7 +163,7 @@
                                     @Html.DisplayFor(modelItem => item.Status.FStatus)
                                 </td>
                                 <td>
-                                    <button id="buttonLoad" class="site-btn" data-toggle="modal" data-target="#addModal">查看</button>
+                                    <button id="buttonLoad" class="btn-success btn" data-toggle="modal" data-target="#addModal">查看</button>
                                 </td>
                             </tr>
                         }
