@@ -97,7 +97,7 @@
                                 @Html.DisplayFor(modelItem => item.FVisible)
                             </td>
                             <td style="margin-left:auto">
-                                @Html.ActionLink("修改產品", "ProductEdit", new { id = item.FProductId },
+                                @Html.ActionLink("產品修改", "ProductEdit", new { id = item.FProductId },
                                  new { @class = "btn btn-light" })                              
                             </td>
                             <td style="margin-left:auto">
@@ -112,7 +112,7 @@
             <div class="row">
                 <div class="col-lg-11">
                     <div class="col-lg-2">
-                        <a asp-action="ProductCreate" class="primary-btn cart-btn">新增產品</a>
+                        <a asp-action="ProductCreate" class="btn btn-success" style="margin-left:-50px">新增產品</a>
                     </div>
                     <div @*class="product__pagination"*@ style="text-align:center" >
                         @Html.PagedListPager((IPagedList)ViewBag.OnePageOfPro, page => Url.Action("ProductList", new { page }))
@@ -158,8 +158,10 @@
                                ${datas[i].fVisible}
                             </td>
                             <td style="margin-left:auto;vertical-align: middle;">
-                               <a class="primary-btn cart-btn" href="/Admin/ProductManage/ProductEdit/${datas[i].fProductId}">修改產品</a>
-                               <a class="primary-btn cart-btn" href="/Admin/ProductManage/ProductImgList/${datas[i].fProductId}">檢視圖片</a>
+                               <a class="btn btn-light" href="/Admin/ProductManage/ProductEdit/${datas[i].fProductId}">產品修改</a>                             
+                            </td>
+                            <td style="margin-left:auto;vertical-align: middle;">
+                                <a class="btn btn-success" href="/Admin/ProductManage/ProductImgList/${datas[i].fProductId}">檢視圖片</a>
                             </td>
                         </tr> `               
                 $('#ListPro').append(tr);             

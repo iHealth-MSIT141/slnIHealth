@@ -58,6 +58,10 @@
         .selectbox {
             margin-left: -1.2%;
         }
+        .divSearch {
+            width: 70%;
+            margin: 15px auto;
+        }
     </style>
 }
 <h2 id="title">客服回覆</h2>
@@ -67,7 +71,7 @@
         <div class="row">
             @*※※※非會員專區的View的內容請從此處開始※※※*@
             <div class="container">
-                <div class="row">
+                <div class="row divSearch">
                     <div class="col-lg-3 col-md-3 selectbox">
                         <select name="stype" id="stype" class="custom-select">
                             <option value="999" disabled selected hidden>依處理狀態篩選</option>
@@ -86,7 +90,7 @@
                             <option value="其他建議相關">其他相關</option>
                         </select>
                     </div>
-                    <div class="col-lg-3 col-md-3 ">
+                    <div class="col-lg-3 col-md-3">
                         <div style="text-align:center;" id="divDateTake">
                             <div id="divDatepicker">
                                 <button class="fa-solid fa-caret-left" id="btnPrevDate"></button>
@@ -95,9 +99,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-3 ">
+                    <div class="col-lg-3 col-md-3">
                         <div style="margin-bottom:10px">
-                            <button id="reload" class="site-btn">清空篩選</button>
+                            <button id="reload" class="btn btn-success">清空篩選</button>
                         </div>
                     </div>
                 </div>
@@ -162,7 +166,7 @@
                                 @Html.DisplayFor(modelItem => item.Status.FStatus)
                             </td>
                             <td style="white-space:nowrap">
-                                @Html.ActionLink("回覆", "Reply", new { id = item.FProblemId }, new { @class = "site-btn" })
+                                @Html.ActionLink("回覆", "Reply", new { id = item.FProblemId }, new { @class = "site-btn btn btn-succes" })
                             </td>
                         </tr>
                     }
