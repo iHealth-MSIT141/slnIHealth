@@ -111,7 +111,6 @@
                                 foreach (var item in Model)
                                 {
                                     <tr>
-
                                         <td style="margin-left: auto;text-align:center;">
                                             <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FOrderId)" id="FOrderId" name="FOrderId" />
                                             <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FMemberId)" id="FMemberId" name="FMemberId" />
@@ -223,8 +222,10 @@
                                            ${fixrem}
                                         </td>
                                         <td style="margin-left: auto; text-align: center;">
-                                           <a class="primary-btn cart-btn " href="/Admin/OrderManage/OrderEdit/${datas[i].fOrderId}">修改訂單</a><br />
-                                           <a class="primary-btn cart-btn" href="/Admin/OrderManage/OrderdetailList/${datas[i].fOrderId}">訂單明細</a>
+                                           <a class="btn btn-light abc" href="/Admin/OrderManage/OrderEdit/${datas[i].fOrderId}">訂單修改</a><br />
+                                        </td>
+                                        <td>
+                                           <a class="btn btn-success abc" href="/Admin/OrderManage/OrderdetailList/${datas[i].fOrderId}">訂單明細</a>
                                         </td>
                                     </tr>`
                 $('#ListPro').append(tr);
@@ -281,9 +282,11 @@
                                         <td style="margin-left: auto; text-align: center;">
                                            ${fixrem}
                                         </td>
-                                        <td style="margin-left: auto; text-align: center;">
-                                           <a class="primary-btn cart-btn " href="/Admin/OrderManage/OrderEdit/${datas[i].fOrderId}">修改訂單</a><br />
-                                           <a class="primary-btn cart-btn" href="/Admin/OrderManage/OrderdetailList/${datas[i].fOrderId}">訂單明細</a>
+                                         <td style="margin-left: auto; text-align: center;">
+                                           <a class="btn btn-light abc" href="/Admin/OrderManage/OrderEdit/${datas[i].fOrderId}">訂單修改</a><br />
+                                        </td>
+                                        <td>
+                                           <a class="btn btn-success abc" href="/Admin/OrderManage/OrderdetailList/${datas[i].fOrderId}">訂單明細</a>
                                         </td>
                                     </tr>`
                 $('#ListPro').append(tr);

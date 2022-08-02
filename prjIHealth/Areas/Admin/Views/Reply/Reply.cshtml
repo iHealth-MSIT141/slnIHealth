@@ -13,6 +13,32 @@
             margin-left: 20vw;
             margin-right: 20vw;
         }
+        .btn-light {
+            background-color: #DFEACE !important;
+            color: black;
+        }
+
+        .btn-success {
+            background-color: #7FAD39;
+            color: white;
+            border: none;
+        }
+
+        .btn-demo {
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+        }
+
+        table.table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .selectbox {
+            margin-bottom: 5%;
+            margin-left: -10%;
+        }
     </style>
 }
 <h2 id="title">意見回覆</h2>
@@ -52,8 +78,8 @@
                     </div>
                 </form>
                 <div class="col-lg-12 text-center">
-                    <button id="buttonAdd" class="site-btn" data-toggle="modal" data-target="#bModal">讀取附件</button>
-                    <input type="button" value="DEMO" class="site-btn" style="margin-right: 10px;margin-top:20px" id="demo"/>
+                    <button id="buttonAdd" class="site-btn btn btn-success" data-toggle="modal" data-target="#bModal">讀取附件</button>
+                    <input type="button" value="DEMO" class=" site-btn btn btn-demo" id="demo"/>
                 </div>
             </div>
             <div class="col-8">
@@ -92,7 +118,7 @@
                     <input type="hidden" value=1 name="FReplierId" id="FReplierId" />
                     <input type="hidden" value=@Html.DisplayFor(modelItem => item.FProblemId) name="FProblemId" id="FProblemId" />
                     <div class="col-lg-12 text-center">
-                        <input type="submit" value="回覆儲存" class="site-btn" style="float: right; margin-top: 20px" onclick="return confirm('1.請確認回覆內容已填2.請確認處理狀態與回覆方式已選')" />
+                        <input type="submit" value="回覆儲存" class="site-btn btn btn-success" style="float: right; margin-top: 20px" onclick="return confirm('1.請確認回覆內容已填2.請確認處理狀態與回覆方式已選')" />
                     </div>
                 </form>
             </div>
@@ -130,7 +156,7 @@
                 }
             </div>
             <div class="modal-footer">
-                <button type="button" class="site-btn" data-dismiss="modal">關閉</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">關閉</button>
             </div>
         </div>
     </div>
