@@ -26,7 +26,10 @@
                         <a asp-action="Create" class="primary-btn" style="width:150px">新增專欄</a>
                     </div>
                     <div class="col-lg-3 col-md-3 ">
-                        <a href="~/News/Blog" class="primary-btn" style="width:150px">專欄顯示</a>
+                        @using (Html.BeginForm())
+                        {
+                            @Html.TextBox("txtKeyword", null, null, new { @style = "width:150px" })
+                            <input type="submit" value="輸入查詢" class="site-btn" style="width:150px" />}
                     </div>
                     <div class="col-lg-3 col-md-3 ">
                         <select name="selectCate" id="selectCate" class="custom-select" style="width:150px">
@@ -41,6 +44,11 @@
                         <button name="btnReset" id="btnReset" class="site-btn" style="width:150px">清空篩選</button>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="container">
+            <div style="margin-right:79%">
+                <a href="~/News/Blog" class="primary-btn" style="width:150px">專欄顯示</a>
             </div>
         </div>
         @*※※※非會員專區的View的內容請從此處開始※※※*@
@@ -64,12 +72,12 @@
                             <th style="margin-left:auto">
                                 類別
                             </th>
-                            <th style="margin-left:auto">
-                                
-                            </th>
-                            <th style="margin-left:auto">
-                                影片連結
-                            </th>
+                            @*<th style="margin-left:auto">
+
+                                </th>
+                                <th style="margin-left:auto">
+                                    影片連結
+                                </th>*@
                             <th style="margin-left:auto">
                                 作者名稱
                             </th>
@@ -96,14 +104,14 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.FNewsCategory.FCategoryName)
                                 </td>
+                                @*<td>
+                                        @Html.DisplayFor(modelItem => item.FViews)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FVideoUrl)
+                                    </td>*@
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.FViews)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FVideoUrl)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FMemberId)
+                                    @Html.DisplayFor(modelItem => item.FMember.FMemberName)
                                 </td>
                                 <td>
                                     @Html.ActionLink("編輯", "Edit", new { id = item.FNewsId }, new { @class = "primary-btn" })
@@ -117,17 +125,7 @@
                         }
                     </tbody>
                 </table>
-                <div class="container">
-                    <div style="margin-right:85%">
-                        <div class="row">
 
-                            @using (Html.BeginForm())
-                            {
-                                @Html.TextBox("txtKeyword", null, null, new { @style = "width:150px" })
-                                <input type="submit" value="輸入查詢" class="site-btn" style="width:150px" />}
-                        </div>
-                    </div>
-                </div>
                 @Html.PagedListPager((IPagedList)ViewBag.OnePageOfNews, page => Url.Action("List", new { page }))
             </div>
         </div>
@@ -139,7 +137,7 @@
         $('#selectCate').on('change', CategoriesChange);
         $('#btnReset').on('click', ResetClick);
         //專欄類別篩選ajax
-    async function CategoriesChange() {    
+    async function CategoriesChange() {
         $('#ListZone>tr').remove();
         const changeCate = selectCate.options[selectCate.selectedIndex].value;
         const response = await fetch("@Url.Content("~/Admin/NewsManage/SelectCategoryIDAPI")" + `?id=${changeCate}`);
@@ -152,6 +150,7 @@
             let fixTitle = '';
             let fixDate = '';
             let fixContent = '';
+            let fixMember = '';
             if (datas[i].fViews == null) {
                 fixViews = ''
             }
@@ -163,6 +162,12 @@
             }
             else {
                 fixVideo = datas[i].fVideoUrl
+            }
+            if (datas[i].fMemberId == null) {
+                fixMember = ''
+            }
+            else {
+                fixMember = datas[i].getMember.fMemberName
             }
             if (datas[i].fTitle != null) {
                 fixTitle = datas[i].fTitle.substr(0, 10);
@@ -180,9 +185,7 @@
              <td>
              <img src="/img/blog/${datas[i].fThumbnailPath}" width="100" height="80"/></td>
              <td>${datas[i].newsCategory.fCategoryName}</td>
-             <td>${fixViews}</td>
-             <td>${fixVideo}</td>
-             <td>${datas[i].fMemberId}</td>
+             <td>${fixMember}</td>
              <td>
              <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
              <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
@@ -203,6 +206,7 @@
                 let fixTitle = '';
                 let fixDate = '';
                 let fixContent = '';
+                let fixMember = '';
                 if (datas[i].fViews == null) {
                     fixViews = ''
                 }
@@ -214,6 +218,12 @@
                 }
                 else {
                     fixVideo = datas[i].fVideoUrl
+                }
+                if (datas[i].fMemberId == null) {
+                    fixMember = ''
+                }
+                else {
+                    fixMember = datas[i].getMember.fMemberName
                 }
                 if (datas[i].fTitle != null) {
                     fixTitle = datas[i].fTitle.substr(0, 10);
@@ -231,9 +241,7 @@
              <td>
              <img src="/img/blog/${datas[i].fThumbnailPath}" width="100" height="80"/></td>
              <td>${datas[i].newsCategory.fCategoryName}</td>
-             <td>${fixViews}</td>
-             <td>${fixVideo}</td>
-             <td>${datas[i].fMemberId}</td>
+             <td>${fixMember}</td>
              <td>
              <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
              <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
@@ -243,4 +251,22 @@
             }
         };
     </script>
+    @*tr = `<tr>
+            <td>${fixTitle}</td>
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixDate}</td>
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixContent}</td>
+            <td>
+                <img src="/img/blog/${datas[i].fThumbnailPath}" width="100" height="80" />
+            </td>
+            <td>${datas[i].newsCategory.fCategoryName}</td>
+            <td>${fixViews}</td>
+            <td>${fixVideo}</td>
+            <td>${fixMember}</td>
+            <td>
+                <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
+                <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
+                <a class="primary-btn" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+            </td>
+        </tr>`
+        $(`#ListZone`).append(tr);*@
 }

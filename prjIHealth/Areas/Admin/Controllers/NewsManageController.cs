@@ -35,13 +35,13 @@ namespace prjIHealth.Areas.Admin.Controllers
 
             if (string.IsNullOrEmpty(vModel.txtKeyword))
             {
-                datas = db.TNews.Select(t => t).OrderBy(t => t.FNewsId).Include(t => t.FNewsCategory)
+                datas = db.TNews.Select(t => t).OrderBy(t => t.FNewsId).Include(t => t.FNewsCategory).Include(n => n.FMember)
                     .ToPagedList(page ?? 1, 5);
             }
 
             else
             {
-                datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword)).Include(t => t.FNewsCategory)
+                datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword)).Include(t => t.FNewsCategory).Include(n => n.FMember)
                     .ToPagedList(page ?? 1, 5);
             }
 
@@ -141,6 +141,8 @@ namespace prjIHealth.Areas.Admin.Controllers
                              join c in db.TNewsCategories
                              on n.FNewsCategoryId equals c.FNewsCategoryId
                              where n.FNewsCategoryId == id
+                             join m in db.TMembers
+                             on n.FMemberId equals m.FMemberId
                              select new CNewsViewModel()
                              {
                                  FNewsId = n.FNewsId,
@@ -152,7 +154,8 @@ namespace prjIHealth.Areas.Admin.Controllers
                                  FViews = n.FViews,
                                  FVideoUrl = n.FVideoUrl,
                                  FMemberId = n.FMemberId,
-                                 newsCategory = n.FNewsCategory
+                                 newsCategory = n.FNewsCategory,
+                                 getMember = n.FMember
                              }).ToList();
 
             return Json(selCateID);
@@ -164,6 +167,8 @@ namespace prjIHealth.Areas.Admin.Controllers
             var clickReset = (from n in db.TNews
                               join c in db.TNewsCategories
                               on n.FNewsCategoryId equals c.FNewsCategoryId
+                              join m in db.TMembers
+                              on n.FMemberId equals m.FMemberId
                               select new CNewsViewModel()
                               {
                                   FNewsId = n.FNewsId,
@@ -175,7 +180,8 @@ namespace prjIHealth.Areas.Admin.Controllers
                                   FViews = n.FViews,
                                   FVideoUrl = n.FVideoUrl,
                                   FMemberId = n.FMemberId,
-                                  newsCategory = n.FNewsCategory
+                                  newsCategory = n.FNewsCategory,
+                                  getMember = n.FMember
                               }).ToList();
 
             return Json(clickReset);
