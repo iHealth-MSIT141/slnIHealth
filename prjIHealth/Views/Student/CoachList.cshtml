@@ -207,17 +207,7 @@
             background-color: #7fad39;
             border: none;
         }
-
-        .btn-light {
-            background-color: #4F6C24;
-            color: white;
-        }
-
-            .btn-light:hover {
-                background-color: #304115;
-                color: white;
-            }
-
+      
         .star {
             height: 18px;
         }
@@ -426,7 +416,8 @@
                             <div class="divSubmit">
                                 <button type="submit" class="btn btn-success btnSearch" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
-                            <button class="btn btn-light" id="btnDemo" style="margin-left:10px">Demo</button>
+                            <button class="btn btn-light" id="btnDemo1" style="margin-left:10px">Demo1</button>
+                            <button class="btn btn-light" id="btnDemo2" style="margin-left:10px">Demo2</button>
                         </div>
                     </form>
                     <div class="divLink col-lg-5">
@@ -535,10 +526,16 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>       
     //Demo
-    $("#btnDemo").click((evt) => {
+    $("#btnDemo1").click((evt) => {
         evt.preventDefault();
         $("#ipKeyword").val("體能訓練");
     })
+
+    $("#btnDemo2").click((evt) => {
+        evt.preventDefault();
+        $("#ipKeyword").val("Alisa");
+    })
+        
         
     //Page
     function GetPage() {
