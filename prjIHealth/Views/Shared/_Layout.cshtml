@@ -1006,7 +1006,7 @@
                 data: data,
                 success: function (data)
                 {
-                    if (data == "empty") { alert(" 電子信箱不得空白,請重新輸入"); }
+                    if (data == "empty") { alert(" 電子信箱或密碼不得空白,請重新輸入"); }
                     else if (data == "false")
                     {
                         alert("電子信箱錯誤,請重新輸入");
@@ -1017,7 +1017,7 @@
 
                     } else if (data == "PasswordError")
                     {
-                        alert(`密碼錯誤或空白, 請重新輸入`);
+                        alert(`密碼錯誤, 請重新輸入`);
                     } else if (data == "ConfirmPasswordError")
                     {
                         alert(`重設密碼不一致, 請重新輸入`)

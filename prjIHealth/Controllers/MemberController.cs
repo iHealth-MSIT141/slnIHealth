@@ -233,7 +233,7 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult ResetPassword(CLoginViewModel vmodel)
         {
-            if (vmodel.fEmail == null )
+            if (vmodel.fEmail == null || vmodel.fPassword==null || vmodel.firstPassword==null)
             {
                 return Content("empty", "text/plain", System.Text.Encoding.UTF8);
             }
@@ -265,10 +265,8 @@ namespace prjIHealth.Controllers
                 } 
                 } 
                 else { return Content("false", "text/plain", System.Text.Encoding.UTF8); }
-             
             }
         }
-
         //========================追蹤清單===========================    
 
         public IActionResult ShowTrackList()
@@ -279,7 +277,6 @@ namespace prjIHealth.Controllers
         {
             return View();
         }
-
         public IActionResult ShowTrackProduct(int? id)//MemberID
         {
             if (id == null)
@@ -296,7 +293,6 @@ namespace prjIHealth.Controllers
                 return Json(showProducts);
             }
         }
-
         public IActionResult ShowTrackCount(int? id)
         {
             if (id == null || id == 0)
