@@ -520,12 +520,21 @@
     <script>
         //移除候選教練
         $(".aDelCand").on("click", function () {
-            if (confirm("確定要移除嗎?")) {
-                let theCandidate = $(this);
-                $.get("@Url.Content("~/Student/delCandidate")", { id: theCandidate.prev("input").val() }, function (data) {
-                    theCandidate.closest(".divCard").remove();
-                })
-            }
+            SwalGreen.fire({
+                title: `確定要移除嗎?`,
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: '確定移除',
+                cancelButtonText: '取消',
+                icon: 'question'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let theCandidate = $(this);
+                    $.get("@Url.Content("~/Student/delCandidate")", { id: theCandidate.prev("input").val() }, function (data) {
+                        theCandidate.closest(".divCard").remove();
+                    })
+                }
+            })
         });
 
         //教練聯繫紀錄Modal依聯繫時間排序
