@@ -141,38 +141,62 @@
     @*防止同時未填寫電話及EMAIL*@
     @if (ViewBag.Message_EP != null)
     {
-        <script type="text/javascript">
-         window.onload = function () {
-                alert("@ViewBag.Message_EP");
+<script type="text/javascript">
+            window.onload = function () {
+                SwalGreen.fire({
+                    title: '@ViewBag.Message_EP',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
             };
 
-        </script>
+</script>
     }
     @*防止未填寫問題內容*@
     @if (ViewBag.Message_PC != null)
     {
-        <script type="text/javascript">
-        window.onload = function () {
-                alert("@ViewBag.Message_PC");
+<script type="text/javascript">
+            window.onload = function () {
+            SwalGreen.fire({
+                    title: '@ViewBag.Message_PC',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
         };
-        </script>
+</script>
     }
     @*防止未選擇問題類別*@
     @if (ViewBag.Message_PCID != null)
     {
-        <script type="text/javascript">
+<script type="text/javascript">
         window.onload = function () {
-                alert("@ViewBag.Message_PCID");
+            SwalGreen.fire({
+                    title: '@ViewBag.Message_PCID',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
         };
-        </script>
+</script>
     }
     @*送出後提示成功並將輸入欄位清空*@
     @if (ViewBag.Message_SUCCESS != null)
     {
-        <script type="text/javascript">
+<script type="text/javascript">
         window.onload = function () {
             function ReplySuccess() {
-                alert("@ViewBag.Message_SUCCESS");
+                SwalGreen.fire({
+                    title: '@ViewBag.Message_SUCCESS',
+                    text: false,
+                    icon: 'success',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
             }
             function ResetView() {
                 document.getElementById("FContactPhone").value = "";
@@ -183,7 +207,7 @@
             ReplySuccess();
             ResetView();
         }
-        </script>
+</script>
     }
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
