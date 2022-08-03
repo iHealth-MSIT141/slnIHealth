@@ -1,6 +1,5 @@
 ﻿@model System.Collections.Generic.IEnumerable<prjIHealth.Models.TNews>
-@using X.PagedList
-@using X.PagedList.Mvc.Core
+
 
 @section Styles{
     <link href="/css/PagedList.css" rel="stylesheet" />
@@ -123,7 +122,6 @@
                     @*BLOG專欄一覽位置*@
                     <div class="col-lg-12">
                         <div class="product__pagination blog__pagination">
-                            @Html.PagedListPager((IPagedList)ViewBag.onePageOfBlogs, page => Url.Action("Blog", new { page }))
                         </div>
                     </div>
                 </div>

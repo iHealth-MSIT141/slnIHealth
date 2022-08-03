@@ -11,19 +11,23 @@
             margin-left: 20vw;
             margin-right: 20vw;
         }
-        .divTop{
-            margin-bottom:10px;
-        }        
+
+        .divTop {
+            margin-bottom: 10px;
+        }
+
         .divShow {
             display: flex;
             justify-content: flex-start;
         }
+
         .divCreate {
             display: flex;
             justify-content: right;
-        } 
-        table{
-            table-layout:auto;
+        }
+
+        table {
+            table-layout: auto;
         }
     </style>
 }
@@ -32,7 +36,7 @@
 
 <h2 id="title">專欄管理</h2>
 <section class="product spad">
-    <div class="container">        
+    <div class="container">
         <div class="container row divTop">
             <div @*style="margin-right:79%"*@ class="col-2 divShow">
                 <a href="~/News/Blog" class="btn btn-light">專欄顯示</a>
@@ -45,22 +49,22 @@
             </div>
             <div @*class="col-lg-3 col-md-3 "*@ class="col-4">
                 @*<div class="col-sm-7">*@
-                    <select name="selectCate" id="selectCate" class="custom-select" style="width:220px">
-                        <option disabled selected hidden>依類別篩選</option>
-                        <option value="1">運動健身</option>
-                        <option value="2">食物營養</option>
-                        <option value="3">新冠疫情</option>
-                        <option value="4">教練專欄</option>
-                    </select>
-                @*</div>*@                
-                <!--<div--> @*class="col-lg-3 col-md-3"*@ @*style="margin-right:0%"*@ <!--class="col-sm-5">-->
-                    <button name="btnReset" id="btnReset" class="btn btn-success" @*style="width:150px"*@>清空篩選</button>
+                <select name="selectCate" id="selectCate" class="custom-select" style="width:220px">
+                    <option disabled selected hidden>依類別篩選</option>
+                    <option value="1">運動健身</option>
+                    <option value="2">食物營養</option>
+                    <option value="3">新冠疫情</option>
+                    <option value="4">教練專欄</option>
+                </select>
                 @*</div>*@
-            </div>            
+                <!--<div--> @*class="col-lg-3 col-md-3"*@ @*style="margin-right:0%"*@ <!--class="col-sm-5">-->
+                <button name="btnReset" id="btnReset" class="btn btn-success" @*style="width:150px"*@>清空篩選</button>
+                @*</div>*@
+            </div>
             <div @*class="col-lg-3 col-md-3"*@ @*style="margin-left:0%"*@ class="col-2 divCreate">
                 <a asp-action="Create" class="btn btn-success">新增專欄</a>
             </div>
-        </div>           
+        </div>
         @*※※※非會員專區的View的內容請從此處開始※※※*@
         <div class="row">
             <div>
@@ -197,9 +201,11 @@
              <td>${datas[i].newsCategory.fCategoryName}</td>
              <td>${fixMember}</td>
              <td>
-             <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
-             <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
-             <a class="primary-btn" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+             <a class="btn btn-success" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
+             <br />
+             <a class="btn btn-light" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
+             <br />
+             <a class="btn btn-secondary" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
              </td></tr>`
             $(`#ListZone`).append(tr);
         }
@@ -253,30 +259,34 @@
              <td>${datas[i].newsCategory.fCategoryName}</td>
              <td>${fixMember}</td>
              <td>
-             <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
-             <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
-             <a class="primary-btn" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+             <a class="btn btn-success" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
+             <br />
+             <a class="btn btn-light" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
+             <br />
+             <a class="btn btn-secondary" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
              </td></tr>`
                 $(`#ListZone`).append(tr);
             }
         };
     </script>
     @*tr = `<tr>
-            <td>${fixTitle}</td>
-            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixDate}</td>
-            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixContent}</td>
-            <td>
-                <img src="/img/blog/${datas[i].fThumbnailPath}" width="100" height="80" />
-            </td>
-            <td>${datas[i].newsCategory.fCategoryName}</td>
-            <td>${fixViews}</td>
-            <td>${fixVideo}</td>
-            <td>${fixMember}</td>
-            <td>
-                <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
-                <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
-                <a class="primary-btn" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
-            </td>
-        </tr>`
-        $(`#ListZone`).append(tr);*@
+                    <td>${fixTitle}</td>
+                    <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixDate}</td>
+                    <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixContent}</td>
+                    <td>
+                        <img src="/img/blog/${datas[i].fThumbnailPath}" width="100" height="80" />
+                    </td>
+                    <td>${datas[i].newsCategory.fCategoryName}</td>
+                    <td>${fixViews}</td>
+                    <td>${fixVideo}</td>
+                    <td>${fixMember}</td>
+                    <td>
+                        <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
+                        <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
+                        <a class="primary-btn" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+                    </td>
+                </tr>`
+                $(`#ListZone`).append(tr);
+      
+    *@
 }

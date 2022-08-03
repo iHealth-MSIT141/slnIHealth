@@ -12,6 +12,7 @@ using prjIHealth.ViewModels;
 using System.Text.Json;
 using prjiHealth.Models;
 using Microsoft.AspNetCore.Http;
+using System.Collections;
 
 namespace prjiHealth.Controllers
 {
@@ -70,11 +71,21 @@ namespace prjiHealth.Controllers
         public IActionResult BlogCategory(int? id)
         {
             IHealthContext db = new IHealthContext();
+            var category0Count = db.TNews.Select(t => t).Count();
+            ViewBag.Category0Count = category0Count;
+            var category1Count = db.TNews.Where(t => t.FNewsCategoryId == 1).Count();
+            ViewBag.Category1Count = category1Count;
+            var category2Count = db.TNews.Where(t => t.FNewsCategoryId == 2).Count();
+            ViewBag.Category2Count = category2Count;
+            var category3Count = db.TNews.Where(t => t.FNewsCategoryId == 3).Count();
+            ViewBag.Category3Count = category3Count;
+            var category4Count = db.TNews.Where(t => t.FNewsCategoryId == 4).Count();
+            ViewBag.Category4Count = category4Count;
             var selCateID = (from n in db.TNews
                              join c in db.TNewsCategories
                              on n.FNewsCategoryId equals c.FNewsCategoryId
                              where n.FNewsCategoryId == id
-                             select new CNewsViewModel()
+                             select new TNews()
                              {
                                  FNewsId = n.FNewsId,
                                  FTitle = n.FTitle,
@@ -85,7 +96,6 @@ namespace prjiHealth.Controllers
                                  FViews = n.FViews,
                                  FVideoUrl = n.FVideoUrl,
                                  FMemberId = n.FMemberId,
-                                 newsCategory = n.FNewsCategory
                              }).ToList();
             return View(selCateID);
         }
@@ -135,8 +145,6 @@ namespace prjiHealth.Controllers
             db.TNewsComments.Add(newsComment);
             db.SaveChanges();
             return RedirectToAction("BlogDetail", "News", new { id = comment.FNewsId });
-
-            return RedirectToAction("BlogDetail", "News", new { id = comment.FNewsId });
             //return Content("謝謝你哦", "text/plain", System.Text.Encoding.UTF8);
         }
         public IActionResult BlogSelectCategoryAPI(int? id)
@@ -154,6 +162,8 @@ namespace prjiHealth.Controllers
                 selCateID = from t in db.TNews
                             where t.FNewsCategoryId == id
                             orderby t.FNewsId
+                            //join c in db.TNewsComments
+                            //on t.FNewsId equals c.FNewsId
                             select t;
             }
             return Json(selCateID);
@@ -207,6 +217,35 @@ namespace prjiHealth.Controllers
                 return userID;
             }
             return 0;
+        }
+
+        public ActionResult RandomBlog(int? id)
+        {
+            IHealthContext db = new IHealthContext();
+            ArrayList list = new ArrayList();
+            Random rd = new Random(Guid.NewGuid().GetHashCode());
+            int count = db.TNews.Count();
+            int num = 0;
+            List<int> items = new List<int>();
+            for (int i = 0; i < 3;)
+            {
+                num = rd.Next(1, count);
+
+                if (items.Contains(num) || num == id)
+                {
+                    continue;
+                }
+                else
+                {
+                    TNews rdNews = (from t in db.TNews
+                                    where t.FNewsId == num
+                                    select t).FirstOrDefault();
+                    list.Add(rdNews);
+                    i++;
+                    items.Add(num);
+                }
+            }
+            return Json(list);
         }
 
         //public IActionResult CommentCount(int? id)
