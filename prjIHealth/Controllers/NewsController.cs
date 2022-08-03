@@ -81,6 +81,22 @@ namespace prjiHealth.Controllers
             ViewBag.Category3Count = category3Count;
             var category4Count = db.TNews.Where(t => t.FNewsCategoryId == 4).Count();
             ViewBag.Category4Count = category4Count;
+            if(id == 1)
+            {
+                ViewBag.AddClass1 = "selectedCategory";
+            }
+            if (id == 2)
+            {
+                ViewBag.AddClass2 = "selectedCategory";
+            }
+            if (id == 3)
+            {
+                ViewBag.AddClass3 = "selectedCategory";
+            }
+            if (id == 4)
+            {
+                ViewBag.AddClass4 = "selectedCategory";
+            }
             var selCateID = (from n in db.TNews
                              join c in db.TNewsCategories
                              on n.FNewsCategoryId equals c.FNewsCategoryId

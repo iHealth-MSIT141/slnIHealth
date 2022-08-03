@@ -4,8 +4,7 @@
 @section Styles{
 
 }
-@{ ViewData["Title"] = "BlogDetail";
-    Layout = "_Layout"; }
+<link rel="stylesheet" href="/css/ShoppingMallCategory.css" type="text/css">
 
 <!-- Blog Details Hero Begin -->
 
@@ -61,11 +60,11 @@
                     <div class="blog__sidebar__item" id="cateSe">
                         <h4>專欄分類</h4>
                         <ul id="cate">
-                            <li><a href="~/News/Blog">所有顯示 (@ViewBag.Category0Count)</a></li>
-                            <li><a href="~/News/BlogCategory/1" data-id="1">運動健身 (@ViewBag.Category1Count)</a></li>
-                            <li><a href="~/News/BlogCategory/2" data-id="2">食物營養 (@ViewBag.Category2Count)</a></li>
-                            <li><a href="~/News/BlogCategory/3" data-id="3">新冠疫情 (@ViewBag.Category3Count)</a></li>
-                            <li><a href="~/News/BlogCategory/4" data-id="4">教練專欄 (@ViewBag.Category4Count)</a></li>
+                            <li><a href="~/News/Blog"　class="categoryItem">所有顯示 (@ViewBag.Category0Count)</a></li>
+                            <li><a href="~/News/BlogCategory/1" data-id="1" class="categoryItem">運動健身 (@ViewBag.Category1Count)</a></li>
+                            <li><a href="~/News/BlogCategory/2" data-id="2" class="categoryItem">食物營養 (@ViewBag.Category2Count)</a></li>
+                            <li><a href="~/News/BlogCategory/3" data-id="3" class="categoryItem">新冠疫情 (@ViewBag.Category3Count)</a></li>
+                            <li><a href="~/News/BlogCategory/4" data-id="4" class="categoryItem">教練專欄 (@ViewBag.Category4Count)</a></li>
                             <!--專欄分類使用處-->
                         </ul>
                     </div>
@@ -130,7 +129,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        @*<div class="col-lg-6">
                             <div class="blog__details__widget">
                                 <ul>
                                     <li><span>文章分類:</span> Food</li>
@@ -144,9 +143,9 @@
                                     <a href="#"><i class="fa fa-envelope"></i></a>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
-                    <form asp-action="ReplyComment" enctype="multipart/form-data" id="blogForm">
+                    <form asp-action="ReplyComment" enctype="multipart/form-data" id="blogForm" onsubmit="return CheckRequired()">
                         @*@foreach (var item in Model)
                             {
                                 <input type="hidden" name="FNewsId" value="@Html.DisplayFor(modelItem => item.FNewsId)" />
@@ -159,7 +158,7 @@
                         <input type="hidden" id="FMemberID" name="FMemberID" value="9 " />
                         @*<label value="" >@item.MemberName.FMemberName</label>*@
                         <label>留言回覆</label>
-                        <input id="FNewsReply" name="FNewsReply" />
+                        <textarea id="FNewsReply" name="FNewsReply" style="height: 35px;width:200px;resize: none;"></textarea>
                         <br />
                         <input id="btnSubmit" type="submit" value="發送回覆" class="site-btn" onclick="return confirm('確定要留言嗎?')" /><button id="btnDEMO" class="site-btn">DEMO</button>
                     </form>
@@ -185,57 +184,27 @@
             </div>
         </div>
         <div class="row" id="randomBlog">
-            @*<div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="/img/blog/blog-1.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">簡單的小步驟協助你烹飪更簡單</a></h5>
-                            <p>此文章我們將為您提供幾項簡單的小烹飪技巧，協助您更輕鬆的煮出美味的餐飲</p>
-                        </div>
-                    </div>
-                </div>*@
-            @*<div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="/img/blog/blog-2.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">六個方向讓您為了三十歲而準備的早餐</a></h5>
-                            <p>為了即將到來的三十歲，我們會建議你六種不同的方向而準備的早餐類型</p>
-                        </div>
-                    </div>
-                </div>*@
-            @*<div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="/img/blog/blog-3.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">參訪美國的清境農場</a></h5>
-                            <p>我們會為您介紹幾家在美國評比觀光旅遊分數不錯的永續經營農場</p>
-                        </div>
-                    </div>
-                </div>*@
         </div>
     </div>
 </section>
 
 @section Scripts{
     <script>
+
+        function CheckRequired() {
+            if ($('#FNewsReply').val() == '') {
+                SwalGreen.fire({
+                    title: '請輸入留言內容',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
+                return false;
+            } else {
+                return true;
+            }
+        }
 
         $("#btnDEMO").click(function (event) {
             event.preventDefault();
@@ -310,7 +279,10 @@
             })
             $("#randomBlog").html(randomBlogShow);
         })
-
+        $(".categoryItem").click(function () {
+            $(".categoryItem").removeClass("selectedCategory");
+            $(this).addClass("selectedCategory");
+        })
           @*$('#cate').on('click', CategorySelect)
 
         let cateID = 0;
