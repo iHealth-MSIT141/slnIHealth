@@ -402,7 +402,7 @@
                                 </div>
                             </div>
                             <div class="divClear">
-                                <button id="btnClear">清除條件</button>
+                                <button id="btnClear" class="animate__fadeIn">清除條件</button>
                             </div>
                         </div>
                     </form>
@@ -537,7 +537,7 @@
         evt.preventDefault();
         $("#ipKeyword").val("Alisa");
     })
-   
+    
     //Page
     function GetPage() {
         $(".divPage").empty();
@@ -570,7 +570,18 @@
         $(".btnPage").first().addClass("selectedPage").siblings().removeClass("selectedPage");
     }
     GetPage();
-   
+
+    //if未輸入關鍵字
+    $("#btnSearch").click((evt) => {
+        evt.preventDefault();
+        if ($("#ipKeyword").text() == "") {
+            SwalGreen.fire({
+                icon: 'warning',
+                title: '請輸入關鍵字'
+            })
+        }
+    })
+
     //多重篩選觸發事件
     $("#selCity").change(() => {
         GetCoach();       
@@ -590,7 +601,7 @@
                 success: function (data) {
                     $(".divCoachList").empty();
                     $.each(data, function (index, coach) {
-                        $(".divCoachList").append(`<div class="divCoachCard row animate__fadeIn" id=div${index}></div>`)
+                        $(".divCoachList").append(`<div class="divCoachCard row" id=div${index}></div>`)
                         //左-col-3
                         $(`#div${index}`).append(`<div class="col-3 divImg" id=divImg${index}><img class="imgCoach" id=img${index}></div>`);
                         $(`#img${index}`).attr("src", `/img/coach/coachImage/${coach.fCoachImage}`);
