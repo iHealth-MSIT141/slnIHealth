@@ -28,9 +28,10 @@ namespace prjiHealth.Controllers
         //教練列表
         public IActionResult CoachList(CKeywordViewModel v)
         {
-            IEnumerable<TCoach> datas = null;
+            IEnumerable<TCoach> datas = null;            
             if (!String.IsNullOrEmpty(v.txtKeyword))
             {
+                string keyword = v.txtKeyword.ToLower();
                 datas = _context.TCoaches
                     .Include(c => c.FMember)
                     .Include(c => c.FCity)
@@ -39,8 +40,10 @@ namespace prjiHealth.Controllers
                     .Include(c => c.TCoachLicenses)
                     .Include(c => c.TCoachRates).AsEnumerable()
                     .Where(c => c.FVisible == true && 
-                    (c.FCoachName.Contains(v.txtKeyword) || c.FCoachDescription.Contains(v.txtKeyword) || c.FSlogan.Contains(v.txtKeyword) ||
-                        c.TCoachExperiences.Any(ce => ce.FExperience.Contains(v.txtKeyword)) || c.TCoachLicenses.Any(ce => ce.FLicense.Contains(v.txtKeyword))));
+                    (c.FCoachName.ToLower().Contains(keyword) || c.FCity.FCityName.ToLower().Contains(keyword)||
+                    c.TCoachSkills.Any(cs=>cs.FSkill.FSkillName.ToLower().Contains(keyword))||
+                    c.FCoachDescription.ToLower().Contains(keyword) || c.FSlogan.ToLower().Contains(keyword) ||
+                    c.TCoachExperiences.Any(ce => ce.FExperience.ToLower().Contains(keyword)) || c.TCoachLicenses.Any(ce => ce.FLicense.ToLower().Contains(keyword))));
             }
             else
             {
