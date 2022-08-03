@@ -41,12 +41,10 @@ namespace prjIHealth.Areas.Admin.Controllers
                 q = _context.TMembers.Include(t => t.FAuthority).Where(m => m.FUserName.Contains(vModel.txtKeyword)
                    || m.FMemberName.Contains(vModel.txtKeyword) || m.FEmail.Contains(vModel.txtKeyword)||m.FPhone.Contains(vModel.txtKeyword)).ToList();
             }
-
             var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
             var onePageOfMembers = q.ToPagedList(pageNumber, 11); // will only contain 6 items max because of the pageSize
             ViewBag.onePageOfMembers = onePageOfMembers;
             return View(onePageOfMembers);
-
         }
 
         // GET: Admin/MemberManage/Details/5

@@ -86,7 +86,7 @@ namespace prjIHealth.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Edit(CLoginViewModel vModel)
+        public IActionResult Edit( CLoginViewModel vModel)
         {
             var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == vModel.fMemberId);
             if (q != null)
@@ -104,9 +104,9 @@ namespace prjIHealth.Controllers
                 q.FEmail = vModel.fEmail;
                 q.FRemarks = vModel.fRemarks;
                 q.FPhone = vModel.fPhone;
-
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
+           
             return RedirectToAction("Edit", "Member");
         }
         // GET: MemberRegister
@@ -191,7 +191,6 @@ namespace prjIHealth.Controllers
             {
                 return Content("false2", "text/plain", System.Text.Encoding.UTF8);
             }
-
         }
         public IActionResult ForgotPassword()
         {

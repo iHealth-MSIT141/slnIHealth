@@ -298,8 +298,8 @@
                     <div class="footer__widget">
                         <ul style="width:20%">
                             <li><h6>會員中心</h6></li>
-                            <li><a data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">註冊會員</a></li>
-                            <li><a data-toggle="modal" data-target="#register1Modal" data-dismiss="modal">會員登入</a></li>
+                            <li><a data-toggle="modal" data-target="#registerModal" data-dismiss="modal">註冊會員</a></li>
+                            <li><a data-toggle="modal" data-target="#loginModal" data-dismiss="modal">會員登入</a></li>
                             <li><a data-toggle="modal" data-target="#passwordForgotModal" data-dismiss="modal">忘記密碼</a></li>
                             <li><a href="~/Member/Edit">個人資料</a></li>
                         </ul>
@@ -627,11 +627,10 @@
     <script>
         //==================登入時menu_dropdown顯示, 否則隱藏===============================
         let spanTextUsername = $("#btnLayOutLogin span").text();
-
         //let spanTextAutor = $('#header__top__right__auth>p').text();
         if (spanTextUsername == "登入")
         {
-            console.log(spanTextUsername + "aa")
+            //console.log(spanTextUsername + "aa")
             $(".header__menu__dropdown").css("display", "none");
 
         } else
@@ -713,7 +712,6 @@
                         {
                             window.location.href = "/Admin/Admin/AdminHome";
                             });
-
                     } else
                     {
                         $('#loginModal').modal('hide');
@@ -724,7 +722,8 @@
                         }).then(() =>
                         {
                             window.location.reload(true);//refresh page
-                        });  }
+                        });
+                    }
                     $(".header__menu__dropdown").css("display", "");
                     $('#inpLogInUserName').val("");
                     $('#inpLogInPassword').val("");
@@ -783,7 +782,6 @@
                     if (data == "false")
                     {
                         $('#spanRegUsername').text("此帳號可使用");
-
                     } else
                     {
                         $('#spanRegUsername').text("此帳號已有人使用, 請換個帳號");
@@ -807,7 +805,6 @@
             if (firstPassword != confirmPassword) { $('#spanRegConfirmPassword').text("輸入密碼不一致"); }
             else { $('#spanRegConfirmPassword').text('密碼一致,請繼續'); }
         });
-
         //==================================email regex verification=============================
         $('#inpRegisterEmail').on('blur', () =>
         {
@@ -875,8 +872,8 @@
                             $('#spanForgotEmail').text("電子信箱正確,請繼續");
                         }
                     }
-                }); };
-
+                });
+            };
         });
 
         const btnFP = document.querySelector('#btnForgotPassword');
@@ -905,8 +902,6 @@
         });
         //=========================ajax重設密碼,popup登入頁面================================
              //=========================驗證電子信箱ajax===============================
-
-
         $("#inpResetPasswordEmail").on('blur', () =>
         {
             let data = $("#resetPasswordForm").serialize();
@@ -1098,7 +1093,7 @@
         $("#btnDemoRegister").click(function () {
             $("#inpRegisterUserName").val("summer21");
             $("#inpRegisterMemberName").val("林佳辰");
-            $("#inpRegisterPassword").val("123");
+            $("#inpRegisterPassword").val("1qaz@WSX");
             $("#inpRegisterEmail").val("summer21@gmail.com");
             $("#inpRegisterBirthday").val("19990605");
             $("#inpRegisterPhone").val("0919660550");
@@ -1114,8 +1109,8 @@
         $("#btnDemoResetPassword").click(function () {
             $("#inpResetPasswordEmail").val("charles.chou570114@gmail.com");
             $("#inpResetPassword").val("!QAZ2wsx");
-            $("#inpFirstPassword").val("1qaz%TGB");
-            $("#inpConfirmPassword").val("1qaz%TGB");
+            $("#inpFirstPassword").val("1qaz@WSX");
+            $("#inpConfirmPassword").val("11qaz@WSX");
         });
 
         //需登入的頁面導去登入
