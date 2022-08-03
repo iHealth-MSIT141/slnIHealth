@@ -191,7 +191,7 @@
                 product.fUnitprice = "NT$"+toCurrency(product.fUnitprice);
                 htmlShowProduct += `<div class="col-lg-3 col-md-4 col-sm-6">
                                     <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
+                                        <div class="product__item__pic set-bg showProductDetailInDetail" data-id="${product.fProductId}" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#" data-id="${product.fProductId}" class="addToTrackInDetail"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#" data-id="${product.fProductId}" class="addToCartInDetail"><i class="fa fa-shopping-cart"></i></a></li>
@@ -205,6 +205,20 @@
                                 </div>`
             })
             $("#suggestProduct").html(htmlShowProduct);
+        })
+
+        ////點選圖片進showPrductDetail，讓心心/購物車正常運作
+        $("#suggestProduct").delegate(".addToTrackInDetail", "mouseover", function () {
+            $(".product__item__pic").removeClass("showProductDetailInDetail");
+        })
+        $("#suggestProduct").delegate(".addToTrackInDetail", "mouseleave", function () {
+            $(".product__item__pic").addClass("showProductDetailInDetail");
+        })
+        $("#suggestProduct").delegate(".addToCartInDetail", "mouseover", function () {
+            $(".product__item__pic").removeClass("showProductDetailInDetail");
+        })
+        $("#suggestProduct").delegate(".addToCartInDetail", "mouseleave", function () {
+            $(".product__item__pic").addClass("showProductDetailInDetail");
         })
 
         //按品名會彈出相對應商品明細

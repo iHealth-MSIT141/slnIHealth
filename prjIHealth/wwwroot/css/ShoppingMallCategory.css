@@ -1,5 +1,7 @@
 ﻿.selectedCategory {
     color: #7fad39 !important;
+    font-weight:bold;
+    padding: 0 15px 0 15px;
 }
 .sort-asc::after {
     content: "↑";
@@ -13,3 +15,4 @@
     background-color: #7fad39;
     color: white;
 }
+

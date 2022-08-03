@@ -37,8 +37,8 @@ namespace prjIHealth.Controllers
             };
             string now = DateTime.Now.ToString("yyyyMM" + "32000000");
             double date = double.Parse(now);
-            double[] bmis = new double[12];
-            for (int i = 0; i < 12; i++)
+            double[] bmis = new double[24];
+            for (int i = 0; i < 24; i++)
             {
                 CBodyRecordViewModel bodyRecordsViewModel = diaryViewModel.BodyRecords.FirstOrDefault(b => double.Parse(b.FRecordDate) < date);
                 if (bodyRecordsViewModel != null)
