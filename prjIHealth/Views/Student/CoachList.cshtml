@@ -3,6 +3,7 @@
     IHealthContext db = new IHealthContext();
 }
 @section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /*多重篩選*/
@@ -424,7 +425,8 @@
                         <div class="divOther reveal_t1"><i class="fa-solid fa-user-plus"></i><span><b>&nbsp;&nbsp;想找學生？</b></span></div>
                         <div class="divUrl reveal_r1"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CreateResume">&nbsp;&nbsp;前往<b>刊登履歷</b></a></div>
                     </div>
-                </div>                
+                </div> 
+                <div id="divScroll" hidden></div>
                 <div class="divCoachList">
                     @{
                         int count = 0;
@@ -535,7 +537,7 @@
         evt.preventDefault();
         $("#ipKeyword").val("Alisa");
     })
-
+   
     //Page
     function GetPage() {
         $(".divPage").empty();
@@ -544,6 +546,7 @@
         for (let i = 1; i < pageCount + 1; i++) {
             $(".divPage").append(`<button class="btnPage" id="btn${i}">${i}</button>`);
         }
+        //頁碼click
         $(".btnPage").on("click", function () {
             let coachCards = $(".divCoachCard");
             coachCards.hide();
@@ -560,16 +563,20 @@
             let recent = $(".selectedPage").text();
             $(`#btn${parseInt(recent) + 1}`).trigger("click");
         })
-        $(".btnPage").first().trigger("click");
+        //顯示第一頁
+        let coachCards = $(".divCoachCard");
+        coachCards.hide();
+        coachCards.slice(0, 10).show();
+        $(".btnPage").first().addClass("selectedPage").siblings().removeClass("selectedPage");
     }
     GetPage();
-
+   
     //多重篩選觸發事件
     $("#selCity").change(() => {
-        GetCoach();
+        GetCoach();       
     })
     $("input[name='fGender[]'],input[name='fCoachSkill[]'],input[name='fCoachTime[]']").click(() => {
-        GetCoach();
+        GetCoach();        
     })
 
     //Ajax篩選後顯示教練
@@ -583,7 +590,7 @@
                 success: function (data) {
                     $(".divCoachList").empty();
                     $.each(data, function (index, coach) {
-                        $(".divCoachList").append(`<div class="divCoachCard row" id=div${index}></div>`)
+                        $(".divCoachList").append(`<div class="divCoachCard row animate__fadeIn" id=div${index}></div>`)
                         //左-col-3
                         $(`#div${index}`).append(`<div class="col-3 divImg" id=divImg${index}><img class="imgCoach" id=img${index}></div>`);
                         $(`#img${index}`).attr("src", `/img/coach/coachImage/${coach.fCoachImage}`);
@@ -628,7 +635,7 @@
                         //Slogan
                         $(`#ul${index}`).append(`<li style="list-style:none" class="liSlogan"><span>${coach.fSlogan}</span></li>`);                        
                     })
-                    GetPage();                    
+                    GetPage();
                 }
             });
         }

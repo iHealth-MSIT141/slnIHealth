@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using prjiHealth.Models;
 using prjiHealth.ViewModels;
@@ -51,7 +52,7 @@ namespace prjiHealth.Controllers
                                     .Where(c => c.FVisible == true);
             }                
             ViewBag.Keyword = v.txtKeyword;
-            var coaches = CCoachViewModel.CoachList(datas.ToList());
+            var coaches = CCoachViewModel.CoachList(datas.ToList());            
             return View(coaches);
         }
        
