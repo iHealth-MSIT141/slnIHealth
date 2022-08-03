@@ -3,8 +3,9 @@
     IHealthContext db = new IHealthContext();
 }
 @section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>        
+    <style>
         .frmResume {
             width: 100%;
         }
@@ -149,6 +150,7 @@
         .text-danger {
             font-size: 16px;
         }
+
         #gotop {
             position: fixed;
             z-index: 90;
@@ -434,7 +436,7 @@
         //退回填寫中
         if (Model.FStatusNumber == 67)
         {
-            <script>           
+            <script>
                 $("#btnHide").hide();
                 $("#btnDisplay").hide();
                 $("#btnSubmit").val("送出");
@@ -478,9 +480,9 @@
         function getBtnPosition() {
             let lblLic = $("#lblLic").offset().top;
             $("#btnNewLic").offset({ top: `${lblLic}` });
-        };        
+        };
         getBtnPosition();
-       
+
         //新增Exp欄位
         let expCount=@Model.Coach.TCoachExperiences.Count();
         if (@Model.Coach.TCoachExperiences.Count == 0) {
@@ -498,7 +500,7 @@
                 let exp = document.createElement("input");
                 exp.setAttribute("name", "fExperience[]");
                 exp.setAttribute("id", `exp_${expCount+1}`);    //for Demo
-                exp.classList = "form-control newInput";
+                exp.classList = "form-control newInput animate__animated animate__fadeIn";
                 $("#divExp").append(exp);
 
                 getBtnPosition();
@@ -522,7 +524,7 @@
             else {
                 let lic = document.createElement("input");
                 lic.setAttribute("name", "fLicense[]");
-                lic.classList = "form-control newInput";
+                lic.classList = "form-control newInput animate__animated animate__fadeIn";
                 $("#divLic").append(lic);
             }
             licCount++;

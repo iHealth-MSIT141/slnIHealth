@@ -1,6 +1,7 @@
 ﻿@model prjIHealth.ViewModels.CCoachViewModel
 
 @section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>      
         .frmResume {
@@ -412,7 +413,7 @@
                 let exp = document.createElement("input");
                 exp.setAttribute("name", "fExperience[]");
                 exp.setAttribute("id", `exp${expCount+1}`);   //for Demo
-                exp.classList = "form-control newInput";
+                exp.classList = "form-control newInput animate__animated animate__fadeIn";
                 $("#divExp").append(exp);
                 getBtnPosition();
             }
@@ -429,7 +430,7 @@
                 let lic = document.createElement("input");
                 lic.setAttribute("name", "fLicense[]");
                 lic.setAttribute("id", `lic${licCount+1}`);   //for Demo
-                lic.classList = "form-control newInput";
+                lic.classList = "form-control newInput animate__animated animate__fadeIn";
                 $("#divLic").append(lic);
             }
             licCount++;
