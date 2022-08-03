@@ -80,6 +80,7 @@ namespace prjiHealth.Controllers
         //依狀態篩選內容
         public IActionResult SelectByStatus(int id)
         {
+            int userID = TakeMemberID();
             IHealthContext db = new IHealthContext();
             List<CProblemViewModel> sid = null;
             if (id == 0)
@@ -89,13 +90,14 @@ namespace prjiHealth.Controllers
                        on t.FProblemCategoryId equals p.FProblemCategoryId
                        join s in db.TStatuses
                        on t.FStatusNumber equals s.FStatusNumber
+                       where t.FMemberId== userID
                        select new CProblemViewModel()
                        {
                            FProblemId = t.FProblemId,
                            FProblemTime = t.FProblemTime,
                            FProblemCategory = t.FProblemCategory,
                            FProblemContent = t.FProblemContent,
-                           FMemberId = t.FMemberId,
+                           FMemberId = userID,
                            FOrderId = t.FOrderId,
                            FEmail = t.FEmail,
                            FContactPhone = t.FContactPhone,
@@ -109,14 +111,14 @@ namespace prjiHealth.Controllers
                        on t.FProblemCategoryId equals p.FProblemCategoryId
                        join s in db.TStatuses
                        on t.FStatusNumber equals s.FStatusNumber
-                       where t.FStatusNumber == id
+                       where t.FStatusNumber == id && t.FMemberId == userID
                        select new CProblemViewModel()
                        {
                            FProblemId = t.FProblemId,
                            FProblemTime = t.FProblemTime,
                            FProblemCategory = t.FProblemCategory,
                            FProblemContent = t.FProblemContent,
-                           FMemberId = t.FMemberId,
+                           FMemberId = userID,
                            FOrderId = t.FOrderId,
                            FEmail = t.FEmail,
                            FContactPhone = t.FContactPhone,
