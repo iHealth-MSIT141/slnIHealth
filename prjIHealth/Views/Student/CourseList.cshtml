@@ -167,6 +167,15 @@
             td a:hover {
                 color: #7fad39;
             }
+
+        .colorFinish {
+            color: silver;
+            font-weight: 700;
+        }
+        .colorIng {
+            color: #39ADA1;
+            font-weight: 700;
+        }
     </style>
 }
 
@@ -248,33 +257,44 @@
                                 courseCount++;
 
                                 @*課程列表*@
-                                <tr>
-                                    <td>
-                                        @courseCount
-                                    </td>
-                                    <td>
-                                        <a href="~/Student/ViewCoachDetails/@c.CoachId">
-                                            @c.CoachName
-                                        </a>
-                                    </td>
-                                    <td>
-                                        @c.FCourseName
-                                    </td>
-                                    <td>
-                                        @c.AvailableTime
-                                    </td>
-                                    <td>
-                                        @c.FCourseTotal
-                                    </td>
-                                    <td>
+                        <tr>
+                            <td>
+                                @courseCount
+                            </td>
+                            <td>
+                                <a href="~/Student/ViewCoachDetails/@c.CoachId">
+                                    @c.CoachName
+                                </a>
+                            </td>
+                            <td>
+                                @c.FCourseName
+                            </td>
+                            <td>
+                                @c.AvailableTime
+                            </td>
+                            <td>
+                                @c.FCourseTotal
+                            </td>
+                            @{
+                                if (c.Status == "進行中")
+                                {
+                                    <td class="colorIng">
                                         @c.Status
                                     </td>
-                                    <td class="tdBtns">
-                                        <button class=" accordion-toggle btnView" data-toggle="collapse" data-target="#@c.CoachName.Trim()@courseCount"><i class="fa-solid fa-eye"></i>&nbsp&nbsp上課紀錄</button>
-                                        <button class="btnRate" data-toggle="modal" data-target="#addModal"><i class="fa-solid fa-clipboard-check"></i>&nbsp&nbsp評價教練</button>
-                                        <input hidden value="@c.CoachId" />
+                                }
+                                else
+                                {
+                                    <td class="colorFinish">
+                                        @c.Status
                                     </td>
-                                </tr>
+                                }
+                            }
+                            <td class="tdBtns">
+                                <button class=" accordion-toggle btnView" data-toggle="collapse" data-target="#@c.CoachName.Trim()@courseCount"><i class="fa-solid fa-eye"></i>&nbsp&nbsp上課紀錄</button>
+                                <button class="btnRate" data-toggle="modal" data-target="#addModal"><i class="fa-solid fa-clipboard-check"></i>&nbsp&nbsp評價教練</button>
+                                <input hidden value="@c.CoachId" />
+                            </td>
+                        </tr>
 
                                 @*展開上課紀錄*@
                                 <tr>
@@ -297,7 +317,20 @@
                                                             <tr data-toggle="collapse" class="accordion-toggle" data-target="#demo10">
                                                                 <td>@reservationCount</td>
                                                                 <td>@r.FCourseTime.Substring(0, 4)-@r.FCourseTime.Substring(4, 2)-@r.FCourseTime.Substring(6, 2) @r.FCourseTime.Substring(8, 2):@r.FCourseTime.Substring(10, 2)</td>
-                                                                <td>@r.Status</td>
+                                                                @{
+                                                                    if (r.Status == "未完成")
+                                                                    {
+                                                                        <td class="colorIng">
+                                                                            @r.Status
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td class="colorFinish">
+                                                                            @r.Status
+                                                                        </td>
+                                                                    }
+                                                                }
                                                             </tr>
                                                         }
                                                     }

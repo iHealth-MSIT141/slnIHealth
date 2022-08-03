@@ -261,6 +261,8 @@
 
         .unavailable {
             background-color: teal;
+            color: #FFF0F5;
+            font-weight:700;
         }
 
             .unavailable:hover {
@@ -838,6 +840,7 @@
             $.get("@Url.Content("~/Student/getAvailableTimeNum")", { id:@Model.FCoachId}, function (nums) {
                 $.each(nums, function (idx, val) {
                     $(`#td${val}`).addClass("unavailable").removeClass("available");
+                    $(`#td${val}`).text("額滿");
                     $(`#td${val}`).off("click");
                 })
             })

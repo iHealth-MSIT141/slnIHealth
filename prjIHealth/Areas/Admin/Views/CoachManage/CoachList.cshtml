@@ -97,6 +97,22 @@
         .table{
             margin-bottom:3px;
         }
+        /*審核中 未公開*/
+        .colorWait {
+            color: silver;
+            font-weight: 700;
+        }
+        /*審核通過 公開*/
+        .colorTrue {
+            color: #39ADA1;
+            font-weight: 700;
+        }
+        /*已退回*/
+        .colorFalse {
+            color: lightcoral;
+            font-weight: 700;
+        }
+
     </style>
 }
 
@@ -175,41 +191,67 @@
                 </tr>
             </thead>
             @*教練列表*@
-            <tbody id="tbdCoachList">
-                @{
-                    foreach (var c in Model)
-                    {
-                        <tr>
-                            <td>
-                                @c.FCoachId
-                            </td>
-                            <td>
-                                @c.FCoachName
-                            </td>
-                            <td>
-                                @c.CityName
-                            </td>
-                            <td>
-                                @c.FCoachFee
-                            </td>
-                            <td>
-                                @c.ApplyDate
-                            </td>
-                            <td>
-                                @c.Status
-                            </td>
-                            <td>
-                                @c.Visible
-                            </td>
-                            <td class="details">
-                                <button class="btn btn-light btnViewResume" data-toggle="modal" data-target="#modalResume">查看履歷</button>
-                                <button type="button" class="btn btn-success btnPass">審核通過</button>
-                                <button type="button" class="btn btn-secondary btnReturn">退回申請</button>
-                            </td>
-                        </tr>
-                    }
+        <tbody id="tbdCoachList">
+            @{
+                foreach (var c in Model)
+                {
+                    <tr>
+                        <td>
+                            @c.FCoachId
+                        </td>
+                        <td>
+                            @c.FCoachName
+                        </td>
+                        <td>
+                            @c.CityName
+                        </td>
+                        <td>
+                            @c.FCoachFee
+                        </td>
+                        <td>
+                            @c.ApplyDate
+                        </td>
+                        @{
+                            if (c.Status == "審核中")
+                            {
+                                <td class="colorWait">
+                                    @c.Status
+                                </td>
+                            }
+                            else if (c.Status == "已退回")
+                            {
+                                <td class="colorFalse">
+                                    @c.Status
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="colorTrue">
+                                    @c.Status
+                                </td>
+                            }
+                            if (c.Visible == "公開")
+                            {
+                                <td class="colorTrue">
+                                    @c.Visible
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="colorWait">
+                                    @c.Visible
+                                </td>
+                            }
+                        }
+                        <td class="details">
+                            <button class="btn btn-light btnViewResume" data-toggle="modal" data-target="#modalResume">查看履歷</button>
+                            <button type="button" class="btn btn-success btnPass">審核通過</button>
+                            <button type="button" class="btn btn-secondary btnReturn">退回申請</button>
+                        </td>
+                    </tr>
                 }
-            </tbody>
+            }
+        </tbody>
         </table>
         <div class="col-lg-12">
             <div class="product__pagination blog__pagination">
@@ -373,7 +415,9 @@
                     if (result.isConfirmed) {
                         $.get("@Url.Content("~/Admin/CoachManage/passResume")", { id: theCoachId }, function (c) {
                             theTr.children("td:eq(5)").text("審核通過");
+                            theTr.children("td:eq(5)").removeClass("colorFalse").removeClass("colorWait").removeClass("colorTrue").addClass("colorTrue");
                             theTr.children("td:eq(6)").text("公開");
+                            theTr.children("td:eq(6)").removeClass("colorFalse").removeClass("colorWait").removeClass("colorTrue").addClass("colorTrue");
                             SwalGreen.fire(`${theCoachName}教練通過審核`, '', 'success')
                         })
                     }
@@ -397,7 +441,9 @@
                 if (result.isConfirmed) {
                         $.get("@Url.Content("~/Admin/CoachManage/returnResume")", { id: theCoachId }, function (c) {
                             theTr.children("td:eq(5)").text("已退回");
+                            theTr.children("td:eq(5)").removeClass("colorFalse").removeClass("colorWait").removeClass("colorTrue").addClass("colorFalse");
                             theTr.children("td:eq(6)").text("未公開");
+                            theTr.children("td:eq(6)").removeClass("colorFalse").removeClass("colorWait").removeClass("colorTrue").addClass("colorWait");
                             SwalGreen.fire(`已退回${theCoachName}的履歷`, '', 'error')
                         })
                     }
@@ -422,8 +468,21 @@
                     html += `<td>${val.cityName}</td>`;
                     html += `<td>${val.fCoachFee}</td>`;
                     html += `<td>${val.applyDate}</td>`;
-                    html += `<td>${val.status}</td>`;
-                    html += `<td>${val.visible}</td>`;
+                    if (val.status == "審核中") {
+                        html += `<td class="colorWait">${val.status}</td>`;
+                    }
+                    else if (val.status == "已退回") {
+                        html += `<td class="colorFalse">${val.status}</td>`;
+                    }
+                    else {
+                        html += `<td class="colorTrue">${val.status}</td>`;
+                    }
+                    if (val.visible == "公開") {
+                        html += `<td class="colorTrue">${val.visible}</td>`;
+                    }
+                    else {
+                        html += `<td class="colorWait">${val.visible}</td>`;
+                    }
                     html += `<td class="details">`;
                     html += `<button class="btn btn-light btnViewResume" data-toggle="modal" data-target="#modalResume" onclick="viewResume();">查看履歷</button>`;
                     html += `<button type="button" class="btn btn-success btnPass" onclick="passResume();">審核通過</button>`;
