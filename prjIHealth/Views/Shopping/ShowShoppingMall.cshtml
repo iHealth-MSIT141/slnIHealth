@@ -3,7 +3,9 @@
 @using prjIHealth.Controllers
 
 @section Styles{
-
+    <style>
+        
+    </style>
 }
 <link rel="stylesheet" href="/css/ShoppingMallCategory.css" type="text/css">
 @*banner大圖*@
@@ -34,12 +36,22 @@
                     <div class="sidebar__item">
                         <h4>商品類別</h4>
                         <ul id="showByCatergory" class="header__menu">
-                            <li><a href="#" data-id="0" class="categoryItem selectedCategory">所有商品</a></li>
-                            <li><a href="#" data-id="1" class="categoryItem">乳清蛋白</a></li>
-                            <li><a href="#" data-id="2" class="categoryItem">健康食品</a></li>
-                            <li><a href="#" data-id="3" class="categoryItem">運動用品</a></li>
-                            <li><a href="#" data-id="4" class="categoryItem">男裝</a></li>
-                            <li><a href="#" data-id="5" class="categoryItem">女裝</a></li>
+                            @{
+                                IHealthContext dblIHealth = new IHealthContext();
+                                <li><a href="#" data-id="0" class="categoryItem selectedCategory">所有商品 (@dblIHealth.TProducts.Count())</a></li>
+                                var categories = dblIHealth.TProductCategories.ToList();
+                                foreach (var item in categories)
+                                {
+                                    <li><a href="#" data-id="@item.FCategoryId" class="categoryItem">@item.FCategoryName (@dblIHealth.TProducts.Where(ca => ca.FCategoryId == item.FCategoryId).Count())</a></li>
+                                }
+
+                            }
+                            @*<li><a href="#" data-id="0" class="categoryItem selectedCategory">所有商品</a></li>
+        <li><a href="#" data-id="1" class="categoryItem">乳清蛋白</a></li>
+        <li><a href="#" data-id="2" class="categoryItem">健康食品</a></li>
+        <li><a href="#" data-id="3" class="categoryItem">運動用品</a></li>
+        <li><a href="#" data-id="4" class="categoryItem">男裝</a></li>
+        <li><a href="#" data-id="5" class="categoryItem">女裝</a></li>*@
                         </ul>
                         <br />
                         @*<div class="sidebar__item">
@@ -67,7 +79,7 @@
                                 <div class="latest-product__slider owl-carousel">
                                     <div class="latest-prdouct__slider__item">
                                         @{
-                                            IHealthContext dblIHealth = new IHealthContext();
+                                            dblIHealth = new IHealthContext();
                                             var top3PopularProduct = (from od in dblIHealth.TOrderDetails.Include(od => od.FProduct).ThenInclude(p => p.FCategory).AsEnumerable()
                                                                       where od.FProduct.FCategoryId == 1
                                                                       group od by new
@@ -253,6 +265,9 @@
                         </form>
                     </div>
                 </div>
+                <div style="margin-bottom:30px">
+                    <span id="spanCount" ></span>
+                </div>
                 <div class="row reveal_b2" id="showProduct">
 
                 </div>
@@ -320,7 +335,7 @@
                     product.fUnitprice = "NT$" + toCurrency(product.fUnitprice);
                     htmlShowProduct += `<div class="col-lg-4 col-md-6 col-sm-6 productitem " ><div class="reveal_b2" id="header" style="cursor:pointer;">
                                 <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
+                                <div class="product__item__pic set-bg showProductDetail" data-id="${product.fProductId}" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#" data-id="${product.fProductId}" class="addToTrack"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#" data-id="${product.fProductId}" class="addToCart"><i class="fa fa-shopping-cart"></i></a></li>
@@ -341,6 +356,7 @@
                 let YNum = 9;
                 $(".productitem").slice(XNum, YNum).show();
                 let productCount = $(".productitem").length;
+                $("#spanCount").text(`共查到${productCount}筆商品，現在顯示第${XNum+1}~${YNum}筆商品。`);
                 let pageNum = "";
                 let page = productCount / 9;
                 if (page % 9 != 0) {
@@ -363,8 +379,12 @@
                     $(this).addClass("selectedPage").siblings().removeClass("selectedPage");
                     $(".productitem").hide();
                     XNum = (newPageNum - 1)*9;
-                    YNum = newPageNum*9;
+                    YNum = newPageNum * 9;
+                    if (YNum > productCount) {
+                        YNum = productCount;
+                    }
                     $(".productitem").slice(XNum, YNum).show();
+                    $("#spanCount").text(`共查到${productCount}筆商品，現在顯示第${XNum + 1}~${YNum}筆商品。`);
                     $('html,body').animate({ scrollTop: 10 }, 'slow');
                 })
 
@@ -383,15 +403,28 @@
             })
         }
 
-        $(".amount").on("change", function () {
-            console.log("text");
-            let minPrice = $("#minamount").text();
-            let maxPrice = $("#maxamount").text();
-            option.minPrice = minPrice;
-            option.maxPrice = maxPrice;
-            AllProducts(option);
-        })
+        //$(".amount").on("change", function () {
+        //    console.log("text");
+        //    let minPrice = $("#minamount").text();
+        //    let maxPrice = $("#maxamount").text();
+        //    option.minPrice = minPrice;
+        //    option.maxPrice = maxPrice;
+        //    AllProducts(option);
+        //})
 
+        //點選圖片進showPrductDetail，讓心心/購物車正常運作
+        $("#showProduct").delegate(".addToTrack", "mouseover",function(){
+            $(".product__item__pic").removeClass("showProductDetail");
+        })
+        $("#showProduct").delegate(".addToTrack", "mouseleave", function () {
+            $(".product__item__pic").addClass("showProductDetail");
+        })
+        $("#showProduct").delegate(".addToCart", "mouseover", function () {
+            $(".product__item__pic").removeClass("showProductDetail");
+        })
+        $("#showProduct").delegate(".addToCart", "mouseleave", function () {
+            $(".product__item__pic").addClass("showProductDetail");
+        })
 
 
         //按價格排序
