@@ -4,7 +4,6 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
 @section Styles{
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         #title {
             font-weight: 800;
@@ -14,11 +13,9 @@
         }
         /*日期選擇器樣式*/
         #divDatepicker {
-            /*margin-bottom: 10px;*/
             border: 4px solid #7fad39;
             border-radius: 20px;    
             padding: 0;
-            /*display: flex;*/
             display: flex;
             justify-content: space-between;
         }
@@ -93,9 +90,9 @@
                     <div class="col-lg-3 col-md-3">
                         <div style="text-align:center;" id="divDateTake">
                             <div id="divDatepicker">
-                                <button class="fa-solid fa-caret-left" id="btnPrevDate"></button>
+                                <button class="fa fa-caret-left" id="btnPrevDate"></button>
                                 <input type="date" id="inpDatepicker" />
-                                <button class="fa-solid fa-caret-right" id="btnNextDate"></button>
+                                <button class="fa fa-caret-right" id="btnNextDate"></button>
                             </div>
                         </div>
                     </div>
@@ -262,7 +259,9 @@
         };
         $('#stype').on('change', ChangeBySatusID);
 
-         async  function Reset() {         /*清空篩選*/
+        async function Reset() {         /*清空篩選*/
+            document.getElementById("stype").options.selectedIndex = 0;
+            document.getElementById("qtype").options.selectedIndex = 0;
             $('#changezoon>tr').remove();
              const response = await fetch('@Url.Content("~/Admin/Reply/Reset")');
             const datas = await response.json();

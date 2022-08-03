@@ -45,6 +45,13 @@
             color: white;
             border: none;
         }
+        #stype {
+            display: inline !important;
+        }
+
+        .nice-select {
+            display: none;
+        }
     </style>
 }
 
@@ -104,20 +111,20 @@
                     </ul>
                 </div>
 
-                <div class="row">
+                <div class="row" style="margin-bottom:5px">
                     <div class="col-lg-2 col-md-2 " style="margin:5px 0 5px 0">
-                        <select name="stype" id="stype" class="qa-select">
-                            <option value="999" disabled selected hidden>依狀態篩選</option>
+                        <select name="stype" id="stype" class="custom-select">
+                            <option value="999" disabled selected hidden>狀態篩選</option>
                             <option value="未處理">未處理</option>
                             <option value="處理中">處理中</option>
                             <option value="已完成">已完成</option>
                         </select>
-                        <br>
                     </div>
+                    <button id="reset" class="btn-success btn">清空篩選</button>
                 </div>
-
+                
                 <table class="table" style="table-layout: fixed ">
-                    <thead class="thead-dark" >
+                    <thead class="thead-dark">
                         <tr>
                             <th>
                                 問題編號
@@ -170,11 +177,11 @@
                     </tbody>
                 </table>
                 @*<div class="product__pagination">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                    </div>*@
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+        </div>*@
             </div>
         </div>
     </div>
@@ -236,7 +243,7 @@
         async  function ChangeBySatusID() {         /*依處理狀態篩選*/
             $('#changezoon>tr').remove();
             SelectedStatusID();
-            const response = await fetch('@Url.Content("~/Admin/Reply/SelectByStatus")' + `?id=${StatusID}`);
+            const response = await fetch('@Url.Content("~/Problem/SelectByStatus")' + `?id=${StatusID}`);
             const datas = await response.json();
             let tr = '';
             for (i = 0; i < datas.length; i++) {
@@ -268,7 +275,29 @@
             })
         };
         $('#stype').on('change', ChangeBySatusID);
-
+        $('#reset').on('click', Reset);
+        async function Reset() {
+            $('#changezoon>tr').remove();
+            $('#stype').val(999);
+            StatusID = 0;
+            let response1 = await fetch('@Url.Content("~/Problem/SelectByStatus")' + `?id=${StatusID}`);
+            let datas1 = await response1.json();
+            console.log(datas1)
+            let tr = '';
+            for (i = 0; i < datas1.length; i++) {
+                let fixOrderId = '';                 /*處理篩選資料後，空值會顯示null字樣問題*/
+                if (datas1[i].fOrderId == null) {
+                    fixOrderId = ''
+                }
+                else {
+                    fixOrderId = datas1[i].fOrderId
+                }
+                tr = `<tr><td>${datas1[i].fProblemId}</td><td>${datas1[i].fProblemTime}</td><td style="white-space:nowrap">${datas1[i].fProblemCategory.fProblemCategory}</td>
+                      <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${datas1[i].fProblemContent}</td>
+                      <td>${fixOrderId}</td><td>${datas1[i].status.fStatus}</td><td><button id="buttonLoadselected" class="site-btn" data-toggle="modal" data-target="#addModal">查看</button></td></tr>`;
+                $('#changezoon').append(tr);
+            }
+        }
     </script>
 }
 

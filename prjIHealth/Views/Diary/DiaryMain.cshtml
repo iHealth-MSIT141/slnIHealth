@@ -776,12 +776,21 @@
 
         //刪除紀錄
         function delCalorieIntake() {
-            if (confirm("確定要刪除嗎?")) {
-                let FCalorieIntakeId = $(event.target).closest("tr").children("td:eq(0)").text();
+            let FCalorieIntakeId = $(event.target).closest("tr").children("td:eq(0)").text();
+            SwalGreen.fire({
+                title: `確定要刪除嗎?`,
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: '確定刪除',
+                cancelButtonText: '取消',
+                icon: 'question'
+            }).then((result) => {
+                if (result.isConfirmed) {
                 $.get("@Url.Content("~/Diary/delCalorieIntake")", { "FCalorieIntakeId": FCalorieIntakeId }, function () {
                     loadDiary();
                 })
-            }
+                }
+            })
         }
 
         //==========彈出視窗-新增紀錄==========
