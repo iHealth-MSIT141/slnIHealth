@@ -81,7 +81,9 @@ namespace prjIHealth.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                tMember.FPassword = utilities.getCryptPWD(tMember.FPassword, tMember.FUserName);
+                var password = utilities.RandomString(8);
+                utilities.sendMail(tMember.FUserName, password, tMember.FEmail);
+                tMember.FPassword = utilities.getCryptPWD(password, tMember.FUserName);
                 _context.Add(tMember);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

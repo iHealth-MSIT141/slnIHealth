@@ -168,7 +168,7 @@ namespace prjIHealth.Areas.Admin.Controllers
             else
                 tRates = db.TCoachRates.OrderByDescending(r => r.FRateDate);
             if (!String.IsNullOrEmpty(Keyword))
-                tRates = tRates.Where(r => r.FRateText.Contains(Keyword));
+                tRates = tRates.Where(r => r.FRateText.ToLower().Contains(Keyword.ToLower()));
             if (tRates.Count() != 0)
             {
                 List<CCoachRateViewModel> rates = new List<CCoachRateViewModel>();

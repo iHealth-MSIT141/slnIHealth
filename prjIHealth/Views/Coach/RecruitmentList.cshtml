@@ -154,6 +154,21 @@
             color: cornflowerblue;
             font-weight: 800;
         }
+
+        .colorFinish {
+            color: silver;
+            font-weight: 700;
+        }
+
+        .colorIng {
+            color: #39ADA1;
+            font-weight: 700;
+        }
+
+        .colorWait {
+            color: lightcoral;
+            font-weight: 700;
+        }
     </style>
 }
 
@@ -251,28 +266,34 @@
                                         @c.StrContactDate
                                     </td>
                                     <td>
-                                        <select class="selStatus" onchange="changeStatus();">
-                                            @{
-                                                if (c.FStatusNumber == 50)
-                                                {
-                                                    <option value="50" selected>等待聯繫中</option>
-                                                    <option value="51">已聯繫，暫無課程</option>
-                                                    <option value="52">已聯繫，配對成功</option>
-                                                }
-                                                else if (c.FStatusNumber == 51)
-                                                {
-                                                    <option value="50">等待聯繫中</option>
-                                                    <option value="51" selected>已聯繫，暫無課程</option>
-                                                    <option value="52">已聯繫，配對成功</option>
-                                                }
-                                                else if (c.FStatusNumber == 52)
-                                                {
-                                                    <option value="50">等待聯繫中</option>
-                                                    <option value="51">已聯繫，暫無課程</option>
-                                                    <option value="52" selected>已聯繫，配對成功</option>
-                                                }
+
+                                        @{
+                                            if (c.FStatusNumber == 50)
+                                            {
+                                                <select class="selStatus colorWait" onchange="changeStatus();">
+                                                    <option value="50" class="colorWait" selected>等待聯繫中</option>
+                                                    <option value="51" class="colorFinish">已聯繫，暫無課程</option>
+                                                    <option value="52" class="colorIng">已聯繫，配對成功</option>
+                                                </select>
                                             }
-                                        </select>
+                                            else if (c.FStatusNumber == 51)
+                                            {
+                                                <select class="selStatus colorFinish" onchange="changeStatus();" style="color: silver; font-weight: 700">
+                                                    <option value="50" class="colorWait">等待聯繫中</option>
+                                                    <option value="51" class="colorFinish" selected>已聯繫，暫無課程</option>
+                                                    <option value="52" class="colorIng">已聯繫，配對成功</option>
+                                                </select>
+                                            }
+                                            else if (c.FStatusNumber == 52)
+                                            {
+                                                <select class="selStatus colorIng" onchange="changeStatus();" style="color: #39ADA1; font-weight: 700">
+                                                    <option value="50" class="colorWait">等待聯繫中</option>
+                                                    <option value="51" class="colorFinish">已聯繫，暫無課程</option>
+                                                    <option value="52" class="colorIng" selected>已聯繫，配對成功</option>
+                                                </select>
+                                            }
+                                        }
+
                                     </td>
                                     <td class="tdBtn">
                                         <input type="hidden" value="@c.FCoachContactId" />
@@ -426,9 +447,20 @@
 
         //改變聯繫狀態
         function changeStatus() {
+            theSel = $(event.target);
             theContactId = $(event.target).parents("tr").find(".tdBtn").find("input").val();
             theStatusNum = $(event.target).val();
-            $.get("@Url.Content("~/Coach/changeContactStatus")", { FCoachContactId: theContactId, FStatusNumber: theStatusNum})
+            $.get("@Url.Content("~/Coach/changeContactStatus")", { FCoachContactId: theContactId, FStatusNumber: theStatusNum }, function () {
+                if (theStatusNum == 50) {
+                    theSel.removeClass("colorWait").removeClass("colorFinish").removeClass("colorIng").addClass("colorWait");
+                }
+                else if (theStatusNum == 51) {
+                    theSel.removeClass("colorWait").removeClass("colorFinish").removeClass("colorIng").addClass("colorFinish");
+                }
+                else {
+                    theSel.removeClass("colorWait").removeClass("colorFinish").removeClass("colorIng").addClass("colorIng");
+                }
+            })
         }
 
         //點擊查看學員資料
@@ -517,23 +549,25 @@
                         html += `<td>${value.memberPhone}</td>`;
                         html += `<td>${value.availableTime} <input class="inpPreferTime" type = "hidden" value = "${value.fAvailableTimeNum}" /></td >`;
                         html += `<td>${value.strContactDate}</td>`;
-                        html += `<td><select class="selStatus" onchange="changeStatus();">`;
                         if (value.fStatusNumber == 50) {
-                            html += `<option value="50" selected>等待聯繫中</option>`;
-                            html += `<option value="51">已聯繫，暫無課程</option>`;
-                            html += `<option value="52">已聯繫，配對成功</option>`;
+                            html += `<td><select class="selStatus colorWait" onchange="changeStatus();">`;
+                            html += `<option value="50" class="colorWait" selected>等待聯繫中</option>`;
+                            html += `<option value="51" class="colorFinish">已聯繫，暫無課程</option>`;
+                            html += `<option value="52" class="colorIng">已聯繫，配對成功</option></select>`;
                         }
                         else if (value.fStatusNumber == 51) {
-                            html += `<option value="50">等待聯繫中</option>`;
-                            html += `<option value="51" selected>已聯繫，暫無課程</option>`;
-                            html += `<option value="52">已聯繫，配對成功</option>`;
+                            html += `<td><select class="selStatus colorFinish" onchange="changeStatus();">`;
+                            html += `<option value="50" class="colorWait">等待聯繫中</option>`;
+                            html += `<option value="51" class="colorFinish" selected>已聯繫，暫無課程</option>`;
+                            html += `<option value="52" class="colorIng">已聯繫，配對成功</option></select>`;
                         }
                         else if (value.fStatusNumber == 52) {
-                            html += `<option value="50">等待聯繫中</option>`;
-                            html += `<option value="51">已聯繫，暫無課程</option>`;
-                            html += `<option value="52" selected>已聯繫，配對成功</option>`;
+                            html += `<td><select class="selStatus colorIng" onchange="changeStatus();">`;
+                            html += `<option value="50" class="colorWait">等待聯繫中</option>`;
+                            html += `<option value="51" class="colorFinish">已聯繫，暫無課程</option>`;
+                            html += `<option value="52" class="colorIng" selected>已聯繫，配對成功</option></select>`;
                         }
-                        html += `</select></td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
+                        html += `</td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
                         html += `<button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse" onclick="btnCreateCourseClick();">排課</button>`;
                         html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-membername="${value.memberName}" onclick="getId();">訊息</button>`;
                     })
@@ -549,23 +583,25 @@
                         html += `<td>${value.memberPhone}</td>`;
                         html += `<td>${value.availableTime} <input class="inpPreferTime" type = "hidden" value = "${value.fAvailableTimeNum}" /></td >`;
                         html += `<td>${value.strContactDate}</td>`;
-                        html += `<td><select class="selStatus" onchange="changeStatus();">`;
                         if (value.fStatusNumber == 50) {
-                            html += `<option value="50" selected>等待聯繫中</option>`;
-                            html += `<option value="51">已聯繫，暫無課程</option>`;
-                            html += `<option value="52">已聯繫，配對成功</option>`;
+                            html += `<td><select class="selStatus colorWait" onchange="changeStatus();">`;
+                            html += `<option value="50" class="colorWait" selected>等待聯繫中</option>`;
+                            html += `<option value="51" class="colorFinish">已聯繫，暫無課程</option>`;
+                            html += `<option value="52" class="colorIng">已聯繫，配對成功</option></select>`;
                         }
                         else if (value.fStatusNumber == 51) {
-                            html += `<option value="50">等待聯繫中</option>`;
-                            html += `<option value="51" selected>已聯繫，暫無課程</option>`;
-                            html += `<option value="52">已聯繫，配對成功</option>`;
+                            html += `<td><select class="selStatus colorFinish" onchange="changeStatus();">`;
+                            html += `<option value="50" class="colorWait">等待聯繫中</option>`;
+                            html += `<option value="51" class="colorFinish" selected>已聯繫，暫無課程</option>`;
+                            html += `<option value="52" class="colorIng">已聯繫，配對成功</option></select>`;
                         }
                         else if (value.fStatusNumber == 52) {
-                            html += `<option value="50">等待聯繫中</option>`;
-                            html += `<option value="51">已聯繫，暫無課程</option>`;
-                            html += `<option value="52" selected>已聯繫，配對成功</option>`;
+                            html += `<td><select class="selStatus colorIng" onchange="changeStatus();">`;
+                            html += `<option value="50" class="colorWait">等待聯繫中</option>`;
+                            html += `<option value="51" class="colorFinish">已聯繫，暫無課程</option>`;
+                            html += `<option value="52" class="colorIng" selected>已聯繫，配對成功</option></select>`;
                         }
-                        html += `</select></td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
+                        html += `</td><td class="tdBtn"><input type="hidden" value="${value.fCoachContactId}" />`;
                         html += `<button class="btn btn-success btnCreateCourse" data-toggle="modal" data-target="#modalCreateCourse" onclick="btnCreateCourseClick();">排課</button>`;
                         html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-membername="${value.memberName}" onclick="getId();">訊息</button>`;
                     })

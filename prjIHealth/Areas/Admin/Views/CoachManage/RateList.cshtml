@@ -27,10 +27,16 @@
             margin-left: 20vw;
             margin-right: 20vw;
         }
-
-        /*        body {
-            font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }*/
+        /*未公開*/
+        .colorFalse {
+            color: lightcoral;
+            font-weight: 700;
+        }
+        /*公開*/
+        .colorTrue {
+            color: #39ADA1;
+            font-weight: 700;
+        }
     </style>
 }
 <h2 id="title">教練評論管理</h2>
@@ -108,12 +114,23 @@
                     <td>
                         @r.RateDate
                     </td>
-                    <td class="tdVisible">
-                        @r.Visible
-                    </td>
+                    @{
+                        if (r.Visible == "是")
+                        {
+                            <td class="tdVisible colorTrue">
+                                @r.Visible
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="tdVisible colorFalse">
+                                @r.Visible
+                            </td>
+                        }
+                    }
                     <td>
                         <button class="btn btn-success btnVisible">公開</button>
-                        <button class="btn btn-danger btnHidden">隱藏</button>
+                        <button class="btn btn-secondary btnHidden">隱藏</button>
                         <input type="hidden" value="@r.FRateId" />
                     </td>
                 </tr>
@@ -135,6 +152,7 @@
                     'success'
                 )
                 theTr.find(".tdVisible").text("是");
+                theTr.find(".tdVisible").removeClass("colorTrue").removeClass("colorFalse").addClass("colorTrue");
             })
         });
 
@@ -147,6 +165,7 @@
                     'error'
                 )
                 theTr.find(".tdVisible").text("否");
+                theTr.find(".tdVisible").removeClass("colorTrue").removeClass("colorFalse").addClass("colorFalse");
             })
         });
 
@@ -166,9 +185,14 @@
                         html += `<td>${r.fRateStar}</td>`;
                         html += `<td class="tdRateText">${r.fRateText}</td>`;
                         html += `<td>${r.rateDate}</td>`;
-                        html += `<td class="tdVisible">${r.visible}</td>`;
+                        if (r.visible == "是") {
+                            html += `<td class="tdVisible colorTrue">${r.visible}</td>`;
+                        }
+                        else {
+                            html += `<td class="tdVisible colorFalse">${r.visible}</td>`;
+                        }
                         html += `<td><button class="btn btn-success btnVisible">公開</button>`;
-                        html += `<button class="btn btn-danger btnHidden">隱藏</button>`;
+                        html += `<button class="btn btn-secondary btnHidden">隱藏</button>`;
                         html += `<input type="hidden" value="${r.fRateId}" /></td></tr>`;
                     })
                 }
@@ -182,6 +206,7 @@
                             'success'
                         )
                         theTr.find(".tdVisible").text("是");
+                        theTr.find(".tdVisible").removeClass("colorTrue").removeClass("colorFalse").addClass("colorTrue");
                     })
                 });
 
@@ -194,6 +219,7 @@
                             'error'
                         )
                         theTr.find(".tdVisible").text("否");
+                        theTr.find(".tdVisible").removeClass("colorTrue").removeClass("colorFalse").addClass("colorFalse");
                     })
                 });
             })

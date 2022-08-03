@@ -210,7 +210,18 @@
             color: #7fad39;
             font-weight: 800;
         }
-
+        .colorFinish {
+            color: silver;
+            font-weight: 700;
+        }
+        .colorIng {
+            color: #39ADA1;
+            font-weight: 700;
+        }
+        .colorWait {
+            color: lightcoral;
+            font-weight: 700;
+        }
 
         /*左側導覽列*/
         .sidebar__item ul li a {
@@ -342,9 +353,29 @@
                                             <td>
                                                 @c.StrContactDate
                                             </td>
-                                            <td>
-                                                @c.Status
-                                            </td>
+
+                                            @{
+                                                if (c.Status == "已聯繫，配對成功")
+                                                {
+                                                    <td class="colorIng">
+                                                        @c.Status
+                                                    </td>
+                                                }
+                                                else if (c.Status == "等待聯繫中")
+                                                {
+                                                    <td class="colorWait">
+                                                        @c.Status
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="colorFinish">
+                                                        @c.Status
+                                                    </td>
+                                                }
+                                            }
+
+
                                             <td>
                                                 <input type="hidden" value="@c.FCoachContactId" />
                                                 <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="@c.CoachName" onclick="getId();">訊息</button>
@@ -457,9 +488,26 @@
                                                         <td>
                                                             @c.StrContactDate
                                                         </td>
-                                                        <td>
-                                                            @c.Status
-                                                        </td>
+                                                        @{
+                                                            if (c.Status == "已聯繫，配對成功")
+                                                            {
+                                                                <td class="colorIng">
+                                                                    @c.Status
+                                                                </td>
+                                                            }
+                                                            else if (c.Status == "等待聯繫中")
+                                                            {
+                                                                <td class="colorWait">
+                                                                    @c.Status
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="colorFinish">
+                                                                    @c.Status
+                                                                </td>
+                                                            }
+                                                        }
                                                         <td>
                                                             <input type="hidden" value="@c.FCoachContactId" />
                                                             <button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="@c.CoachName" onclick="getId();">訊息</button>
@@ -561,7 +609,15 @@
                         html += `<td><a href="/Student/ViewCoachDetails/${value.fCoachId}">${value.coachName}</a></td>`;
                         html += `<td>${value.availableTime}</td>`;
                         html += `<td>${value.strContactDate}</td>`;
-                        html += `<td>${value.status}</td>`;
+                        if (value.status == "已聯繫，配對成功") {
+                            html += `<td class="colorIng">${value.status}</td>`;
+                        }
+                        else if (value.status == "等待聯繫中") {
+                            html += `<td class="colorWait">${value.status}</td>`;
+                        }
+                        else {
+                            html += `<td class="colorFinish">${value.status}</td>`;
+                        }
                         html += `<td><input type="hidden" value="${value.fCoachContactId}" />`;
                         html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.coachName}" onclick="getId();">訊息</button></td></tr>`;
                     })
@@ -575,7 +631,15 @@
                         html += `<td><a href="/Student/ViewCoachDetails/${value.fCoachId}">${value.coachName}</a></td>`;
                         html += `<td>${value.availableTime}</td>`;
                         html += `<td>${value.strContactDate}</td>`;
-                        html += `<td>${value.status}</td>`;
+                        if (value.status == "已聯繫，配對成功") {
+                            html += `<td class="colorIng">${value.status}</td>`;
+                        }
+                        else if (value.status == "等待聯繫中") {
+                            html += `<td class="colorWait">${value.status}</td>`;
+                        }
+                        else {
+                            html += `<td class="colorFinish">${value.status}</td>`;
+                        }
                         html += `<td><input type="hidden" value="${value.fCoachContactId}" />`;
                         html += `<button class="btn btn-secondary btnChat" data-toggle="modal" data-target="#modalChat" data-coachname="${value.coachName}" onclick="getId();">訊息</button></td></tr>`;
                     })
