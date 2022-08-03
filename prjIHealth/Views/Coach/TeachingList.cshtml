@@ -4,7 +4,7 @@
 }
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>       
+    <style>
         /*會員專區*/
         .blog__btn {
             display: inline-block;
@@ -111,6 +111,10 @@
             border: none;
         }
 
+        .tdStatus {
+            font-weight: 700;
+        }
+
         /*排課紀錄*/
         .h5Records {
             color: #7fad39
@@ -148,13 +152,15 @@
             display: inline;
             width: 300px;
         }
-        .divDL{
-            text-align:right;
-            margin-bottom:10px;
-            position:absolute;
-            right:15px;
-            top:35px;
+
+        .divDL {
+            text-align: right;
+            margin-bottom: 10px;
+            position: absolute;
+            right: 15px;
+            top: 35px;
         }
+
         #tableCal {
             width: 100%;
             border: 1px solid #BFBFBF;
@@ -187,7 +193,7 @@
                 border: 1px solid #BFBFBF;
                 width: 120px;
             }
-       
+
         .false {
             background-color: #F3F3F3;
         }
@@ -289,7 +295,7 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
-                @*※※※會員專區View內容請從此開始※※※*@                
+                @*※※※會員專區View內容請從此開始※※※*@
                 <table class="table reveal_b1">
                     <thead class="thead-dark">
                         <tr>
@@ -351,7 +357,7 @@
                                             @remain
                                         </td>
                                     }
-                                    <td id="status_@item.FCourseId">
+                                    <td id="status_@item.FCourseId" class="tdStatus">
                                         @Html.DisplayFor(modelItem => item.Status)
                                     </td>
                                     <td class="tdBtns">
@@ -441,7 +447,7 @@
                                                             </select>
                                                         }
                                                     </td>
-                                                    <td id="status_@r.FReservationId">
+                                                    <td id="status_@r.FReservationId" class="tdStatus">
                                                         @r.Status
                                                     </td>
                                                     <td class="tdBtns">
@@ -519,7 +525,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">                
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btnClose" id="btnClose" data-dismiss="modal">關閉</button>
             </div>
         </div>
@@ -567,6 +573,20 @@
         //課程狀態變更
         foreach (var course in Model)
         {
+            //修改課程狀態顏色
+            if (course.Course.FStatusNumber == 55)
+            {
+                <script>
+                    $(`#status_@course.FCourseId`).css("color", "#39ADA1");
+                </script>
+            }
+            else
+            {
+                <script>
+                    $(`#status_@course.FCourseId`).css("color", "silver");
+                </script>
+            }
+
             foreach (var r in course.Reservations)
             {
                 string time = r.CourseTime.Substring(0, 2);
@@ -574,15 +594,28 @@
                 {
                     time = time.Substring(1, 1);
                 }
+
+                //顯示排課狀態
+                if (r.FStatusNumber == 60)
+                {
+                    <script>
+                                $(`#status_@r.FReservationId`).css("color", "#39ADA1");
+                    </script>
+                }
+                else
+                {
+                    <script>
+                        $(`#status_@r.FReservationId`).css("color", "silver");
+                    </script>
+                }
                 <script>
                 //顯示排課時間
                 $(`#sel_${@r.FReservationId}`).val(`${@time}`);
 
-
                 if (@r.FStatusNumber== 61) {
                     $(`#done_@r.FReservationId`).hide();
                     $(`#edit_@r.FReservationId`).hide();
-                }
+                    }
 
                 //完成排課
                 $(`#done_@r.FReservationId`).click((evt) => {
@@ -603,7 +636,7 @@
                                             icon: 'success',
                                             title: '已完成'
                                         })
-                                        $(`#status_@r.FReservationId`).text("已完成");
+                                        $(`#status_@r.FReservationId`).text("已完成").css("color", "silver");
                                         $(`#done_@r.FReservationId`).hide();
                                         $(`#edit_@r.FReservationId`).hide();
 
@@ -611,7 +644,7 @@
                                         let remain = parseInt($(`#remain_@r.FCourseId`).text()) - 1;
                                         $(`#remain_@r.FCourseId`).text(`${remain}`);
                                         if ($(`#remain_@r.FCourseId`).text() == "0") {
-                                            $(`#status_@r.FCourseId`).text("已結束");
+                                            $(`#status_@r.FCourseId`).text("已結束").css("color","silver");
                                         }
                                     }
                                 })
@@ -667,6 +700,7 @@
         }
     }
     <script>
+
     //篩選課程狀態
     let filter = $("#selStatus");
     filter.change(() => {

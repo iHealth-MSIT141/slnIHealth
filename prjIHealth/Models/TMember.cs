@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -35,7 +36,7 @@ namespace prjIHealth.Models
         public bool? FGender { get; set; }
         [DisplayName("照片")]
         public string FPicturePath { get; set; }
-        [DisplayName("使用者名稱")]
+        [Required][DisplayName("使用者名稱")]
         public string FUserName { get; set; }
         [DisplayName("地址")]
         public string FAddress { get; set; }

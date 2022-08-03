@@ -28,9 +28,13 @@
             padding-right: 40px;
         }
 
-        .divLeftTopic {
-            margin-bottom: 15px;
-        }
+            .divFilter input{
+                margin-right:5px;
+            }
+
+            .divLeftTopic {
+                margin-bottom: 15px;
+            }
 
         .bTopic {
             color: #7fad39 !important;
@@ -247,35 +251,26 @@
                 font-weight: 500;
                 color: white;
             }
-
-        /*最新教練*/
-        .divNewCoach {
-            margin-top: 60px;
+        #divSearchResult{
+            margin-bottom:20px;
+            display:flex;
+            justify-content:left;
         }
 
-        .icon {
-            width: 16px;
-            height: 16px;
+        .spSearchFilter {
+            margin: 0px 4px;
+            background-color: #F3F8EC;
+            border: 1px solid #DFEACE;
+            border-radius: 5px;
         }
 
-        .imgNew {
-            width: 100px !important;
-            height: 100px !important;
-            border-radius: 50%;
+        .spSearchFilter::before {
+            content: "#";
+            color: gray;
         }
-
-        .hName {
-            font-weight: 600;
-            margin-bottom: 5px;
+        #spResultCount{
+            margin-right:10px;
         }
-
-        .spNew {
-            color: dimgray !important;
-            font-weight: 500 !important;
-            font-size: 16px !important;
-            line-height: 24px;
-        }
-
         #gotop {
             position: fixed;
             z-index: 90;
@@ -367,8 +362,8 @@
                                     <h6><b>教練性別</b></h6>
                                 </div>
                                 <div>
-                                    <input type="checkbox" value="True" name="fGender[]" /><label>&nbsp;男性</label><br />
-                                    <input type="checkbox" value="False" name="fGender[]" /><label>&nbsp;女性</label><br />
+                                    <input type="checkbox" value="True" name="fGender[]" /><label>男性</label><br />
+                                    <input type="checkbox" value="False" name="fGender[]" /><label>女性</label><br />
                                 </div>
                             </div>
                             <div class="filterCard">
@@ -381,9 +376,9 @@
                                         {
                                             <input type="checkbox" value="@s.FSkillId" name="fCoachSkill[]" />
                                             <label>
-                                                &nbsp;@s.FSkillName
-                                                <span class="skillCount">(@db.TCoachSkills.Where(cs => cs.FSkillId == s.FSkillId).Count())</span>
-                                            </label><br />
+                                                @s.FSkillName                                                
+                                            </label>
+                                            <span class="skillCount">(@db.TCoachSkills.Where(cs => cs.FSkillId == s.FSkillId).Count())</span><br />
                                         }
                                     }
                                 </div>
@@ -396,7 +391,7 @@
                                     @{
                                         foreach (var t in db.TAvailableTimes.Where(at => at.FAvailableTimeId <= 6).ToList())
                                         {
-                                            <input type="checkbox" value="@t.FAvailableTimeId" name="fCoachTime[]" /><label>&nbsp;@t.FAvailableTime</label><br />
+                                            <input type="checkbox" value="@t.FAvailableTimeId" name="fCoachTime[]" /><label>@t.FAvailableTime</label><br />
                                         }
                                     }
                                 </div>
@@ -407,7 +402,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
             <div class="col-lg-9 divRight">
                 <div class="divSearch row">
@@ -426,7 +420,14 @@
                         <div class="divUrl reveal_r1"><i class="fa-solid fa-arrow-right-long"></i><a href="~/Coach/CreateResume">&nbsp;&nbsp;前往<b>刊登履歷</b></a></div>
                     </div>
                 </div> 
-                <div id="divScroll" hidden></div>
+                <div id="divSearchResult">
+                    <span id="spResultCount">共&nbsp;&nbsp;<b></b>&nbsp;&nbsp;位教練</span>
+                    <span id="spSearch" hidden>/&nbsp;&nbsp;篩選條件：</span>
+                    <div id="divSearchCity"></div>
+                    <div id="divFilterGender"></div>
+                    <div id="divFilterSkill"></div>
+                    <div id="divFilterTime"></div>                    
+                </div>
                 <div class="divCoachList">
                     @{
                         int count = 0;
@@ -535,7 +536,7 @@
 
     $("#btnDemo2").click((evt) => {
         evt.preventDefault();
-        $("#ipKeyword").val("Alisa");
+        $("#ipKeyword").val("alisa");
     })
     
     //Page
@@ -571,6 +572,11 @@
     }
     GetPage();
 
+    //顯示教練數量
+    $(document).ready(() => {
+        $("#spResultCount>b").text(`${$(".divCoachList .divCoachCard").length}`);
+    })
+
     //if未輸入關鍵字
     $("#btnSearch").click((evt) => {    
         if ($("#ipKeyword").val() == "") {
@@ -582,12 +588,36 @@
         }        
     })
 
-    //多重篩選觸發事件
+    //多重篩選觸發事件、顯示搜尋結果
     $("#selCity").change(() => {
+        $("#spSearch").prop("hidden", false);
+        $("#divSearchCity").empty();
+        $("#divSearchCity").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$("#selCity option:selected").text()}</span>`)
         GetCoach();       
     })
-    $("input[name='fGender[]'],input[name='fCoachSkill[]'],input[name='fCoachTime[]']").click(() => {
-        GetCoach();        
+    $("input[name='fGender[]']").click(() => {
+        $("#spSearch").prop("hidden", false);
+        $("#divFilterGender").empty();
+        $("input[name='fGender[]']:checked").each(function () {           
+            $("#divFilterGender").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+        })        
+        GetCoach();               
+    })
+    $("input[name='fCoachSkill[]']").click(() => {
+        $("#spSearch").prop("hidden", false);
+        $("#divFilterSkill").empty();
+        $("input[name='fCoachSkill[]']:checked").each(function () {
+            $("#divFilterSkill").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+        })
+        GetCoach();
+    })
+    $("input[name='fCoachTime[]']").click(() => {
+        $("#spSearch").prop("hidden", false);
+        $("#divFilterTime").empty();
+        $("input[name='fCoachTime[]']:checked").each(function () {
+            $("#divFilterTime").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+        })
+        GetCoach();
     })
 
     //Ajax篩選後顯示教練
@@ -600,6 +630,7 @@
                 contentType: false,
                 success: function (data) {
                     $(".divCoachList").empty();
+                    $("#spResultCount>b").text(`${data.length}`);
                     $.each(data, function (index, coach) {
                         $(".divCoachList").append(`<div class="divCoachCard row animate__animated animate__fadeIn" id=div${index}></div>`)
                         //左-col-3
@@ -644,7 +675,7 @@
                                 $(`#spSkill${index}`).text(`${skills}`);
                             })
                         //Slogan
-                        $(`#ul${index}`).append(`<li style="list-style:none" class="liSlogan"><span>${coach.fSlogan}</span></li>`);                        
+                        $(`#ul${index}`).append(`<li style="list-style:none" class="liSlogan"><span>${coach.fSlogan}</span></li>`);              
                     })
                     GetPage();
                 }
@@ -657,6 +688,8 @@
         $("#selCity").val("0");
         $("input[type='checkbox']").prop("checked", false);
         GetCoach();
+        $("#divSearchResult div").empty();
+        $("#spSearch").prop("hidden", true);
         GetPage();
     })
 
