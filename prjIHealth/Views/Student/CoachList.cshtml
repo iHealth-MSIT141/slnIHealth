@@ -433,7 +433,7 @@
                         foreach (var coach in Model)
                         {
                             count++;
-                            <div class="divCoachCard row" id="coach_@count">
+                            <div class="divCoachCard row animate__animated animate__fadeIn" id="coach_@count">
                                 <div class="col-3 divImg">
                                     <img src="/img/coach/coachImage/@coach.FCoachImage" class="imgCoach">
                                 </div>
@@ -572,14 +572,14 @@
     GetPage();
 
     //if未輸入關鍵字
-    $("#btnSearch").click((evt) => {
-        evt.preventDefault();
-        if ($("#ipKeyword").text() == "") {
+    $("#btnSearch").click((evt) => {    
+        if ($("#ipKeyword").val() == "") {
+            evt.preventDefault();
             SwalGreen.fire({
                 icon: 'warning',
                 title: '請輸入關鍵字'
             })
-        }
+        }        
     })
 
     //多重篩選觸發事件
@@ -601,7 +601,7 @@
                 success: function (data) {
                     $(".divCoachList").empty();
                     $.each(data, function (index, coach) {
-                        $(".divCoachList").append(`<div class="divCoachCard row" id=div${index}></div>`)
+                        $(".divCoachList").append(`<div class="divCoachCard row animate__animated animate__fadeIn" id=div${index}></div>`)
                         //左-col-3
                         $(`#div${index}`).append(`<div class="col-3 divImg" id=divImg${index}><img class="imgCoach" id=img${index}></div>`);
                         $(`#img${index}`).attr("src", `/img/coach/coachImage/${coach.fCoachImage}`);
