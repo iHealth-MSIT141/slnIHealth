@@ -37,7 +37,7 @@
         }
 
         .divSearch {
-            width: 70%;
+            /*width: 70%;*/
             margin: 15px auto;
         }
 
@@ -121,6 +121,7 @@
 <section>
     @*篩選*@
     <div class="divSearch row">
+        <div class="col-1 col-form-label" id="divCount" style="font-weight:600">共 @Model.Count 筆</div>
         <div class="col-lg-2">
             <select class="custom-select" id="selCity">
                 <option value="0" selected>所有城市</option>
@@ -149,7 +150,7 @@
         <div class="col-lg-1" style="padding-right:0">
             <label class="col-form-label" style="float:right;font-weight:600">搜尋:</label>
         </div>
-        <div class="col-lg-4 divKeyword">
+        <div class="col-lg-3 divKeyword">
             <input type="text" class="form-control" id="inpKeyword" placeholder="請輸入教練編號或教練姓名">
         </div>
         <div class="col-lg-2" style="padding-right:0">
@@ -489,6 +490,12 @@
                     html += `<button type="button" class="btn btn-secondary btnReturn" onclick="returnResume();">退回申請</button></td></tr>`;
                 })
                 $("#tbdCoachList").html(html);
+                if (coaches == null) {
+                    $("#divCount").text(`共0筆`)
+                }
+                else {
+                    $("#divCount").text(`共${coaches.length}筆`)
+                }
                 GetPage();
             })
         };
