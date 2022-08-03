@@ -155,6 +155,7 @@ namespace prjIHealth.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            //return Content(id.ToString(), "text/plain", System.Text.Encoding.UTF8);
 
             return View(tMember);
         }
@@ -162,12 +163,20 @@ namespace prjIHealth.Areas.Admin.Controllers
         // POST: Admin/MemberManage/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(TMember tm)
         {
-            var tMember = await _context.TMembers.FindAsync(id);
-            _context.TMembers.Remove(tMember);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var tMember = await _context.TMembers.FindAsync(tm.FMemberId);
+                _context.TMembers.Remove(tMember);
+                await _context.SaveChangesAsync();
+                return Content("true", "text/plain", System.Text.Encoding.UTF8);
+            }
+            catch (Exception e)
+            {
+                return Content("false", "text/plain", System.Text.Encoding.UTF8);
+            }
+
         }
 
         private bool TMemberExists(int id)

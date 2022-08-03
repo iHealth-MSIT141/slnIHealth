@@ -27,13 +27,11 @@
                 <div class="form-group row justify-content-center">
                     <img src="~/img/member/@Model.FPicturePath" onerror="this.src='/img/member/defaultImage.jpg'" alt=" " class="rounded-circle img-responsive  border border-ligt" id="imgShow" />
                 </div>
-
             </div>
-          
         </div>
         <div class="col border border-primary mt-md-8">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="FMemberId" />
+            <input type="hidden" asp-for="FMemberId" id="inpMemberId" />
             <div class="form-group">
             </div>
             <div class="form-group row justify-content-center">
@@ -99,24 +97,42 @@
                 </div>
                 <span asp-validation-for="FRegisterDate" class="text-danger"></span>
             </div>
-            <form asp-action="Delete">
+            <form asp-action="Delete" id="deleteForm">
                 <div>
-                    <input type="hidden" asp-for="FMemberId" />
+                    <input type="hidden" asp-for="FMemberId" id="inpMemberIddelete" />
                 </div>
 
                 <div class="form-group row justify-content-center">
 
                     <div class="offset-md-4 col-md-3">
-                        <input type="submit" value="刪除" class="btn btn-danger" />
+                        <input type="button" value="刪除" class="btn btn-danger" id="btnDelete"/>
                     </div>
                     <div class="col-md-5 ">
                         <a asp-action="Index" class="btn btn-success">回會員資料管理列表</a>
                     </div>
                 </div>
-
             </form>
         </div>
     </div>
 </div>
-
-
+@section Scripts{
+    <script>
+       
+        $('#btnDelete').on('click', (event) =>
+        {
+           event.preventDefault();
+            var formData = new FormData(document.querySelector("#deleteForm"));
+            fetch("/Admin/MemberManage/Delete", {
+                body: formData,
+                method: "Post"
+            }).then(Response => Response.text()).then(data =>
+            {
+                if (data == "false")
+                {
+                    alert("資料繫結其它資料表, 不可刪除!")
+                } 
+                window.location.href = "/Admin/MemberManage/Index";
+            });
+        });
+    </script>
+}
