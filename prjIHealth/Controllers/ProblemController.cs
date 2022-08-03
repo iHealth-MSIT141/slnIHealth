@@ -34,15 +34,15 @@ namespace prjiHealth.Controllers
             ViewBag.Time = date.ToString("yyyy/MM/dd HH:mm:ss");
             if (string.IsNullOrEmpty(p.FContactPhone) && string.IsNullOrEmpty(p.FEmail))
             {
-                ViewBag.Message_EP = "Please enter EMail or Phone";
+                ViewBag.Message_EP = "請輸入EMail或電話";
             }
             else if (string.IsNullOrEmpty(p.FProblemContent))
             {
-                ViewBag.Message_PC = "Please enter ProblemContent";
+                ViewBag.Message_PC = "請輸入問題內容";
             }
             else if (p.FProblemCategoryId <= 0 || p.FProblemCategoryId > 6)
             {
-                ViewBag.Message_PCID = "Please select ProblemCategory";
+                ViewBag.Message_PCID = "請選擇問題類別";
             }
             else
             {
@@ -72,7 +72,7 @@ namespace prjiHealth.Controllers
                 prob.FStatusNumber = p.FStatusNumber;
                 db.TProblems.Add(prob);
                 db.SaveChanges();
-                ViewBag.Message_SUCCESS = "Problem reply Success";
+                ViewBag.Message_SUCCESS = "意見送出成功";
             }
 
             return View();
