@@ -96,7 +96,7 @@ namespace prjIHealth.Areas.Admin.Controllers
             if (searchCoachViewModel.CityId != 0)
                 tCoaches = tCoaches.Where(c => c.FCityId == searchCoachViewModel.CityId);
             if (!String.IsNullOrEmpty(searchCoachViewModel.KeyWord))
-                tCoaches = tCoaches.Where(c => c.FCoachName.Contains(searchCoachViewModel.KeyWord) || c.FCoachId.ToString().Contains(searchCoachViewModel.KeyWord));
+                tCoaches = tCoaches.Where(c => c.FCoachName.ToLower().Contains(searchCoachViewModel.KeyWord.ToLower()) || c.FCoachId.ToString().Contains(searchCoachViewModel.KeyWord));
             if (searchCoachViewModel.StatusNum != 0)
                 tCoaches = tCoaches.Where(c => c.FStatusNumber == searchCoachViewModel.StatusNum);
 
