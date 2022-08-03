@@ -1,6 +1,7 @@
 ﻿.selectedCategory {
     color: #7fad39 !important;
-    font-size:bold !important;
+    font-weight:bold;
+    padding: 0 15px 0 15px;
 }
 .sort-asc::after {
     content: "↑";

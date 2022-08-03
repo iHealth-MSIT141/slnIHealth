@@ -624,7 +624,7 @@
     <script src="/js/main.js"></script>
     <script src="~/js/ScrollReveal.js"></script>
     <script src="~/js/sweetalert2.js"></script>
-    <script>
+    <script>      
         //==================登入時menu_dropdown顯示, 否則隱藏===============================
         let spanTextUsername = $("#btnLayOutLogin span").text();
         //let spanTextAutor = $('#header__top__right__auth>p').text();
@@ -1150,6 +1150,8 @@
 
 
         //商城部份
+        var trackCount = 0;
+        var newTrackCount = 0;
         $(document).ready(showTrackCount);
         async function showTrackCount() {
             if (@loginId == 0) {
@@ -1157,9 +1159,10 @@
                 $("#fa-heart").children("span").hide();
             }
             else {
-            url = "@Url.Content("~/Member/ShowTrackCount/")" + @loginId;
-                    let response = await fetch(url);
+                url = "@Url.Content("~/Member/ShowTrackCount/")" + @loginId;
+                let response = await fetch(url);
                 let datas = await response.json();
+                trackCount = datas;
                 if (datas == 0) {
                     $("#fa-heart").children("span").text("");
                     $("#fa-heart").children("span").hide();
@@ -1171,6 +1174,7 @@
             }
         }
         $(document).ready(showCartCount);
+        
         async function showCartCount() {
             if (@loginId == 0) {
                 $("#fa-cart").children("span").text("");
@@ -1180,6 +1184,7 @@
             url = "@Url.Content("~/Shopping/ShowCartCount/")";
                     let response = await fetch(url);
                 let datas = await response.json();
+                
                 if (datas == 0) {
                     $("#fa-cart").children("span").text("");
                     $("#fa-cart").children("span").hide();
