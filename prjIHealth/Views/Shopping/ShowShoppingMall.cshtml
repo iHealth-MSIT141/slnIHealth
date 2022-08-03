@@ -306,6 +306,10 @@
             LoginbuttonValue = loginMember.FMemberName;
             loginId = loginMember.FMemberId;
         };
+
+      
+
+
     }
 
         let option = {
@@ -513,13 +517,37 @@
 
             //按心心會加入追蹤清單
             $("#showProduct").delegate(".addToTrack", "click", function (event) {
-                event.preventDefault();              
+                event.preventDefault();
                 id = $(this).attr("data-id");
                 if (@loginId== 0) {
                     pleaseLogin();
                 }
                 else {
-                    $("#fa-heart").children("span").show();
+                    addTrack(id);                            
+                 }
+
+            })
+            async function addTrack(id) {
+                url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
+                let response = await fetch(url);
+                let datas = await response.json();
+                newTrackCount = datas;
+                console.log(trackCount);
+                console.log(newTrackCount);
+                //變更右上追蹤清單顯示數量
+                $("#fa-heart").children("span").text(datas);
+                $("#fa-heart").children("span").show();
+                if (trackCount == newTrackCount) {
+                    SwalGreen.fire({
+                        title: '產品已在追蹤清單中',
+                        text: false,
+                        icon: 'warning',
+                        confirmButtonText: '確認',
+                        showCloseButton: true
+                    })
+                }
+                else {
+                    trackCount = newTrackCount;
                     SwalGreen.fire({
                         title: '已成功加入追蹤清單',
                         text: false,
@@ -527,17 +555,7 @@
                         confirmButtonText: '確認',
                         showCloseButton: true
                     })
-                     addTrack(id);
-                 }
-
-            })
-            async function addTrack(id) {
-            url = "@Url.Content("~/Shopping/AddToTrack/")" + id;
-            let response = await fetch(url);
-            let datas = await response.json();
-            console.log(datas);
-            //變更右上追蹤清單顯示數量
-            $("#fa-heart").children("span").text(datas);
+                }
             }
 
             //按購物車會加入到購物車
