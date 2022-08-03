@@ -149,6 +149,22 @@
         .text-danger {
             font-size: 16px;
         }
+        #gotop {
+            position: fixed;
+            z-index: 90;
+            right: 30px;
+            bottom: 31px;
+            display: none;
+            width: 50px;
+            height: 50px;
+            color: #fff;
+            background: #7fad39;
+            line-height: 50px;
+            border-radius: 50%;
+            transition: all 0.5s;
+            text-align: center;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+        }
     </style>
 }
 
@@ -192,7 +208,7 @@
             <div class="col-lg-9 col-md-7">
                 @*※※※會員專區View內容請從此開始※※※*@
                 <div class="row">
-                    <div class="col-xl-11">                        
+                    <div class="col-xl-11">
                         <form class="frmResume" method="post" enctype="multipart/form-data" name="Resume" id="frmResume">
                             <input type="hidden" value="@Model.FCoachId" name="CoachId" id="CoachId" />
                             <div class="row">
@@ -300,8 +316,8 @@
                                         int expCount = 0;
                                         foreach (var exp in Model.Coach.TCoachExperiences.ToList())
                                         {
-                                           expCount++;
-                                           <input value="@exp.FExperience" class="form-control newInput" name="fExperience[]" id="exp_@expCount"/>
+                                            expCount++;
+                                            <input value="@exp.FExperience" class="form-control newInput" name="fExperience[]" id="exp_@expCount" />
                                         }
                                     }
                                 </div>
@@ -312,7 +328,7 @@
                                     @{
                                         foreach (var lic in Model.Coach.TCoachLicenses.ToList())
                                         {
-                                            <input value="@lic.FLicense" class="form-control newInput" name="fLicense[]"/>
+                                            <input value="@lic.FLicense" class="form-control newInput" name="fLicense[]" />
                                         }
                                     }
                                 </div>
@@ -337,7 +353,7 @@
                                 <input type="button" value="設為非公開" id="btnHide" class="btn btn-success" />
                                 <input type="button" value="設為公開" id="btnDisplay" class="btn btn-success" />&nbsp;&nbsp;
                                 <input type="submit" value="送出修改" id="btnSubmit" class="btn btn-success" />
-                            </div>                            
+                            </div>
                         </form>
                     </div>
                     <div class="col-xl-1">
@@ -351,6 +367,9 @@
                 </div>
             </div>
         </div>
+        <a id="gotop">
+            <i class="fa fa-angle-up"></i>
+        </a>
     </div>
 </section>
 
@@ -434,6 +453,19 @@
     }
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        //GoTop btn
+        $('#gotop').click(function () {
+            $('html,body').animate({ scrollTop: 0 }, 'slow');
+            return false;
+        });
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 400) {
+                $('#gotop').fadeIn();
+            } else {
+                $('#gotop').fadeOut();
+            }
+        });
+
         //Demo
         $("#btnDemo").click(() => {
             $("#exp_6").val("2021 IFBB PRO 健身工廠菁英賽女子比基尼全場總冠軍");
