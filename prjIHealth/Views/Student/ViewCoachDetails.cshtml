@@ -751,6 +751,7 @@
                 $(".divRate").css("text-align", "center").css("color","dimgray");
             }
             $.each(data, function (index, item) {
+                $("#spRate").text(`(${data.length})`);
                 $(".divRate").append(`<div class="feedback-item animate__animated animate__fadeIn" id=div${index}><p><b>${item.fMemberName}</b></p><div class="rate" id=r${index}></div></div>`);
                 for (let i = 1; i <= 5; i++) {
                     $(`#r${index}`).append(`<img class="star starOrig" id="star${index}${i}"/>`);

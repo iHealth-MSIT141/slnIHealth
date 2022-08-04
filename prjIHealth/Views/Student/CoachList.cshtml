@@ -589,7 +589,7 @@
     })
 
     //多重篩選觸發事件、顯示搜尋結果
-    $("#selCity").change(() => {
+    $("#selCity").change(() => {        
         $("#spSearch").prop("hidden", false);
         $("#divSearchCity").empty();
         $("#divSearchCity").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$("#selCity option:selected").text()}</span>`)
