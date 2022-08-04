@@ -138,7 +138,8 @@
                                     <img src="~/img/blog/@item.FThumbnailPath" width="100" height="80" />
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.newsCategory.FCategoryName)
+                                    @item.news.FNewsCategory.FCategoryName
+                                    @*@Html.DisplayFor(modelItem => item.getCategory)*@
                                     @*@Html.DisplayFor(modelItem => item.FNewsCategory.FCategoryName)*@
                                     @*@Html.DisplayFor(modelItem => item.categorry)*@
                                 </td>
@@ -149,8 +150,9 @@
                             @Html.DisplayFor(modelItem => item.FVideoUrl)
                         </td>*@
                             <td>
+                                @item.news.FMember.FMemberName
                                 @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                @Html.DisplayFor(modelItem => item.getMember.FMemberName)
+                                @*@Html.DisplayFor(modelItem => item.getName)*@
                             </td>
                                 <td>
                                     @Html.ActionLink("編輯", "Edit", new { id = item.FNewsId }, new { @class = "btn btn-success" })
@@ -179,6 +181,95 @@
     <script>
         $('#selectCate').on('change', CategoriesChange);
         $('#btnReset').on('click', ResetClick);
+
+        //$(document).ready(function twice() {
+        //    Once();
+        //    twice = function () { }
+        //})
+        //$(document).ready(()=> {
+        //    $("#btnReset").trigger("click");
+        //})
+        //$(document).ready(function twice() {
+        //    var flag = true;
+
+        //    function Once() {
+        //        if (flag) {
+        //            $("#btnReset").trigger("click");
+        //            flag = false;
+        //        } else {
+        //            return;
+        //        }
+        //    }})
+
+        //function Once() {
+        //    $("#btnReset").trigger("click");
+        //}
+        @*$("#txtKeyword").on("keyup", loadSearch);
+
+        async function loadSearch() {
+            $('#ListZone>tr').remove();
+            const changeCate = $('#txtKeyword').val().toString();
+            console.log(changeCate);
+            const response = await fetch("@Url.Content("~/Admin/NewsManage/Search")"+`?keyWord=${changeCate}`);
+            console.log(response);
+        const datas = await response.json();
+        console.log(datas);
+        let tr = '';
+        for (i = 0; i < datas.length; i++) {
+            let fixViews = '';                 /*處理篩選資料後，空值會顯示null字樣問題*/
+            let fixVideo = '';
+            let fixTitle = '';
+            let fixDate = '';
+            let fixContent = '';
+            let fixMember = '';
+            if (datas[i].fViews == null) {
+                fixViews = ''
+            }
+            else {
+                fixViews = datas[i].fViews
+            }
+            if (datas[i].fVideoUrl == null) {
+                fixVideo = ''
+            }
+            else {
+                fixVideo = datas[i].fVideoUrl
+            }
+            if (datas[i].fMemberId == null) {
+                fixMember = ''
+            }
+            else {
+                fixMember = datas[i].getMember.fMemberName
+            }
+            if (datas[i].fTitle != null) {
+                fixTitle = datas[i].fTitle.substr(0, 10);
+            }
+            if (datas[i].fNewsDate != null) {
+                fixDate = datas[i].fNewsDate.substr(0, 10);
+            }
+            if (datas[i].fContent != null) {
+                fixContent = datas[i].fContent.substr(0, 10);
+            }
+             tr =`<tr>
+             <td>${fixTitle}</td>
+             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixDate}</td>
+             <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixContent}</td>
+             <td>
+             <img src="/img/blog/${datas[i].fThumbnailPath}" width="100" height="80"/></td>
+             <td>${datas[i].newsCategory.fCategoryName}</td>
+             <td>${fixMember}</td>
+             <td>
+             <a class="btn btn-success" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
+             <br />
+             <a class="btn btn-light" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
+             <br />
+             <a class="btn btn-secondary" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+             </td></tr>`
+            $(`#ListZone`).append(tr);
+            GetPage();
+        }
+        };*@
+
+
         //專欄類別篩選ajax
     async function CategoriesChange() {
         $('#ListZone>tr').remove();

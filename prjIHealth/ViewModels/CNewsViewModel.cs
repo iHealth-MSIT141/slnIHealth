@@ -19,7 +19,7 @@ namespace prjiHealth.ViewModels
 
         //public int page { get { return page; } set { page = 1; } }
         public string txtKeyword { get; set; }
-        //private IHealthContext db;
+        private IHealthContext db;
         //public CNewsViewModel(IHealthContext context)
         //{
         //    db = context;
@@ -30,7 +30,11 @@ namespace prjiHealth.ViewModels
             _news = new TNews();
             //_category = new TNewsCategory();
         }
-        private TNews _news;
+        public CNewsViewModel(IHealthContext context)
+        {
+            db = context;
+        }
+        public TNews _news;
         //private TNewsCategory _category;
         public TNews news
         {
@@ -91,26 +95,56 @@ namespace prjiHealth.ViewModels
             set { _news.FMemberId = value; }
         }
 
-        public CNewsViewModel(TNews n)
-        {
-            _news = n;
-        }
-        static public List<CNewsViewModel> List(List<TNews> newlist)
-        {
-            List<CNewsViewModel> list = new List<CNewsViewModel>();
-            foreach (var n in newlist)
-            {
-                CNewsViewModel vModel = new CNewsViewModel(n);
-                list.Add(vModel);
-            }
-            return list;
-        }
+        //public CNewsViewModel(TNews n)
+        //{
+        //    _news = n;
+        //}
+
+        //static public List<CNewsViewModel> List(List<TNews> newlist)
+        //{
+        //    List<CNewsViewModel> list = new List<CNewsViewModel>();
+        //    foreach (var n in newlist)
+        //    {
+        //        CNewsViewModel vModel = new CNewsViewModel(n);
+        //        list.Add(vModel);
+        //    }
+        //    return list;
+        //}
 
         public IFormFile photo { get; set; }
         //public virtual TNewsCategory FCategory { get; set; }
         //public virtual TMember FMember { get; set; }
         public virtual ICollection<TNewsImage> TNewsImages { get; set; }
 
+        //public string getName
+        //{
+        //    get
+        //    {
+        //        if (_news.FMemberId != null)
+        //        {
+        //            return db.TMembers.FirstOrDefault(m => m.FMemberId == _news.FMemberId).FMemberName;
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //}
+
+        //public string getCategory
+        //{
+        //    get
+        //    {
+        //        if (_news != null)
+        //        {
+        //            return db.TNewsCategories.FirstOrDefault(c => c.FNewsCategoryId == _news.FNewsCategoryId).FCategoryName;
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //}
         //public IEnumerable<string> categorry
         //{
         //    get
