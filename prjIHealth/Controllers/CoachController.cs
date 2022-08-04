@@ -341,7 +341,7 @@ namespace prjiHealth.Controllers
         public IActionResult RecruitmentList()
         {
             //取得登入者ID
-            int theMemberId = 11; //TODO:改為演示用教練MemberID
+            int theMemberId = 11;
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
             {
                 string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
@@ -464,7 +464,7 @@ namespace prjiHealth.Controllers
         public IActionResult loadContact(int? flag, int? statusNum)    
         {
             //取得登入者ID
-            int theCoachMemberId = 11; //TODO:改為演示用教練MemberID
+            int theCoachMemberId = 11;
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
             {
                 string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);

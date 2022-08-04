@@ -884,13 +884,34 @@
             $("#inpNewFoodName").trigger("keyup");
             let isNum = /^\d+$/;
             if ($("#inpNewFoodName").val() == null || $("#inpNewUnit").val() == null || $("#inpNewCalories").val() == "") {
-                alert("儲存失敗，請確實填入食物名稱、單位及單位熱量。");
+                SwalGreen.fire({
+                    title: `儲存失敗`,
+                    text:"請確實填入食物名稱、單位及單位熱量。",
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: '確定',
+                    icon: 'error'
+                })
             }
             else if ($("#inpNewFoodName").prev().text() == "已存在此食物。") {
-                alert("儲存失敗，已存在此食物。");
+                SwalGreen.fire({
+                    title: `儲存失敗`,
+                    text: "已存在此食物。",
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: '確定',
+                    icon: 'error'
+                })
             }
             else if (!isNum.test($("#inpNewCalories").val())) {
-                alert("儲存失敗，單位熱量請填入正整數值。");
+                SwalGreen.fire({
+                    title: `儲存失敗`,
+                    text: "單位熱量請填入正整數值。",
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: '確定',
+                    icon: 'error'
+                })
             }
             else {
                 $.get("@Url.Content("~/Diary/addFoodCalory")", { "FFoodName": $("#inpNewFoodName").val(), "FUnit": $("#inpNewUnit").val(), "FCalories": $("#inpNewCalories").val() }, function (data) {
