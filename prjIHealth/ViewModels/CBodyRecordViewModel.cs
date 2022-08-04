@@ -73,23 +73,36 @@ namespace prjiHealth.ViewModels
         {
             get
             {
+                if (Age != null&& Gender!=null) 
+                { 
                 double numBMI = (double)FWeight / Math.Pow((double)(FHeight / 100), 2);
                 return Math.Round(1.2 * numBMI + (0.23 * (double)Age) - 5.4 - (10.8 * (double)Gender), 2);
+                }
+                else
+                {
+                    return 0;
+                }
             }
         }
         public double NumTDEE
         {
             get
             {
-                if (Gender == 1)
+                if (Age != null && Gender != null)
                 {
-                    return Math.Round((((10 * (double)FWeight) + (6.25 * (double)FHeight) - (5 * (double)Age) +  5 ) * (double)FWorkload),0);
+                    if (Gender == 1)
+                    {
+                        return Math.Round((((10 * (double)FWeight) + (6.25 * (double)FHeight) - (5 * (double)Age) + 5) * (double)FWorkload), 0);
+                    }
+                    else
+                    {
+                        return Math.Round((((10 * (double)FWeight) + (6.25 * (double)FHeight) - (5 * (double)Age) - 161) * (double)FWorkload), 0);
+                    }
                 }
                 else
                 {
-                    return Math.Round((((10 * (double)FWeight) + (6.25 * (double)FHeight) - (5 * (double)Age) - 161) * (double)FWorkload),0);
+                    return 0;
                 }
-                
             }
         }
     }
