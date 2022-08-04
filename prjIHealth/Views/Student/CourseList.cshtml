@@ -463,7 +463,13 @@
                 })
             }
             else {
-                alert("您尚未評分，請點擊星星給分");
+                SwalGreen.fire({
+                    title: `您尚未評分，請點擊星星給分`,
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: '確定',
+                    icon: 'error'
+                })
             }
         });
 
