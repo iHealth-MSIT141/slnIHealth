@@ -141,11 +141,14 @@
                                                 <input type="hidden" value=" @Html.DisplayFor(modelItem => item.fPayment.FPaymentCategoryId)" id="fPayment.FPaymentCategoryId" name="fPayment.FPaymentCategoryId" />
                                                 @Html.DisplayFor(modelItem => item.FContact)
                                             </td>
-                                            <td style="margin-left: auto; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" title=" @Html.DisplayFor(modelItem => item.FPhone)">
-                                                @item.FPhone.Substring(0, Math.Min(item.FPhone.Length, 6))...
+                                            <td style="margin-left: auto; text-align: center;" title=" @Html.DisplayFor(modelItem => item.FPhone)">
+                                                @item.FPhone.Substring(0, Math.Min(item.FPhone.Length, 5))<br />
+                                                @item.FPhone.Substring(5, Math.Min(item.FPhone.Length, 5))<br />
+                                                @item.FPhone.Substring(10)
                                             </td>
                                             <td style="margin-left: auto; text-align: center;" title=" @Html.DisplayFor(modelItem => item.FAddress)">
-                                                @item.FAddress.Substring(0, Math.Min(item.FAddress.Length, 5))...
+                                                @item.FAddress.Substring(0, Math.Min(item.FAddress.Length, 7))...
+                                                @*@Html.DisplayFor(modelItem => item.FAddress)*@
                                             </td>
                                             <td style="margin-left: auto; text-align: center;">
                                                 @Html.DisplayFor(modelItem => item.FDate)
