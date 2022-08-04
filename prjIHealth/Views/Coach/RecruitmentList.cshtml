@@ -278,7 +278,7 @@
                                             }
                                             else if (c.FStatusNumber == 51)
                                             {
-                                                <select class="selStatus colorFinish" onchange="changeStatus();" style="color: silver; font-weight: 700">
+                                                <select class="selStatus colorFinish" onchange="changeStatus();">
                                                     <option value="50" class="colorWait">等待聯繫中</option>
                                                     <option value="51" class="colorFinish" selected>已聯繫，暫無課程</option>
                                                     <option value="52" class="colorIng">已聯繫，配對成功</option>
@@ -286,7 +286,7 @@
                                             }
                                             else if (c.FStatusNumber == 52)
                                             {
-                                                <select class="selStatus colorIng" onchange="changeStatus();" style="color: #39ADA1; font-weight: 700">
+                                                <select class="selStatus colorIng" onchange="changeStatus();">
                                                     <option value="50" class="colorWait">等待聯繫中</option>
                                                     <option value="51" class="colorFinish">已聯繫，暫無課程</option>
                                                     <option value="52" class="colorIng" selected>已聯繫，配對成功</option>
@@ -524,6 +524,7 @@
                         $.post("@Url.Content("~/Coach/createCourse")", { FCoachContactId: $("#inpContactId").val(), FCourseName: $("#inpCourseName").val(), FCourseTotal: $("#inpTotal").val(), FAvailableTimeNum: time }, function () {
                             SwalWithGreen.fire('新增成功', '', 'success')
                             selStatus.val(52);
+                            selStatus.removeClass("colorWait").removeClass("colorFinish").removeClass("colorIng").addClass("colorIng");
                             $("#modalCreateCourse").modal("hide");
                         })
                     }
