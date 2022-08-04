@@ -5,7 +5,7 @@
 @section Styles{
     <link href="/css/PagedList.css" rel="stylesheet" />
 }
-@{ ViewData["Title"] = "Blog"; }
+<link rel="stylesheet" href="/css/ShoppingMallCategory.css" type="text/css">
 
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg" data-setbg="/img/blog/banner_news.png" id="bannerTop">
@@ -41,11 +41,11 @@
                     <div class="blog__sidebar__item" id="cateSe">
                         <h4>專欄分類</h4>
                         <ul id="cate">
-                            <li><a href="~/News/Blog">所有顯示 (@ViewBag.Category0Count)</a></li>
-                            <li><a data-id="1">運動健身 (@ViewBag.Category1Count)</a></li>
-                            <li><a data-id="2">食物營養 (@ViewBag.Category2Count)</a></li>
-                            <li><a data-id="3">新冠疫情 (@ViewBag.Category3Count)</a></li>
-                            <li><a data-id="4">教練專欄 (@ViewBag.Category4Count)</a></li>
+                            <li><a href="~/News/Blog" class="categoryItem selectedCategory">所有顯示 (@ViewBag.Category0Count)</a></li>
+                            <li><a data-id="1" class="categoryItem">運動健身 (@ViewBag.Category1Count)</a></li>
+                            <li><a data-id="2" class="categoryItem">食物營養 (@ViewBag.Category2Count)</a></li>
+                            <li><a data-id="3" class="categoryItem">新冠疫情 (@ViewBag.Category3Count)</a></li>
+                            <li><a data-id="4" class="categoryItem">教練專欄 (@ViewBag.Category4Count)</a></li>
                             <!--專欄分類使用處-->
                         </ul>
                     </div>
@@ -62,7 +62,7 @@
                                         </div>
                                         <div class="blog__sidebar__recent__item__text">
                                             <h6>
-                                                @item.FTitle.Substring(0, Math.Min(item.FContent.Length, 18)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")
+                                                @item.FTitle.Substring(0, Math.Min(item.FTitle.Length, 18)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")
                                                 <br />
                                                 @*@item.FTitle.Substring(20, Math.Min(item.FContent.Length, 30)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")*@
                                             </h6>
@@ -207,6 +207,11 @@
                     }
             }
         }
+
+        $(".categoryItem").click(function () {
+            $(".categoryItem").removeClass("selectedCategory");
+            $(this).addClass("selectedCategory");
+        })
         async function CommentCountsN() {
 
         }

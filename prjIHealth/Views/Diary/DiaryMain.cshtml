@@ -951,30 +951,35 @@
         })
 
         //==========圖表==========
-
-        const labels = [
-            '九月',
-            '十月',
-            '十一月',
-            '十二月',
-            '一月',
-            '二月',
-            '三月',
-            '四月',
-            '五月',
-            '六月',
-            '七月',
-            '八月'
-        ];
+        let months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+        let theMon = new Date().getMonth()+1;
+        let labels=[];
+        for (let i = 0; i < 12; i++) {
+            if (theMon + i > 11) {
+                labels[i] = months[theMon + i - 12];
+            }
+            else {
+                labels[i] = months[theMon + i];
+            }
+        }
         const inputs = $("#myBodyChart").nextAll("input");
         const data = {
             labels: labels,
-            datasets: [{
-                label: '近一年BMI曲線',
-                backgroundColor: '#ffc83d',
-                borderColor: '#ffc83d',
-                data: [inputs.eq(11).val(), inputs.eq(10).val(), inputs.eq(9).val(), inputs.eq(8).val(), inputs.eq(7).val(), inputs.eq(6).val(), inputs.eq(5).val(), inputs.eq(4).val(), inputs.eq(3).val(), inputs.eq(2).val(), inputs.eq(1).val(), inputs.eq(0).val(),]
-            }]
+            datasets: [
+                {
+                    label: '前一年BMI曲線',
+                    fill: false,
+                    backgroundColor: '#ffc83d',
+                    borderColor: '#ffc83d',
+                    data: [inputs.eq(23).val(), inputs.eq(22).val(), inputs.eq(21).val(), inputs.eq(20).val(), inputs.eq(19).val(), inputs.eq(18).val(), inputs.eq(17).val(), inputs.eq(16).val(), inputs.eq(15).val(), inputs.eq(14).val(), inputs.eq(13).val(), inputs.eq(12).val(),]
+                }, {
+                    label: '近一年BMI曲線',
+                    fill: false,
+                    backgroundColor: '#77DDFF',
+                    borderColor: '#77DDFF',
+                    data: [inputs.eq(11).val(), inputs.eq(10).val(), inputs.eq(9).val(), inputs.eq(8).val(), inputs.eq(7).val(), inputs.eq(6).val(), inputs.eq(5).val(), inputs.eq(4).val(), inputs.eq(3).val(), inputs.eq(2).val(), inputs.eq(1).val(), inputs.eq(0).val(),]
+                }
+            ]
         };
         const config = {
             type: 'line',

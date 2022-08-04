@@ -28,25 +28,31 @@ namespace prjIHealth.Areas.Admin.Controllers
             _enviroment = n;
         }
         //專欄表單生成，利用x.pagedlist套件和搜尋viewmodel
-        public IActionResult List(CNewsViewModel vModel, int? page)
+        public IActionResult List(CNewsViewModel vModel/*, int? page*/)
         {
             IHealthContext db = new IHealthContext();
-            IPagedList<TNews> datas;
+            IEnumerable<TNews> datas=null;
 
             if (string.IsNullOrEmpty(vModel.txtKeyword))
             {
-                datas = db.TNews.Select(t => t).OrderBy(t => t.FNewsId).Include(t => t.FNewsCategory).Include(n => n.FMember)
-                    .ToPagedList(page ?? 1, 5);
+                datas = db.TNews.Select(t => t)
+                    .OrderBy(t => t.FNewsId)
+                    .Include(t => t.FNewsCategory)
+                    .Include(n => n.FMember);
+                    //.ToPagedList(page ?? 1, 5);
             }
 
             else
             {
-                datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword)).Include(t => t.FNewsCategory).Include(n => n.FMember)
-                    .ToPagedList(page ?? 1, 5);
+                datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword))
+                    .Include(t => t.FNewsCategory)
+                    .Include(n => n.FMember);
+                    //.ToPagedList(page ?? 1, 5);
             }
 
-            ViewBag.OnePageOfNews = datas;
-            return View(datas);
+            //ViewBag.OnePageOfNews = datas;
+            var news = CNewsViewModel.List(datas.ToList());
+            return View(news);
         }
         //專欄後台詳細內容顯示
         public IActionResult Details(int? id)
@@ -65,26 +71,41 @@ namespace prjIHealth.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(CNewsViewModel vModel)
         {
-            IHealthContext db = new IHealthContext();
-            TNews news = new TNews();
-            news.FTitle = vModel.FTitle;
-            news.FContent = vModel.FContent;
-            news.FNewsDate = vModel.FNewsDate;
-            news.FNewsCategoryId = vModel.FNewsCategoryId;
-            news.FVideoUrl = vModel.FVideoUrl;
-            news.FViews = vModel.FViews;
-            news.FMemberId = vModel.FMemberId;
-
-            if (vModel.photo != null)
+            if (string.IsNullOrEmpty(vModel.FTitle))
             {
-                string nName = Guid.NewGuid().ToString() + ".jpg";
-                vModel.photo.CopyTo(new FileStream(
-                    _enviroment.WebRootPath + "/img/blog/" + nName, FileMode.Create));
-                news.FThumbnailPath = nName;
+                ViewBag.AlertTitle = "請輸入專欄標題";
             }
-            db.Add(news);
-            db.SaveChanges();
+            else if (string.IsNullOrEmpty(vModel.FContent))
+            {
+                ViewBag.AlertContent = "請輸入文章內容";
+            }
+            else if (vModel.FNewsCategoryId > 5 || vModel.FNewsCategoryId <= 0) 
+            {
+                ViewBag.AlertCategory = "請輸入專欄標題";
+            }
+            else 
+            {
+                IHealthContext db = new IHealthContext();
+                TNews news = new TNews();
+                news.FTitle = vModel.FTitle;
+                news.FContent = vModel.FContent;
+                news.FNewsDate = vModel.FNewsDate;
+                news.FNewsCategoryId = vModel.FNewsCategoryId;
+                news.FVideoUrl = vModel.FVideoUrl;
+                news.FViews = vModel.FViews;
+                news.FMemberId = vModel.FMemberId;
 
+                if (vModel.photo != null)
+                {
+                    string nName = Guid.NewGuid().ToString() + ".jpg";
+                    vModel.photo.CopyTo(new FileStream(
+                        _enviroment.WebRootPath + "/img/blog/" + nName, FileMode.Create));
+                    news.FThumbnailPath = nName;
+                }
+                db.Add(news);
+                db.SaveChanges();
+                ViewBag.Succes = "專欄已新增成功";
+            }
             return RedirectToAction("List");
         }
         //專欄編輯，利用viewmodel帶過categoryname
