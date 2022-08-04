@@ -43,6 +43,7 @@
 <hr />
 @*篩選*@
 <div class="divSearch row">
+    <div class="col-1 col-form-label" id="divCount" style="font-weight:600">共 @Model.Count() 筆</div>
     <div class="col-lg-3">
         <select class="custom-select" id="selStarCount">
             <option value="1" selected>排序: 依日期由近至遠</option>
@@ -54,7 +55,7 @@
     <div class="col-lg-1" style="padding-right:0">
         <label class="col-form-label" style="float:right;font-weight:600">搜尋:</label>
     </div>
-    <div class="col-lg-6 divKeyword">
+    <div class="col-lg-5 divKeyword">
         <input type="text" class="form-control" id="inpKeyword" placeholder="請輸入評價內容">
     </div>
     <div class="col-lg-2" style="padding-right:0">
@@ -195,6 +196,10 @@
                         html += `<button class="btn btn-secondary btnHidden">隱藏</button>`;
                         html += `<input type="hidden" value="${r.fRateId}" /></td></tr>`;
                     })
+                    $("#divCount").text(`共${trates.length}筆`)
+                }
+                else {
+                        $("#divCount").text(`共0筆`)
                 }
                 $("#tbdRates").html(html);
                 $(".btnVisible").click(function () {
