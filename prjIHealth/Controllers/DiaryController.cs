@@ -102,7 +102,6 @@ namespace prjIHealth.Controllers
                 double recordDate = double.Parse($"{date}000000") + count;
                 TBodyRecord bodyRecord = new TBodyRecord()
                 {
-                    //TODO 抓memberId
                     FMemberId = userId,
                     FRecordDate = recordDate.ToString(),
                     FHeight = body.FHeight,
