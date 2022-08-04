@@ -692,6 +692,8 @@
                                             $(`#done_@r.FReservationId`).show();
                                             $(`#date_@r.FReservationId`).prop("disabled", true);
                                             $(`#sel_@r.FReservationId`).prop("disabled", true);
+                                            CreateCalendar();
+                                            GetReservations();
                                         }
                                     })
                 })
