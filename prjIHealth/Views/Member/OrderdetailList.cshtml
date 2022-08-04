@@ -118,21 +118,23 @@
                                     <th style="margin-left:auto">
                                         @Html.DisplayNameFor(model => model.FUnitprice)
                                     </th>
-                                    <th style="margin-left:auto">
-                                        @Html.DisplayNameFor(model => model.FDiscountId)
-                                    </th>
-
+                                    @*<th style="margin-left:auto">
+                                      @Html.DisplayNameFor(model => model.FDiscountId)
+                                      </th>*@
                                 </tr>
                             </thead>
                             <tbody>
                                 @{
                                     int count = 0;
                                     decimal pay = 0;
+                                    decimal discount = 0;
+                                    decimal total = 0;
                                     foreach (var item in Model)
                                     {
-                                        int discount = Convert.ToInt32(item.fdiscount.FDiscountValue);
-                                        pay += item.FUnitprice - discount;
+                                        discount = Convert.ToInt32(item.fdiscount.FDiscountValue);
+                                        pay += item.FUnitprice;
                                         count++;
+                                        total = pay - discount;
                                         <tr>
                                             <td style="margin-left:auto">
                                                 @count
@@ -150,17 +152,17 @@
                                             <td style="margin-left:auto">
                                                 @Html.DisplayFor(modelItem => item.FUnitprice)
                                             </td>
-                                            <td style="margin-left:auto">
-                                                @Html.DisplayFor(modelItem => item.fdiscount.FDiscountValue)
-                                            </td>
-
-                                        </tr>
+                                            @*<td style="margin-left:auto">
+                                               @Html.DisplayFor(modelItem => item.fdiscount.FDiscountValue)
+                                              </td>*@
+                                        </tr>                                    
                                     }
                                 }
                             </tbody>
                         </table>
-                        交易金額：@pay.ToString("0")
-                        <div class="form-group ">
+                        <div class="checkout__order__total">折扣金額:<span>@discount.ToString("C0")</span></div>
+                        交易金額:@total.ToString("C0")
+                        <div class="form-group " style="padding:10px;">
                             <a asp-action="OrderList" class=" btn btn-success">返回清單</a>
                         </div>
                     </div>

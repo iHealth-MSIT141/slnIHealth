@@ -363,7 +363,7 @@ namespace prjIHealth.Controllers
                            fstatus = o.FStatusNumberNavigation
                        }).OrderByDescending(a => a.FDate).ToList();
             var pageNumber = page ?? 1;
-            var onePageOfPro = pro.ToPagedList(pageNumber, 3);
+            var onePageOfPro = pro.ToPagedList(pageNumber, 5);
             ViewBag.onePageOfPro = onePageOfPro;
             return View(onePageOfPro);
         }
