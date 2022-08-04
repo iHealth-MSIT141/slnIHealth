@@ -5,7 +5,7 @@
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /*會員專區*/
+        /*教練專區導覽列*/
         .blog__btn {
             display: inline-block;
             font-size: 14px;
@@ -22,8 +22,8 @@
             }
 
             .blog__btn:hover {
-                color: black;
-                font-weight: 800;
+                border: 1px solid #6F4315;
+                color: #6F4315;
             }
 
             .blog__btn:active {
@@ -32,13 +32,36 @@
             }
 
         .sidebar__item ul li a {
-            border: dashed 2px #7fad39;
-            border-top: none;
-            border-left: none;
-            border-right: none;
-            padding-left: 1vw;
-            margin-right: 8vw;
             margin-bottom: 1vh;
+        }
+
+        .sidebar__item {
+            border: 1px solid lightgray;
+            box-shadow: 2px 2px 5px lightgray;
+            padding: 20px;
+            margin-right: 30px;
+            margin-bottom: 20px;
+        }
+
+            .sidebar__item h5 {
+                text-align: center;
+                margin-bottom: 20px;
+                padding: 10px;
+                background-color: #452A0D;
+                color: white;
+            }
+
+            .sidebar__item li:hover {
+                transition: .2s;
+                background-color: #EDE8E2;
+            }
+
+            .sidebar__item i {
+                margin-right: 8px;
+            }
+
+        .liThis {
+            background-color: #EFEDED;
         }
 
         /*列表*/
@@ -70,34 +93,35 @@
         }
 
             .divOther span {
-                color: #5F822B;
+                color: gray;
                 line-height: 70px;
             }
 
             .divOther i {
-                color: #5F822B;
+                color: gray;
             }
 
         .divUrl {
             margin-left: 10px;
             padding: 15px;
             line-height: 40px;
-            border: 1px solid #BFD69C;
+            border: 1px solid gray;
             border-radius: 20px;
         }
 
             .divUrl i {
-                color: #DFEACE;
+                color: lightgray;
             }
 
             .divUrl span {
-                color: #7FAD39;
+                color: dimgray;
                 text-decoration: none;
                 transition: .3s;
             }
 
                 .divUrl span:hover {
-                    color: #5F822B;
+                    color: black;
+                    cursor:pointer;
                 }
 
         .tdBtns {
@@ -283,15 +307,14 @@
             <div class="col-lg-3 col-md-5">
                 <div class="sidebar" style="position:sticky;top:150px;">
                     <div class="sidebar__item">
-                        <h4>教練專區</h4>
+                        <h5>教練專區</h5>
                         <ul>
-                            <li><a href="~/Coach/CreateResume">履歷管理</a></li>
-                            <li><a href="~/Coach/RecruitmentList">招生紀錄</a></li>
-                            <li><a href="~/Coach/TeachingList">教課列表</a></li>
+                            <li><a href="~/Coach/CreateResume"><i class="fa-solid fa-pen"></i>履歷管理</a></li>
+                            <li><a href="~/Coach/RecruitmentList" class="aLimit"><i class="fa-solid fa-user-check"></i>招生紀錄</a></li>
+                            <li class="liThis"><a href="~/Coach/TeachingList" class="aLimit"><i class="fa-solid fa-dumbbell"></i>教課列表</a></li>
                         </ul>
-                        <br />
-                        <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
                     </div>
+                    <a href="~/Member/Edit" class="blog__btn"><span class="arrow_right"></span>會員專區</a>
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
@@ -369,7 +392,7 @@
                     </tbody>
                 </table>
                 <div class="divLink reveal_b2">
-                    <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span><b>&nbsp;&nbsp;想一覽所有課程？</b></span></div>
+                    <div class="divOther"><i class="fa-solid fa-magnifying-glass"></i><span>&nbsp;&nbsp;想一覽所有課程？</span></div>
                     <div class="divUrl"><i class="fa-solid fa-arrow-right-long"></i><span data-toggle="modal" data-target="#addModal_cal">&nbsp;&nbsp;查看<b>課程行事曆</b></span></div>
                 </div>
             </div>
@@ -588,7 +611,7 @@
             }
 
             foreach (var r in course.Reservations)
-            {
+            {           
                 string time = r.CourseTime.Substring(0, 2);
                 if (time.StartsWith("0"))
                 {
@@ -599,7 +622,7 @@
                 if (r.FStatusNumber == 60)
                 {
                     <script>
-                                $(`#status_@r.FReservationId`).css("color", "#39ADA1");
+                        $(`#status_@r.FReservationId`).css("color", "#39ADA1");
                     </script>
                 }
                 else
@@ -694,6 +717,13 @@
                                             $(`#sel_@r.FReservationId`).prop("disabled", true);
                                             CreateCalendar();
                                             GetReservations();
+                                        }
+                                        else {
+                                            SwalGreen.fire({
+                                                icon: 'error',
+                                                title: '變更失敗',
+                                                text:'該日該時段已額滿，請選擇其他時段。'
+                                            })
                                         }
                                     })
                 })
