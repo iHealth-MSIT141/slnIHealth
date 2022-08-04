@@ -28,7 +28,7 @@ namespace prjIHealth.Models
         public int FMemberId { get; set; }
         [DisplayName("姓名")]
         public string FMemberName { get; set; }
-        [DisplayName("密碼")]
+        [Required][DisplayName("密碼")]
         public string FPassword { get; set; }
         [DisplayName("生日")]
         public string FBirthday { get; set; }
@@ -42,13 +42,13 @@ namespace prjIHealth.Models
         public string FAddress { get; set; }
         [DisplayName("電話")]
         public string FPhone { get; set; }
-        [DisplayName("電子信箱")]
+       [Required] [DisplayName("電子信箱")]
         public string FEmail { get; set; }
         [DisplayName("註冊日期")]
         public string FRegisterDate { get; set; }
         [DisplayName("權限名稱")]
         public int? FAuthorityId { get; set; }
-        [DisplayName("停權中")]
+        [DisplayName("會員狀態")]
         public bool? FDisabled { get; set; }
         [DisplayName("備註")]
         public string FRemarks { get; set; }

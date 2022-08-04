@@ -53,12 +53,12 @@ namespace prjIHealth.Controllers
                     int authorId = (int)loginUser.FAuthorityId;
                     if (authorId <5)
                     {
-                        string admin = "admin" + loginUser.FUserName;
+                        string admin = "admin" + loginUser.FMemberName;
                         return Content(admin, "text/plain", System.Text.Encoding.UTF8);
                     }
                     else
                     {
-                        return Content(loginUser.FUserName, "text/plain", System.Text.Encoding.UTF8);
+                        return Content(loginUser.FMemberName, "text/plain", System.Text.Encoding.UTF8);
                     }
                 }
             }
@@ -117,7 +117,7 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(CLoginViewModel vModel, TMember tm)
         {
-            if (vModel.fPassword == null || vModel.fUserName == null)
+            if (vModel.fPassword == null || vModel.fUserName == null || vModel.fEmail==null)
             {
                 return Content("empty", "text/plain", System.Text.Encoding.UTF8);
             }

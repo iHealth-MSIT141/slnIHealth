@@ -83,7 +83,7 @@
             authorId = (int)loginMember.FAuthorityId;
             loginEmail = loginMember.FEmail;
         };
-    }
+    }+]/
     <!-- 載入動畫 -->
     <div id="preloder">
         <div class="loader"></div>
@@ -385,7 +385,7 @@
                     <form action="~/Member/Login" method="post" enctype="application/x-www-form-urlencoded" name="userInfo" id="loginForm">
                         <input name="ReturnUrl" id="inpReturnUrl" type="hidden" />
                         <div class="form-group">
-                            <label for="fUserName" style="font-weight:700">使用者帳號</label>@*color: #ffffff; text-shadow:1px 1px 15px black;*@
+                            <label for="fUserName" style="font-weight:700">使用者帳號-必填</label>@*color: #ffffff; text-shadow:1px 1px 15px black;*@
                             <input type="text" class="form-control" id="inpLogInUserName" name="fUserName" placeholder="帳號" autocomplete="off">
                             <span id="spanLoginUsername"></span>
                         </div>
@@ -436,7 +436,7 @@
                     <div class="modal-body row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="fUserName">使用者帳號</label>
+                                <label for="fUserName">使用者帳號-必填</label>
                                 <input type="text" class="form-control" id="inpRegisterUserName" name="fUserName" placeholder="帳號,至少需二個字(含)以上" autocomplete="off">
                                 <span id="spanRegUsername"></span>
                             </div>
@@ -445,13 +445,13 @@
                                 <input type="text" class="form-control" id="inpRegisterMemberName" name="fMemberName" placeholder="姓名" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="fPassword">密碼</label>
+                                <label for="fPassword">密碼-必填</label>
                                 <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showRegisterPassword"></i>
                                 <input type="password" class="form-control" id="inpRegisterPassword" name="fPassword" placeholder="密碼需含數字, 大,小寫英文字母" autocomplete="off">
                                 <span id="spanRegPassword">密碼長度6~12位,要包含大小寫英文字, 數字,符號[!@@#$%^&*],至少各含一或以上</span>
                             </div>
                             <div class="form-group">
-                                <label for="confirmPassword">請輸入確認密碼</label>
+                                <label for="confirmPassword">請輸入確認密碼-必填</label>
                                 <i class="fa fa-eye-slash" aria-hidden="true" style="font-size:larger" id="showRegisterConfirmPassword"></i>
                                 <input type="password" class="form-control" id="inpRegisterConfirmPassword" name="confirmPassword" placeholder="確認密碼 " autocomplete="off">
                                 <span id="spanRegConfirmPassword"></span>
@@ -460,7 +460,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="fEmail">電子郵件信箱</label>
+                                <label for="fEmail">電子郵件信箱-必填</label>
                                 <input type="text" class="form-control" id="inpRegisterEmail" name="fEmail" placeholder="電子郵件信箱" autocomplete="off">
                                 <span id="spanRegEmail"></span>
                             </div>
@@ -1042,12 +1042,12 @@
                         $('#fPasswordReset').val("");
                         $('#firstPassword').val("");
                         $('#confirmPassword').val("");
-                        if (@loginId== 0) {
+                        @*if (@loginId== 0) {*@
                             alert(`${data},密碼重設成功, 請登入`); $('#resetPasswordModal').modal('hide');
                             $('#loginModal').modal('show');
-                        } else {
-                            alert(`${data},密碼重設成功`); $('#resetPasswordModal').modal('hide');
-                       };
+                       // } else {
+                       //     alert(`${data},密碼重設成功`); $('#resetPasswordModal').modal('hide');
+                       //};
                     }
                 }
             });
@@ -1110,7 +1110,7 @@
             $("#inpResetPasswordEmail").val("charles.chou570114@gmail.com");
             $("#inpResetPassword").val("!QAZ2wsx");
             $("#inpFirstPassword").val("1qaz@WSX");
-            $("#inpConfirmPassword").val("11qaz@WSX");
+            $("#inpConfirmPassword").val("1qaz@WSX");
         });
 
         //需登入的頁面導去登入
