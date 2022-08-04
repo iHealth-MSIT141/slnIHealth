@@ -19,6 +19,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                            on t.FProblemCategoryId equals p.FProblemCategoryId
                            join s in db.TStatuses
                            on t.FStatusNumber equals s.FStatusNumber
+                           orderby t.FProblemTime descending
                            select new CProblemViewModel()
                            {
                                FProblemId = t.FProblemId,
