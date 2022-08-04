@@ -588,7 +588,7 @@
             }
 
             foreach (var r in course.Reservations)
-            {
+            {           
                 string time = r.CourseTime.Substring(0, 2);
                 if (time.StartsWith("0"))
                 {
@@ -599,7 +599,7 @@
                 if (r.FStatusNumber == 60)
                 {
                     <script>
-                                $(`#status_@r.FReservationId`).css("color", "#39ADA1");
+                        $(`#status_@r.FReservationId`).css("color", "#39ADA1");
                     </script>
                 }
                 else
@@ -694,6 +694,13 @@
                                             $(`#sel_@r.FReservationId`).prop("disabled", true);
                                             CreateCalendar();
                                             GetReservations();
+                                        }
+                                        else {
+                                            SwalGreen.fire({
+                                                icon: 'error',
+                                                title: '變更失敗',
+                                                text:'該日該時段已額滿，請選擇其他時段。'
+                                            })
                                         }
                                     })
                 })
