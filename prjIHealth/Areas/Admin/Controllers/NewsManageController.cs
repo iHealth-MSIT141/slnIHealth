@@ -21,39 +21,113 @@ namespace prjIHealth.Areas.Admin.Controllers
         {
             return View();
         }
-
+        private IHealthContext _db;
         private IWebHostEnvironment _enviroment;
-        public NewsManageController(IWebHostEnvironment n)
+        public NewsManageController(IWebHostEnvironment n, IHealthContext context)
         {
             _enviroment = n;
+            _db = context;
         }
-        //專欄表單生成，利用x.pagedlist套件和搜尋viewmodel
+        //專欄表單生成，冠宇是神
         public IActionResult List(CNewsViewModel vModel/*, int? page*/)
         {
             IHealthContext db = new IHealthContext();
-            IEnumerable<TNews> datas=null;
+            IEnumerable<TNews> datas = null;
+
 
             if (string.IsNullOrEmpty(vModel.txtKeyword))
             {
-                datas = db.TNews.Select(t => t)
-                    .OrderBy(t => t.FNewsId)
-                    .Include(t => t.FNewsCategory)
-                    .Include(n => n.FMember);
-                    //.ToPagedList(page ?? 1, 5);
+                datas = db.TNews.Include(t => t.FNewsCategory)
+                    .Include(n => n.FMember)
+                    .Select(t => t)
+                    .OrderBy(t => t.FNewsId);
+
+                //.ToPagedList(page ?? 1, 5);
             }
 
             else
             {
-                datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword))
+                datas = db.TNews
                     .Include(t => t.FNewsCategory)
-                    .Include(n => n.FMember);
-                    //.ToPagedList(page ?? 1, 5);
+                    .Include(n => n.FMember)
+                    .Where(t => t.FTitle.Contains(vModel.txtKeyword));
+
+                ViewBag.SearchResult = "沒有您所蒐尋的資料";
+                //.ToPagedList(page ?? 1, 5);
             }
 
+            List<CNewsViewModel> news = new List<CNewsViewModel>();
+            foreach (var n in datas)
+            {
+                CNewsViewModel newsViewModel = new CNewsViewModel(_db)
+                {
+                    _news = n,
+                    //newsCategory = n.FNewsCategory,
+                    //getMember = n.FMember
+                };
+                news.Add(newsViewModel);
+            }
             //ViewBag.OnePageOfNews = datas;
-            var news = CNewsViewModel.List(datas.ToList());
+            //var news = CNewsViewModel.List(datas.ToList());
             return View(news);
         }
+
+        public IActionResult Search(string keyWord)
+        {
+            IHealthContext db = new IHealthContext();
+            IEnumerable<TNews> tNews = null;
+
+            if (!String.IsNullOrEmpty(keyWord))
+                tNews = db.TNews.Where(c => c.FTitle.ToLower().Contains(keyWord.ToLower()));
+
+            List<CNewsViewModel> vModel = null;
+            //if (tNews.Count() != 0)
+            //{
+                vModel = new List<CNewsViewModel>();
+                foreach (var n in tNews)
+                {
+                    CNewsViewModel viewModel = new CNewsViewModel(db)
+                    {
+                        FNewsId = n.FNewsId,
+                        FTitle = n.FTitle,
+                        FNewsDate = n.FNewsDate,
+                        FContent = n.FContent,
+                        FThumbnailPath = n.FThumbnailPath,
+                        FNewsCategoryId = n.FNewsCategoryId,
+                        FViews = n.FViews,
+                        FVideoUrl = n.FVideoUrl,
+                        FMemberId = n.FMemberId,
+                        newsCategory = n.FNewsCategory,
+                        getMember = n.FMember
+                    };
+                    vModel.Add(viewModel);
+                //}
+            }
+            //IHealthContext db = new IHealthContext();
+
+            //var selCateID = (from n in db.TNews
+            //                 join c in db.TNewsCategories
+            //                 on n.FNewsCategoryId equals c.FNewsCategoryId
+            //                 where n.FTitle == keyWord
+            //                 join m in db.TMembers
+            //                 on n.FMemberId equals m.FMemberId
+            //                 select new CNewsViewModel()
+            //                 {
+            //                     FNewsId = n.FNewsId,
+            //                     FTitle = n.FTitle,
+            //                     FNewsDate = n.FNewsDate,
+            //                     FContent = n.FContent,
+            //                     FThumbnailPath = n.FThumbnailPath,
+            //                     FNewsCategoryId = n.FNewsCategoryId,
+            //                     FViews = n.FViews,
+            //                     FVideoUrl = n.FVideoUrl,
+            //                     FMemberId = n.FMemberId,
+            //                     newsCategory = n.FNewsCategory,
+            //                     getMember = n.FMember
+            //                 }).ToList();
+            return Json(vModel);
+        }
+
         //專欄後台詳細內容顯示
         public IActionResult Details(int? id)
         {
@@ -79,11 +153,11 @@ namespace prjIHealth.Areas.Admin.Controllers
             {
                 ViewBag.AlertContent = "請輸入文章內容";
             }
-            else if (vModel.FNewsCategoryId > 5 || vModel.FNewsCategoryId <= 0) 
+            else if (vModel.FNewsCategoryId > 5 || vModel.FNewsCategoryId <= 0)
             {
                 ViewBag.AlertCategory = "請輸入專欄標題";
             }
-            else 
+            else
             {
                 IHealthContext db = new IHealthContext();
                 TNews news = new TNews();
@@ -153,7 +227,7 @@ namespace prjIHealth.Areas.Admin.Controllers
             return RedirectToAction("List");
         }
 
-        //選取類別api，尚無法完成連動分頁
+        //選取類別api
         public IActionResult SelectCategoryIDAPI(int id)
         {
             IHealthContext db = new IHealthContext();
