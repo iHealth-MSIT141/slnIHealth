@@ -4,9 +4,37 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
 @section Styles{
+    <style>
+        .btn-light {
+            background-color: #DFEACE !important;
+            color: black;
+        }
 
+        .btn-success {
+            background-color: #7FAD39;
+            color: white;
+            border: none;
+        }
+
+        table.table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .selectbox {
+            margin-bottom: 5%;
+            margin-left: -10%;
+        }
+
+        #title {
+            font-weight: 800;
+            color: #599e32;
+            margin-left: 20vw;
+            margin-right: 20vw;
+        }
+    </style>
 }
-<h1>新增商品</h1>
+<h2 id="title">新增產品</h2>
 <hr />
 
 
@@ -88,9 +116,9 @@
                                 <div class="form-group col-md-11">
                                     <div id="AddFCategory"></div>
                                     <div id="AddFVisible"></div>
-                                    <input type="submit" value="確定新增" class="btn btn-primary" />
-                                    <a asp-action="ProductList" class="btn btn-primary">返回清單</a>
-                                    <button id="btncreate" class="btn btn-primary">Demo</button>
+                                    <input type="submit" value="確定新增" class="btn btn-light" />
+                                    <a asp-action="ProductList" class="btn btn-success">返回清單</a>
+                                    <button id="btncreate" class="btn btn-dark">Demo</button>
                                 </div>
                 </form>
              
