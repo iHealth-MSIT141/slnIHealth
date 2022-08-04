@@ -225,7 +225,7 @@
                     let response = await fetch(url);
                     let datas = await response.json();
                     console.log(datas);
-            $("#fa-heart").children("span").text(datas);
+                    $("#fa-heart").children("span").text(datas);
 
 
         }
@@ -294,7 +294,7 @@
                         pleaseLogin();
                     }
                     else {
-
+                        $("#fa-heart").children("span").show();
                         SwalGreen.fire({
                             title: '已成功加入追蹤清單',
                             text: false,
