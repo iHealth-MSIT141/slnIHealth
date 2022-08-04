@@ -4,6 +4,7 @@ using prjIHealth.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,6 +19,11 @@ namespace prjiHealth.ViewModels
 
         //public int page { get { return page; } set { page = 1; } }
         public string txtKeyword { get; set; }
+        //private IHealthContext db;
+        //public CNewsViewModel(IHealthContext context)
+        //{
+        //    db = context;
+        //}
 
         public CNewsViewModel(/*TNewsCategory category*/)
         {
@@ -49,6 +55,7 @@ namespace prjiHealth.ViewModels
             set { _news.FNewsDate = value; }
         }
         [DisplayName("文章內容")]
+        [Required]
         public string FContent
         {
             get { return _news.FContent; }
@@ -83,10 +90,37 @@ namespace prjiHealth.ViewModels
             get { return _news.FMemberId; }
             set { _news.FMemberId = value; }
         }
+
+        public CNewsViewModel(TNews n)
+        {
+            _news = n;
+        }
+        static public List<CNewsViewModel> List(List<TNews> newlist)
+        {
+            List<CNewsViewModel> list = new List<CNewsViewModel>();
+            foreach (var n in newlist)
+            {
+                CNewsViewModel vModel = new CNewsViewModel(n);
+                list.Add(vModel);
+            }
+            return list;
+        }
+
         public IFormFile photo { get; set; }
         //public virtual TNewsCategory FCategory { get; set; }
         //public virtual TMember FMember { get; set; }
         public virtual ICollection<TNewsImage> TNewsImages { get; set; }
+
+        //public IEnumerable<string> categorry
+        //{
+        //    get
+        //    {
+        //        if (FNewsId != null && FNewsId != 0)
+        //            return db.TNews.Where(c => c.FNewsId == FNewsId).Select(cn => cn.FNewsCategory.FCategoryName);
+        //        else
+        //            return null;
+        //    }
+        //}
 
         public TNewsCategory newsCategory { get; set; }
 

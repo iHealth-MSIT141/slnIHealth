@@ -13,45 +13,43 @@
             margin-left: 20vw;
             margin-right: 20vw;
         }
+        #red{
+            color:red;
+        }
     </style>
 }
 <h2 id="title">建立文章</h2>
 <hr />
 <div class="contact-form spad">
     <div class="container" style="height:100%">
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="Create" enctype="multipart/form-data" onsubmit="return CheckRequired()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-lg-6 col-md-6">
-                    <label asp-for="FTitle" class="control-label">文章標題</label>
-                    <input asp-for="FTitle" class="form-control" placeholder="請輸入標題" id="inputTitle" required />
-                    <span asp-validation-for="FTitle" class="text-danger"></span>
+                    <label asp-for="FTitle" class="control-label">文章標題<span style="color:red">*</span></label>
+                    <input asp-for="FTitle" class="form-control" placeholder="請輸入標題" id="FTitle" required />
                 </div>
                 <div class="col-lg-6 col-md-6">
-                    <label asp-for="FNewsCategoryId" class="control-label">專欄類別</label><br />
-                    <select asp-for="FNewsCategoryId" class="form-select" style="height:55px" id="inputCategory">
+                    <label asp-for="FNewsCategoryId" class="control-label">專欄類別<span style="color:red">*</span></label><br />
+                    <select asp-for="FNewsCategoryId" class="form-select" style="height:55px" id="FNewsCategoryId" required>
                         <option disabled selected hidden>請選取此處</option>
                         <option value="1">運動健身</option>
                         <option value="2">食物營養</option>
                         <option value="3">新冠疫情</option>
                         <option value="4">教練專欄</option>
                     </select>
-                    <span asp-validation-for="FNewsCategoryId" class="text-danger"></span>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <label asp-for="FMemberId" class="control-label">會員號碼</label>
                     <input asp-for="FMemberId" class="form-control" readonly />
-                    <span asp-validation-for="FMemberId" class="text-danger"></span>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <label asp-for="FNewsDate" class="control-label">建立時間</label>
                     <input asp-for="FNewsDate" class="form-control" value="@DateTime.Now.ToString("yyyy'/'MM'/'dd' - 'HH':'mm")" readonly />
-                    <span asp-validation-for="FNewsDate" class="text-danger"></span>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <label asp-for="FVideoUrl" class="control-label">影片連結</label>
                     <input asp-for="FVideoUrl" class="form-control" placeholder="請輸入影片網址" />
-                    <span asp-validation-for="FVideoUrl" class="text-danger"></span>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <label class="control-label">專欄縮圖</label>
@@ -65,9 +63,8 @@
                     <img id="imgPreivew" style="width:150px" />
                 </div>
                 <div class="col-lg-12 text-center">
-                    <label asp-for="FContent" class="control-label">文章內容</label>
-                    <textarea id="editor" asp-for="FContent" class="form-control" placeholder="請輸入內容" style="height:300px" required></textarea>
-                    <span asp-validation-for="FContent" class="text-danger"></span>
+                    <label asp-for="FContent" class="control-label">文章內容<span style="color:red">*</span></label>
+                    <textarea id="FContent" asp-for="FContent" class="form-control" placeholder="請輸入內容" style="height:300px" required></textarea>
                 </div>
             </div>
             <div style="margin-right:90% ; margin-top:40px">
@@ -83,12 +80,91 @@
 </div>
 
 @section Scripts {
+    <script>
+        const SwalGreen = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false
+        })</script>
+
+    @if (ViewBag.AlertTitle != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+            SwalGreen.fire({
+                    title: '@ViewBag.AlertTitle',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
+        };
+        </script>
+    }
+    @if (ViewBag.AlertContent != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+            SwalGreen.fire({
+                    title: '@ViewBag.AlertContent',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
+        };
+        </script>
+    }
+    @if (ViewBag.AlertCategory != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+            SwalGreen.fire({
+                    title: '@ViewBag.AlertCategory',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
+        };
+        </script>
+    }
+    @if (ViewBag.Succes != null)
+    {
+        <script type="text/javascript">
+        window.onload = function () {
+                SwalGreen.fire({
+                    title: '@ViewBag.Succes',
+                    text: false,
+                    icon: 'success',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
+            };
+         </script>
+    }
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+        function CheckRequired() {
+            if ($('#FTitle').val() == '' || $('#FNewsCategoryId').val() == '' || $('#FContent').val() == '') {
+                SwalGreen.fire({
+                    title: '必填欄位未填寫',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
+                return false;
+            } else {
+                return true;
+            }
+        }
         //使用ckeditor5
         ClassicEditor
-            .create(document.querySelector('#editor'))
+            .create(document.querySelector('#FContent'))
             .then(editor => {
                 console.log(editor);
             })
@@ -106,15 +182,17 @@
             };
             reader.readAsArrayBuffer(this.files[0]);
         }, false);
-        //沒寫好的防呆
-        //const txtCategory = document.querySelector('#inputCategory');
-        //const btnValue = document.querySelector('#btnSubmit');
-        //btnSubmit.addEventListener('click', (evt) => {
-        //    if (txtCategory.value.trim() === "") {
-        //        txtCategory.innerHTML = "1312312";
-        //        txtCategory.style.color = "RED";
-        //    }
-        //})
-
-    </script>
-}
+                        //沒寫好的防呆
+                        //const txtCategory = document.querySelector('#inputCategory');
+                        //const btnValue = document.querySelector('#btnSubmit');
+                        //btnSubmit.addEventListener('click', (evt) => {
+                        //    if (txtCategory.value.trim() === "") {
+                        //        txtCategory.innerHTML = "1312312";
+                        //        txtCategory.style.color = "RED";
+                        //    }
+                        //})
+        </script>
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    }
