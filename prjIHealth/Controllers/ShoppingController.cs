@@ -147,8 +147,8 @@ namespace prjiHealth.Controllers
             int userID = TakeMemberID();
             string jsonCart = "";
             List<TOrder> list = null;
-           
-                if (!HttpContext.Session.Keys.Contains(CDictionary.SK_Third_Party_Payment))
+
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_Third_Party_Payment))
             {
                 list = new List<TOrder>();
             }
@@ -185,56 +185,56 @@ namespace prjiHealth.Controllers
                 string jsonTPP = HttpContext.Session.GetString(CDictionary.SK_Third_Party_Payment);
                 List<TOrder> cart = JsonSerializer.Deserialize<List<TOrder>>(jsonTPP);
                 IHealthContext db = new IHealthContext();
-                if (cart[0].FAddress == null || cart[0].FContact == null || cart[0].FPhone == null) 
+                if (cart[0].FAddress == null || cart[0].FContact == null || cart[0].FPhone == null)
                 {
                     return RedirectToAction("CheckOut");
                 }
                 else
                 {
-                TOrder order = new TOrder();
-                order.FPaymentCategoryId = cart[0].FPaymentCategoryId;
-                order.FDate = cart[0].FDate;
-                order.FMemberId = userID;
-                order.FAddress = cart[0].FAddress;
-                order.FContact = cart[0].FContact;
-                order.FPhone = cart[0].FPhone;
-                order.FRemarks = cart[0].FRemarks;
-                order.FStatusNumber = cart[0].FStatusNumber;
-                db.TOrders.Add(order);
+                    TOrder order = new TOrder();
+                    order.FPaymentCategoryId = cart[0].FPaymentCategoryId;
+                    order.FDate = cart[0].FDate;
+                    order.FMemberId = userID;
+                    order.FAddress = cart[0].FAddress;
+                    order.FContact = cart[0].FContact;
+                    order.FPhone = cart[0].FPhone;
+                    order.FRemarks = cart[0].FRemarks;
+                    order.FStatusNumber = cart[0].FStatusNumber;
+                    db.TOrders.Add(order);
 
-                db.SaveChanges();
+                    db.SaveChanges();
 
 
-                //第一次寫入資料庫產生orderid後，開啟第二dbcontext處理orderdetail，取用session的list進行迴圈寫入
-                IHealthContext dbod = new IHealthContext();
-                TOrderDetail orderdetail = new TOrderDetail();
-                string jsonCart = "";
-                List<CShoppingCartItem> list = null;
-                jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
-                list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
-                var orderid = (from p in dbod.TOrders
-                               where p.FMemberId == userID
-                               orderby p.FOrderId descending
-                               select p.FOrderId).FirstOrDefault();
-                for (int i = 0; i < list.Count; i++)
-                {
-                    //每次迴圈時識別欄位值會異動，故重新設為0
-                    orderdetail.FOrderDetailsId = 0;
-                    orderdetail.FOrderId = orderid;
-                    orderdetail.FProductId = list[i].productId;
-                    orderdetail.FQuantity = list[i].count;
-                    orderdetail.FUnitprice = (int)list[i].price;
-                    if (list[i].discountID == 0)
+                    //第一次寫入資料庫產生orderid後，開啟第二dbcontext處理orderdetail，取用session的list進行迴圈寫入
+                    IHealthContext dbod = new IHealthContext();
+                    TOrderDetail orderdetail = new TOrderDetail();
+                    string jsonCart = "";
+                    List<CShoppingCartItem> list = null;
+                    jsonCart = HttpContext.Session.GetString(CDictionary.SK_Shopped_Items);
+                    list = JsonSerializer.Deserialize<List<CShoppingCartItem>>(jsonCart);
+                    var orderid = (from p in dbod.TOrders
+                                   where p.FMemberId == userID
+                                   orderby p.FOrderId descending
+                                   select p.FOrderId).FirstOrDefault();
+                    for (int i = 0; i < list.Count; i++)
                     {
-                        orderdetail.FDiscountId = 10;
+                        //每次迴圈時識別欄位值會異動，故重新設為0
+                        orderdetail.FOrderDetailsId = 0;
+                        orderdetail.FOrderId = orderid;
+                        orderdetail.FProductId = list[i].productId;
+                        orderdetail.FQuantity = list[i].count;
+                        orderdetail.FUnitprice = (int)list[i].price;
+                        if (list[i].discountID == 0)
+                        {
+                            orderdetail.FDiscountId = 10;
+                        }
+                        else
+                        {
+                            orderdetail.FDiscountId = list[i].discountID;
+                        }
+                        dbod.TOrderDetails.Add(orderdetail);
+                        dbod.SaveChanges();
                     }
-                    else
-                    {
-                        orderdetail.FDiscountId = list[i].discountID;
-                    }
-                    dbod.TOrderDetails.Add(orderdetail);
-                    dbod.SaveChanges();
-                }
                 }
             }
             else
@@ -268,7 +268,7 @@ namespace prjiHealth.Controllers
             IEnumerable<TProduct> dataShoppingItems = null;
             //預設顥示商品
             dataShoppingItems = from t in dblIHealth.TProducts
-                                //where t.FUnitprice >= vModel.minPrice && t.FUnitprice <= vModel.maxPrice
+                                    //where t.FUnitprice >= vModel.minPrice && t.FUnitprice <= vModel.maxPrice
                                 select t;
 
             //以價格排序
@@ -297,7 +297,7 @@ namespace prjiHealth.Controllers
                 if (vModel.txtKeyword != "")
                 {
                     dataShoppingItems = dataShoppingItems.Where(t => t.FProductName.ToLower().Contains(vModel.txtKeyword.ToLower()));
-                }             
+                }
             }
             return Json(dataShoppingItems);
         }
@@ -661,6 +661,45 @@ namespace prjiHealth.Controllers
             int cartNum = list.Count();
             return Json(cartNum);
 
+        }
+        public IActionResult DEMO()
+        {
+            //快速新增五筆訂單改變前三名推薦商品
+            for(int i=0; i<=5;i++)
+            {
+                IHealthContext db = new IHealthContext();
+                TOrder order = new TOrder();
+                order.FPaymentCategoryId = 2;
+                order.FDate = DateTime.Now.ToString("yyyy/MM/dd").Replace("/","-");
+                order.FMemberId = 9;
+                order.FAddress = "台北市大安區復興南路";
+                order.FContact = "管理者";
+                order.FPhone = "0912345678";
+                order.FRemarks = "DEMO";
+                order.FStatusNumber = 70;
+                db.TOrders.Add(order);
+
+                db.SaveChanges();
+
+                //第一次寫入資料庫產生orderid後，開啟第二dbcontext處理orderdetail
+                IHealthContext dbod = new IHealthContext();
+                TOrderDetail orderdetail = new TOrderDetail();
+                var orderid = (from p in dbod.TOrders
+                               where p.FMemberId == 9
+                               orderby p.FOrderId descending
+                               select p.FOrderId).FirstOrDefault();
+                orderdetail.FOrderDetailsId = 0;
+                orderdetail.FOrderId = orderid;
+                orderdetail.FProductId = 1;
+                orderdetail.FQuantity = 1;
+                orderdetail.FUnitprice = 1999;
+                orderdetail.FDiscountId = 10;
+
+                dbod.TOrderDetails.Add(orderdetail);
+                dbod.SaveChanges();
+            }
+
+            return RedirectToAction("ShowShoppingMall");
         }
     }
 }
