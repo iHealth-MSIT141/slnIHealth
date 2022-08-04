@@ -61,6 +61,12 @@ namespace prjiHealth.Controllers
             return Json(memIdList);
         }
 
+        //public IActionResult GetDayTime(string date)
+        //{
+        //    var dayTime = _context.TReservations.Where(r => r.FCourseTime.Substring(0, 8) == date).ToList();            
+        //    return Json(dayTime);
+        //}
+
         //教課列表
         public IActionResult TeachingList()
         {
@@ -101,12 +107,31 @@ namespace prjiHealth.Controllers
         //更改時間
         public IActionResult EditReservation(int id,string date,string time)
         {
-            var reservation = _context.TReservations.FirstOrDefault(r => r.FReservationId == id);
-            string newDate = date.Replace("-", "");
-            string newTime = time.Length == 1 ? "0" + time : time;
-            reservation.FCourseTime = newDate + newTime + "00";
-            _context.SaveChanges();
-            return Content("Success", "text/plain");
+            //取得該教練排課
+            int userId = 11;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                string json = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                userId = (JsonSerializer.Deserialize<TMember>(json)).FMemberId;
+            }
+            var coachId = _context.TCoaches.FirstOrDefault(c => c.FMemberId == userId).FCoachId;
+            var reservations = _context.TReservations.Include(r => r.FCourse).ThenInclude(c => c.FCoachContact)
+                .Where(r => r.FCourse.FCoachContact.FCoachId == coachId);
+
+            //比對教練該時段是否已額滿
+            var occupied = reservations.Where(r => r.FCourseTime.Substring(0, 8) == date.Replace("-", ""))
+                .Select(r => Convert.ToInt32(r.FCourseTime.Substring(8,2))).ToList();
+            if (occupied.Contains(Convert.ToInt32(time)))
+                return Content("Fail", "text/plain");            
+            else
+            {
+                var reservation = _context.TReservations.FirstOrDefault(r => r.FReservationId == id);
+                string newDate = date.Replace("-", "");
+                string newTime = time.Length == 1 ? "0" + time : time;
+                reservation.FCourseTime = newDate + newTime + "00";
+                _context.SaveChanges();
+                return Content("Success", "text/plain");
+            }            
         }
         //取得進行中課程
         public IActionResult GetCourseInProcess(int id)
