@@ -2,7 +2,34 @@
 @using prjIHealth.Controllers
 
 @section Styles{
+    <style>
+        .haveTrackButton {
+            background-color: #7fad39;
+        }
+    </style>
+}
 
+@using prjIHealth.Models;
+@using prjiHealth.Models;
+@using prjIHealth.ViewModels;
+@using prjiHealth.ViewModels;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Mvc;
+@using System.Linq;
+@using System.Text.Json;
+
+@{
+    string LoginbuttonValue = "登入";
+    int loginId = 0;
+    TMember loginMember = null;
+
+    if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
+    {
+        string logJson = Context.Session.GetString(CDictionary.SK_Logined_User);
+        loginMember = JsonSerializer.Deserialize<TMember>(logJson);
+        LoginbuttonValue = loginMember.FMemberName;
+        loginId = loginMember.FMemberId;
+    };
 }
 
 @*banner大圖*@
@@ -72,7 +99,20 @@
                                 </div>
                             </div>
                             <a href="#" class="primary-btn" id="addToCart" data-id="@Model.FProductId">加到購物車</a>
-                            <a href="#" class="heart-icon" id="addToTrack" data-id="@Model.FProductId"><span class="icon_heart_alt"></span></a>
+                            @{
+                                IHealthContext dblHealth = new IHealthContext();
+                                var q = dblHealth.TTrackLists.Where(t => t.FMemberId == loginId && t.FProductId == Model.FProductId).ToList();
+                                if (q.Count > 0)
+                                {
+                                    <a href="#" class="heart-icon haveTrackButton" style="background-color: #7fad39;"  data-id="@Model.FProductId"><span class="icon_heart_alt"></span></a>
+                                }
+                                else
+                                {
+                                    <a href="#" class="heart-icon" id="addToTrack" data-id="@Model.FProductId"><span class="icon_heart_alt"></span></a>
+                                }
+                            }
+
+
                             <br />
                             <a href="/Shopping/ShowShoppingMall" class="primary-btn" style="width:343px;text-align:center">返回商城主頁</a>
                         </div>
@@ -103,28 +143,7 @@
 
 @section Scripts{
     <script>
-    @using prjIHealth.Models;
-    @using prjiHealth.Models;
-    @using prjIHealth.ViewModels;
-    @using prjiHealth.ViewModels;
-    @using Microsoft.AspNetCore.Http;
-    @using Microsoft.AspNetCore.Mvc;
-    @using System.Linq;
-    @using System.Text.Json;
 
-    @{
-        string LoginbuttonValue = "登入";
-        int loginId = 0;
-        TMember loginMember = null;
-
-        if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
-        {
-            string logJson = Context.Session.GetString(CDictionary.SK_Logined_User);
-            loginMember = JsonSerializer.Deserialize<TMember>(logJson);
-            LoginbuttonValue = loginMember.FMemberName;
-            loginId = loginMember.FMemberId;
-        };
-    }
         //加進購物車
         $("#addToCart").click(function (event) {
             event.preventDefault();
@@ -154,24 +173,51 @@
             return parts.join('.');
         }
 
+        $(".haveTrackButton").click(function () {
+            event.preventDefault();
+            SwalGreen.fire({
+                title: '已在追蹤清單中',
+                text: false,
+                icon: 'warning',
+                confirmButtonText: '確認',
+                showCloseButton: true
+            })
+        })
         //加入追蹤清單
         $("#addToTrack").click(function (event) {
-            event.preventDefault();        
+            event.preventDefault();
             id = $(this).attr("data-id");
             if (@loginId== 0) {
                 pleaseLogin();
             }
             else {
+                console.log("text");
                 addTrack(id);
-                $("#fa-heart").children("span").show();
-                $(this).prop("style", "background-color:#7fad39");
-                SwalGreen.fire({
-                    title: '已成功加入追蹤清單',
-                    text: false,
-                    icon: 'success',
-                    confirmButtonText: '確認',
-                    showCloseButton: true
-                })
+                console.log($("#addToTrack").hasClass("haveTrackButton"));
+                if ($("#addToTrack").hasClass("haveTrackButton")) {
+                    console.log("text2");
+                    SwalGreen.fire({
+                        title: '已在追蹤清單中',
+                        text: false,
+                        icon: 'warning',
+                        confirmButtonText: '確認',
+                        showCloseButton: true
+                    })
+                }
+                else {
+                    $("#fa-heart").children("span").show();
+                    $(this).prop("style", "background-color:#7fad39");
+                    SwalGreen.fire({
+                        title: '已成功加入追蹤清單',
+                        text: false,
+                        icon: 'success',
+                        confirmButtonText: '確認',
+                        showCloseButton: true
+                    }).then((result) => {
+                    if (result.isConfirmed)
+                       $("#addToTrack").addClass("haveTrackButton");
+                    })
+                }
             }
         })
         async function addTrack(id) {
@@ -179,8 +225,11 @@
                     let response = await fetch(url);
                     let datas = await response.json();
                     console.log(datas);
-                    $("#fa-heart").children("span").text(datas);
+            $("#fa-heart").children("span").text(datas);
+
+
         }
+
 
         //推薦商品的部份
         let productID = $("#productID").attr("data-id");
@@ -239,7 +288,7 @@
                 //按心心會加入追蹤清單
                 $("#suggestProduct").delegate(".addToTrackInDetail", "click", function (event) {
                     event.preventDefault();
-                  
+
                     id = $(this).attr("data-id");
                     if (@loginId== 0) {
                         pleaseLogin();
@@ -268,7 +317,7 @@
 
                 //按購物車會加入到購物車
                 $("#suggestProduct").delegate(".addToCartInDetail", "click", function (event) {
-                    event.preventDefault();                  
+                    event.preventDefault();
                     id = $(this).attr("data-id");
                     if (@loginId == 0) {
                         pleaseLogin();

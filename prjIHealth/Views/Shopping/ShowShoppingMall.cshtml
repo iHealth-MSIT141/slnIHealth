@@ -306,10 +306,6 @@
             LoginbuttonValue = loginMember.FMemberName;
             loginId = loginMember.FMemberId;
         };
-
-      
-
-
     }
 
         let option = {
@@ -340,7 +336,7 @@
                     htmlShowProduct += `<div class="col-lg-4 col-md-6 col-sm-6 productitem " ><div class="reveal_b2" id="header" style="cursor:pointer;">
                                 <div class="product__item">
                                 <div class="product__item__pic set-bg showProductDetail" data-id="${product.fProductId}" data-setbg="/img/product/${product.fCoverImage}" style="background-image: url(&quot;/img/product/${product.fCoverImage}&quot;);">
-                                    <ul class="product__item__pic__hover">
+                                    <ul class="product__item__pic__hover">                                      
                                         <li><a href="#" data-id="${product.fProductId}" class="addToTrack"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#" data-id="${product.fProductId}" class="addToCart"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
@@ -360,7 +356,10 @@
                 let YNum = 9;
                 $(".productitem").slice(XNum, YNum).show();
                 let productCount = $(".productitem").length;
-                $("#spanCount").text(`共查到${productCount}筆商品，現在顯示第${XNum+1}~${YNum}筆商品。`);
+                if (YNum > productCount) {
+                    YNum = productCount;
+                }
+                $("#spanCount").text(`共${productCount}筆商品，現在顯示第${XNum+1}~${YNum}筆商品。`);
                 let pageNum = "";
                 let page = productCount / 9;
                 if (page % 9 != 0) {
@@ -373,7 +372,6 @@
                     else {
                         pageNum += `<a href="#" class="pageSelect">${i}</a>`;
                     }
-                    
                 }
                 $(".product__pagination").html(pageNum);
 
@@ -388,7 +386,7 @@
                         YNum = productCount;
                     }
                     $(".productitem").slice(XNum, YNum).show();
-                    $("#spanCount").text(`共查到${productCount}筆商品，現在顯示第${XNum + 1}~${YNum}筆商品。`);
+                    $("#spanCount").text(`共查${productCount}筆商品，現在顯示第${XNum + 1}~${YNum}筆商品。`);
                     $('html,body').animate({ scrollTop: 10 }, 'slow');
                 })
 
@@ -519,6 +517,7 @@
             $("#showProduct").delegate(".addToTrack", "click", function (event) {
                 event.preventDefault();
                 id = $(this).attr("data-id");
+                console.log(@loginId);
                 if (@loginId== 0) {
                     pleaseLogin();
                 }
