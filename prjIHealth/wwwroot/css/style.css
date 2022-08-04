@@ -521,7 +521,7 @@ ol {
 	color: #1c1c1c;
 }
 
-.header__cart ul li a span {
+/*.header__cart ul li a span {
 	height: 13px;
 	width: 13px;
 	background: #7fad39;
@@ -535,7 +535,21 @@ ol {
 	position: absolute;
 	top: 0;
 	right: -12px;
-}
+}*/
+	.header__cart ul li a span {
+		height: 20px;
+		width: 20px;
+		background: #7fad39;
+		font-size: 15px;
+		color: #ffffff;
+		font-weight: 700;
+		text-align: center;
+		display: inline-block;
+		border-radius: 50%;
+		position: absolute;
+		top: 0;
+		right: -17.5px;
+	}
 
 .header__cart .header__cart__price {
 	font-size: 14px;
