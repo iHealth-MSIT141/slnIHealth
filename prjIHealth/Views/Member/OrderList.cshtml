@@ -145,14 +145,10 @@
                             </thead>
                             <tbody id="ListPro">
                                 @{
-                                    int count = 0;
+
                                     foreach (var item in Model)
                                     {
-                                        count++;
                                         <tr>
-                                            <td>
-                                                @count;
-                                            </td>
                                             <td style="margin-left: auto;text-align:center;">
                                                 <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FOrderId)" id="FOrderId" name="FOrderId" />
                                                 <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FMemberId)" id="FMemberId" name="FMemberId" />
