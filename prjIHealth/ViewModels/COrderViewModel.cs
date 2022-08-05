@@ -20,6 +20,7 @@ namespace prjIHealth.ViewModels
             get { return _prod; }
             set { _prod = value; }
         }
+        [DisplayName("訂單編號")]
         public int FOrderId
         {
             get { return _prod.FOrderId; }

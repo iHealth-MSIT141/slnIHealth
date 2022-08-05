@@ -50,7 +50,7 @@
     <div class="row">
 
         <div style="margin-left:34%">
-            <form asp-action="OrderEdit">
+            <form asp-action="OrderEdit" onsubmit="return CheckRequired()">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" value="@Html.DisplayFor(modelItem => Model.FOrderId)" id="FOrderId" name="FOrderId" />
                 <input type="hidden" value="@Html.DisplayFor(modelItem => Model.FMemberId)" id="FMemberId" name="FMemberId" />
@@ -134,7 +134,7 @@
                 </div>
             </form>
             @*}*@
-        </div>
+        </div>     
     </div>
 </div>
 
@@ -142,7 +142,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
+    <script>    
         let FPaymentCategoryId = 0;
         var input = '';
         function SelectedPaymentCategory() {          /*判斷所選類別對應的ID*/
@@ -177,6 +177,21 @@
             $('#AddStatus').append(inputt)
         };
         $('#qtypee').on("change", SelectedStatus)
+        //======================================================================================================
+        function CheckRequired() {
+            if ($('#FStatusNumber').val() == null|| $('#FPaymentCategoryId').val() == null) {
+                SwalGreen.fire({
+                    title: '必填欄位未填寫',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
+                return false;
+            } else {
+                return true;
+            }
+        }
     </script>
 }
 

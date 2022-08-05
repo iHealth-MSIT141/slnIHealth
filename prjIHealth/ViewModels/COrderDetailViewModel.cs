@@ -56,6 +56,8 @@ namespace prjIHealth.ViewModels
 
         public TProduct fproduct { get; set; }
         public TDiscount fdiscount { get; set; }
-
+        public TOrder forder { get; set; }
+        public TPaymentCategory pay { get; set; }
+        public TStatus sta { get; set; }
     }
 }

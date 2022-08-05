@@ -47,6 +47,13 @@
             border-bottom: 1px solid lightgray;
         }
 
+        .spChoose {
+            float: right;
+            color: #7fad39;
+            font-weight:600;
+            cursor:pointer;
+        }
+
         .filterCard {
             margin-bottom: 25px;
         }
@@ -253,24 +260,22 @@
             }
         #divSearchResult{
             margin-bottom:20px;
-            display:flex;
-            justify-content:left;
+            line-height:38px;
         }
 
         .spSearchFilter {
             margin: 0px 4px;
-            background-color: #F3F8EC;
-            border: 1px solid #DFEACE;
+            border: 1px solid #CFE0B5;
             border-radius: 5px;
+            background-color: #FBFCF9;
+            padding: 0px 4px;
         }
 
         .spSearchFilter::before {
             content: "#";
             color: gray;
         }
-        #spResultCount{
-            margin-right:10px;
-        }
+        
         #gotop {
             position: fixed;
             z-index: 90;
@@ -368,7 +373,8 @@
                             </div>
                             <div class="filterCard">
                                 <div class="keyTopic">
-                                    <h6><b>專長項目</b></h6>
+                                    <h6><b>專長項目</b><span class="spChoose animate__animated animate__fadeIn" id="spAllSkill">全選</span>
+                                    <span class="spChoose animate__animated animate__fadeIn" id="spCancelSkill" hidden>取消全選</span></h6>                                    
                                 </div>
                                 <div>
                                     @{
@@ -385,7 +391,8 @@
                             </div>
                             <div class="filterCard">
                                 <div class="keyTopic">
-                                    <h6><b>可上課時段</b></h6>
+                                    <h6><b>可上課時段</b><span class="spChoose animate__animated animate__fadeIn" id="spAllTime">全選</span>
+                                    <span class="spChoose animate__animated animate__fadeIn" id="spCancelTime" hidden>取消全選</span></h6>
                                 </div>
                                 <div>
                                     @{
@@ -423,10 +430,7 @@
                 <div id="divSearchResult">
                     <span id="spResultCount">共&nbsp;&nbsp;<b></b>&nbsp;&nbsp;位教練</span>
                     <span id="spSearch" hidden>/&nbsp;&nbsp;篩選條件：</span>
-                    <div id="divSearchCity"></div>
-                    <div id="divFilterGender"></div>
-                    <div id="divFilterSkill"></div>
-                    <div id="divFilterTime"></div>                    
+                    <span id="spFilter"></span>                    
                 </div>
                 <div class="divCoachList">
                     @{
@@ -574,7 +578,7 @@
 
     //顯示教練數量
     $(document).ready(() => {
-        $("#spResultCount>b").text(`${$(".divCoachList .divCoachCard").length}`);
+        $("#spResultCount b").text(`${$(".divCoachList .divCoachCard").length}`);
     })
 
     //if未輸入關鍵字
@@ -589,35 +593,83 @@
     })
 
     //多重篩選觸發事件、顯示搜尋結果
-    $("#selCity").change(() => {        
-        $("#spSearch").prop("hidden", false);
-        $("#divSearchCity").empty();
-        $("#divSearchCity").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$("#selCity option:selected").text()}</span>`)
-        GetCoach();       
+    $("#selCity").change(() => {
+        ShowFilter();
+        GetCoach();
     })
-    $("input[name='fGender[]']").click(() => {
-        $("#spSearch").prop("hidden", false);
-        $("#divFilterGender").empty();
-        $("input[name='fGender[]']:checked").each(function () {           
-            $("#divFilterGender").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
-        })        
-        GetCoach();               
+    $("input[name='fGender[]'], input[name='fCoachSkill[]'], input[name='fCoachTime[]']").click(() => {
+        if ($("input[name='fCoachSkill[]']:checked").length < 9) {
+            $("#spAllSkill").prop("hidden", false);
+            $("#spCancelSkill").prop("hidden", true);
+        }
+        if ($("input[name='fCoachTime[]']:checked").length < 6) {
+            $("#spAllTime").prop("hidden", false);
+            $("#spCancelTime").prop("hidden", true);
+        }
+        ShowFilter();
+        GetCoach();
     })
-    $("input[name='fCoachSkill[]']").click(() => {
+    function ShowFilter() {
         $("#spSearch").prop("hidden", false);
-        $("#divFilterSkill").empty();
+        $("#spFilter").empty();
+        if ($("#selCity option:selected").val() != 0) {
+            $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$("#selCity option:selected").text()}</span>`);
+        }        
+        $("input[name='fGender[]']:checked").each(function () {
+            $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+        })
         $("input[name='fCoachSkill[]']:checked").each(function () {
-            $("#divFilterSkill").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+            $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
         })
+        $("input[name='fCoachTime[]']:checked").each(function () {
+            $("#spFilter").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
+        })
+    }
+
+    //全選
+    $("#spAllSkill").click(() => {
+        $("input[name='fCoachSkill[]']").prop("checked", true);
+        $("#spAllSkill").prop("hidden", true);
+        $("#spCancelSkill").prop("hidden", false);
+        ShowFilter();
         GetCoach();
     })
-    $("input[name='fCoachTime[]']").click(() => {
-        $("#spSearch").prop("hidden", false);
-        $("#divFilterTime").empty();
-        $("input[name='fCoachTime[]']:checked").each(function () {
-            $("#divFilterTime").append(`<span class="spSearchFilter animate__animated animate__fadeIn">${$(this).next("label").text()}</span>`)
-        })
+    $("#spAllTime").click(() => {
+        $("input[name='fCoachTime[]']").prop("checked", true);
+        $("#spAllTime").prop("hidden", true);
+        $("#spCancelTime").prop("hidden", false);
+        ShowFilter();
         GetCoach();
+    })
+
+    //取消全選
+    $("#spCancelSkill").click(() => {
+        $("input[name='fCoachSkill[]']").prop("checked", false);
+        $("#spAllSkill").prop("hidden", false);
+        $("#spCancelSkill").prop("hidden", true);
+        ShowFilter();
+        GetCoach();
+    })
+    $("#spCancelTime").click(() => {
+        $("input[name='fCoachTime[]']").prop("checked", false);
+        $("#spAllTime").prop("hidden", false);
+        $("#spCancelTime").prop("hidden", true);
+        ShowFilter();
+        GetCoach();
+    })
+
+    //清除條件
+    $("#btnClear").click((evt) => {
+        evt.preventDefault();
+        $("#selCity").val("0");
+        $("input[type='checkbox']").prop("checked", false);
+        GetCoach();
+        $("#spFilter").empty();
+        $("#spSearch").prop("hidden", true);
+        $("#spAllSkill").prop("hidden", false);
+        $("#spCancelSkill").prop("hidden", true);
+        $("#spAllTime").prop("hidden", false);
+        $("#spCancelTime").prop("hidden", true);
     })
 
     //Ajax篩選後顯示教練
@@ -681,18 +733,7 @@
                 }
             });
         }
-
-    //清除條件
-    $("#btnClear").click((evt) => {
-        evt.preventDefault();
-        $("#selCity").val("0");
-        $("input[type='checkbox']").prop("checked", false);
-        GetCoach();
-        $("#divSearchResult div").empty();
-        $("#spSearch").prop("hidden", true);
-        GetPage();
-    })
-
+   
     //GoTop btn
     $('#gotop').click(function () {
         $('html,body').animate({ scrollTop: 0 }, 'slow');

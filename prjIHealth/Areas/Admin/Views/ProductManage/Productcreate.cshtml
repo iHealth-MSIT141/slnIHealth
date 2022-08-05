@@ -45,7 +45,7 @@
 
             <div style="margin:auto;">
 
-                <form asp-action="ProductCreate" style="margin-left:20%" enctype="multipart/form-data">
+                <form asp-action="ProductCreate" style="margin-left:20%" enctype="multipart/form-data" onsubmit="return CheckRequired()">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 
@@ -53,7 +53,7 @@
                     <div class="form-group col-md-8">
                         <div class="row">
                             <div class="col-md-4"><label for="FProductName" class="control-label" style="font-size:30px;">商品名稱</label></div>
-                            <div class="col-md-8"><input id="FProductName" name="FProductName" class="form-control" style="text-align: center;" /></div>
+                            <div class="col-md-8"><input id="FProductName" name="FProductName" class="form-control" style="text-align: center;" required /></div>
 
                         </div>
                     </div>
@@ -62,8 +62,8 @@
                         <div class="row">
                             <div class="col-md-4"><label class="control-label" style="font-size:30px;text-align:center;">種類</label></div>
                             <div class="col-md-8">
-                                <select name="qtype" id="qtype" class="custom-select" style="text-align:center;">
-                                    <option value="999" disabled selected hidden>商品種類</option>
+                                <select name="qtype" id="qtype" class="custom-select" style="text-align:center;" required>
+                                    <option disabled selected hidden>商品種類</option>
                                     <option value="乳清蛋白">乳清蛋白</option>
                                     <option value="健康食品">健康食品</option>
                                     <option value="運動用品">運動用品</option>
@@ -77,14 +77,14 @@
                     <div class="form-group col-md-8">
                         <div class="row">
                             <div class="col-md-4"> <label for="FUnitprice" class="control-label" style="font-size:30px;">價錢</label></div>
-                            <div class="col-md-8"><input id="FUnitprice" name="FUnitprice" class="form-control" style="text-align: center;" /></div>
+                            <div class="col-md-8"><input id="FUnitprice" name="FUnitprice" class="form-control" style="text-align: center;" required /></div>
 
                         </div>
                     </div>
                     <div class="form-group col-md-8">
                         <div class="row">
                             <div class="col-md-4"><label for="FDescription" class="control-label" style="font-size:30px;">描述</label></div>
-                            <div class="col-md-8"> <input id="FDescription" name="FDescription" class="form-control" style="text-align: center;" /></div>
+                            <div class="col-md-8"> <input id="FDescription" name="FDescription" class="form-control" style="text-align: center;" required /></div>
 
                         </div>
                     </div>
@@ -113,13 +113,24 @@
                         </div>
                     </div><br /><br />
 
-                                <div class="form-group col-md-11">
-                                    <div id="AddFCategory"></div>
-                                    <div id="AddFVisible"></div>
-                                    <input type="submit" value="確定新增" class="btn btn-light" />
-                                    <a asp-action="ProductList" class="btn btn-success">返回清單</a>
-                                    <button id="btncreate" class="btn btn-dark">Demo</button>
-                                </div>
+                    <div class="form-group col-md-8 ">
+                        <div class="row">
+                        <div class="col-md-4">
+                            <label style="font-size:30px;">預覽縮圖</label>
+                        </div>
+                         <div class="col-md-8">
+                            <img id="imgPreivew" style="width:200px" />
+                        </div>
+                       </div>
+                    </div>
+
+                    <div class="form-group col-md-11">
+                        <div id="AddFCategory"></div>
+                        <div id="AddFVisible"></div>
+                        <input type="submit" value="確定新增" class="btn btn-light" />
+                        <a asp-action="ProductList" class="btn btn-success">返回清單</a>
+                        <button id="btncreate" class="btn btn-dark">Demo</button>
+                    </div>
                 </form>
              
             </div>
@@ -168,8 +179,38 @@
             event.preventDefault();
             $("#FProductName").val("啞鈴");
             $("#FUnitprice").val("500");
-            $("#FDescription").val("健身用品");         
+            $("#FDescription").val("健身用品");           
         });
+        //==============================================================================================
+        function CheckRequired() {
+            if ($('#FProductName').val() == '' || $('#FUnitprice').val() == '' || $('#FCategoryId').val() == null) {
+                SwalGreen.fire({
+                    title: '必填欄位未填寫',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
+                return false;
+            } else {
+                return true;
+            }
+        }
+        //==============================================================================================
+        //預覽圖片jquery
+        var arrayBuffer = null;
+        document.querySelector("#customFile").addEventListener("change", function () {
+            var reader = new FileReader();
+            reader.onload = function () {
+                arrayBuffer = this.result;
+                var arrayBufferView = new Uint8Array(arrayBuffer);
+                var blob = new Blob([arrayBufferView], { type: "image/jpg" });
+                var urlCreator = window.URL || window.webkitURL;
+                var url = urlCreator.createObjectURL(blob);
+                $("#imgPreivew").attr("src", url);
+            };
+            reader.readAsArrayBuffer(this.files[0]);
+        }, false);
     </script>
 }
 

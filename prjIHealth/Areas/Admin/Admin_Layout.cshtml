@@ -234,7 +234,14 @@
                 $(".fa-align-left").toggleClass("fa-chevron-circle-right");
             })
         })
-
+        //==========================SweetAlert Button樣式調整================================
+        const SwalGreen = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false
+        })
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

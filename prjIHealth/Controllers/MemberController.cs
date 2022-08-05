@@ -68,6 +68,8 @@ namespace prjIHealth.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove(CDictionary.SK_Logined_User);
+            HttpContext.Session.Remove(CDictionary.SK_Shopped_Items);
+            HttpContext.Session.Remove(CDictionary.SK_Third_Party_Payment);
             return RedirectToAction("Index", "Home");
         }
         public IActionResult Edit()
@@ -393,7 +395,10 @@ namespace prjIHealth.Controllers
                            fdiscount = o.FDiscount,
                            FDiscountId = o.FDiscountId,
                            FProductId = o.FProductId,
-                           fproduct = o.FProduct
+                           fproduct = o.FProduct,
+                           forder=o.FOrder,
+                           pay=or.FPaymentCategory,
+                           sta=or.FStatusNumberNavigation
                        }).ToList();
             if (odt == null)
             {
