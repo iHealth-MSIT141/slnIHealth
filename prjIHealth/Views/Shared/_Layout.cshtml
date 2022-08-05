@@ -54,6 +54,22 @@
         #btnLayOutLogin {
             cursor: pointer;
         }
+        /*客服機器人用*/
+        .btnRobot {
+            float: right;
+            position: fixed;
+            right: 20px;
+            bottom: 100px;
+            background-color: transparent;
+            border-style: none;
+        }
+        .divRobotChat {
+            width: 300px;
+            position: fixed;
+            bottom: 0;
+            right: 100px;
+            z-index: 2;
+        }
     </style>
 </head>
 
@@ -90,7 +106,7 @@
     <div id="preloder">
         <div class="loader"></div>
     </div>
-    
+
     <!-- 窄版導覽列Begin -->
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
@@ -241,7 +257,7 @@
                                     <div class="header__top__right__auth">
                                         <a id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal">
                                             @*<i class="fa fa-user"></i>*@
-                                            <img src="~/img/member/@imgPath" onerror="this.src='/img/member/defaultImage.jpg'"  width="40" height="40"  class="rounded-circle"  />
+                                            <img src="~/img/member/@imgPath" onerror="this.src='/img/member/defaultImage.jpg'" width="40" height="40" class="rounded-circle" />
                                             <span>@LoginbuttonValue</span>
                                             <p style="display:none">@authorId </p>
                                         </a>
@@ -338,8 +354,18 @@
             </div>
         </div>
     </footer>
+    @*客服機器人的按鈕跟摺疊區*@
+    <button class="btnRobot" type="button" data-toggle="collapse" data-target="#collapseRobotChat" aria-expanded="false" aria-controls="collapseExample">
+        <img src="~/img/icons8-robot-66.png" />
+    </button>
 
-
+    <div class="divRobotChat">
+        <div class="collapse" id="collapseRobotChat" style="width:100%;position:absolute;bottom:0">
+            <div class="card card-body" style="padding:0">
+                <iframe src='https://webchat.botframework.com/embed/ihealth003msit141qaservice-bot?s=CoVntUl8KOg.uk7h48iqte59ILI1faSAxGJgbWeNgI62lT0qYGBCcWU' style='min-width: 200px; width: 100%; min-height: 300px;'></iframe>
+            </div>
+        </div>
+    </div>
     @*===================================================================================================
         會員登入Modal*@
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -595,7 +621,8 @@
     <script src="/js/main.js"></script>
     <script src="~/js/ScrollReveal.js"></script>
     <script src="~/js/sweetalert2.js"></script>
-    <script>      
+    <script>
+
         //==================登入時menu_dropdown顯示, 否則隱藏===============================
         let spanTextUsername = $("#btnLayOutLogin span").text();
         //let spanTextAutor = $('#header__top__right__auth>p').text();
@@ -1142,7 +1169,7 @@
             }
         }
         $(document).ready(showCartCount);
-        
+
         async function showCartCount() {
             if (@loginId == 0) {
                 $("#fa-cart").children("span").text("");
@@ -1152,7 +1179,7 @@
             url = "@Url.Content("~/Shopping/ShowCartCount/")";
                     let response = await fetch(url);
                 let datas = await response.json();
-                
+
                 if (datas == 0) {
                     $("#fa-cart").children("span").text("");
                     $("#fa-cart").children("span").hide();
