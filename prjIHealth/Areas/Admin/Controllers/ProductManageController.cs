@@ -104,7 +104,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                     PI.FProductId = c.FProductId;
                     PI.FImage = pname;
                     db.TProductsImages.Add(PI);
-                }
+                }               
                 pro.FProductName = c.FProductName;
                 pro.FCategoryName = c.FCategoryName;
                 pro.FCategoryId = c.FCategoryId;
@@ -141,12 +141,12 @@ namespace prjIHealth.Areas.Admin.Controllers
             tp.FVisible = p.FVisible;
             tp.FCoverImage = p.FCoverImage;
             if (p.photo != null)
-            {
+            {               
                 string pic = Guid.NewGuid().ToString() + ".jpg";
                 p.photo.CopyTo(new FileStream(_enviroment.WebRootPath +
-                    "/img/product/" + pic, FileMode.Create));
-                tp.FCoverImage = pic;
-            }
+                    "/img/product/" + pic, FileMode.Create));              
+                tp.FCoverImage = pic;             
+            }          
             db.TProducts.Add(tp);
             db.SaveChanges();
             return RedirectToAction("ProductList");

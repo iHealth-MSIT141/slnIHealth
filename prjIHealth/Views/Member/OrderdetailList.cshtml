@@ -216,6 +216,9 @@
                             </thead>
                             <tbody>
                                 @{
+                                    string phone = "";
+                                    string address = "";
+                                    string remark = "";
                                     int count = 0;
                                     decimal pay = 0;
                                     decimal discount = 0;
@@ -226,6 +229,9 @@
                                         pay += item.FUnitprice;
                                         count++;
                                         total = pay - discount;
+                                        phone = item.forder.FPhone;
+                                        address = item.forder.FAddress;
+                                        remark = item.forder.FRemarks;
                                         <tr>
                                             <td style="margin-left:auto">
                                                 @count
@@ -252,9 +258,18 @@
                                 }
                             </tbody>
                         </table>
+
+                        電話:@phone <br />
+                        地址:@address<br />
+                        備註:@remark
+                        <div class="checkout__order__total">折扣金額:<span>@discount.ToString("C0")</span></div>
+                        交易金額:@total.ToString("C0")
+                        <div class="form-group " style="padding:10px;">
+
                         @*<div class="checkout__order__total">折扣金額:<span>@discount.ToString("C0")</span></div>
                         交易金額:@total.ToString("C0")*@
                         <div class="form-group " style="padding:10px;float:right">
+
                             <a asp-action="OrderList" class=" btn btn-success">返回清單</a>
                         </div>
                     </div>

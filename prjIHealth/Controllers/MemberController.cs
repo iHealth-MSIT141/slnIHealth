@@ -395,7 +395,8 @@ namespace prjIHealth.Controllers
                            fdiscount = o.FDiscount,
                            FDiscountId = o.FDiscountId,
                            FProductId = o.FProductId,
-                           fproduct = o.FProduct
+                           fproduct = o.FProduct,
+                           forder=o.FOrder
                        }).ToList();
             if (odt == null)
             {

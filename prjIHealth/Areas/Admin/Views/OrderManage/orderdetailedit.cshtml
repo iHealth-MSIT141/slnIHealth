@@ -12,7 +12,7 @@
 <div class="container">
     <div class="row">
 
-        <form asp-action="OrderdetailEdit" style="margin-left:34%">
+        <form asp-action="OrderdetailEdit" style="margin-left:34%" onsubmit="return CheckRequired()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" value="@Html.DisplayFor(modelItem => Model.FOrderId)" id="FOrderId" name="FOrderId" />
             <input type="hidden" value="@Html.DisplayFor(modelItem => Model.FOrderDetailsId)" id="FOrderDetailsId" name="FOrderDetailsId" />
@@ -257,7 +257,21 @@
         //$('#productUnitPrice').append(tr);
     }
     $('#qtypee').on('change', Prciechange);
-
+    //===========================================================================================
+    function CheckRequired() {
+        if ($('#FProductId').val() == null || $('#FDiscountId').val() == null) {
+            SwalGreen.fire({
+                title: '必填欄位未填寫',
+                text: false,
+                icon: 'warning',
+                confirmButtonText: '確認',
+                showCloseButton: true
+            })
+            return false;
+        } else {
+            return true;
+        }
+    }
 </script>
 }
 

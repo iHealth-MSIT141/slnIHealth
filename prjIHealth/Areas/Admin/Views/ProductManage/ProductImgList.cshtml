@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<form asp-action="ProductImgList" style="margin-left:20%" enctype="multipart/form-data">
+<form asp-action="ProductImgList" style="margin-left:20%" enctype="multipart/form-data" onsubmit="return CheckRequired()">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     @foreach (var item in Model)
     {
@@ -83,24 +83,36 @@
 
 @section Scripts{
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @*<script>
-        $(".icon_close").click(function () {
-            let id = $(this).attr("data-id");
-                 SwalGreen.fire({
-                title: `確定要刪除嗎?`,
-                    showDenyButton: false,
-                    showCancelButton: true,
-                    confirmButtonText: '確定',
-                cancelButtonText: "取消",
-                icon: 'question'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $(".icon_close").attr("href", `/Admin/ProductManage/ProductImgDelete/${id}`);
-                    }
-                })
-        })
-
-    </script>*@
+    <script>
+        //$(".icon_close").click(function () {
+        //    let id = $(this).attr("data-id");
+        //         SwalGreen.fire({
+        //        title: `確定要刪除嗎?`,
+        //            showDenyButton: false,
+        //            showCancelButton: true,
+        //            confirmButtonText: '確定',
+        //        cancelButtonText: "取消",
+        //        icon: 'question'
+        //        }).then((result) => {
+        //            if (result.isConfirmed) {
+        //                $(".icon_close").attr("href", `/Admin/ProductManage/ProductImgDelete/${id}`);
+        //            }
+        //        })
+        //})
+        function CheckRequired() {
+            if ($('#FImage').val() == null) {
+                SwalGreen.fire({
+                    title: '必填欄位未選擇',
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                });
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
  }
 
 
