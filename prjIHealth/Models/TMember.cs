@@ -42,6 +42,7 @@ namespace prjIHealth.Models
         public string FAddress { get; set; }
         [DisplayName("電話")]
         public string FPhone { get; set; }
+        [Required]
         [DisplayName("電子信箱")]
         public string FEmail { get; set; }
         [DisplayName("註冊日期")]
