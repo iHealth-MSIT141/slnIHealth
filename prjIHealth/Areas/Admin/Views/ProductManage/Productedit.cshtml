@@ -44,7 +44,7 @@
                 @foreach (var item in Model)
                 {
 
-                    <form asp-action="ProductEdit" enctype="multipart/form-data">
+                    <form asp-action="ProductEdit" enctype="multipart/form-data" onsubmit="return CheckCategory()">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" id="FProductId" name="FProductId" value="@Html.DisplayFor(modelItem => item.FProductId)" />
 
@@ -56,13 +56,13 @@
                         <div class="form-group col-md-4">
                             @*<input type="hidden" value=" @Html.DisplayFor(modelItem => item.FCategoryId)" id="FCategoryId" name="FCategoryId" />*@
                             <label for="FCategoryId" class="control-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => item.FCategoryId)</label>
-                            <select name="qtype" id="qtype" class="custom-select" style="text-align:center;">
+                            <select name="FCategoryId" id="FCategoryId" class="custom-select" style="text-align:center;" required >
                                 <option value="999" disabled selected hidden>商品種類</option>
-                                <option value="乳清蛋白">乳清蛋白</option>
-                                <option value="健康食品">健康食品</option>
-                                <option value="運動用品">運動用品</option>
-                                <option value="男裝">男裝</option>
-                                <option value="女裝">女裝</option>
+                                <option value="1">乳清蛋白</option>
+                                <option value="2">健康食品</option>
+                                <option value="3">運動用品</option>
+                                <option value="4">男裝</option>
+                                <option value="5">女裝</option>
                             </select>
                         </div>
 
@@ -91,13 +91,13 @@
                             <label class="custom-file-label" for="customFile">上傳圖片</label>
                         </div>
                         <div class="form-group col-md-4">
-                            <div id="AddFCategory"></div>
+                            @*<div id="AddFCategory"></div>*@
                             <div id="AddFVisible"></div>
                             <input type="submit" class="btn btn-success" value="確定修改" />
                             <a asp-action="ProductList" class="btn btn-secondary">返回清單</a>
                         </div>
                     </form>
-                }
+                }            
             </div>
         </div>
     </div>
@@ -107,25 +107,25 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        let FCategoryId = 0;
-        var input = '';
-        function SelectedfCategory() {          /*判斷所選類別對應的ID*/
-            $('#AddFCategory>input').remove();
-            if ($('#qtype').val() == "乳清蛋白")
-                FCategoryId =1;
-            if ($('#qtype').val() == "健康食品")
-                FCategoryId =2;
-            if ($('#qtype').val() == "運動用品")
-                FCategoryId =3;
-            if ($('#qtype').val() == "男裝")
-                FCategoryId =4;
-            if ($('#qtype').val() == "女裝")
-                FCategoryId =5;
-            input = `<input type="hidden" id="FCategoryId" value="${FCategoryId}" name="FCategoryId" />`
-            $('#AddFCategory').append(input)   /*change事件發生時才產生存放資料的input*/
-        };
-        $('#qtype').on("change", SelectedfCategory) /*選擇類別時會產生寫入資料庫所需的FStatusNumber*/
-        //===============================================================================================
+        //let FCategoryId = 0;
+        //var input = '';
+        //function SelectedfCategory() {          /*判斷所選類別對應的ID*/
+        //    $('#AddFCategory>input').remove();
+        //    if ($('#qtype').val() == "1")
+        //        FCategoryId =1;
+        //    if ($('#qtype').val() == "2")
+        //        FCategoryId =2;
+        //    if ($('#qtype').val() == "3")
+        //        FCategoryId =3;
+        //    if ($('#qtype').val() == "4")
+        //        FCategoryId =4;
+        //    if ($('#qtype').val() == "5")
+        //        FCategoryId =5;
+        //    input = `<input type="hidden" id="FCategoryId" value="${FCategoryId}" name="FCategoryId" />`
+        //    $('#AddFCategory').append(input)   /*change事件發生時才產生存放資料的input*/
+        //};
+        //$('#qtype').on("change", SelectedfCategory) /*選擇類別時會產生寫入資料庫所需的FStatusNumber*/
+        //===============================================================================================      
         let FVisible = true;
         var inputt = '';
         function SelectedFVisible() {
@@ -138,5 +138,19 @@
             $('#AddFVisible').append(inputt)
         };
         $('#qtypee').on("change", SelectedFVisible)
+        //================================================================================================
+        function CheckCategory() {
+            if ($('#FCategoryId').val() == null) {
+                SwalGreen.fire({
+                    title: '尚未選擇種類',
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                });            
+                return false;
+            } else {
+                return true;
+            }
+        }
     </script>
 }

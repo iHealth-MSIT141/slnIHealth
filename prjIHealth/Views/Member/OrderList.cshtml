@@ -126,14 +126,17 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th style="margin-left:auto">
-                                        @Html.DisplayNameFor(model => model.FContact)
+                                        No.
                                     </th>
                                     <th style="margin-left:auto">
+                                        @Html.DisplayNameFor(model => model.FContact)
+                                    </th>
+                                    @*<th style="margin-left:auto">
                                         @Html.DisplayNameFor(model => model.FPhone)
                                     </th>
                                     <th style="margin-left:auto">
                                         @Html.DisplayNameFor(model => model.FAddress)
-                                    </th>
+                                    </th>*@
                                     <th style="margin-left:auto">
                                         @Html.DisplayNameFor(model => model.FDate)
                                     </th>
@@ -143,18 +146,22 @@
                                     <th style="margin-left:auto">
                                         @Html.DisplayNameFor(model => model.FStatusNumber)
                                     </th>
-                                    <th style="margin-left:auto">
+                                    @*<th style="margin-left:auto">
                                         @Html.DisplayNameFor(model => model.FRemarks)
-                                    </th>
+                                    </th>*@
                                     <th class="col-lg-2"></th>
                                 </tr>
                             </thead>
                             <tbody id="ListPro">
                                 @{
-
+                                    int count = 0;
                                     foreach (var item in Model)
                                     {
+                                        count++;
                                         <tr>
+                                            <td>
+                                                @count;
+                                            </td>
                                             <td style="margin-left: auto;text-align:center;">
                                                 <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FOrderId)" id="FOrderId" name="FOrderId" />
                                                 <input type="hidden" value=" @Html.DisplayFor(modelItem => item.FMemberId)" id="FMemberId" name="FMemberId" />
@@ -163,15 +170,15 @@
                                                 <input type="hidden" value=" @Html.DisplayFor(modelItem => item.fPayment.FPaymentCategoryId)" id="fPayment.FPaymentCategoryId" name="fPayment.FPaymentCategoryId" />
                                                 @Html.DisplayFor(modelItem => item.FContact)
                                             </td>
-                                            <td style="margin-left: auto; text-align: center;" title=" @Html.DisplayFor(modelItem => item.FPhone)">
+                                            <!--<td style="margin-left: auto; text-align: center;" title=" @Html.DisplayFor(modelItem => item.FPhone)">
                                                 @item.FPhone.Substring(0, Math.Min(item.FPhone.Length, 5))<br />
                                                 @item.FPhone.Substring(5, Math.Min(item.FPhone.Length, 5))<br />
                                                 @item.FPhone.Substring(10)
                                             </td>
                                             <td style="margin-left: auto; text-align: center;" title=" @Html.DisplayFor(modelItem => item.FAddress)">
-                                                @item.FAddress.Substring(0, Math.Min(item.FAddress.Length, 7))...
+                                                @item.FAddress.Substring(0, Math.Min(item.FAddress.Length, 7))...-->
                                                 @*@Html.DisplayFor(modelItem => item.FAddress)*@
-                                            </td>
+                                            <!--</td>-->
                                             <td style="margin-left: auto; text-align: center;">
                                                 @Html.DisplayFor(modelItem => item.FDate)
                                             </td>
@@ -182,9 +189,9 @@
                                             <td style="margin-left: auto; text-align: center;">
                                                 @Html.DisplayFor(modelItem => item.fstatus.FStatus)
                                             </td>
-                                            <td style="margin-left: auto; text-align: center;" title=" @Html.DisplayFor(modelItem => item.FRemarks)">
+                                            @*<td style="margin-left: auto; text-align: center;" title=" @Html.DisplayFor(modelItem => item.FRemarks)">
                                                 @item.FRemarks.Substring(0, Math.Min(item.FRemarks.Length, 10))
-                                            </td>
+                                            </td>*@
                                             <td style="margin-left: auto; text-align: center;">
                                                 @Html.ActionLink("訂單明細", "OrderdetailList", new { id = item.FOrderId },
                                                   new { @class = "btn btn-success" })
