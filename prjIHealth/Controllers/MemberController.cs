@@ -53,12 +53,12 @@ namespace prjIHealth.Controllers
                     int authorId = (int)loginUser.FAuthorityId;
                     if (authorId <5)
                     {
-                        string admin = "admin" + loginUser.FMemberName;
+                        string admin = "admin" + loginUser.FUserName;
                         return Content(admin, "text/plain", System.Text.Encoding.UTF8);
                     }
                     else
                     {
-                        return Content(loginUser.FMemberName, "text/plain", System.Text.Encoding.UTF8);
+                        return Content(loginUser.FUserName, "text/plain", System.Text.Encoding.UTF8);
                     }
                 }
             }
@@ -105,9 +105,12 @@ namespace prjIHealth.Controllers
                 q.FRemarks = vModel.fRemarks;
                 q.FPhone = vModel.fPhone;
                 _context.SaveChanges();
+                return RedirectToAction("Edit", "Member");
             }
+            else { return RedirectToAction("Edit", "Member");}
+        
            
-            return RedirectToAction("Edit", "Member");
+            
         }
         // GET: MemberRegister
         public IActionResult Register()
@@ -130,6 +133,7 @@ namespace prjIHealth.Controllers
                 }
                 else
                 {
+                    if (vModel.fMemberName == null) { tm.FMemberName = tm.FUserName; }
                     tm.FPassword = utilities.getCryptPWD(vModel.fPassword, vModel.fUserName);
                     _context.Add(tm);
                     _context.SaveChanges();
@@ -207,7 +211,8 @@ namespace prjIHealth.Controllers
                 {
                     //============================================================= 
                     string newPassword = utilities.RandomString(8);
-                    utilities.sendMail(q.FUserName, newPassword, q.FEmail);
+                    var DateAndTime = DateTime.Now.ToString("yyyy/MM/dd: HH:mm:ss");
+                    utilities.sendMail(q.FUserName, newPassword, q.FEmail, DateAndTime);
                     q.FPassword = utilities.getCryptPWD(newPassword, q.FUserName);
                     _context.SaveChanges();
                     return Content(q.FUserName.ToString(), "text/plain", System.Text.Encoding.UTF8);
