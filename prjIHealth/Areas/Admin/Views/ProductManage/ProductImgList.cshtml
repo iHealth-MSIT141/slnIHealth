@@ -68,7 +68,7 @@
     <div class="custom-file  col-md-7" style="margin-right:60%;">
         <div class="row">
             <div class="col-md-4">
-                <input type="file" class="custom-file-input" id="customFile" name="photo">
+                <input type="file" class="custom-file-input" id="customFile" required name="photo">
             </div>
             <div class="col-md-8">
                 <label class="custom-file-label" for="customFile">新增圖片</label>
@@ -99,19 +99,19 @@
         //            }
         //        })
         //})
-        function CheckRequired() {
-            if ($('#FImage').val() == null) {
-                SwalGreen.fire({
-                    title: '必填欄位未選擇',
-                    icon: 'warning',
-                    confirmButtonText: '確認',
-                    showCloseButton: true
-                });
-                return false;
-            } else {
-                return true;
-            }
-        }
+        //function CheckRequired() {
+        //    if ($('#FImage').val() == null) {
+        //        SwalGreen.fire({
+        //            title: '必填欄位未選擇',
+        //            icon: 'warning',
+        //            confirmButtonText: '確認',
+        //            showCloseButton: true
+        //        });
+        //        return false;
+        //    } else {
+        //        return true;
+        //    }
+        //}
     </script>
  }
 
