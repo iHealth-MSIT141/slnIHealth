@@ -45,34 +45,11 @@
                                     <li><a href="#" data-id="@item.FCategoryId" class="categoryItem">@item.FCategoryName (@dblIHealth.TProducts.Where(ca => ca.FCategoryId == item.FCategoryId).Count())</a></li>
                                 }
 
-                            }
-                            @*<li><a href="#" data-id="0" class="categoryItem selectedCategory">所有商品</a></li>
-        <li><a href="#" data-id="1" class="categoryItem">乳清蛋白</a></li>
-        <li><a href="#" data-id="2" class="categoryItem">健康食品</a></li>
-        <li><a href="#" data-id="3" class="categoryItem">運動用品</a></li>
-        <li><a href="#" data-id="4" class="categoryItem">男裝</a></li>
-        <li><a href="#" data-id="5" class="categoryItem">女裝</a></li>*@
+                            }                     
                         </ul>
-                        <br />
-                        @*<div class="sidebar__item">
-                            <h4>以價格搜尋</h4>
-                            <br />
-                            <div class="price-range-wrap">
-                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                     data-min="50" data-max="5000">
-                                    <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
-                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                </div>
-                                <div class="range-slider">
-                                    <div class="price-input">
-                                        <input type="text" id="minamount" class="amount">
-                                        <input type="text" id="maxamount" class="amount">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
-                        <br />
+                        <br />                      
+                        <a class="btn btn-dark" href="~/Shopping/DEMO">DEMO</a>
+                        <br /><br />
                         <div class="sidebar__item">
                             <div class="latest-product__text">
                                 <h4>熱門商品</h4>
@@ -265,7 +242,7 @@
                         </form>
                     </div>
                 </div>
-                <a href="~/Shopping/DEMO">DEMO</a>
+                
                 <div style="margin-bottom:30px">
                     <span id="spanCount"></span>
                 </div>
@@ -316,8 +293,6 @@
             url: "",
             page: 1,
             txtKeyword: ""
-            //minPrice:50,
-            //maxPrice:5000
         }
         
         //js轉換數字為千分位型態方法
@@ -326,7 +301,7 @@
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             return parts.join('.');
         }
-        //$(".productitem").slice((index-1)*9,index*9).show
+
         //顯示商品
         AllProducts(option);
         function AllProducts(option) {
@@ -407,15 +382,6 @@
             })
         }
 
-        //$(".amount").on("change", function () {
-        //    console.log("text");
-        //    let minPrice = $("#minamount").text();
-        //    let maxPrice = $("#maxamount").text();
-        //    option.minPrice = minPrice;
-        //    option.maxPrice = maxPrice;
-        //    AllProducts(option);
-        //})
-
         //點選圖片進showPrductDetail，讓心心/購物車正常運作
         $("#showProduct").delegate(".addToTrack", "mouseover",function(){
             $(".product__item__pic").removeClass("showProductDetail");
@@ -488,11 +454,8 @@
                     title: "請輸入搜尋資料",
                     text: false,
                     icon: 'question',
-                    confirmButtonText: '返回商城主頁',
+                    confirmButtonText: '確定',
                     showCloseButton: true
-                }).then((result) => {
-                    if (result.isConfirmed)
-                        $(location).prop("href", "@Url.Content("~/Shopping/ShowShoppingMall")");
                 })
             }
         })
@@ -592,117 +555,8 @@
             let response = await fetch(url);
             let datas = await response.json();
             await $("#fa-cart").children("span").text(datas);
-            }
-
-            @*//顯示各類別前3名產品
-                function showTop3() {
-                    MilkTop3();
-                    function MilkTop3() {
-                        let url = "@Url.Content("~/Shopping/ShowTop3Product/1")";
-                        $.get(url, function (datas) {
-                        let htmlShowTop3 = "";
-                            datas.forEach(item => {
-                                item.forEach(i => {
-                                    htmlShowTop3 += `<a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/product/${i.photo}" alt=""/>
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>${i.key.fProductName}</h6>
-                                                            <span>${i.key.fUnitprice}</span>
-                                                        </div>
-                                                     </a>`
-                                })
-                            })
-                            $("#catergory1").append(htmlShowTop3);
-                        })
-                    }
-                    FoodTop3();
-                    function FoodTop3() {
-                        let url = "@Url.Content("~/Shopping/ShowTop3Product/2")";
-                        $.get(url, function (datas) {
-                        let htmlShowTop3 = "";
-                            datas.forEach(item => {
-                                item.forEach(i => {
-                                    htmlShowTop3 += `<a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/product/${i.photo}" alt=""/>
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>${i.key.fProductName}</h6>
-                                                            <span>${i.key.fUnitprice}</span>
-                                                        </div>
-                                                     </a>`
-                                })
-                        })
-                            $("#Food2").append(htmlShowTop3);
-                        })
-                    }
-                    //SportTop3();
-                    function SportTop3() {
-                        let url = "@Url.Content("~/Shopping/ShowTop3Product/3")";
-                        $.get(url, function (datas) {
-                        let htmlShowTop3 = "";
-                            datas.forEach(item => {
-                                item.forEach(i => {
-                                    htmlShowTop3 += `<a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/product/${i.photo}" alt=""/>
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>${i.key.fProductName}</h6>
-                                                            <span>${i.key.fUnitprice}</span>
-                                                        </div>
-                                                     </a>`
-                                })
-                        })
-                            $("#Sport3").html(htmlShowTop3);
-                        })
-                    }
-                   /* ManTop3();*/
-                    function ManTop3() {
-                        let url = "@Url.Content("~/Shopping/ShowTop3Product/4")";
-                        $.get(url, function (datas) {
-                        let htmlShowTop3 = "";
-                            datas.forEach(item => {
-                                item.forEach(i => {
-                                    htmlShowTop3 += `<a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/product/${i.photo}" alt=""/>
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>${i.key.fProductName}</h6>
-                                                            <span>${i.key.fUnitprice}</span>
-                                                        </div>
-                                                     </a>`
-                                })
-                        })
-                            $("#Man4").html(htmlShowTop3);
-                        })
-                    }
-                    //WomanTop3();
-                    function WomanTop3() {
-                        let url = "@Url.Content("~/Shopping/ShowTop3Product/5")";
-                        $.get(url, function (datas) {
-                        let htmlShowTop3 = "";
-                            datas.forEach(item => {
-                                item.forEach(i => {
-                                    htmlShowTop3 += `<a href="#" class="latest-product__item">
-                                                        <div class="latest-product__item__pic">
-                                                            <img src="/img/product/${i.photo}" alt=""/>
-                                                        </div>
-                                                        <div class="latest-product__item__text">
-                                                            <h6>${i.key.fProductName}</h6>
-                                                            <span>${i.key.fUnitprice}</span>
-                                                        </div>
-                                                     </a>`
-                                })
-                        })
-                            $("#Woman5").html(htmlShowTop3);
-                        })
-                    }
-                }*@
-            }
+            }         
+        }
     </script>
 }
 
