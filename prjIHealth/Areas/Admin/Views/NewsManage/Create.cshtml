@@ -13,11 +13,36 @@
             margin-left: 20vw;
             margin-right: 20vw;
         }
-        #red{
-            color:red;
+
+        #red {
+            color: red;
         }
     </style>
 }
+
+@using prjIHealth.Models;
+@using prjiHealth.Models;
+@using prjIHealth.ViewModels;
+@using prjiHealth.ViewModels;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Mvc;
+@using System.Linq;
+@using System.Text.Json;
+
+@{
+    string LoginbuttonValue = "登入";
+    int loginId = 3;
+    TMember loginMember = null;
+
+    if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
+    {
+        string logJson = Context.Session.GetString(CDictionary.SK_Logined_User);
+        loginMember = JsonSerializer.Deserialize<TMember>(logJson);
+        LoginbuttonValue = loginMember.FMemberName;
+        loginId = loginMember.FMemberId;
+    };
+}
+
 <h2 id="title">建立文章</h2>
 <hr />
 <div class="contact-form spad">
@@ -41,7 +66,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <label asp-for="FMemberId" class="control-label">會員號碼</label>
-                    <input asp-for="FMemberId" class="form-control" readonly />
+                    <input asp-for="@loginId" class="form-control" name="FMemberId" id="loginId" readonly />
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <label asp-for="FNewsDate" class="control-label">建立時間</label>
@@ -89,7 +114,7 @@
             buttonsStyling: false
         })</script>
 
-    @if (ViewBag.AlertTitle != null)
+    @*@if (ViewBag.AlertTitle != null)
     {
         <script type="text/javascript">
             window.onload = function () {
@@ -143,13 +168,15 @@
                     showCloseButton: true
                 })
             };
-         </script>
-    }
+        </script>
+    }*@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
         function CheckRequired() {
-            if ($('#FTitle').val() == '' || $('#FNewsCategoryId').val() == '' || $('#FContent').val() == '') {
+            if ($('#FTitle').val() == '' && $('#FNewsCategoryId').val() == '' /*|| $('#FContent').text() == ''*/) {
+                console.log($('#FTitle').val());
+                console.log($('#FNewsCategoryId').val());
                 SwalGreen.fire({
                     title: '必填欄位未填寫',
                     text: false,
@@ -182,17 +209,17 @@
             };
             reader.readAsArrayBuffer(this.files[0]);
         }, false);
-                        //沒寫好的防呆
-                        //const txtCategory = document.querySelector('#inputCategory');
-                        //const btnValue = document.querySelector('#btnSubmit');
-                        //btnSubmit.addEventListener('click', (evt) => {
-                        //    if (txtCategory.value.trim() === "") {
-                        //        txtCategory.innerHTML = "1312312";
-                        //        txtCategory.style.color = "RED";
-                        //    }
-                        //})
-        </script>
-        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-        <script src="~/Scripts/jquery.validate.min.js"></script>
-        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-    }
+                            //沒寫好的防呆
+                            //const txtCategory = document.querySelector('#inputCategory');
+                            //const btnValue = document.querySelector('#btnSubmit');
+                            //btnSubmit.addEventListener('click', (evt) => {
+                            //    if (txtCategory.value.trim() === "") {
+                            //        txtCategory.innerHTML = "1312312";
+                            //        txtCategory.style.color = "RED";
+                            //    }
+                            //})
+    </script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}

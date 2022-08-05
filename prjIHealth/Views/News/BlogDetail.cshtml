@@ -29,8 +29,16 @@
                     @*h2內容請自行更換*@
                     <h2 class="reveal_t1" id="ntitle">@Model.FTitle</h2>
                     <div class="breadcrumb__option reveal_t1">
-                        <a href="~/News/Blog">By @Model.FMemberId</a>
-                        <span>@Model.FNewsDate.Substring(0, Math.Min(Model.FNewsDate.Length, 10)) 8 Comments</span>
+                        <a href="~/News/Blog">
+                            By @{
+                                IHealthContext dblHealth = new IHealthContext();
+                                var member = (from m in dblHealth.TMembers
+                                             where m.FMemberId == Model.FMemberId
+                                             select m.FMemberName).ToList().FirstOrDefault();
+                            }
+                            @member
+                        </a>
+                        <span>@Model.FNewsDate.Substring(0, Math.Min(Model.FNewsDate.Length, 10))</span>
                     </div>
                 </div>
             </div>
@@ -102,17 +110,16 @@
                             }
                         }
                     </div>
-                    <!--<div class="blog__sidebar__item">
-                        <h4>快速搜尋</h4>
+                    <div class="blog__sidebar__item">
+                        <h4>快速搜尋</h4> @*快速功能待施工中，希望改成熱門作者*@
                         <div class="blog__sidebar__item__tags">
-                            <a href="#">健身</a>
-                            <a href="#">飲食</a>
-                            <a href="#">新冠</a>
-                            <a href="#">健康</a>
-                            <a href="#">食譜</a>-->
-                    <!--插入快速搜尋標籤-->
-                    <!--</div>
-                    </div>-->
+                            <a href="~/News/Blog?txtKeyword=健身#">健身</a>
+                            <a href="~/News/Blog?txtKeyword=食物#">食物</a>
+                            <a href="~/News/Blog?txtKeyword=新冠#">新冠</a>
+                            <a href="~/News/Blog?txtKeyword=營養#">營養</a>
+                            <a href="~/News/Blog?txtKeyword=飲食#">飲食</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-8 col-md-7 order-md-1 order-1" id="BlogShow">
@@ -132,12 +139,23 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="blog__details__author">
+                                @{
+                                    IHealthContext ddblHealth = new IHealthContext();
+                                    var mmember = (from m in ddblHealth.TMembers
+                                                   where m.FMemberId == Model.FMemberId
+                                                   select m.FMemberName).ToList().FirstOrDefault();
+                                    var mmmmber = (from m in ddblHealth.TMembers
+                                                   where m.FMemberId == Model.FMemberId
+                                                   select m.FPicturePath).ToList().FirstOrDefault();
+                                }
                                 <div class="blog__details__author__pic">
-                                    <img src="/img/blog/details/details-author.jpg" alt="">@*會員大頭貼路徑*@
+                                    <img src="~/img/member/@mmmmber" alt="">@*會員大頭貼路徑*@
                                 </div>
                                 <div class="blog__details__author__text">
-                                    <h6>Charles</h6>
-                                    <span>權限</span>
+                                    <h6>
+                                        @mmember
+                                    </h6>
+                                    <span>作者</span>
                                 </div>
                             </div>
                         </div>
@@ -173,13 +191,11 @@
                         <textarea id="FNewsReply" name="FNewsReply" style="height: 35px;width:200px;resize: none;"></textarea>
                         <br />
                         <button id="btnShow" type="button" class="btn btn-success" onclick="showPartial">顯示回覆</button>
-                        <input id="btnSubmit" type="submit" value="發送回覆" class="btn btn-success" onclick="return confirm('確定要留言嗎?')" />
+                        <input id="btnSubmit" value="發送回覆" class="btn btn-success" onclick="CheckCreate();" type="button" />
                         <button id="btnDEMO" class="btn btn-success">DEMO</button>
                     </form>
-
                     <br />
                     <div id="divReplyPartial" hidden>
-
                     </div>
                 </div>
             </div>
@@ -204,6 +220,29 @@
 
 @section Scripts{
     <script>
+        function CheckCreate() {
+            SwalGreen.fire({
+                title: `確定要留言嗎？`,
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: '確定',
+                cancelButtonText: '取消',
+                icon: 'question'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post("@Url.Content("~/News/ReplyComment")", $("#blogForm").serialize(), function () {
+                        //SwalGreen.fire({
+                        //    title: `留言成功`,
+                        //    showDenyButton: false,
+                        //    showCancelButton: false,
+                        //    confirmButtonText: '確定',
+                        //    icon: 'success'
+                        //})
+                        window.location.reload(true);
+                    })
+                }
+            })
+        }
 
         function CheckRequired() {
             if ($('#FNewsReply').val() == '') {

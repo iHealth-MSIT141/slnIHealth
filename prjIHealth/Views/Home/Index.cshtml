@@ -241,7 +241,20 @@
             @*我要從此處新增首頁專欄*@
             @{
                 IHealthContext dblHealth = new IHealthContext();
-                foreach (var item in dblHealth.TNews.OrderByDescending(t => t.FNewsDate).Take(3))
+                var test = (from t in dblHealth.TNews
+                            join m in dblHealth.TNewsComments
+                            on t.FNewsId equals m.FNewsId into ps
+                            from m in ps.DefaultIfEmpty()
+                            orderby t.FNewsId descending
+                            select new {
+                                FNewsId = t.FNewsId,
+                                FThumbnailPath = t.FThumbnailPath,
+                                FNewsDate = t.FNewsDate,
+                                commentCount = t.TNewsComments.Count,
+                                FTitle = t.FTitle,
+                                FContent = t.FContent
+                            }).ToList().Take(3);
+                foreach (var item in test /*dblHealth.TNews.OrderByDescending(t => t.FNewsDate).Take(3)*/)
                 {
                     <div class="col-lg-4 col-md-4 col-sm-6 reveal_b1">
                         <div class="blog__item">
@@ -251,7 +264,7 @@
                             <div class="blog__item__text">
                                 <ul>
                                     <li><i class="fa fa-calendar-o"></i>@item.FNewsDate.Substring(0, Math.Min(item.FNewsDate.Length, 10))</li>
-                                    <li><i class="fa fa-comment-o"></i>@item.TNewsComments.Count()</li>
+                                    <li><i class="fa fa-comment-o"></i>@item.commentCount</li>
                                 </ul>
                                 <h5><a href="~/News/BlogDetail?id=@item.FNewsId">@item.FTitle.Substring(0, Math.Min(item.FContent.Length, 18)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")</a></h5>
                                 <p>@item.FContent.Substring(0, Math.Min(item.FContent.Length, 68)).Replace("<p>", "").Replace("<strong>", "").Replace("<br/>", "").Replace("</p>", "")</p>

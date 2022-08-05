@@ -1,11 +1,35 @@
 ﻿@model System.Collections.Generic.IEnumerable<prjIHealth.Models.TNews>
-@using X.PagedList
-@using X.PagedList.Mvc.Core
+    @using X.PagedList
+    @using X.PagedList.Mvc.Core
+@*@model List<prjiHealth.ViewModels.CNewsViewModel>*@
 
 @section Styles{
     <link href="/css/PagedList.css" rel="stylesheet" />
+    <style>
+        .btnPage {
+            font-weight: 600;
+            background-color: white;
+            color: #7fad39;
+            border: 1px solid #7fad39;
+            width: 35px;
+            height: 35px;
+            margin: 0px 8px;
+            transition: .4s;
+        }
+
+            .btnPage:hover {
+                background-color: #7fad39;
+                color: white;
+            }
+
+        .selectedPage {
+            background-color: #7fad39;
+            color: white;
+        }
+    </style>
+
 }
-<link rel="stylesheet" href="/css/ShoppingMallCategory.css" type="text/css">
+@*<link rel="stylesheet" href="/css/ShoppingMallCategory.css" type="text/css">*@
 
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg" data-setbg="/img/blog/banner_news.png" id="bannerTop">
@@ -37,15 +61,17 @@
                             <input type="text" placeholder="Search..." @Html.TextBox("txtKeyword")
                             <button type="submit"><span class="icon_search"></span></button>
                         </form>
+                        <br />
+                        <label id="divcount">共 @Model.Count() 筆資料</label>
                     </div>
                     <div class="blog__sidebar__item" id="cateSe">
                         <h4>專欄分類</h4>
                         <ul id="cate">
                             <li><a href="~/News/Blog" class="categoryItem selectedCategory">所有顯示 (@ViewBag.Category0Count)</a></li>
-                            <li><a data-id="1" class="categoryItem">運動健身 (@ViewBag.Category1Count)</a></li>
-                            <li><a data-id="2" class="categoryItem">食物營養 (@ViewBag.Category2Count)</a></li>
-                            <li><a data-id="3" class="categoryItem">新冠疫情 (@ViewBag.Category3Count)</a></li>
-                            <li><a data-id="4" class="categoryItem">教練專欄 (@ViewBag.Category4Count)</a></li>
+                            <li><a data-id="1" class="categoryItem" style="cursor:pointer">運動健身 (@ViewBag.Category1Count)</a></li>
+                            <li><a data-id="2" class="categoryItem" style="cursor:pointer">食物營養 (@ViewBag.Category2Count)</a></li>
+                            <li><a data-id="3" class="categoryItem" style="cursor:pointer">新冠疫情 (@ViewBag.Category3Count)</a></li>
+                            <li><a data-id="4" class="categoryItem" style="cursor:pointer">教練專欄 (@ViewBag.Category4Count)</a></li>
                             <!--專欄分類使用處-->
                         </ul>
                     </div>
@@ -75,15 +101,14 @@
                         </div>
                     </div>
                     <div class="blog__sidebar__item">
-                        <!--<h4>快速搜尋</h4> 快速功能待施工中，預計改成熱門作者
+                        <h4>快速搜尋</h4> @*快速功能待施工中，希望改成熱門作者*@
                         <div class="blog__sidebar__item__tags">
-                            <a href="#">健身</a>
-                            <a href="#">飲食</a>
-                            <a href="#">新冠</a>
-                            <a href="#">健康</a>
-                            <a href="#">食譜</a>-->
-                        <!--插入快速搜尋標籤-->
-                        <!--</div>-->
+                            <a href="~/News/Blog?txtKeyword=健身#">健身</a>
+                            <a href="~/News/Blog?txtKeyword=食物#">食物</a>
+                            <a href="~/News/Blog?txtKeyword=新冠#">新冠</a>
+                            <a href="~/News/Blog?txtKeyword=營養#">營養</a>
+                            <a href="~/News/Blog?txtKeyword=飲食#">飲食</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,7 +117,7 @@
                     @{ //測試迴圈顯示
                         foreach (var item in Model)
                         {
-                            <a href="~/News/BlogDetail?id=@item.FNewsId">
+                            <a class="aNews" href="~/News/BlogDetail?id=@item.FNewsId">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="blog__item">
                                         <div class="blog__item__pic">
@@ -142,7 +167,7 @@
         $("#cate").find("a").click(function (event) {
             event.preventDefault();
             cateID = $(this).attr("data-id");
-            console.log(this);
+            //console.log(this);
         })
         //類別篩選api，尚無法恢復分頁套件顯示
         async function CategorySelect() {
@@ -153,13 +178,14 @@
                 let tr = '';
                 for (i = 0; i < datas.length; i++) {
                     if (datas[i].fContent != null) {
+                        console.log(datas);
                         fixContent = datas[i].fContent.substr(0, 30);
                     }
                     tr = `<a href="/News/BlogDetail?id=${datas[i].fNewsId}"><div class="col-lg-6 col-md-6 col-sm-6">
                   <div class="blog__item"><div class="blog__item__pic"><img src="/img/blog/${datas[i].fThumbnailPath}" />
                   </div><div class="blog__item__text"><ul>
                   <li><i class="fa fa-calendar-o"></i>${datas[i].fNewsDate}</li>
-                  <li><i class="fa fa-comment-o"></i>test</li>
+                  <li><i class="fa fa-comment-o"></i>${datas[i].commentCount}</li>
                   </ul>
                   </a>
                   <h5><a href="/News/BlogDetail?id=${datas[i].fNewsId}"></a>
@@ -174,22 +200,25 @@
                   </a>`
                     $('#BlogShow').append(tr);
                 }
+                $("#divcount").text(`共 ${datas.length} 筆資料`)
+                //GetPage();
             }
             if (cateID != 0) {
-            const response = await fetch('@Url.Content("~/News/BlogSelectCategoryAPI")' + `?id=${cateID}`);
-            //console.log(response);
-            const datas = await response.json();
-            //console.log(datas);
-            let tr = '';
-                    for (i = 0; i < datas.length; i++) {
-                        if (datas[i].fContent != null) {
-                            fixContent = datas[i].fContent.substr(0, 30);
-                        }
-                        tr = `<a href="/News/BlogDetail?id=${datas[i].fNewsId}"><div class="col-lg-6 col-md-6 col-sm-6">
+                const response = await fetch('@Url.Content("~/News/BlogSelectCategoryAPI")' + `?id=${cateID}`);
+                //console.log(response);
+                const datas = await response.json();
+                //console.log(datas);
+                let tr = '';
+                for (i = 0; i < datas.length; i++) {
+                    if (datas[i].fContent != null) {
+                        console.log(datas);
+                        fixContent = datas[i].fContent.substr(0, 30);
+                    }
+                    tr = `<a href="/News/BlogDetail?id=${datas[i].fNewsId}"><div class="col-lg-6 col-md-6 col-sm-6">
                   <div class="blog__item"><div class="blog__item__pic"><img src="/img/blog/${datas[i].fThumbnailPath}" />
                   </div><div class="blog__item__text"><ul>
                   <li><i class="fa fa-calendar-o"></i>${datas[i].fNewsDate}</li>
-                  <li><i class="fa fa-comment-o"></i> 5</li>
+                  <li><i class="fa fa-comment-o"></i>${datas[i].commentCount}</li>
                   </ul>
                   </a>
                   <h5><a href="/News/BlogDetail?id=${datas[i].fNewsId}"></a>
@@ -202,11 +231,40 @@
                   </div>
                   </div>
                   </a>`
-                        $('#BlogShow').append(tr);
-                        console.log("A");
-                    }
+                    $('#BlogShow').append(tr);
+                    //console.log("A");
+                }
+                $("#divcount").text(`共 ${datas.length} 筆資料`)
+                //GetPage();
             }
         }
+
+        //function GetPage() {
+        //    $(".blog__pagination").empty();
+        //    let newsCount = $("#BlogShow").children(".aNews").length;
+            
+        //    let pageCount = newsCount / 6;
+        //    for (let i = 1; i < pageCount + 1; i++) {
+        //        $(".blog__pagination").append(`<button class="btnPage" id="btn${i}">${i}</button>`);
+        //    }
+        //    $(".btnPage").on("click", function () {
+        //        let newsTrs = $("#BlogShow").children(".aNews");
+        //        newsTrs.hide();
+        //        let index = 6 * parseInt($(this).text());
+        //        newsTrs.slice(index - 6, index).show();
+        //        $('html,body').animate({ scrollTop: 0 }, 'slow');
+        //        $(this).addClass("selectedPage").siblings().removeClass("selectedPage");
+        //    });
+        //    if ($(".btnPage").length > 1) {
+        //        $(".blog__pagination").append('<button class="btnPage btnNext"><i class="fa fa-long-arrow-right"></i></button>');
+        //    }
+        //    $(".btnNext").on("click", function () {
+        //        let recent = $(".selectedPage").text();
+        //        $(`#btn${parseInt(recent) + 1}`).trigger("click");
+        //    })
+        //    $(".btnPage").first().trigger("click");
+        //}
+        //GetPage();
 
         $(".categoryItem").click(function () {
             $(".categoryItem").removeClass("selectedCategory");
