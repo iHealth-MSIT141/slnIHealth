@@ -34,25 +34,35 @@ namespace prjIHealth.Areas.Admin.Controllers
             IHealthContext db = new IHealthContext();
             IEnumerable<TNews> datas = null;
 
-
             if (string.IsNullOrEmpty(vModel.txtKeyword))
             {
                 datas = db.TNews.Include(t => t.FNewsCategory)
                     .Include(n => n.FMember)
                     .Select(t => t)
                     .OrderBy(t => t.FNewsId);
+                //int datascount = 0;
+                //datascount = datas.Count();
 
+                //ViewBag.SearchResult = "您搜尋的資料共(" + datascount + ")";
                 //.ToPagedList(page ?? 1, 5);
             }
-
             else
             {
                 datas = db.TNews
                     .Include(t => t.FNewsCategory)
                     .Include(n => n.FMember)
                     .Where(t => t.FTitle.Contains(vModel.txtKeyword));
-
-                ViewBag.SearchResult = "沒有您所蒐尋的資料";
+                //int datascount = 0;
+                //datascount = datas.Count();
+                //ViewBag.SearchResult = "您搜尋的資料共(" + datascount + ")";
+                if (datas.Count() == 0)
+                {
+                    datas = db.TNews.Include(t => t.FNewsCategory)
+                   .Include(n => n.FMember)
+                   .Select(t => t)
+                   .OrderBy(t => t.FNewsId);
+                    //ViewBag.SearchResult = "沒有您所蒐尋的資料";
+                }
                 //.ToPagedList(page ?? 1, 5);
             }
 
@@ -83,24 +93,24 @@ namespace prjIHealth.Areas.Admin.Controllers
             List<CNewsViewModel> vModel = null;
             //if (tNews.Count() != 0)
             //{
-                vModel = new List<CNewsViewModel>();
-                foreach (var n in tNews)
+            vModel = new List<CNewsViewModel>();
+            foreach (var n in tNews)
+            {
+                CNewsViewModel viewModel = new CNewsViewModel(db)
                 {
-                    CNewsViewModel viewModel = new CNewsViewModel(db)
-                    {
-                        FNewsId = n.FNewsId,
-                        FTitle = n.FTitle,
-                        FNewsDate = n.FNewsDate,
-                        FContent = n.FContent,
-                        FThumbnailPath = n.FThumbnailPath,
-                        FNewsCategoryId = n.FNewsCategoryId,
-                        FViews = n.FViews,
-                        FVideoUrl = n.FVideoUrl,
-                        FMemberId = n.FMemberId,
-                        newsCategory = n.FNewsCategory,
-                        getMember = n.FMember
-                    };
-                    vModel.Add(viewModel);
+                    FNewsId = n.FNewsId,
+                    FTitle = n.FTitle,
+                    FNewsDate = n.FNewsDate,
+                    FContent = n.FContent,
+                    FThumbnailPath = n.FThumbnailPath,
+                    FNewsCategoryId = n.FNewsCategoryId,
+                    FViews = n.FViews,
+                    FVideoUrl = n.FVideoUrl,
+                    FMemberId = n.FMemberId,
+                    newsCategory = n.FNewsCategory,
+                    getMember = n.FMember
+                };
+                vModel.Add(viewModel);
                 //}
             }
             //IHealthContext db = new IHealthContext();
@@ -218,11 +228,21 @@ namespace prjIHealth.Areas.Admin.Controllers
         public IActionResult Delete(int? id)
         {
             IHealthContext db = new IHealthContext();
-            var news = db.TNews.FirstOrDefault(t => t.FNewsId == id);
-            if (news != null)
+            var comments = db.TNewsComments.Where(c => c.FNewsId == id);
+            var news = db.TNews.FirstOrDefault(t => t.FNewsId == id);//
+            //var news = db.TNews.Where(t => t.FNewsId == id).Include(c => c.TNewsComments).FirstOrDefault();
+            if (comments != null)
             {
-                db.TNews.Remove(news);
+                foreach (var c in comments)
+                {
+                    db.TNewsComments.Remove(c);
+                }
                 db.SaveChanges();
+                if (news != null)
+                {
+                    db.TNews.Remove(news);
+                    db.SaveChanges();
+                }
             }
             return RedirectToAction("List");
         }

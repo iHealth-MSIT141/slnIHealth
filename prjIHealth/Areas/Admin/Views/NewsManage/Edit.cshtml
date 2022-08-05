@@ -48,7 +48,7 @@
                 <div class="col-lg-6 col-md-6">
                     <label asp-for="FNewsCategoryId" class="control-label">專欄類別<span style="color:red">*</span></label><br />
                     <select asp-for="FNewsCategoryId" class="form-select" style="height:55px" id="FNewsCategoryId" required>
-                        <option selected="">請選取此處</option>
+                        <option disabled selected hidden>請選取此處</option>
                         <option value="1">運動健身</option>
                         <option value="2">食物營養</option>
                         <option value="3">新冠疫情</option>
@@ -136,7 +136,7 @@
         }, false);
 
         function CheckRequired() {
-            if ($('#FTitle').val() == '' || $('#FNewsCategoryId').val() == '' || $('#FContent').val() == '') {
+            if ($('#FTitle').val() == '' && $('#FNewsCategoryId').val() == '') {
                 SwalGreen.fire({
                     title: '必填欄位未填寫',
                     text: false,
