@@ -6,16 +6,11 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
-
 }
-
 <link href="/css/PagedList.css" rel="stylesheet" type="text/css" />
-
 @section Styles{
     <style>
 
@@ -53,32 +48,16 @@
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            @*<th>
-
-            @Html.DisplayNameFor(model => model.FirstOrDefault().FMemberName)
-        </th>*@
-            <th>
+               <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FUserName)
             </th>
-            @*<th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().FPassword)
-        </th>*@
+
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FBirthday)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FGender)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().FPicturePath)
-            </th>*@
-
-            @*<th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().FAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().FPhone)
-            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().FEmail)
             </th>
@@ -98,35 +77,23 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
+        @{      
+            foreach (var item in Model)
+            {
+               
         <tr>
-
+            
             <td>
                 @Html.DisplayFor(modelItem => item.FUserName)
             </td>
-            @*<td>
-            @Html.DisplayFor(modelItem => item.FMemberName)
-        </td>*@
-            @*<td>
-            @Html.DisplayFor(modelItem => item.FPassword)
-        </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.FBirthday)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FGender)
+                @Html.DisplayFor(modelItem => @item.FGender)
+                
+           
             </td>
-            @*<td>
-                <img src="~/img/member/@item.FPicturePath" width="100" height="80"/>
-            </td>*@
-
-            @*<td>
-                @Html.DisplayFor(modelItem => item.FAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FPhone)
-            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.FEmail)
             </td>
@@ -136,9 +103,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FDisabled)
             </td>
-            @*<td>
-            @Html.DisplayFor(modelItem => item.FRemarks)
-        </td>*@
+
             <td>
                 @Html.DisplayFor(modelItem => item.FAuthority.FAuthorityName)
             </td>
@@ -147,7 +112,7 @@
                 <a asp-action="Delete" asp-route-id="@item.FMemberId" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
             </td>
         </tr>
-        }
+        }}
     </tbody>
 </table>
 
