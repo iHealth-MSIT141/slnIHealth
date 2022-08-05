@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using prjIHealth.Models;
+using prjIHealth.ViewModels;
 
 namespace prjIHealth.Areas.Admin.Controllers
 {
@@ -54,15 +55,15 @@ namespace prjIHealth.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FAutorityId,FAuthorityName,FRemarks")] TAuthority tAuthority)
+        public async Task<IActionResult> Create([Bind("FAuthorityName,FRemarks")]TAuthority ta)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tAuthority);
+                _context.TAuthorities.Add(ta);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(tAuthority);
+            return View(ta);
         }
 
         // GET: Admin/Authorities/Edit/5
@@ -144,7 +145,6 @@ namespace prjIHealth.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool TAuthorityExists(int id)
         {
             return _context.TAuthorities.Any(e => e.FAutorityId == id);
