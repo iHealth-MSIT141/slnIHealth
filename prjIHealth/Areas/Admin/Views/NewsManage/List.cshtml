@@ -130,22 +130,23 @@
                                     @item.FNewsDate.Substring(0, Math.Min(item.FNewsDate.Length, 10))
                                 </td>
                                 <td>
-                                    @*@{
-                                        if ()
+                                    @{
+                                        string showcontent;
+                                        if (item.FContent == null)
                                         {
-                                            @Html.Raw(item.FContent.Substring(0, 10))
+                                            showcontent = "";
                                         }
                                         else
-                                        {
-
-                                        }
-
+                                            showcontent = item.FContent.Substring(0, Math.Min(item.FContent.Length, 10));
                                     }
-                                    @Html.Raw(item.FContent.Substring(0, 10))*@
-                                    @Html.Raw(@item.FContent.Substring(0, Math.Min(item.FContent.Length, 10)))
+
+                                    @Html.Raw(showcontent)
+
+                                    @*@Html.Raw(item.FContent.Substring(0, 10))*@
+                                    @*@Html.Raw(@item.FContent.Substring(0, Math.Min(item.FContent.Length, 10)))*@
                                     @*@item.FContent.Substring(0, Math.Min(item.FContent.Length, 10)))*@
                                     @*@Html.DisplayFor(modelItem => item.FNewsContent.Substring(0, 29))*@
-                                    @*@Html.Raw(@item.FContent.Substring(0, Math.Min(item.FContent.Length, 10)))*@
+                                   @* @Html.Raw(@item.FContent.Substring(0, Math.Min(item.FContent.Length, 10)))*@
                                 </td>
                                 <td>
                                     <img src="~/img/blog/@item.FThumbnailPath" width="100" height="80" />

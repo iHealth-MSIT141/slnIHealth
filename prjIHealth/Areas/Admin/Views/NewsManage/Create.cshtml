@@ -114,7 +114,7 @@
             buttonsStyling: false
         })</script>
 
-    @*@if (ViewBag.AlertTitle != null)
+    @if (ViewBag.AlertTitle != null)
     {
         <script type="text/javascript">
             window.onload = function () {
@@ -169,12 +169,13 @@
                 })
             };
         </script>
-    }*@
+    }
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+
         function CheckRequired() {
-            if ($('#FTitle').val() == '' && $('#FNewsCategoryId').val() == '' /*|| $('#FContent').text() == ''*/) {
+            if ($('#FTitle').val() == '' || $('#FNewsCategoryId').val() == '' /*|| $('#FContent').text() == ''*/) {
                 console.log($('#FTitle').val());
                 console.log($('#FNewsCategoryId').val());
                 SwalGreen.fire({

@@ -208,18 +208,33 @@ namespace prjIHealth.Areas.Admin.Controllers
             TNews news = db.TNews.FirstOrDefault(t => t.FNewsId == n.FNewsId);
             if (news != null)
             {
-                if (n.photo != null)
+                if (string.IsNullOrEmpty(n.FTitle))
                 {
-                    string nName = Guid.NewGuid().ToString() + ".jpg";
-                    n.photo.CopyTo(new FileStream(
-                        _enviroment.WebRootPath + "/img/blog/" + nName, FileMode.Create));
-                    news.FThumbnailPath = nName;
+                    ViewBag.AlertTitle = "請輸入專欄標題";
                 }
-                news.FTitle = n.FTitle;
-                news.FNewsDate = n.FNewsDate;
-                news.FContent = n.FContent;
-                news.FNewsCategoryId = n.FNewsCategoryId;
-                news.FVideoUrl = n.FVideoUrl;
+                else if (string.IsNullOrEmpty(n.FContent))
+                {
+                    ViewBag.AlertContent = "請輸入文章內容";
+                }
+                else if (n.FNewsCategoryId > 5 || n.FNewsCategoryId <= 0)
+                {
+                    ViewBag.AlertCategory = "請輸入專欄標題";
+                }
+                else
+                {
+                    if (n.photo != null)
+                    {
+                        string nName = Guid.NewGuid().ToString() + ".jpg";
+                        n.photo.CopyTo(new FileStream(
+                            _enviroment.WebRootPath + "/img/blog/" + nName, FileMode.Create));
+                        news.FThumbnailPath = nName;
+                    }
+                    news.FTitle = n.FTitle;
+                    news.FNewsDate = n.FNewsDate;
+                    news.FContent = n.FContent;
+                    news.FNewsCategoryId = n.FNewsCategoryId;
+                    news.FVideoUrl = n.FVideoUrl;
+                }
             }
             db.SaveChanges();
             return RedirectToAction("List");
