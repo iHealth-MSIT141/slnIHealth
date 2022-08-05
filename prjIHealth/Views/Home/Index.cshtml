@@ -266,7 +266,7 @@
                                     <li><i class="fa fa-calendar-o"></i>@item.FNewsDate.Substring(0, Math.Min(item.FNewsDate.Length, 10))</li>
                                     <li><i class="fa fa-comment-o"></i>@item.commentCount</li>
                                 </ul>
-                                <h5><a href="~/News/BlogDetail?id=@item.FNewsId">@item.FTitle.Substring(0, Math.Min(item.FContent.Length, 18)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")</a></h5>
+                                <h5><a href="~/News/BlogDetail?id=@item.FNewsId">@item.FTitle.Substring(0, Math.Min(item.FTitle.Length, 18)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")</a></h5>
                                 <p>@item.FContent.Substring(0, Math.Min(item.FContent.Length, 68)).Replace("<p>", "").Replace("<strong>", "").Replace("<br/>", "").Replace("</p>", "")</p>
                             </div>
                         </div>

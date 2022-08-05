@@ -114,6 +114,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+
         //使用ckeditor套件
         ClassicEditor
             .create(document.querySelector('#FContent'))
@@ -136,7 +137,7 @@
         }, false);
 
         function CheckRequired() {
-            if ($('#FTitle').val() == '' && $('#FNewsCategoryId').val() == '') {
+            if ($('#FTitle').val() == '' || $('#FNewsCategoryId').val() == '') {
                 SwalGreen.fire({
                     title: '必填欄位未填寫',
                     text: false,

@@ -100,7 +100,7 @@
                                     </div>
                                     <div class="blog__sidebar__recent__item__text">
                                         <h6>
-                                            @item.FTitle.Substring(0, Math.Min(item.FContent.Length, 18)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")
+                                            @item.FTitle.Substring(0, Math.Min(item.FTitle.Length, 18)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")
                                             <br />
                                             @*@item.FTitle.Substring(20, Math.Min(item.FContent.Length, 30)).Replace("<p>", "").Replace("<strong>", "").Replace("<br />", "").Replace("</p>", "")*@
                                         </h6>
