@@ -622,10 +622,24 @@
             else if ($(this).text() == "儲存") {
                 let isNum = /^[0-9]+(.[0-9])?$/;
                 if ($("#inpHeight").val() == null || $("#inpWeight").val() == null || $("#selWorkload").val() == "") {
-                    alert("儲存失敗，請確實填入身高、體重及選擇活動量。");
+                    SwalGreen.fire({
+                        title: `儲存失敗`,
+                        text: "請確實填入身高、體重及選擇活動量。",
+                        showDenyButton: false,
+                        showCancelButton: false,
+                        confirmButtonText: '確定',
+                        icon: 'error'
+                    })
                 }
                 else if (!isNum.test($("#inpHeight").val()) || !isNum.test($("#inpWeight").val())) {
-                    alert("儲存失敗，身高、體重請填數字。");
+                    SwalGreen.fire({
+                        title: `儲存失敗`,
+                        text: "身高、體重請填數字。",
+                        showDenyButton: false,
+                        showCancelButton: false,
+                        confirmButtonText: '確定',
+                        icon: 'error'
+                    })
                 }
                 else {
                     $("#divBodyNum").find("input").removeAttr("hidden");
@@ -844,10 +858,24 @@
         $("#btnSaveRecord").click(function () {
             let isNum = /^[0-9]+(.[0-9])?$/;
             if ($("#inpFoodName").val() == "") {
-                alert("儲存失敗，請選擇欲輸入的食物。");
+                SwalGreen.fire({
+                    title: `儲存失敗`,
+                    text: "請選擇欲輸入的食物。",
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: '確定',
+                    icon: 'error'
+                })
             }
             else if (!isNum.test($("#inpQuantity").val())) {
-                alert("儲存失敗，數量請填入數字。");
+                SwalGreen.fire({
+                    title: `儲存失敗`,
+                    text: "數量請填入數字。",
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: '確定',
+                    icon: 'error'
+                })
             }
             else {
                 $.get("@Url.Content("~/Diary/addCalorieIntake")", { "FIntakeTime": $("#inpDatepicker").val(), "FFoodId": $("#inpFoodId").val(), "FQuantity": $("#inpQuantity").val(), "FMeal": $("#selMeal").val() }, function () {
