@@ -32,12 +32,12 @@ namespace HealthyLifeApp
             string str1 = new string(passwordChar);//convert char to string 
             //==================================================
             //byte[] passwordAscii = Encoding.ASCII.GetBytes(pwd);//convert string to ascii
-            byte[] passwordAscii = Encoding.Unicode.GetBytes(pwd);//convert string to ascii
+            byte[] passwordUnicode = Encoding.Unicode.GetBytes(pwd);//convert string to ascii
             string str_password = "";
-            for (int i = 0; i < passwordAscii.Length; i++)//pwd convert to char add( i+1)*2  salt define
+            for (int i = 0; i < passwordUnicode.Length; i++)//pwd convert to char add( i+1)*2  salt define
             {
-                char cha1 = (char)(passwordAscii[i]);
-                char cha = (char)(passwordAscii[i] + (i + 1) * 2);
+                char cha1 = (char)(passwordUnicode[i]);
+                char cha = (char)(passwordUnicode[i] + (i + 1) * 2);
                 str_password += cha1.ToString() + cha.ToString();
             }
             //==================================================
@@ -49,16 +49,7 @@ namespace HealthyLifeApp
                 char cha_userNameSalt = (char)(userNameAscii[j] + (j + 2) * 3);
                 str_userName += cha_userName.ToString() + cha_userNameSalt.ToString();
             }
-            //==================================================
-            //byte[] birthdayAscii = Encoding.Unicode.GetBytes(birthday);//userName
-            //string str_birthday = "";
-            //for (int k = 0; k < birthday.Length; k++)
-            //{
-            //    char cha_birthday = (char)(birthdayAscii[k]);
-            //    char cha_birthdaySalt = (char)(birthday[k] + (k + 3) * 2);
-            //    str_birthday += cha_birthday + cha_birthdaySalt;
-            //}
-            Cryptographys cryp = new Cryptographys();
+             Cryptographys cryp = new Cryptographys();
             string pwdCryp = cryp.SHA256Encode(str_password + str_userName);
             return pwdCryp;
         }
@@ -75,11 +66,17 @@ namespace HealthyLifeApp
             }
             else {  return false; };
         }
-        public static void sendMail(string userName,string newPassword,string userMail)
+        public static void sendMail(string userName,string newPassword,string userMail,string DateSend)
         {
             MailMessage mm = new MailMessage("charleschou54138@gmail.com", userMail);
             mm.Subject = $"{userName} 您的密碼已重設, 請登入後,重新修改密碼";
-            mm.Body = $"{userName}您好\n 重設的密碼為 {newPassword}\n 請盡快重設您的密碼,以保障您帳號的使用安全\n  HealthyLife 敬上";
+            mm.Body = $"<p style='font-size:16px'>{userName}您好</p> " +
+                $"<p style='font-size:16px'> 新的密碼: </p><p style='color: red; font-size:20px;font-weight:bolder'>{newPassword}</p> "+
+                $"<p style='font-size:16px'>重設密碼的時間為</p><p style='color:green; font-size:16px;font-weight: bold'>{DateSend}</p> "+
+                $"<p style='font-size:16px'>請盡快重設您的密碼,以保障您帳號的使用安全</p> " +
+                $"<p style='font-size:16px'>此信為系統自動寄出, 不用回覆</p> " +
+                $"<p style='font-size:16px'> iHealthyLife 敬上</p> ";
+            mm.IsBodyHtml = true;
             //mm.Attachments.Add(new Attachment(""));//attachment
             SmtpClient smtp = new SmtpClient();
             smtp.Host = "smtp.gmail.com";

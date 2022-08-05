@@ -82,7 +82,8 @@ namespace prjIHealth.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var password = utilities.RandomString(8);
-                utilities.sendMail(tMember.FUserName, password, tMember.FEmail);
+                var DateAndTime = DateTime.Now.ToString("yyyy-MM-dd: HH:mm:ss");
+                utilities.sendMail(tMember.FUserName, password, tMember.FEmail, DateAndTime);
                 tMember.FPassword = utilities.getCryptPWD(password, tMember.FUserName);
                 _context.Add(tMember);
                 await _context.SaveChangesAsync();
