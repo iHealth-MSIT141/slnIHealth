@@ -200,6 +200,7 @@
         };
         async  function ChangeByPCID() {         /*依問題類別篩選*/
             $('#changezoon>tr').remove();
+            document.getElementById("stype").options.selectedIndex = 0;
             SelectedProblemCategoryID();
             const response = await fetch('@Url.Content("~/Admin/Reply/SelectByProblemCategoryID")' + `?id=${ProblemCategoryID}`);
             const datas = await response.json();
@@ -235,6 +236,7 @@
         };
         async  function ChangeBySatusID() {         /*依處理狀態篩選*/
             $('#changezoon>tr').remove();
+            document.getElementById("qtype").options.selectedIndex = 0;
             SelectedStatusID();
             const response = await fetch('@Url.Content("~/Admin/Reply/SelectByStatus")' + `?id=${StatusID}`);
             const datas = await response.json();
@@ -303,6 +305,8 @@
 
         async  function ChangeDate() {         /*依日期篩選*/
             $('#changezoon>tr').remove();
+            document.getElementById("stype").options.selectedIndex = 0;
+            document.getElementById("qtype").options.selectedIndex = 0;
             const date = $("#inpDatepicker").val();
             const response = await fetch('@Url.Content("~/Admin/Reply/SelectByDate")' + `?date=${date}`);
             const datas = await response.json();

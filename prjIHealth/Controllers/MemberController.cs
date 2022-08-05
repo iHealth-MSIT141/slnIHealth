@@ -68,6 +68,8 @@ namespace prjIHealth.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove(CDictionary.SK_Logined_User);
+            HttpContext.Session.Remove(CDictionary.SK_Shopped_Items);
+            HttpContext.Session.Remove(CDictionary.SK_Third_Party_Payment);
             return RedirectToAction("Index", "Home");
         }
         public IActionResult Edit()
