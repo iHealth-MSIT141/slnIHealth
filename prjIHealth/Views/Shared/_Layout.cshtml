@@ -73,6 +73,7 @@
         int authorId = 0;
         TMember loginMember = null;
         string loginEmail = null;
+        string imgPath = "";
 
         if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
         {
@@ -82,6 +83,7 @@
             loginId = loginMember.FMemberId;
             authorId = (int)loginMember.FAuthorityId;
             loginEmail = loginMember.FEmail;
+            imgPath = loginMember.FPicturePath;
         };
     }
     <!-- 載入動畫 -->
@@ -232,13 +234,14 @@
                         </nav>
                     </div>
                     <div class="col-lg-2">
-                        <div class="header__menu">
+                        <div class="header__menu" style="padding:12px 0">
                             <ul>
                                 <li>
 
                                     <div class="header__top__right__auth">
                                         <a id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal">
-                                            <i class="fa fa-user"></i>
+                                            @*<i class="fa fa-user"></i>*@
+                                            <img src="~/img/member/@imgPath" onerror="this.src='/img/member/defaultImage.jpg'"  width="40" height="40"  class="rounded-circle"  />
                                             <span>@LoginbuttonValue</span>
                                             <p style="display:none">@authorId </p>
                                         </a>
@@ -248,24 +251,6 @@
                                             <li><a href="~/Member/Logout"><i class="fa fa-user"></i>登出</a></li>
                                         </ul>
                                     </div>
-
-                                    @*<div class="header__top__right__auth">
-                                            @if (@MemberController.userName == "登入")
-                                            {
-                                                <a id="btnLayOutLogin" data-toggle="modal" data-target="#loginModal" href="">
-                                                    <i class="fa fa-user"></i>@MemberController.userName
-                                                </a>
-                                            }
-                                            else
-                                            {
-                                                <a href="~/Member/Edit"><i class="fa fa-user"></i>Hi~@MemberController.userName</a>
-                                                <ul class="header__menu__dropdown">
-                                                    <li><a href="~/Member/Edit">會員專區</a></li>
-                                                    <li><a href="~/Coach/CreateResume">教練專區</a></li>
-                                                    <li><a href="~/Member/Logout">登出<i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
-                                                </ul>
-                                            }
-                                        </div>*@
                                 </li>
                             </ul>
                         </div>
@@ -335,22 +320,6 @@
                         </ul>
                     </div>
                 </div>
-                @*<div class="col-lg-4 col-md-12">
-                        <div class="footer__widget">
-                            <h6>Join Our Newsletter Now</h6>
-                            <p>Get E-mail updates about our latest shop and special offers.</p>
-                            <form action="#">
-                                <input type="text" placeholder="Enter your mail">
-                                <button type="submit" class="site-btn">Subscribe</button>
-                            </form>
-                            <div class="footer__widget__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-pinterest"></i></a>
-                            </div>
-                        </div>
-                    </div>*@
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -660,7 +629,7 @@
            var loginVal = $('#inpLogInUserName').val();
             if (loginVal=="")
             {
-                $('#spanLoginUsername').text("帳號不得空白");
+                $('#spanLoginUsername').text("帳號不得空白").css("color","red");
             } else
             {
                 var formData = new FormData(document.querySelector("#loginForm"));
@@ -671,12 +640,12 @@
                 {
                     if (data == "false")
                     {
-                        $('#spanLoginUsername').text("帳號錯誤, 請重新輸入");
+                        $('#spanLoginUsername').text("帳號錯誤, 請重新輸入").css("color", "red");
                         $('#inpLogInUserName').val("");
                         $('#inpLogInPassword').val("");
                     } else
                     {
-                        $('#spanLoginUsername').text("帳號正確, 請繼續");
+                        $('#spanLoginUsername').text("帳號正確, 請繼續").css("color", "blue");
                     }
                 }); };
         });
@@ -693,12 +662,12 @@
             {
                 if (data == "false")
                 {
-                    alert("登入資料錯誤, 請重新登入");
+                    alert("登入資料錯誤, 請重新登入").css("color", "red");
                     $('#inpLogInUserName').val("");
                     $('#inpLogInPassword').val("");
                 } else if (data == "empty")
                 {
-                    alert("必填欄位, 不得空白, 請重新輸入");
+                    alert("必填欄位, 不得空白, 請重新輸入").css("color", "red");
                 } else
                 {
                     var str = data.substring(0, 5);
@@ -772,7 +741,7 @@
             var loginVal = $('#inpRegisterUserName').val();
             if (loginVal == "")
             {
-                $('#spanRegUsername').text("帳號不得空白");
+                $('#spanRegUsername').text("帳號不得空白").css("color", "red");
             } else
             {
                 var formData = new FormData(document.querySelector("#registerForm"));
@@ -783,10 +752,10 @@
                 {
                     if (data == "false")
                     {
-                        $('#spanRegUsername').text("此帳號可使用");
+                        $('#spanRegUsername').text("此帳號可使用").css("color", "blue");
                     } else
                     {
-                        $('#spanRegUsername').text("此帳號已有人使用, 請換個帳號");
+                        $('#spanRegUsername').text("此帳號已有人使用, 請換個帳號").css("color", "red");
                     }
                 });
             };
@@ -795,8 +764,8 @@
         {
             var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@@#$%^&*]).{6,12}$/;
             var resultReg = regEx.test($('#inpRegisterPassword').val());
-            if (resultReg) { $('#spanRegPassword').text("符合要求,請繼續"); } else
-            { $('#spanRegPassword').text("密碼格式不對,請重新輸入"); };
+            if (resultReg) { $('#spanRegPassword').text("符合要求,請繼續").css("color", "blue"); } else
+            { $('#spanRegPassword').text("密碼格式不對,請重新輸入").css("color", "red"); };
         });
 
         $('#inpRegisterConfirmPassword').on('blur', () =>
@@ -804,24 +773,24 @@
             $('#confirmH6').empty();
             let firstPassword = $('#inpRegisterPassword').val();
             let confirmPassword = $('#inpRegisterConfirmPassword').val();
-            if (firstPassword != confirmPassword) { $('#spanRegConfirmPassword').text("輸入密碼不一致"); }
-            else { $('#spanRegConfirmPassword').text('密碼一致,請繼續'); }
+            if (firstPassword != confirmPassword) { $('#spanRegConfirmPassword').text("輸入密碼不一致").css("color", "red"); }
+            else { $('#spanRegConfirmPassword').text('密碼一致,請繼續').css("color", "blue"); }
         });
         //==================================email regex verification=============================
         $('#inpRegisterEmail').on('blur', () =>
         {
             var regEx = /^\w+((-\w+)|(\.\w+))*\@@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
             var resultReg = regEx.test($('#inpRegisterEmail').val());
-            if (resultReg) { $('#spanRegEmail').text("符合要求,請繼續"); } else
-            { $('#spanRegEmail').text("格式不對,請重新輸入"); };
+            if (resultReg) { $('#spanRegEmail').text("符合要求,請繼續").css("color", "blue"); } else
+            { $('#spanRegEmail').text("格式不對,請重新輸入").css("color", "red"); };
         });
         //==================================phone regex verification=============================
         $('#inpRegisterPhone').on('blur', () =>
         {
             var regEx = /^[0]{1}[9]{1}[0-9]{8}$/;
             var resultReg = regEx.test($('#inpRegisterPhone').val());
-            if (resultReg) { $('#spanRegPhone').text("符合要求,請繼續"); } else
-            { $('#spanRegPhone').text("格式不對,請重新輸入"); };
+            if (resultReg) { $('#spanRegPhone').text("符合要求,請繼續").css("color", "blue"); } else
+            { $('#spanRegPhone').text("格式不對,請重新輸入").css("color", "red"); };
         });
         //========================================================================================
         const btn = document.querySelector('#btnRegister');
@@ -855,7 +824,7 @@
         {
             if ($('#inpForgotPassword').val() == "")
             {
-                $('#spanForgotEmail').text("電子信箱空白,請重新輸入");
+                $('#spanForgotEmail').text("電子信箱空白,請重新輸入").css("color", "red");
              } else
             {
                 let data = $("#passwordForgotForm").serialize();
@@ -867,11 +836,11 @@
                     {
                         if (data == "false")
                         {
-                            $('#spanForgotEmail').text("電子信箱錯誤,請重新輸入");
+                            $('#spanForgotEmail').text("電子信箱錯誤,請重新輸入").css("color", "red");
                             $('#inpForgotPassword').val("");
                         } else
                         {
-                            $('#spanForgotEmail').text("電子信箱正確,請繼續");
+                            $('#spanForgotEmail').text("電子信箱正確,請繼續").css("color", "blue");
                         }
                     }
                 });
@@ -891,9 +860,9 @@
                 {
                     if (data == "false")
                     {
-                        $('#spanForgotEmail').text("電子信箱錯誤,請重新輸入");
+                        $('#spanForgotEmail').text("電子信箱錯誤,請重新輸入").css("color", "red");
                         $('#fEmailInput').val("");
-                    } else if (data == "empty") { $('#spanForgotEmail').text("電子信箱必填, 請重填"); } else
+                    } else if (data == "empty") { $('#spanForgotEmail').text("電子信箱必填, 請重填").css("color", "red"); } else
                     {
                         alert(`${data}請收信,重設密碼`);
                         $('#passwordForgotModal').modal('hide');
@@ -915,11 +884,11 @@
                 {
                     if (data == "false")
                     {
-                        $('#spanResetEmail').text("電子信箱錯誤或空白,請重新輸入");
+                        $('#spanResetEmail').text("電子信箱錯誤或空白,請重新輸入").css("color", "red");
                         $('#fEmailReset').val(""); $('#fPasswordReset').val("");
                     } else
                     {
-                        $('#spanResetEmail').text("電子信箱正確,請繼續");
+                        $('#spanResetEmail').text("電子信箱正確,請繼續").css("color", "blue");
                     }
                 }
             });
@@ -949,16 +918,16 @@
                 {
                     if (data == "true")
                     {
-                        $('#spanResetPassword').text("密碼正確, 請繼續");
+                        $('#spanResetPassword').text("密碼正確, 請繼續").css("color", "blue");
                     }
                     else if (data == "false")
                     {
-                        $('#spanResetPassword').text('密碼錯誤, 請重新輸入');
+                        $('#spanResetPassword').text('密碼錯誤, 請重新輸入').css("color", "red");
 
                     }
                     else
                     {
-                        $('#spanResetPassword').text('密碼或電子信箱空白, 請重新輸入');
+                        $('#spanResetPassword').text('密碼或電子信箱空白, 請重新輸入').css("color", "red");
                     }
                 }
             });
@@ -981,8 +950,8 @@
         {
             var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@@#$%^&*]).{6,12}$/;
             var resultReg=regEx.test($('#inpFirstPassword').val());
-            if (resultReg) { $('#passwordSpan').text("格式符合要求,請繼續"); } else
-            { $('#passwordSpan').text("密碼格式不符");  };
+            if (resultReg) { $('#passwordSpan').text("格式符合要求,請繼續").css("color", "blue"); } else
+            { $('#passwordSpan').text("密碼格式不符").css("color", "red");  };
         });
               $("#showConfirmPassword").click(function ()
         {
@@ -1004,11 +973,11 @@
             let confirmPassword = $('#inpConfirmPassword').val();
             if (firstPassword != confirmPassword)
             {
-                $('#confirmRestH6').text("輸入密碼不一致");
+                $('#confirmRestH6').text("輸入密碼不一致").css("color", "red");
             }
             else
             {
-                $('#confirmRestH6').text('密碼一致,請繼續');
+                $('#confirmRestH6').text('密碼一致,請繼續').css("color", "blue");
             }
         });
 
@@ -1023,7 +992,7 @@
                 data: data,
                 success: function (data)
                 {
-                    if (data == "empty") { alert(" 電子信箱不得空白,請重新輸入"); }
+                    if (data == "empty") { alert(" 電子信箱不得空白,請重新輸入").css("color", "red"); }
                     else if (data == "false")
                     {
                         alert("電子信箱錯誤,請重新輸入");
@@ -1047,9 +1016,6 @@
                         @*if (@loginId== 0) {*@
                             alert(`${data},密碼重設成功, 請登入`); $('#resetPasswordModal').modal('hide');
                             $('#loginModal').modal('show');
-                       // } else {
-                       //     alert(`${data},密碼重設成功`); $('#resetPasswordModal').modal('hide');
-                       //};
                     }
                 }
             });

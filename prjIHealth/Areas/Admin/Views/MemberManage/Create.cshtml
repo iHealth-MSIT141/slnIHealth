@@ -185,7 +185,7 @@
         var loginVal = $('#inpRegisterUserName').val();
         if (loginVal == "")
         {
-            $('#spanRegUsername').text("帳號不得空白");
+            $('#spanRegUsername').text("帳號不得空白").css("color", "red");
         } else
         {
             var formData = new FormData(document.querySelector("#registerForm"));
@@ -196,11 +196,11 @@
             {
                 if (data == "false")
                 {
-                    $('#spanRegUsername').text("此帳號可使用");
+                    $('#spanRegUsername').text("此帳號可使用").css("color", "blue");
 
                 } else
                 {
-                    $('#spanRegUsername').text("此帳號已有人使用, 請換個帳號");
+                    $('#spanRegUsername').text("此帳號已有人使用, 請換個帳號").css("color", "red");
                 }
             });
         };
@@ -210,16 +210,16 @@
     {
         var regEx = /^\w+((-\w+)|(\.\w+))*\@@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
         var resultReg = regEx.test($('#inpRegisterEmail').val());
-        if (resultReg) { $('#spanRegEmail').text("符合要求,請繼續"); } else
-        { $('#spanRegEmail').text("格式不對,請重新輸入"); };
+        if (resultReg) { $('#spanRegEmail').text("符合要求,請繼續").css("color", "blue"); } else
+        { $('#spanRegEmail').text("格式不對,請重新輸入").css("color", "red"); };
     });
     //==================================phone regex verification=============================
     $('#inpRegisterPhone').on('blur', () =>
     {
         var regEx = /^[0]{1}[9]{1}[0-9]{8}$/;
         var resultReg = regEx.test($('#inpRegisterPhone').val());
-        if (resultReg) { $('#spanRegPhone').text("符合要求,請繼續"); } else
-        { $('#spanRegPhone').text("格式不對,請重新輸入"); };
+        if (resultReg) { $('#spanRegPhone').text("符合要求,請繼續").css("color", "blue"); } else
+        { $('#spanRegPhone').text("格式不對,請重新輸入").css("color", "red"); };
     });
 
     </script>
