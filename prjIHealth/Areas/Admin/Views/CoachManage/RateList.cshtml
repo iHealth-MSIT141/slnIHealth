@@ -147,7 +147,7 @@
         $(".btnVisible").click(function () {
             theTr = $(this).parent("td").parent("tr");
             $.get("@Url.Content("~/Admin/CoachManage/editVisible")", { flag: 1, FRateId: $(this).parent("td").find("input").val() }, function () {
-                Swal.fire(
+                SwalGreen.fire(
                     '成功',
                     '您已成功顯示此則評價!',
                     'success'
@@ -160,7 +160,7 @@
         $(".btnHidden").click(function () {
             theTr = $(this).parent("td").parent("tr");
             $.get("@Url.Content("~/Admin/CoachManage/editVisible")", { flag: 0, FRateId: $(this).next("input").val() }, function () {
-                Swal.fire(
+                SwalGreen.fire(
                     '隱藏',
                     '您已成功隱藏此則評價!',
                     'error'
@@ -205,7 +205,7 @@
                 $(".btnVisible").click(function () {
                     theTr = $(this).parent("td").parent("tr");
                     $.get("@Url.Content("~/Admin/CoachManage/editVisible")", { flag: 1, FRateId: $(this).parent("td").find("input").val() }, function () {
-                        Swal.fire(
+                        SwalGreen.fire(
                             '成功',
                             '您已成功顯示此則評價!',
                             'success'
@@ -218,7 +218,7 @@
                 $(".btnHidden").click(function () {
                     theTr = $(this).parent("td").parent("tr");
                     $.get("@Url.Content("~/Admin/CoachManage/editVisible")", { flag: 0, FRateId: $(this).next("input").val() }, function () {
-                        Swal.fire(
+                        SwalGreen.fire(
                             '隱藏',
                             '您已成功隱藏此則評價!',
                             'error'

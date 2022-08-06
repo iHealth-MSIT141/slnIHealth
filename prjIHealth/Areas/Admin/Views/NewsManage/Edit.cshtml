@@ -102,15 +102,6 @@
 
 @section Scripts {
 
-    <script>
-        const SwalGreen = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-secondary'
-            },
-            buttonsStyling: false
-        })</script>
-
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
