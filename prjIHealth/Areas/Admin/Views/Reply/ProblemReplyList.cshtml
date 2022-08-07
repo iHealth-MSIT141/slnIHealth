@@ -137,35 +137,46 @@
                 <tbody id="changezoon">
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FProblemTime)
-                            </td>
-                            <td style="white-space:nowrap">
-                                @Html.DisplayFor(modelItem => item.FProblemCategory.FProblemCategory)
-                            </td>
-                            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                                @Html.DisplayFor(modelItem => item.FProblemContent)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FMemberId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FOrderId)
-                            </td>
-                            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                                @Html.DisplayFor(modelItem => item.FEmail)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FContactPhone)
-                            </td>
-                            <td style="white-space:nowrap">
-                                @Html.DisplayFor(modelItem => item.Status.FStatus)
-                            </td>
-                            <td style="white-space:nowrap">
-                                @Html.ActionLink("回覆", "Reply", new { id = item.FProblemId }, new { @class = "site-btn btn btn-succes" })
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FProblemTime)
+                        </td>
+                        <td style="white-space:nowrap">
+                            @Html.DisplayFor(modelItem => item.FProblemCategory.FProblemCategory)
+                        </td>
+                        <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            @Html.DisplayFor(modelItem => item.FProblemContent)
+                        </td>
+                        @{
+                            string adjmemberid = "";
+                            if (item.FMemberId == 9)
+                            {
+                                adjmemberid = "遊客";
+                            }
+                            else
+                            {
+                                adjmemberid = item.FMemberId.ToString();
+                            }
+                        }
+                        <td>
+                            @adjmemberid
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FOrderId)
+                        </td>
+                        <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            @Html.DisplayFor(modelItem => item.FEmail)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FContactPhone)
+                        </td>
+                        <td style="white-space:nowrap">
+                            @Html.DisplayFor(modelItem => item.Status.FStatus)
+                        </td>
+                        <td style="white-space:nowrap">
+                            @Html.ActionLink("回覆", "Reply", new { id = item.FProblemId }, new { @class = "site-btn btn btn-succes" })
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
@@ -210,6 +221,9 @@
                 if (datas[i].fOrderId == null) {
                     datas[i].fOrderId = ""
                 }
+                if (datas[i].fMemberId == 9) {
+                    datas[i].fMemberId = "遊客"
+                }
                 if (datas[i].fEmail == null) {
                     datas[i].fEmail = ""
                 }
@@ -246,6 +260,9 @@
                 if (datas[i].fOrderId == null) {
                     datas[i].fOrderId = ""
                 }
+                if (datas[i].fMemberId == 9) {
+                    datas[i].fMemberId = "遊客"
+                }
                 if (datas[i].fEmail == null) {
                     datas[i].fEmail = ""
                 }
@@ -272,6 +289,9 @@
              for (i = 0; i < datas.length; i++) {
                  if (datas[i].fOrderId == null) {
                      datas[i].fOrderId = ""
+                 }
+                 if (datas[i].fMemberId == 9) {
+                     datas[i].fMemberId = "遊客"
                  }
                  if (datas[i].fEmail == null) {
                      datas[i].fEmail = ""
@@ -315,6 +335,9 @@
             for (i = 0; i < datas.length; i++) {
                 if (datas[i].fOrderId == null) {
                     datas[i].fOrderId = ""
+                }
+                if (datas[i].fMemberId == 9) {
+                    datas[i].fMemberId = "遊客"
                 }
                 if (datas[i].fEmail == null) {
                     datas[i].fEmail = ""

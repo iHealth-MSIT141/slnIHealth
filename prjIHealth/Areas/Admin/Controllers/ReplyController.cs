@@ -100,6 +100,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                        join s in db.TStatuses
                        on t.FStatusNumber equals s.FStatusNumber
                        where t.FProblemCategoryId==id
+                       orderby t.FProblemTime descending
                        select new CProblemViewModel()
                        {
                            FProblemId = t.FProblemId,
@@ -126,6 +127,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                        join s in db.TStatuses
                        on t.FStatusNumber equals s.FStatusNumber
                        where t.FStatusNumber == id
+                       orderby t.FProblemTime descending
                        select new CProblemViewModel()
                        {
                            FProblemId = t.FProblemId,
@@ -151,6 +153,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                        on t.FProblemCategoryId equals p.FProblemCategoryId
                        join s in db.TStatuses
                        on t.FStatusNumber equals s.FStatusNumber
+                       orderby t.FProblemTime descending
                        select new CProblemViewModel()
                        {
                            FProblemId = t.FProblemId,
@@ -177,6 +180,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                        join s in db.TStatuses
                        on t.FStatusNumber equals s.FStatusNumber
                        where t.FProblemTime.Contains(dateparse)
+                       orderby t.FProblemTime descending
                        select new CProblemViewModel()
                        {
                            FProblemId = t.FProblemId,
