@@ -44,7 +44,7 @@
                 @foreach (var item in Model)
                 {
 
-                    <form asp-action="ProductEdit" enctype="multipart/form-data" onsubmit="return CheckCategory()">
+                    <form asp-action="ProductEdit" enctype="multipart/form-data" onsubmit="return CheckCategory(),Checkproduct()">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" id="FProductId" name="FProductId" value="@Html.DisplayFor(modelItem => item.FProductId)" />
 
@@ -57,7 +57,7 @@
                             @*<input type="hidden" value=" @Html.DisplayFor(modelItem => item.FCategoryId)" id="FCategoryId" name="FCategoryId" />*@
                             <label for="FCategoryId" class="control-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => item.FCategoryId)</label>
                             <select name="FCategoryId" id="FCategoryId" class="custom-select" style="text-align:center;" required >
-                                <option value="999" disabled selected hidden>商品種類</option>
+                                <option value="999" disabled selected hidden>@Html.DisplayFor(modelItem => item.FCategoryName.FCategoryName)</option>
                                 <option value="1">乳清蛋白</option>
                                 <option value="2">健康食品</option>
                                 <option value="3">運動用品</option>
@@ -140,13 +140,26 @@
         $('#qtypee').on("change", SelectedFVisible)
         //================================================================================================
         function CheckCategory() {
-            if ($('#FCategoryId').val() == null) {
+            if ($('#FCategoryId').val() == null ) {
                 SwalGreen.fire({
                     title: '尚未選擇種類',
                     icon: 'warning',
                     confirmButtonText: '確認',
                     showCloseButton: true
                 });            
+                return false;
+            } else {
+                return true;
+            }
+        }
+        function Checkproduct() {
+            if ($('#FProductName').val() == '' || $('#FUnitprice').val() == '' || $('#FUnitprice').val() <= 0) {
+                SwalGreen.fire({
+                    title: '請確認品名不得空白/價錢不得小於0',
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                });
                 return false;
             } else {
                 return true;

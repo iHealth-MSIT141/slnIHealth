@@ -237,8 +237,9 @@
             }
         }
          //=======================================================================================================================================
-         async function resetclick() {
-            $('#ListPro>tr').remove();
+        async function resetclick() {
+            window.location.reload(true);
+            @*$('#ListPro>tr').remove();
             const response = await fetch("@Url.Content("~/Admin/OrderManage/Statusselectall")" );
             const datas = await response.json();
             let tr = '';
@@ -294,8 +295,8 @@
                                            <a class="btn btn-success abc" href="/Admin/OrderManage/OrderdetailList/${datas[i].fOrderId}">訂單明細</a>
                                         </td>
                                     </tr>`
-                $('#ListPro').append(tr);
-            }
+                $('#ListPro').append(tr);*@
+            /*}*/
         }
         //===========================================================================================================================================================
 
