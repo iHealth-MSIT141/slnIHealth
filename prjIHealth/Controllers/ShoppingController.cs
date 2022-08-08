@@ -133,6 +133,8 @@ namespace prjiHealth.Controllers
                     }
                     dbod.TOrderDetails.Add(orderdetail);
                     dbod.SaveChanges();
+                    HttpContext.Session.Remove(CDictionary.SK_Shopped_Items);
+                    HttpContext.Session.Remove(CDictionary.SK_Third_Party_Payment);
                 }
             }
             else
@@ -234,6 +236,8 @@ namespace prjiHealth.Controllers
                         }
                         dbod.TOrderDetails.Add(orderdetail);
                         dbod.SaveChanges();
+                        HttpContext.Session.Remove(CDictionary.SK_Shopped_Items);
+                        HttpContext.Session.Remove(CDictionary.SK_Third_Party_Payment);
                     }
                 }
             }
