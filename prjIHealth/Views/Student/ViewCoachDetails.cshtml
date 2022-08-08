@@ -751,6 +751,7 @@
                 $(".divRate").css("text-align", "center").css("color","dimgray");
             }
             $.each(data, function (index, item) {
+                console.log(item);
                 $("#spRate").text(`(${data.length})`);
                 $(".divRate").append(`<div class="feedback-item animate__animated animate__fadeIn" id=div${index}><p><b>${item.fMemberName}</b></p><div class="rate" id=r${index}></div></div>`);
                 for (let i = 1; i <= 5; i++) {
@@ -763,7 +764,10 @@
                 let year = `${item.cr.fRateDate}`.substr(0, 4);
                 let month = `${item.cr.fRateDate}`.substr(4, 2);
                 let day = `${item.cr.fRateDate}`.substr(6, 2);
-                $(`#r${index}`).after(`<div id="t${index}"><p>${item.cr.fRateText}<p></div>`);
+                $(`#r${index}`).after(`<div id="t${index}"></div>`);
+                if (item.cr.fRateText != null) {
+                    $(`#t${index}`).append(`<p>${item.cr.fRateText}<p>`);
+                }                
                 $(`#t${index}`).after(`<p class="created">${year}年${month}月${day}日</p><hr>`);                
             })
             //顯示更多

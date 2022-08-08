@@ -418,8 +418,7 @@
                             <div class="divSubmit">
                                 <button type="submit" class="btn btn-success btnSearch" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
-                            <button class="btn btn-light" id="btnDemo1" style="margin-left:10px">Demo1</button>
-                            <button class="btn btn-light" id="btnDemo2" style="margin-left:10px">Demo2</button>
+                            <button class="btn btn-light" id="btnDemo" style="margin-left:10px">Demo</button>
                         </div>
                     </form>
                     <div class="divLink col-lg-5">
@@ -532,13 +531,8 @@
     }
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>   
-    //Demo
-    $("#btnDemo1").click((evt) => {
-        evt.preventDefault();
-        $("#ipKeyword").val("體能訓練");
-    })
-
-    $("#btnDemo2").click((evt) => {
+    //Demo    
+    $("#btnDemo").click((evt) => {
         evt.preventDefault();
         $("#ipKeyword").val("alisa");
     })
@@ -602,9 +596,17 @@
             $("#spAllSkill").prop("hidden", false);
             $("#spCancelSkill").prop("hidden", true);
         }
+        else {
+            $("#spAllSkill").prop("hidden", true);
+            $("#spCancelSkill").prop("hidden", false);
+        }
         if ($("input[name='fCoachTime[]']:checked").length < 6) {
             $("#spAllTime").prop("hidden", false);
             $("#spCancelTime").prop("hidden", true);
+        }
+        else {
+            $("#spAllTime").prop("hidden", true);
+            $("#spCancelTime").prop("hidden", false);
         }
         ShowFilter();
         GetCoach();
