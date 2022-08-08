@@ -142,6 +142,7 @@ namespace prjIHealth.Controllers
             {
                 return Content("false", "text/plain", System.Text.Encoding.UTF8);
             }
+            else { return RedirectToAction("Edit", "Member"); }
         }
         // GET: MemberRegister
         public IActionResult Register()
