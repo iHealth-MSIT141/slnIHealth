@@ -63,6 +63,7 @@
             background-color: transparent;
             border-style: none;
         }
+
         .divRobotChat {
             width: 300px;
             position: fixed;
@@ -82,7 +83,6 @@
     @using Microsoft.AspNetCore.Mvc;
     @using System.Linq;
     @using System.Text.Json;
-
     @{
         string LoginbuttonValue = "登入";
         int loginId = 0;
@@ -123,7 +123,7 @@
                 }
                 else
                 {
-                    <li class="header__top__right__auth"><a href="~/Member/Edit"><i class="fa fa-user"></i>會員專區</a></li>
+                    <li class="header__top__right__auth"><a href="~/Member/index"><i class="fa fa-user"></i>會員專區</a></li>
                     <li class="header__top__right__auth"><a href="~/Member/Logout">登出<i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
                 }
 
@@ -262,7 +262,7 @@
                                             <p style="display:none">@authorId </p>
                                         </a>
                                         <ul class="header__menu__dropdown">
-                                            <li><a href="~/Member/Edit">會員專區</a></li>
+                                            <li><a href="~/Member/index">會員專區</a></li>
                                             <li><a href="~/Coach/CreateResume">教練專區</a></li>
                                             <li><a href="~/Member/Logout"><i class="fa fa-user"></i>登出</a></li>
                                         </ul>
@@ -440,6 +440,7 @@
                             <div class="form-group">
                                 <label for="fMemberName">姓名</label>
                                 <input type="text" class="form-control" id="inpRegisterMemberName" name="fMemberName" placeholder="姓名" autocomplete="off">
+                                <span id="spanRegisterMemberName"></span>
                             </div>
                             <div class="form-group">
                                 <label for="fPassword">密碼-必填</label>
@@ -463,7 +464,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="fBirthday">生日</label>
-                                <input type="date" class="form-control" id="inpRegisterBirthday" name="fBirthday" placeholder="生日,請依格式19991231輸入" autocomplete="off">
+                                <input type="date" class="form-control" id="inpRegisterBirthday" name="fBirthday" value="2012-01-01">
+                                <span id="spanBirthday"></span>
                             </div>
                             <div class="form-group">
                                 <label for="fPhone">電話</label>
@@ -646,7 +648,7 @@
         $('#btnLayOutLogin').on("click", (event) =>
         {
             let userName = $("#btnLayOutLogin span").text();
-            if (userName != "登入") { event.stopPropagation(); window.location.href = `/Member/Edit`; }
+            if (userName != "登入") { event.stopPropagation(); window.location.href = `/Member/index`; }
             else { event.preventDefault(); }
         });
         //============================ajax 會員登入(fetch)============================================
@@ -676,7 +678,6 @@
                     }
                 }); };
         });
-
         const btnUserName = document.querySelector('#btnLoginModal');
         btnUserName.addEventListener('click', (event) =>
         {
@@ -735,6 +736,19 @@
         var day = (registerD.getDate() + 100).toString().substring(1);
         var str = year + month + day;
         $("#fRegisterDate").val(str);
+        $('#inpRegisterBirthday').on('blur', () =>
+        {
+            var getDate = $('#inpRegisterBirthday').val();
+            //if ((int)getDate >= (int)registerD-10) { alert("必須大於十歳才可註冊") };
+            getYear = getDate.substring(0, 4);
+            getMonth = getDate.substring(5, 7);
+            getDay= getDate.substring(8,10);
+            var str = getYear + getMonth + getDay;
+            if (getYear > 2022 || getYear < 1930 ) { $('#spanBirthday').text('格式錯誤, 請重新輸入').css("color", "red"); } else
+            {
+                if (getYear > (year - 10)) { $('#spanBirthday').text('必須大於十歳才可註冊').css("color", "red"); } else { $('#spanBirthday').text('請繼續').css("color", "blue"); }
+            }
+        });
         //=========================註冊會員後,popup 登入頁面 by bootstrap modal==============
         $("#showRegisterPassword").click(function ()
         {
@@ -787,6 +801,15 @@
                 });
             };
         });
+
+        //$('#inpRegisterMemberName').on('blur', () =>
+        //{
+
+        //    var regEx = /^(?=.*[\u4E00-\u9FA5]).{2,12}$/;
+        //    var resultReg = regEx.test($('#inpRegisterPassword').val());
+        //    if (resultReg) { $('#spanRegisterMemberName').text("符合要求,請繼續").css("color", "blue"); } else
+        //    { $('#spanRegisterMemberName').text("格式不對,請重新輸入").css("color", "red"); };
+        //});
         $('#inpRegisterPassword').on('blur', () =>
         {
             var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@@#$%^&*]).{6,12}$/;
@@ -800,8 +823,10 @@
             $('#confirmH6').empty();
             let firstPassword = $('#inpRegisterPassword').val();
             let confirmPassword = $('#inpRegisterConfirmPassword').val();
+            if (firstPassword == "") { $('#spanRegConfirmPassword').text("新密碼空白, 請重新填入").css("color", "red"); } else {
             if (firstPassword != confirmPassword) { $('#spanRegConfirmPassword').text("輸入密碼不一致").css("color", "red"); }
-            else { $('#spanRegConfirmPassword').text('密碼一致,請繼續').css("color", "blue"); }
+                else { $('#spanRegConfirmPassword').text('密碼一致,請繼續').css("color", "blue"); }
+            }
         });
         //==================================email regex verification=============================
         $('#inpRegisterEmail').on('blur', () =>
@@ -832,12 +857,19 @@
 
                     let userName = $("#inpRegisterUserName").val();
                     if (data == "empty") {
-                        alert("請注意必填欄位不可空白, 請重新填入");
+                        alert("請注意必填欄位不可空白或日期格式錯誤, 請重新填入");
                     } else if (data == "user") {
                         alert(`${userName}:此帳號已有人使用`)
                     } else if (data == "FCerror") {
                         alert("密碼不一致");
                     } else {
+                        $("#inpRegisterUserName").val("");
+                        $("#inpRegisterPassword").val("");
+                        $("#inpRegisterConfirmPassword").val("");
+                        $("#inpRegisterEmail").val("");
+                        $("#inpRegisterBirthday").val("");
+                        $("#inpRegisterPhone").val("");
+                        $("#inpRegisterAddress").val("");
                         alert("歡迎您成為IHealth會員!,請登入會員")
                         $('#registerModal').modal('hide');
                         $('#loginModal').modal('show');
@@ -998,13 +1030,19 @@
             $('#confirmRestH6').empty();
             let firstPassword = $('#inpFirstPassword').val();
             let confirmPassword = $('#inpConfirmPassword').val();
-            if (firstPassword != confirmPassword)
+            if (firstPassword =="")
             {
-                $('#confirmRestH6').text("輸入密碼不一致").css("color", "red");
-            }
-            else
+              $('#confirmRestH6').text("新密碼欄位空白, 請重新輸入").css("color", "red");
+            } else
             {
-                $('#confirmRestH6').text('密碼一致,請繼續').css("color", "blue");
+                if (firstPassword != confirmPassword)
+                {
+                    $('#confirmRestH6').text("輸入密碼不一致").css("color", "red");
+                }
+                else
+                {
+                    $('#confirmRestH6').text('密碼一致,請繼續').css("color", "blue");
+                }
             }
         });
 
@@ -1036,12 +1074,14 @@
                         alert(`重設密碼不一致, 請重新輸入`)
                     } else
                     {
-                        $('#fEmailReset').val("");
-                        $('#fPasswordReset').val("");
-                        $('#firstPassword').val("");
-                        $('#confirmPassword').val("");
-                        @*if (@loginId== 0) {*@
-                            alert(`${data},密碼重設成功, 請登入`); $('#resetPasswordModal').modal('hide');
+                        $('#inpResetPasswordEmail').val("");
+                        $('#inpResetPassword').val("");
+                        $('#spanResetPassword').empty()
+                        $('#inpFirstPassword').val("");
+                        $('#inpConfirmPassword').val("");
+                        $('#confirmRestH6').empty();
+                        $('#passwordSpan').empty();
+                        alert(`${data},密碼重設成功, 請登入`); $('#resetPasswordModal').modal('hide');
                             $('#loginModal').modal('show');
                     }
                 }
@@ -1089,8 +1129,9 @@
             $("#inpRegisterUserName").val("summer21");
             $("#inpRegisterMemberName").val("林佳辰");
             $("#inpRegisterPassword").val("1qaz@WSX");
+            $("#inpRegisterConfirmPassword").val("1qaz@WSX");
             $("#inpRegisterEmail").val("summer21@gmail.com");
-            $("#inpRegisterBirthday").val("19990605");
+            $("#inpRegisterBirthday").val("1999-06-05");
             $("#inpRegisterPhone").val("0919660550");
             $("#inpRegisterAddress").val("台北市松山區南京東路四段2號");
         });
@@ -1103,7 +1144,7 @@
         //重設密碼Demo
         $("#btnDemoResetPassword").click(function () {
             $("#inpResetPasswordEmail").val("charles.chou570114@gmail.com");
-            $("#inpResetPassword").val("!QAZ2wsx");
+            $("#inpResetPassword").val("1qaz@WSX");
             $("#inpFirstPassword").val("1qaz@WSX");
             $("#inpConfirmPassword").val("1qaz@WSX");
         });

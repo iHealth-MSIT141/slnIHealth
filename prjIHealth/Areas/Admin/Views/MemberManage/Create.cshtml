@@ -54,7 +54,8 @@
                     <label asp-for="FBirthday" class="control-label"></label>
                 </div>
                 <div class="col-md-7">
-                    <input type="date" asp-for="FBirthday" class="form-control" autocomplete="off" />
+                    <input type="date" asp-for="FBirthday" class="form-control" id="inpBirthdayBack" value="2012-01-01"/>
+                    <span id="spanBirthday"></span>
                 </div>
                 <span asp-validation-for="FBirthday" class="text-danger"></span>
             </div>
@@ -156,7 +157,7 @@
 
             <div class="form-group row justify-content-center">
                 <div class="col-md-4 ">
-                    <input type="submit" value="送出" class="btn btn-primary" />
+                    <input type="button" id="btnRegister" value="送出" class="btn btn-primary" />
                 </div>
                 <div class="col-md-7">
                     <a asp-action="Index" class="btn btn-success">回會員資料管理列表</a>
@@ -177,6 +178,19 @@
     var day = (registerD.getDate() + 100).toString().substring(1);
     var str = year + month + day;
     $("#fRegisterDate").val(str);
+    $('#inpBirthdayBack').on('blur', () =>
+    {
+        var getDate = $('#inpBirthdayBack').val();
+        //if ((int)getDate >= (int)registerD-10) { alert("必須大於十歳才可註冊") };
+        getYear = getDate.substring(0, 4);
+        getMonth = getDate.substring(5, 7);
+        getDay = getDate.substring(8, 10);
+        var str = getYear + getMonth + getDay;
+        if (getYear > 2022 || getYear < 1930 ) { $('#spanBirthday').text('格式錯誤, 請重新輸入').css("color", "red"); } else
+        {
+            if (getYear > (year - 10)) { $('#spanBirthday').text('必須大於十歳才可註冊').css("color", "red"); } else { $('#spanBirthday').text('請繼續').css("color", "blue"); }
+        }
+    });
         //==========================註冊userName check========================================
 
     $('#inpRegisterUserName').on('blur', () =>
@@ -221,7 +235,32 @@
         if (resultReg) { $('#spanRegPhone').text("符合要求,請繼續").css("color", "blue"); } else
         { $('#spanRegPhone').text("格式不對,請重新輸入").css("color", "red"); };
     });
+    const btn = document.querySelector('#btnRegister');
+    btn.addEventListener('click', (event) =>
+    {
+        event.preventDefault();
+        let data = $("#registerForm").serialize();
+        $.ajax({
+            type: "Post",
+            url: "/Admin/MemberManage/create",
+            data: data,
+            success: function (data)
+            {
 
+                let userName = $("#inpRegisterUserName").val();
+                if (data == "false")
+                {
+                    alert("請注意必填欄位不可空白或日期格式錯誤, 請重新填入");
+          
+                } else
+                {
+                    alert("歡迎您成為IHealth會員!,請登入會員")
+                    window.location.href = "/Admin/MemberManage/index"
+                    "/Admin/Authorities/Index"
+                }
+            }
+        });
+    });
     </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

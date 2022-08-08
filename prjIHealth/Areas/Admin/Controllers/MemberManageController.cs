@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HealthyLifeApp;
 using Microsoft.AspNetCore.Hosting;
@@ -79,18 +80,24 @@ namespace prjIHealth.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FMemberId,FMemberName,FPassword,FBirthday,FGender,FPicturePath,FUserName,FAddress,FPhone,FEmail,FRegisterDate,FAuthorityId,FDisabled,FRemarks")] TMember tMember)
         {
-            if (ModelState.IsValid)
+            int n = int.Parse(tMember.FBirthday.Substring(0, 4));
+            if (ModelState.IsValid && n<2013 && n>1930 )
             {
                 var password = utilities.RandomString(8);
                 var DateAndTime = DateTime.Now.ToString("yyyy-MM-dd: HH:mm:ss");
                 utilities.sendMail(tMember.FUserName, password, tMember.FEmail, DateAndTime);
                 tMember.FPassword = utilities.getCryptPWD(password, tMember.FUserName);
+                tMember.FBirthday = tMember.FBirthday.Replace("-", "");
                 _context.Add(tMember);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Content("true", "text/plain", System.Text.Encoding.UTF8);
+
+                //return RedirectToAction(nameof(Index));
             }
             ViewData["FAuthorityId"] = new SelectList(_context.TAuthorities, "FAutorityId", "FAuthorityName", tMember.FAuthorityId);
-            return View(tMember);
+            return Content("false", "text/plain", System.Text.Encoding.UTF8);
+
+            //return View(tMember);
         }
 
         // GET: Admin/MemberManage/Edit/5

@@ -51,7 +51,7 @@ namespace prjIHealth.Controllers
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     TMember loginUser = JsonSerializer.Deserialize<TMember>(loginSession);
                     int authorId = (int)loginUser.FAuthorityId;
-                    if (authorId <5)
+                    if (authorId < 5)
                     {
                         string admin = "admin" + loginUser.FUserName;
                         return Content(admin, "text/plain", System.Text.Encoding.UTF8);
@@ -64,7 +64,21 @@ namespace prjIHealth.Controllers
             }
             return Content("false", "text/plain", System.Text.Encoding.UTF8);
         }
-
+        public IActionResult Index()
+        {
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+            {
+                var memberEdit = HttpContext.Session.GetString(CDictionary.SK_Logined_User);
+                TMember loginUser = JsonSerializer.Deserialize<TMember>(memberEdit);
+                var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == loginUser.FMemberId);
+                return View(q);
+            }
+            else
+            {
+                var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == 8);
+                return View(q);
+            }
+        }
         public IActionResult Logout()
         {
             HttpContext.Session.Remove(CDictionary.SK_Logined_User);
@@ -88,7 +102,7 @@ namespace prjIHealth.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Edit( CLoginViewModel vModel)
+        public IActionResult Edit(CLoginViewModel vModel)
         {
             var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == vModel.fMemberId);
             if (q != null)
@@ -115,7 +129,7 @@ namespace prjIHealth.Controllers
                 }
                 return RedirectToAction("Edit", "Member");
             }
-            else { return RedirectToAction("Edit", "Member");}
+            else { return RedirectToAction("Edit", "Member"); }
         }
         // GET: MemberRegister
         public IActionResult Register()
@@ -125,7 +139,8 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(CLoginViewModel vModel, TMember tm)
         {
-            if (vModel.fPassword == null || vModel.fUserName == null || vModel.fEmail==null)
+          int n = int.Parse(vModel.fBirthday.Substring(0, 4));
+            if (vModel.fPassword == null || vModel.fUserName == null || vModel.fEmail == null || n>2012 || n<1930 || vModel.fBirthday==null)
             {
                 return Content("empty", "text/plain", System.Text.Encoding.UTF8);
             }
@@ -139,6 +154,7 @@ namespace prjIHealth.Controllers
                 else
                 {
                     if (vModel.fMemberName == null) { tm.FMemberName = tm.FUserName; }
+                    tm.FBirthday = vModel.fBirthday.Replace("-", "");
                     tm.FPassword = utilities.getCryptPWD(vModel.fPassword, vModel.fUserName);
                     _context.Add(tm);
                     _context.SaveChanges();
@@ -180,7 +196,7 @@ namespace prjIHealth.Controllers
             {
                 return Content("false", "text/plain", System.Text.Encoding.UTF8);
             };
-          
+
         }
         public IActionResult getPassword([Bind("fEmail,fPassword")] CLoginViewModel vModel)
         {
@@ -235,7 +251,7 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult ResetPassword(CLoginViewModel vmodel)
         {
-            if (vmodel.fEmail == null || vmodel.fPassword==null || vmodel.firstPassword==null)
+            if (vmodel.fEmail == null || vmodel.fPassword == null || vmodel.firstPassword == null)
             {
                 return Content("empty", "text/plain", System.Text.Encoding.UTF8);
             }
@@ -265,7 +281,7 @@ namespace prjIHealth.Controllers
                 }
             }
         }
-       
+
         //========================追蹤清單===========================    
 
         public IActionResult ShowTrackList()
@@ -399,9 +415,9 @@ namespace prjIHealth.Controllers
                            FDiscountId = o.FDiscountId,
                            FProductId = o.FProductId,
                            fproduct = o.FProduct,
-                           forder=o.FOrder,
-                           pay=or.FPaymentCategory,
-                           sta=or.FStatusNumberNavigation
+                           forder = o.FOrder,
+                           pay = or.FPaymentCategory,
+                           sta = or.FStatusNumberNavigation
                        }).ToList();
             if (odt == null)
             {
