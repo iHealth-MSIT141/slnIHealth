@@ -369,13 +369,13 @@
                         </ul>
                         <ul class="ServiceProfile__buttonList___27UCn ulBtns">
                                 <li>
-                                    <a href="#" id="addCandidate" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">
+                                    <a id="addCandidate" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId" style="cursor:pointer">
                                         <i class="fa-solid fa-heart" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId"></i>
                                         <b data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">&nbsp;&nbsp;加入候選</b>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" id="addContact" data-toggle="modal" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">
+                                    <a style="cursor:pointer" id="addContact" data-toggle="modal" data-target="#modalContact" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">
                                         <i class="fa-solid fa-comment" data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId"></i>
                                         <b data-nexthref="~/Student/ViewCoachDetails/@Model.FCoachId">&nbsp;&nbsp;我想預約</b>
                                     </a>
@@ -767,8 +767,8 @@
                 $(`#r${index}`).after(`<div id="t${index}"></div>`);
                 if (item.cr.fRateText != null) {
                     $(`#t${index}`).append(`<p>${item.cr.fRateText}<p>`);
-                }                
-                $(`#t${index}`).after(`<p class="created">${year}年${month}月${day}日</p><hr>`);                
+                }
+                $(`#t${index}`).after(`<p class="created">${year}年${month}月${day}日</p><hr>`);
             })
             //顯示更多
             if (data.length > 5) {
@@ -784,8 +784,8 @@
                 }
                 if (5 * (click + 1) - 1 >= data.length)
                     $("#btnMore").hide();
-                click++;               
-            })           
+                click++;
+            })
         }
 
         //推薦教練
@@ -854,21 +854,28 @@
 
         //送出通知
         $("#btnSendContact").click(function () {
-            $.get("@Url.Content("~/Student/createContact")", { FCoachId:@Model.FCoachId, FAvailableTimeNum: `${$(".selTime1").val()}${$(".selTime2").val()}` }, function () {
-                SwalGreen.fire({
-                    title: `已通知教練`,
-                    showDenyButton: false,
-                    showCancelButton: true,
-                    confirmButtonText: '前往聯繫紀錄',
-                    cancelButtonText:'繼續瀏覽',
-                    icon: 'success'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        /*跳轉CandidateList*/
-                        window.location.href = `${window.location.protocol}//${window.location.host}/Student/CandidateList`;
-                    }
+            if ($("#btnLayOutLogin span").text() == "登入") {
+                pleaseLogin();
+            }
+            else {
+                $.get("@Url.Content("~/Student/createContact")", { FCoachId:@Model.FCoachId, FAvailableTimeNum: `${$(".selTime1").val()}${$(".selTime2").val()}` }, function () {
+                    SwalGreen.fire({
+                        title: `已通知教練`,
+                        showDenyButton: false,
+                        showCancelButton: true,
+                        confirmButtonText: '前往聯繫紀錄',
+                        cancelButtonText: '繼續瀏覽',
+                        icon: 'success'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            /*跳轉CandidateList*/
+                            window.location.href = `${window.location.protocol}//${window.location.host}/Student/CandidateList`;
+                        }
+                    })
                 })
-            })
+            }
+
+            $("#modalContact").modal("hide");
         })
 
         //加入候選
@@ -912,14 +919,14 @@
             }
         })
 
-        $("#addContact").click(function () {
-            if ($("#btnLayOutLogin span").text() == "登入") {
-                pleaseLogin();
-            }
-            else {
-                $("#modalContact").modal("show");
-            }
-        })
+        //$("#addContact").click(function () {
+        //    if ($("#btnLayOutLogin span").text() == "登入") {
+        //        pleaseLogin();
+        //    }
+        //    else {
+        //        $("#modalContact").modal("show");
+        //    }
+        //})
 
     </script>
 }
