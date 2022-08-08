@@ -135,7 +135,7 @@ namespace prjIHealth.Areas.Admin.Controllers
                 }
                 if (vModel.fPassword == null) { q.FPassword = utilities.getCryptPWD("jay0513@1388", q.FUserName); }
                 q.FMemberName = vModel.fMemberName;
-                q.FBirthday = vModel.fBirthday;
+                q.FBirthday = vModel.fBirthday.Replace("-", "");
                 q.FAddress = vModel.fAddress;
                 q.FPhone = vModel.fPhone;
                 q.FEmail = vModel.fEmail;
