@@ -99,6 +99,9 @@
                 <p>
                     <a asp-action="List" class="site-btn" style="width:150px">返回列表</a>
                 </p>
+                <p>
+                    <a href="https://www.commonhealth.com.tw/blog/4379" target="_blank" id="btnDemo">DEMO網頁</a>
+                </p>
             </div>
         </form>
     </div>
@@ -173,6 +176,10 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+        $('#btnDemo').click(() => {
+            $('#FTitle').val("素食腎友更容易貧血？如何從植物食材中補鐵？");
+            $('#FNewsCategoryId').val(2);
+        })
 
         function CheckRequired() {
             if ($('#FTitle').val() == '' || $('#FNewsCategoryId').val() == '' /*|| $('#FContent').text() == ''*/) {

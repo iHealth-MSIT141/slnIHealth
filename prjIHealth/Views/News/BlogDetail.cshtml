@@ -127,7 +127,7 @@
                     <img src="~/img/blog/@Model.FThumbnailPath" alt="">
                     <input type="hidden" data-id="@Model.FNewsId" value="@Model.FNewsId" name="NewsId" id="blodNewsId" />
                     <p>
-                        @Html.Raw(@Model.FContent)
+                        @Html.Raw(@Model.FContent.Replace("廣告", ""))
                     </p>
 
                     @*<div id="divReplyPartial">*@

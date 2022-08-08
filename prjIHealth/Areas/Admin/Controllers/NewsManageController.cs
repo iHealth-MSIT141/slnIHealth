@@ -55,14 +55,14 @@ namespace prjIHealth.Areas.Admin.Controllers
                 //int datascount = 0;
                 //datascount = datas.Count();
                 //ViewBag.SearchResult = "您搜尋的資料共(" + datascount + ")";
-                if (datas.Count() == 0)
-                {
-                    datas = db.TNews.Include(t => t.FNewsCategory)
-                   .Include(n => n.FMember)
-                   .Select(t => t)
-                   .OrderBy(t => t.FNewsId);
-                    //ViewBag.SearchResult = "沒有您所蒐尋的資料";
-                }
+                //if (datas.Count() == 0)
+                //{
+                //    datas = db.TNews.Include(t => t.FNewsCategory)
+                //   .Include(n => n.FMember)
+                //   .Select(t => t)
+                //   .OrderBy(t => t.FNewsId);
+                //    //ViewBag.SearchResult = "沒有您所蒐尋的資料";
+                //}
                 //.ToPagedList(page ?? 1, 5);
             }
 

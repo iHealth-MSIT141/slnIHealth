@@ -51,11 +51,14 @@ namespace prjiHealth.Controllers
             var category4Count = db.TNews.Where(t => t.FNewsCategoryId == 4).Count();
             ViewBag.Category4Count = category4Count;
 
+            var countTest = 0;
+
             if (string.IsNullOrEmpty(vModel.txtKeyword))
             {
                 datas = (from t in db.TNews
                          select t).Include(c => c.TNewsComments);
                 onePageOfBlogs = datas.ToPagedList(pageNumber, 6);
+                countTest = datas.ToList().Count();
                 //int datascount = 0;
                 //datascount = datas.Count();
 
@@ -66,16 +69,17 @@ namespace prjiHealth.Controllers
                 datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword))
                     .Include(c => c.TNewsComments);
                 onePageOfBlogs = datas.ToPagedList(pageNumber, 6);
+                countTest = datas.ToList().Count();
                 //int datascount = 0;
                 //datascount = datas.Count();
 
                 //ViewBag.SearchResult = "您搜尋的資料共(" + datascount + ")";
-                if (datas.Count() == 0)
-                {
-                    datas = (from t in db.TNews
-                             select t).Include(c => c.TNewsComments);
-                    onePageOfBlogs = datas.ToPagedList(pageNumber, 6);
-                }
+                //if (datas.Count() == 0)
+                //{
+                //    datas = (from t in db.TNews
+                //             select t).Include(c => c.TNewsComments);
+                //    onePageOfBlogs = datas.ToPagedList(pageNumber, 6);
+                //}
             }
             //List<CNewsViewModel> news = new List<CNewsViewModel>();
             //foreach (var n in datas)
@@ -88,14 +92,22 @@ namespace prjiHealth.Controllers
             //    };
             //    news.Add(newsViewModel);
             //}
+            ViewBag.countTest = countTest;
             ViewBag.onePageOfBlogs = onePageOfBlogs;
             return View(onePageOfBlogs);
         }
 
-
-        public IActionResult BlogCategory(int? id)
+        public IActionResult BlogCategory(int? id, CNewsViewModel vModel, int? page)
         {
             IHealthContext db = new IHealthContext();
+            IEnumerable<TNews> datas = null;
+
+            //string noData = "";
+            var pageNumber = page ?? 1;
+            var news = db.TNews.OrderBy(n => n.FNewsId).ToList();
+            var testNews = db.TNews.Include(t => t.FNewsCategory).ToList();
+            var onePageOfBlogs = news.ToPagedList(pageNumber, 6);
+
             var category0Count = db.TNews.Select(t => t).Count();
             ViewBag.Category0Count = category0Count;
             var category1Count = db.TNews.Where(t => t.FNewsCategoryId == 1).Count();
@@ -122,25 +134,109 @@ namespace prjiHealth.Controllers
             {
                 ViewBag.AddClass4 = "selectedCategory";
             }
-            var selCateID = (from n in db.TNews
-                             join c in db.TNewsCategories
-                             on n.FNewsCategoryId equals c.FNewsCategoryId
-                             where n.FNewsCategoryId == id
-            
-                             select new CNewsViewModel()
-                             {
-                                 FNewsId = n.FNewsId,
-                                 FTitle = n.FTitle,
-                                 FNewsDate = n.FNewsDate,
-                                 FContent = n.FContent,
-                                 FThumbnailPath = n.FThumbnailPath,
-                                 FNewsCategoryId = n.FNewsCategoryId,
-                                 FViews = n.FViews,
-                                 FVideoUrl = n.FVideoUrl,
-                                 FMemberId = n.FMemberId,
-                             }).ToList();
-            return View(selCateID);
+
+            if (string.IsNullOrEmpty(vModel.txtKeyword))
+            {
+                datas = (from t in db.TNews.Where(t => t.FNewsCategoryId == id)
+                         select t).Include(c => c.TNewsComments);
+                onePageOfBlogs = datas.ToPagedList(pageNumber, 6);
+                //int datascount = 0;
+                //datascount = datas.Count();
+
+                //ViewBag.SearchResult = "您搜尋的資料共(" + datascount + ")";
+            }
+            else
+            {
+                datas = db.TNews.Where(t => t.FTitle.Contains(vModel.txtKeyword))
+                    .Include(c => c.TNewsComments);
+                onePageOfBlogs = datas.ToPagedList(pageNumber, 6);
+                //int datascount = 0;
+                //datascount = datas.Count();
+
+                ////ViewBag.SearchResult = "您搜尋的資料共(" + datascount + ")";
+                //if (datas.Count() == 0)
+                //{
+                //    noData = "查無此關鍵字";
+                //    datas = (from t in db.TNews.Where(t => t.FNewsCategoryId == id)
+                //             select t).Include(c => c.TNewsComments);
+                //    onePageOfBlogs = datas.ToPagedList(pageNumber, 6);
+                //}
+            }
+            //List<CNewsViewModel> news = new List<CNewsViewModel>();
+            //foreach (var n in datas)
+            //{
+            //    CNewsViewModel newsViewModel = new CNewsViewModel(_db)
+            //    {
+            //        _news = n,
+            //        //newsCategory = n.FNewsCategory,
+            //        //getMember = n.FMember
+            //    };
+            //    news.Add(newsViewModel);
+            //}
+            //ViewBag.NoData = noData;
+            ViewBag.onePageOfBlogs = onePageOfBlogs;
+            return View(onePageOfBlogs);
         }
+
+        //public IActionResult BlogCategory(int? id)
+        //{
+        //    IHealthContext db = new IHealthContext();
+        //    var category0Count = db.TNews.Select(t => t).Count();
+        //    ViewBag.Category0Count = category0Count;
+        //    var category1Count = db.TNews.Where(t => t.FNewsCategoryId == 1).Count();
+        //    ViewBag.Category1Count = category1Count;
+        //    var category2Count = db.TNews.Where(t => t.FNewsCategoryId == 2).Count();
+        //    ViewBag.Category2Count = category2Count;
+        //    var category3Count = db.TNews.Where(t => t.FNewsCategoryId == 3).Count();
+        //    ViewBag.Category3Count = category3Count;
+        //    var category4Count = db.TNews.Where(t => t.FNewsCategoryId == 4).Count();
+        //    ViewBag.Category4Count = category4Count;
+        //    if (id == 1)
+        //    {
+        //        ViewBag.AddClass1 = "selectedCategory";
+        //    }
+        //    if (id == 2)
+        //    {
+        //        ViewBag.AddClass2 = "selectedCategory";
+        //    }
+        //    if (id == 3)
+        //    {
+        //        ViewBag.AddClass3 = "selectedCategory";
+        //    }
+        //    if (id == 4)
+        //    {
+        //        ViewBag.AddClass4 = "selectedCategory";
+        //    }
+        //    var selCateID = (from n in db.TNews
+        //                     join c in db.TNewsCategories
+        //                     on n.FNewsCategoryId equals c.FNewsCategoryId
+        //                     where n.FNewsCategoryId == id
+        //                     select new TNews()
+        //                     {
+        //                         FNewsId = n.FNewsId,
+        //                         FTitle = n.FTitle,
+        //                         FNewsDate = n.FNewsDate,
+        //                         FContent = n.FContent,
+        //                         FThumbnailPath = n.FThumbnailPath,
+        //                         FNewsCategoryId = n.FNewsCategoryId,
+        //                         FViews = n.FViews,
+        //                         FVideoUrl = n.FVideoUrl,
+        //                         FMemberId = n.FMemberId,
+        //                     }).ToList();
+        //    //List<CNewsViewModel> news = new List<CNewsViewModel>();
+        //    //foreach (var n in datas)
+        //    //{
+        //    //    CNewsViewModel newsViewModel = new CNewsViewModel(_db)
+        //    //    {
+        //    //        _news = n,
+        //    //        //newsCategory = n.FNewsCategory,
+        //    //        //getMember = n.FMember
+        //    //    };
+        //    //    news.Add(newsViewModel);
+        //    //}
+
+        //    return View(selCateID);
+        //}
 
         public IActionResult BlogDetail(int? id)
         {
@@ -192,7 +288,7 @@ namespace prjiHealth.Controllers
         public IActionResult BlogSelectCategoryAPI(int? id)
         {
             IHealthContext db = new IHealthContext();
-            
+
             if (id == null)
             {
                 var selCateID = db.TNews.Include(c => c.TNewsComments).OrderBy(t => t.FNewsId).Select(t => new
@@ -208,7 +304,7 @@ namespace prjiHealth.Controllers
             }
             else
             {
-                var selCateID = db.TNews.Include(c => c.TNewsComments).Where(t => t.FNewsCategoryId == id).OrderBy(t => t.FNewsId).Select(t=>new
+                var selCateID = db.TNews.Include(c => c.TNewsComments).Where(t => t.FNewsCategoryId == id).OrderBy(t => t.FNewsId).Select(t => new
                 {
                     t.FNewsId,
                     t.FThumbnailPath,
@@ -219,7 +315,6 @@ namespace prjiHealth.Controllers
                 });
                 return Json(selCateID);
             }
-            
         }
 
         public IActionResult LoadComment(int id)
