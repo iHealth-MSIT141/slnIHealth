@@ -1,5 +1,5 @@
 ﻿@*@using X.PagedList
-@using X.PagedList.Mvc.Core*@
+    @using X.PagedList.Mvc.Core*@
 @model List<prjiHealth.ViewModels.CNewsViewModel>
 
 @section Styles{
@@ -29,6 +29,7 @@
         table {
             table-layout: auto;
         }
+
         .btnPage {
             font-weight: 600;
             background-color: white;
@@ -55,9 +56,11 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml"; }
 
 <h2 id="title">專欄管理</h2>
-<section class="product spad">
+<hr />
+<section class="product spad" style="padding-top:0">
     <div class="container">
         <div class="container row divTop">
+            <div class="col-1 col-form-label divCreate" id="divCount" style="font-weight:600;">共 @Model.Count 筆</div>
             <div @*style="margin-right:79%"*@ class="col-2 divShow">
                 <a href="~/News/Blog" class="btn btn-light">專欄顯示</a>
             </div>
@@ -67,9 +70,9 @@
                     @Html.TextBox("txtKeyword", ViewBag.Keyword, null, new { @style = "width:220px" })
                     <input type="submit" value="輸入查詢" class="btn btn-success" @*style="width:200px"*@ />}
             </div>
-            <div @*class="col-lg-3 col-md-3 "*@ class="col-4">
+            <div @*class="col-lg-3 col-md-3 "*@ class="col-3">
                 @*<div class="col-sm-7">*@
-                <select name="selectCate" id="selectCate" class="custom-select" style="width:220px">
+                <select name="selectCate" id="selectCate" class="custom-select" style="width:50%">
                     <option value="0" disabled selected hidden>依類別篩選</option>
                     <option value="1">運動健身</option>
                     <option value="2">食物營養</option>
@@ -84,7 +87,6 @@
             <div @*class="col-lg-3 col-md-3"*@ @*style="margin-left:0%"*@ class="col-2 @*divCreate*@">
                 <a asp-action="Create" class="btn btn-success">新增專欄</a>
             </div>
-            <div class="col-1 col-form-label divCreate" id="divCount" style="font-weight:600;flex">共 @Model.Count 筆</div>
         </div>
         @*※※※非會員專區的View的內容請從此處開始※※※*@
         <div class="row">
@@ -109,10 +111,10 @@
                             </th>
                             @*<th style="margin-left:auto">
 
-                    </th>
-                    <th style="margin-left:auto">
-                        影片連結
-                    </th>*@
+                                </th>
+                                <th style="margin-left:auto">
+                                    影片連結
+                                </th>*@
                             <th style="margin-left:auto">
                                 作者名稱
                             </th>
@@ -146,7 +148,7 @@
                                     @*@Html.Raw(@item.FContent.Substring(0, Math.Min(item.FContent.Length, 10)))*@
                                     @*@item.FContent.Substring(0, Math.Min(item.FContent.Length, 10)))*@
                                     @*@Html.DisplayFor(modelItem => item.FNewsContent.Substring(0, 29))*@
-                                   @* @Html.Raw(@item.FContent.Substring(0, Math.Min(item.FContent.Length, 10)))*@
+                                    @* @Html.Raw(@item.FContent.Substring(0, Math.Min(item.FContent.Length, 10)))*@
                                 </td>
                                 <td>
                                     <img src="~/img/blog/@item.FThumbnailPath" width="100" height="80" />
@@ -158,16 +160,16 @@
                                     @*@Html.DisplayFor(modelItem => item.categorry)*@
                                 </td>
                                 @*<td>
-                            @Html.DisplayFor(modelItem => item.FViews)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FVideoUrl)
-                        </td>*@
-                            <td>
-                                @item.news.FMember.FMemberName
-                                @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
-                                @*@Html.DisplayFor(modelItem => item.getName)*@
-                            </td>
+                                        @Html.DisplayFor(modelItem => item.FViews)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FVideoUrl)
+                                    </td>*@
+                                <td>
+                                    @item.news.FMember.FMemberName
+                                    @*@Html.DisplayFor(modelItem => item.FMember.FMemberName)*@
+                                    @*@Html.DisplayFor(modelItem => item.getName)*@
+                                </td>
                                 <td>
                                     @Html.ActionLink("編輯", "Edit", new { id = item.FNewsId }, new { @class = "btn btn-success" })
                                     <br />
@@ -438,23 +440,23 @@
 
     </script>
     @*tr = `<tr>
-                    <td>${fixTitle}</td>
-                    <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixDate}</td>
-                    <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixContent}</td>
-                    <td>
-                        <img src="/img/blog/${datas[i].fThumbnailPath}" width="100" height="80" />
-                    </td>
-                    <td>${datas[i].newsCategory.fCategoryName}</td>
-                    <td>${fixViews}</td>
-                    <td>${fixVideo}</td>
-                    <td>${fixMember}</td>
-                    <td>
-                        <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
-                        <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
-                        <a class="primary-btn" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
-                    </td>
-                </tr>`
-                $(`#ListZone`).append(tr);
-      
+            <td>${fixTitle}</td>
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixDate}</td>
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">${fixContent}</td>
+            <td>
+                <img src="/img/blog/${datas[i].fThumbnailPath}" width="100" height="80" />
+            </td>
+            <td>${datas[i].newsCategory.fCategoryName}</td>
+            <td>${fixViews}</td>
+            <td>${fixVideo}</td>
+            <td>${fixMember}</td>
+            <td>
+                <a class="primary-btn" href="/Admin/NewsManage/Edit/${datas[i].fNewsId}">編輯</a>
+                <a class="primary-btn" href="/Admin/NewsManage/Details/${datas[i].fNewsId}">詳細</a>
+                <a class="primary-btn" href="/Admin/NewsManage/Delete/${datas[i].fNewsId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+            </td>
+        </tr>`
+        $(`#ListZone`).append(tr);
+
     *@
 }
