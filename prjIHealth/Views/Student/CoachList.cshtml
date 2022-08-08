@@ -596,9 +596,17 @@
             $("#spAllSkill").prop("hidden", false);
             $("#spCancelSkill").prop("hidden", true);
         }
+        else {
+            $("#spAllSkill").prop("hidden", true);
+            $("#spCancelSkill").prop("hidden", false);
+        }
         if ($("input[name='fCoachTime[]']:checked").length < 6) {
             $("#spAllTime").prop("hidden", false);
             $("#spCancelTime").prop("hidden", true);
+        }
+        else {
+            $("#spAllTime").prop("hidden", true);
+            $("#spCancelTime").prop("hidden", false);
         }
         ShowFilter();
         GetCoach();
