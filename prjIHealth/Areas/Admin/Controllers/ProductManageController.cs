@@ -26,7 +26,7 @@ namespace prjIHealth.Areas.Admin.Controllers
         }
         public IActionResult ProductList(int? page)
         {
-            var pageNumber = page ?? 1;
+            //var pageNumber = page ?? 1;
             var proid = db.TProducts.OrderBy(n => n.FProductId).ToList();
             //var pro = db.TProducts.Include(p => p.FCategory).ToList();
             //IEnumerable<TProduct> datas = null; */
@@ -44,9 +44,9 @@ namespace prjIHealth.Areas.Admin.Controllers
                             FVisible = p.FVisible,
                             FCoverImage = p.FCoverImage
                         }).ToList();
-            var onePageOfPro = pro.ToPagedList(pageNumber, 10);
-            ViewBag.onePageOfPro = onePageOfPro;
-            return View(onePageOfPro);
+            //var onePageOfPro = pro.ToPagedList(pageNumber, 10);
+            //ViewBag.onePageOfPro = onePageOfPro;
+            return View(pro);
         }
 
         public IActionResult ProductEdit(int? id)

@@ -1,10 +1,12 @@
-﻿@model prjIHealth.Models.TOrder
+﻿@*@model prjIHealth.Models.TOrder*@
+@model IEnumerable<prjIHealth.ViewModels.COrderViewModel>
+
 @{
     ViewData["Title"] = "OrderEdit";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
 
-@section Styles{ 
+@section Styles{
     <style>
         .btn-light {
             background-color: #DFEACE !important;
@@ -33,6 +35,7 @@
             margin-left: 20vw;
             margin-right: 20vw;
         }
+
         .btn-demo {
             background-color: #6c757d;
             color: #fff;
@@ -50,91 +53,93 @@
     <div class="row">
 
         <div style="margin-left:34%">
-            <form asp-action="OrderEdit" onsubmit="return CheckRequired(), CheckRequired2()">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" value="@Html.DisplayFor(modelItem => Model.FOrderId)" id="FOrderId" name="FOrderId" />
-                <input type="hidden" value="@Html.DisplayFor(modelItem => Model.FMemberId)" id="FMemberId" name="FMemberId" />
-                @*<input type="hidden" value=" @Html.DisplayFor(modelItem =>Model.FStatusNumber)" id="FStatusNumber" name="FStatusNumber" />
-                    <input type="hidden" value=" @Html.DisplayFor(modelItem =>Model.FPaymentCategoryId)" id="FPaymentCategoryId" name="FPaymentCategoryId" />*@
+            @foreach (var item in Model)
+            {
+                <form asp-action="OrderEdit" onsubmit="return CheckRequired(), CheckRequired2()">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" value="@Html.DisplayFor(modelItem => item.FOrderId)" id="FOrderId" name="FOrderId" />
+                    <input type="hidden" value="@Html.DisplayFor(modelItem => item.FMemberId)" id="FMemberId" name="FMemberId" />
+                    @*<input type="hidden" value=" @Html.DisplayFor(modelItem =>Model.FStatusNumber)" id="FStatusNumber" name="FStatusNumber" />
+                <input type="hidden" value=" @Html.DisplayFor(modelItem =>Model.FPaymentCategoryId)" id="FPaymentCategoryId" name="FPaymentCategoryId" />*@
 
 
-                <div class="form-group col-md-4">
-                    <div class="row">
-                        <div class="col-md-4"> <label class="control-label" style="font-size:30px;">收件人</label></div>
-                        <div class="col-md-8"><input id="FContact" name="FContact" class="form-control" value="@Html.DisplayFor(modelItem => Model.FContact)" /></div>
+                    <div class="form-group col-md-4">
+                        <div class="row">
+                            <div class="col-md-4"> <label class="control-label" style="font-size:30px;">收件人</label></div>
+                            <div class="col-md-8"><input id="FContact" name="FContact" class="form-control" value="@Html.DisplayFor(modelItem => item.FContact)" /></div>
 
-                    </div>
-                </div>
-
-                <div class="form-group col-md-4">
-                    <div class="row">
-                        <div class="col-md-4"> <label for="FPhone" class="control-label" style="font-size:30px;">電話</label></div>
-                        <div class="col-md-8"> <input name="FPhone" id="FPhone" class="form-control" value="@Html.DisplayFor(modelItem => Model.FPhone)" /></div>
-
-                    </div>
-                </div>
-
-                <div class="form-group col-md-4">
-                    <div class="row">
-                        <div class="col-md-4"> <label for="FAddress" class="control-label" style="font-size:30px;">地址</label></div>
-                        <div class="col-md-8"> <input id="FAddress" name="FAddress" class="form-control" value="@Html.DisplayFor(modelItem => Model.FAddress)" /></div>
-                    </div>
-                </div>
-
-                <div class="form-group col-md-4">
-                    <div class="row">
-                        <div class="col-md-4"><label for="FDate" class="control-label" style="font-size:30px;">日期</label></div>
-                        <div class="col-md-8"> <input name="FDate" id="FDate" class="form-control" value="@Html.DisplayFor(modelItem => Model.FDate)" /></div>
-                        <span for="FDate" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form-group col-md-4">
-                    <div class="row">
-                        <div class="col-md-4"><label for="fPayment.FPaymentCategory" class="control-label" style="font-size:30px;">付款</label></div>
-                        <div class="col-md-8">
-                            <select name="qtype" id="qtype" class="custom-select">
-                                <option value="999" disabled selected hidden>付款方式</option>
-                                <option value="貨到付款">貨到付款</option>
-                                <option value="ATM轉帳">ATM轉帳</option>
-                                <option value="歐付寶">歐付寶</option>
-                            </select>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group col-md-4">
-                    <div class="row">
-                        <div class="col-md-4"> <label for="FRemarks" class="control-label" style="font-size:30px;">備註</label></div>
-                        <div class="col-md-8"> <textarea name="FRemarks" id="FRemarks" class="form-control" value="">@Html.DisplayFor(modelItem => Model.FRemarks)</textarea></div>
-                        <span for="FRemarks" class="text-danger"></span>
-                    </div>
-                </div>
+                    <div class="form-group col-md-4">
+                        <div class="row">
+                            <div class="col-md-4"> <label for="FPhone" class="control-label" style="font-size:30px;">電話</label></div>
+                            <div class="col-md-8"> <input name="FPhone" id="FPhone" class="form-control" value="@Html.DisplayFor(modelItem => item.FPhone)" /></div>
 
-                <div class="form-group col-md-4">
-                    <div class="row">
-                        <div class="col-md-4"><label class="control-label" style="font-size:30px;">狀態</label></div>
-                        <div class="col-md-8">
-                            <select name="qtypee" id="qtypee" class="custom-select">
-                                <option value="999" disabled selected hidden>狀態</option>
-                                <option value="等待賣家確認訂單">等待賣家確認訂單</option>
-                                <option value="已確認訂單，待出貨">已確認訂單，待出貨</option>
-                                <option value="已出貨">已出貨</option>
-                                <option value="待收貨">待收貨</option>
-                                <option value="交易完成">交易完成</option>
-                            </select>
                         </div>
                     </div>
-                </div>
-                <div id="AddFPayment"></div>
-                <div id="AddStatus"></div>
-                <div class="form-group col-md-4">
-                    <input type="submit" class="site-btn btn btn-success" value="確定修改" />
-                    <a asp-action="OrderList" class="site-btn btn btn-demo">返回清單</a>
-                </div>
-            </form>
-            @*}*@
-        </div>     
+
+                    <div class="form-group col-md-4">
+                        <div class="row">
+                            <div class="col-md-4"> <label for="FAddress" class="control-label" style="font-size:30px;">地址</label></div>
+                            <div class="col-md-8"> <input id="FAddress" name="FAddress" class="form-control" value="@Html.DisplayFor(modelItem => item.FAddress)" /></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <div class="row">
+                            <div class="col-md-4"><label for="FDate" class="control-label" style="font-size:30px;">日期</label></div>
+                            <div class="col-md-8"> <input name="FDate" id="FDate" class="form-control" value="@Html.DisplayFor(modelItem => item.FDate)" /></div>
+                            <span for="FDate" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <div class="row">
+                            <div class="col-md-4"><label for="fPayment.FPaymentCategory" class="control-label" style="font-size:30px;">付款</label></div>
+                            <div class="col-md-8">
+                                <select name="FPaymentCategoryId" id="FPaymentCategoryId" class="custom-select" required>
+                                    <option value="" disabled selected hidden>@Html.DisplayFor(modelItem => item.fPayment.FPaymentCategory)</option>
+                                    <option value="1">貨到付款</option>
+                                    <option value="2">ATM轉帳</option>
+                                    <option value="3">歐付寶</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <div class="row">
+                            <div class="col-md-4"> <label for="FRemarks" class="control-label" style="font-size:30px;">備註</label></div>
+                            <div class="col-md-8"> <textarea name="FRemarks" id="FRemarks" class="form-control" value="">@Html.DisplayFor(modelItem => item.FRemarks)</textarea></div>
+                            <span for="FRemarks" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <div class="row">
+                            <div class="col-md-4"><label class="control-label" style="font-size:30px;">狀態</label></div>
+                            <div class="col-md-8">
+                                <select name="FStatusNumber" id="FStatusNumber" class="custom-select" required>
+                                    <option value="" disabled selected hidden>@Html.DisplayFor(modelItem => item.fstatus.FStatus)</option>
+                                    <option value="70">等待賣家確認訂單</option>
+                                    <option value="71">已確認訂單，待出貨</option>
+                                    <option value="72">已出貨</option>
+                                    <option value="73">待收貨</option>
+                                    <option value="74">交易完成</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="AddFPayment"></div>
+                    <div id="AddStatus"></div>
+                    <div class="form-group col-md-4">
+                        <input type="submit" class="site-btn btn btn-success" value="確定修改" />
+                        <a asp-action="OrderList" class="site-btn btn btn-demo">返回清單</a>
+                    </div>
+                </form>
+            }
+            </div>
     </div>
 </div>
 
@@ -142,7 +147,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>    
+    <script>
         let FPaymentCategoryId = 0;
         var input = '';
         function SelectedPaymentCategory() {          /*判斷所選類別對應的ID*/
@@ -179,7 +184,7 @@
         $('#qtypee').on("change", SelectedStatus)
         //======================================================================================================
         function CheckRequired() {
-            if ($('#FStatusNumber').val() == null|| $('#FPaymentCategoryId').val() == null) {
+            if ($('#FStatusNumber').val() == null || $('#FPaymentCategoryId').val() == null) {
                 SwalGreen.fire({
                     title: '必填欄位未選擇',
                     text: false,
