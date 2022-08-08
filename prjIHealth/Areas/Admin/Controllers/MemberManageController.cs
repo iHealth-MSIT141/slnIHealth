@@ -80,8 +80,10 @@ namespace prjIHealth.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FMemberId,FMemberName,FPassword,FBirthday,FGender,FPicturePath,FUserName,FAddress,FPhone,FEmail,FRegisterDate,FAuthorityId,FDisabled,FRemarks")] TMember tMember)
         {
+            var regEx = new Regex(@"[0-9 ~!@#$%^&*()<>?`;'|:,.]+");
+            var m = regEx.IsMatch(tMember.FMemberName);
             int n = int.Parse(tMember.FBirthday.Substring(0, 4));
-            if (ModelState.IsValid && n<2013 && n>1930 )
+            if (ModelState.IsValid && n<2013 && n>1930 && m==false )
             {
                 var password = utilities.RandomString(8);
                 var DateAndTime = DateTime.Now.ToString("yyyy-MM-dd: HH:mm:ss");
