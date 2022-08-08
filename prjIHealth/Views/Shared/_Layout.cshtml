@@ -739,7 +739,6 @@
         $('#inpRegisterBirthday').on('blur', () =>
         {
             var getDate = $('#inpRegisterBirthday').val();
-            //if ((int)getDate >= (int)registerD-10) { alert("必須大於十歳才可註冊") };
             getYear = getDate.substring(0, 4);
             getMonth = getDate.substring(5, 7);
             getDay= getDate.substring(8,10);
@@ -802,14 +801,14 @@
             };
         });
 
-        //$('#inpRegisterMemberName').on('blur', () =>
-        //{
+        $('#inpRegisterMemberName').on('blur', () =>
+        {
 
-        //    var regEx = /^(?=.*[\u4E00-\u9FA5]).{2,12}$/;
-        //    var resultReg = regEx.test($('#inpRegisterPassword').val());
-        //    if (resultReg) { $('#spanRegisterMemberName').text("符合要求,請繼續").css("color", "blue"); } else
-        //    { $('#spanRegisterMemberName').text("格式不對,請重新輸入").css("color", "red"); };
-        //});
+            var regEx = /^[\u4E00-\u9FFF a-zA-Z]{2,12}$/;
+            var resultReg = regEx.test($('#inpRegisterMemberName').val());
+            if (resultReg) { $('#spanRegisterMemberName').text("符合要求,請繼續").css("color", "blue"); } else
+            { $('#spanRegisterMemberName').text("格式不對,請重新輸入").css("color", "red"); };
+        });
         $('#inpRegisterPassword').on('blur', () =>
         {
             var regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@@#$%^&*]).{6,12}$/;
@@ -857,13 +856,14 @@
 
                     let userName = $("#inpRegisterUserName").val();
                     if (data == "empty") {
-                        alert("請注意必填欄位不可空白或日期格式錯誤, 請重新填入");
+                        alert("請注意必填欄位不可空白或日期,姓名格式錯誤, 請重新填入");
                     } else if (data == "user") {
                         alert(`${userName}:此帳號已有人使用`)
                     } else if (data == "FCerror") {
                         alert("密碼不一致");
                     } else {
                         $("#inpRegisterUserName").val("");
+                        $("#inpRegisterMemberName").val("");
                         $("#inpRegisterPassword").val("");
                         $("#inpRegisterConfirmPassword").val("");
                         $("#inpRegisterEmail").val("");

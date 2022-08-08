@@ -39,7 +39,8 @@
                     <label asp-for="FMemberName" class="control-label"></label>
                 </div>
                 <div class="col-md-7">
-                    <input asp-for="FMemberName" class="form-control" autocomplete="off" />
+                    <input asp-for="FMemberName" class="form-control" autocomplete="off" id="inpCreateMemberName" />
+                    <span id="spanCreateMemberName"></span>
                 </div>
                 <span asp-validation-for="FMemberName" class="text-danger"></span>
             </div>
@@ -181,7 +182,6 @@
     $('#inpBirthdayBack').on('blur', () =>
     {
         var getDate = $('#inpBirthdayBack').val();
-        //if ((int)getDate >= (int)registerD-10) { alert("必須大於十歳才可註冊") };
         getYear = getDate.substring(0, 4);
         getMonth = getDate.substring(5, 7);
         getDay = getDate.substring(8, 10);
@@ -227,6 +227,14 @@
         if (resultReg) { $('#spanRegEmail').text("符合要求,請繼續").css("color", "blue"); } else
         { $('#spanRegEmail').text("格式不對,請重新輸入").css("color", "red"); };
     });
+    //======================================================================================
+    $('#inpCreateMemberName').on('blur', () =>
+    {
+        var regEx = /^[\u4E00-\u9FFF a-zA-Z]{2,12}$/;
+        var resultReg = regEx.test($('#inpCreateMemberName').val());
+        if (resultReg) { $('#spanCreateMemberName').text("符合要求,請繼續").css("color", "blue"); } else
+        { $('#spanCreateMemberName').text("格式不對,請重新輸入").css("color", "red"); };
+    });
     //==================================phone regex verification=============================
     $('#inpRegisterPhone').on('blur', () =>
     {
@@ -250,7 +258,7 @@
                 let userName = $("#inpRegisterUserName").val();
                 if (data == "false")
                 {
-                    alert("請注意必填欄位不可空白或日期格式錯誤, 請重新填入");
+                    alert("請注意必填欄位不可空白或姓名或日期格式錯誤, 請重新填入");
           
                 } else
                 {
