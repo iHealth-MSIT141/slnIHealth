@@ -114,7 +114,7 @@ namespace prjIHealth.Controllers
                     q.FPicturePath = pName;
                 }
                 q.FMemberName = vModel.fMemberName;
-                q.FBirthday = vModel.fBirthday;
+                q.FBirthday = vModel.fBirthday.Replace("-","");
                 q.FAddress = vModel.fAddress;
                 q.FPhone = vModel.fPhone;
                 q.FEmail = vModel.fEmail;
@@ -127,9 +127,9 @@ namespace prjIHealth.Controllers
                     string loginSession = JsonSerializer.Serialize(q);
                     HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                 }
-                return RedirectToAction("Edit", "Member");
+                return RedirectToAction("Index", "Member");
             }
-            else { return RedirectToAction("Edit", "Member"); }
+            else { return RedirectToAction("Index", "Member"); }
         }
         // GET: MemberRegister
         public IActionResult Register()
