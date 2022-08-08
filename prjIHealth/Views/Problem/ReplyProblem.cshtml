@@ -1,4 +1,11 @@
 ﻿@model prjIHealth.Models.TProblem
+@using prjIHealth.Models;
+@using prjiHealth.Models;
+@using prjIHealth.ViewModels;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Mvc;
+@using System.Linq;
+@using System.Text.Json;
 @{
     ViewData["Title"] = "ReplyProblem";
 }
@@ -99,19 +106,43 @@
                                     <option value="其他建議相關">其他建議相關(Other related suggestions)</option>
                                 </select>
                             </div>
-
+                            @{
+                                //如果有登入，自動帶入信箱及電話
+                                string LoginbuttonValue = "登入";
+                                int loginId = 0;
+                                TMember loginMember = null;
+                                string loginmemberemail = "";
+                                string loginphone = "";
+                                if (Context.Session.Keys.Contains(CDictionary.SK_Logined_User))
+                                {
+                                    string logJson = Context.Session.GetString(CDictionary.SK_Logined_User);
+                                    loginMember = JsonSerializer.Deserialize<TMember>(logJson);
+                                    LoginbuttonValue = loginMember.FMemberName;
+                                    loginId = loginMember.FMemberId;
+                                    IHealthContext db = new IHealthContext();
+                                    var memberinfo = (from m in db.TMembers
+                                                      where m.FMemberId == loginId
+                                                      select new
+                                                      {
+                                                          phone=m.FPhone,
+                                                          email=m.FEmail
+                                                      }).FirstOrDefault();
+                                    loginmemberemail = memberinfo.email;
+                                    loginphone = memberinfo.phone;
+                                };
+                            }
                             <div class="col-lg-6 col-md-6">
-                                <input asp-for="FContactPhone" type="text" placeholder="連絡電話" id="FContactPhone">
+                                <input asp-for="FContactPhone" type="text" placeholder="連絡電話" id="FContactPhone" value="@loginphone">
                             </div>
                             <div class="col-lg-6 col-md-6">
-                                <input asp-for="FEmail" type="text" placeholder="Email信箱" id="FEmail">
+                                <input asp-for="FEmail" type="text" placeholder="Email信箱" id="FEmail" value="@loginmemberemail">
                             </div>
 
                             <div class="col-lg-6 col-md-6">
                                 <input asp-for="FOrderId" type="text" placeholder="訂單編號" id="FOrderId">
                             </div>
                             @*隱藏寫入資料庫不可NULL欄位，時間，處理狀態，會員ID，問題類別
-                會員ID之後應改用session傳遞
+                                會員ID之後應改用session傳遞
                             *@
                             <div id="AddProblemCategoryId"></div>
                             <input type="hidden" asp-for="FProblemTime" value=@ViewBag.Time name="FProblemTime" />
@@ -120,13 +151,13 @@
 
                             <div class="col-lg-12 text-center">
                                 <textarea asp-for="FProblemContent" placeholder="問題描述" id="FProblemContent"></textarea>
-                                <input type="file" id="photo" name="photo" style="padding-top:10px" class="form-control" accept="image/*">
+                                <input type="file" id="photo" name="photo" style="padding-top:10px" class="form-control" accept="image/*" onchange="checkfile(this);">
                                 <div id="uploadpic" style="float:left;display:none">
-                                <b class="bTopic">預覽縮圖</b>
-                                <img id="imgPreivew" style="width:150px" />
+                                    <b class="bTopic">預覽縮圖</b>
+                                    <img id="imgPreivew" style="width:150px" />
                                 </div>
                                 <div style="float:right">
-                                <button type="submit" class="site-btn" id="submitproblem">送出訊息</button>
+                                    <button type="submit" class="site-btn" id="submitproblem">送出訊息</button>
                                 </div>
                             </div>
                         </div>
@@ -147,7 +178,7 @@
     @*防止同時未填寫電話及EMAIL*@
     @if (ViewBag.Message_EP != null)
     {
-<script type="text/javascript">
+        <script type="text/javascript">
             window.onload = function () {
                 SwalGreen.fire({
                     title: '@ViewBag.Message_EP',
@@ -158,12 +189,12 @@
                 })
             };
 
-</script>
+        </script>
     }
     @*防止未填寫問題內容*@
     @if (ViewBag.Message_PC != null)
     {
-<script type="text/javascript">
+        <script type="text/javascript">
             window.onload = function () {
             SwalGreen.fire({
                     title: '@ViewBag.Message_PC',
@@ -173,12 +204,12 @@
                     showCloseButton: true
                 })
         };
-</script>
+        </script>
     }
     @*防止未選擇問題類別*@
     @if (ViewBag.Message_PCID != null)
     {
-<script type="text/javascript">
+        <script type="text/javascript">
         window.onload = function () {
             SwalGreen.fire({
                     title: '@ViewBag.Message_PCID',
@@ -188,12 +219,12 @@
                     showCloseButton: true
                 })
         };
-</script>
+        </script>
     }
     @*送出後提示成功並將輸入欄位清空*@
     @if (ViewBag.Message_SUCCESS != null)
     {
-<script type="text/javascript">
+        <script type="text/javascript">
         window.onload = function () {
             function ReplySuccess() {
                 SwalGreen.fire({
@@ -213,12 +244,30 @@
             ReplySuccess();
             ResetView();
         }
-</script>
+        </script>
     }
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-
+    @*限制圖片上傳類型*@
+    <script type="text/javascript" language="javascript">
+        function checkfile(sender) {
+            var validExts = new Array(".jpg", ".png", ".bmp", ".png", ".jpeg", ".gif");
+            var fileExt = sender.value;
+            fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+            if (validExts.indexOf(fileExt) < 0) {
+                SwalGreen.fire({
+                    title: '檔案類型錯誤，僅接受的副檔名有' + validExts.toString(),
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
+                sender.value = null;
+                return false;
+            }
+            else return true;
+        }
+    </script>
     <script>
         let ProblemCategoryID = 0;
         var input = '';
@@ -252,7 +301,7 @@
         $('#demo').on('click', demo)
         function demo() {
             $('#FContactPhone').val("0944678566").css("color", "black")
-            $('#FEmail').val("jay0513@gmail.com").css("color", "black")
+            $('#FEmail').val("charleschou54138@gmail.com").css("color", "black")
             $('#FProblemContent').val("請問有賣金牌乳清蛋白香草冰淇淋口味嗎，像圖片的那種")
         }
         //預覽圖片jquery
@@ -273,8 +322,8 @@
     </script>
 
     @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
 }
 
 

@@ -50,7 +50,7 @@
     <div class="row">
 
         <div style="margin-left:34%">
-            <form asp-action="OrderEdit" onsubmit="return CheckRequired()">
+            <form asp-action="OrderEdit" onsubmit="return CheckRequired(), CheckRequired2()">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" value="@Html.DisplayFor(modelItem => Model.FOrderId)" id="FOrderId" name="FOrderId" />
                 <input type="hidden" value="@Html.DisplayFor(modelItem => Model.FMemberId)" id="FMemberId" name="FMemberId" />
@@ -181,7 +181,22 @@
         function CheckRequired() {
             if ($('#FStatusNumber').val() == null|| $('#FPaymentCategoryId').val() == null) {
                 SwalGreen.fire({
-                    title: '必填欄位未填寫',
+                    title: '必填欄位未選擇',
+                    text: false,
+                    icon: 'warning',
+                    confirmButtonText: '確認',
+                    showCloseButton: true
+                })
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function CheckRequired2() {
+            if ($('#FContact').val() == '' || $('#FPhone').val() == '' || $('#FAddress').val() == '' || $('#FDate').val() == '') {
+                SwalGreen.fire({
+                    title: '必填欄位不能空白',
                     text: false,
                     icon: 'warning',
                     confirmButtonText: '確認',
