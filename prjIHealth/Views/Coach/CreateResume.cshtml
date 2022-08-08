@@ -265,7 +265,7 @@
                                                     foreach (var q in db.TSkills.ToList().Take(5))
                                                     {
 
-                                                        <input type="checkbox" value="@q.FSkillId" name="fCoachSkill[]" /><label>&nbsp;@q.FSkillName</label><br />
+                                                        <input type="checkbox" value="@q.FSkillId" name="fCoachSkill[]" id="skill_@q.FSkillId"/><label>&nbsp;@q.FSkillName</label><br />
                                                     }
                                                 }
                                             </div>
@@ -273,7 +273,7 @@
                                                 @{
                                                     foreach (var q in db.TSkills.ToList().TakeLast(4))
                                                     {
-                                                        <input type="checkbox" value="@q.FSkillId" name="fCoachSkill[]" /><label>&nbsp;@q.FSkillName</label><br />
+                                                        <input type="checkbox" value="@q.FSkillId" name="fCoachSkill[]" id="skill_@q.FSkillId"/><label>&nbsp;@q.FSkillName</label><br />
                                                     }
                                                 }
                                             </div>
@@ -287,7 +287,7 @@
                                                     foreach (var q in db.TAvailableTimes.ToList().Take(3))
                                                     {
 
-                                                        <input type="checkbox" value="@q.FAvailableTimeId" name="fCoachTime[]" /><label>&nbsp;@q.FAvailableTime</label><br />
+                                                        <input type="checkbox" value="@q.FAvailableTimeId" name="fCoachTime[]" id="time_@q.FAvailableTimeId"/><label>&nbsp;@q.FAvailableTime</label><br />
                                                     }
                                                 }
                                             </div>
@@ -296,7 +296,7 @@
                                                     foreach (var q in db.TAvailableTimes.ToList().Skip(3).Take(3))
                                                     {
 
-                                                        <input type="checkbox" value="@q.FAvailableTimeId" name="fCoachTime[]" /><label>&nbsp;@q.FAvailableTime</label><br />
+                                                        <input type="checkbox" value="@q.FAvailableTimeId" name="fCoachTime[]" id="time_@q.FAvailableTimeId"/><label>&nbsp;@q.FAvailableTime</label><br />
                                                     }
                                                 }
                                             </div>
@@ -391,11 +391,17 @@
 
         //Demo1
         $("#btnDemo1").click(() => {
-            $("#inName").val("Jay");
+            $("#inName").val("邱小文");
             $("#selCity").val("1");
+            $("#skill_1").prop("checked", true);
+            $("#skill_2").prop("checked", true);
+            $("#skill_4").prop("checked", true);
+            $("#time_3").prop("checked", true);
+            $("#time_4").prop("checked", true);
+            $("#time_5").prop("checked", true);
             $("#exp1").val("107年青年盃古典健美賽-新秀古典172+");
             $("#lic1").val("中華民國健美協會C級體適能");
-            $("#textDes").val("學員們好我是Jay教練 你們覺得從98公斤體脂36的胖子變成照片中的樣子需要多久時間呢 大約兩年半 增肌減脂的過程非常辛苦 摸索之餘也請教了一些教練的觀念以及訓練的技巧 才能變成今天這樣 不是最頂尖 但相信Jay教練會是你們最適合的選擇 相信各位學員跟著教練一起成長 一定會得到意想不到的收穫！");
+            $("#textDes").val("學員們好我是邱小文教練 你們覺得從98公斤體脂36的胖子變成照片中的樣子需要多久時間呢 大約兩年半 增肌減脂的過程非常辛苦 摸索之餘也請教了一些教練的觀念以及訓練的技巧 才能變成今天這樣 不是最頂尖 但相信Jay教練會是你們最適合的選擇 相信各位學員跟著教練一起成長 一定會得到意想不到的收穫！");
             $("#textSlogan").val("健身教學4年多，我非常注重學員們有沒有達到他們目標的體態和健康，所以每個人都會客製化諮詢，如果你也很認真想要改變，歡迎私訊我聊聊喔");
         })
         //Demo2(新增欄位後)
