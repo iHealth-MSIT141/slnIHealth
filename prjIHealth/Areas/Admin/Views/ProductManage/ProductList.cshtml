@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<prjIHealth.ViewModels.CProductViewModel>
 @*@model IEnumerable<prjIHealth.Models.TProduct>*@
-@using X.PagedList.Mvc.Core
-@using X.PagedList
+
 
 @{
     ViewData["Title"] = "ProductList";
@@ -115,7 +114,7 @@
             <div class="row">
                 <div class="col-lg-11">                  
                     <div @*class="product__pagination"*@ style="text-align:center" >
-                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfPro, page => Url.Action("ProductList", new { page }))
+                       
                     </div>
                 </div>
             </div>
@@ -136,8 +135,15 @@
             let tr = '';           
             for (i = 0; i < datas.length; i++) {
                 let fixdesr = '';
+                let fixvisible = '';
                 if (datas[i].fDescription != null) {
                     fixdesr = datas[i].fDescription.substr(0,10);
+                }
+                if (datas[i].fVisible == false) {
+                    fixvisible = `<input class="check-box" disabled="disabled" type="checkbox">`;
+                }
+                else {
+                    fixvisible = `<input checked="checked" class="check-box" disabled="disabled" type="checkbox">`;
                 }
 
                 tr = `<tr>
@@ -156,7 +162,7 @@
                               ${fixdesr}
                             </td>
                             <td style="margin-left:auto; vertical-align: middle;">
-                               ${datas[i].fVisible}
+                             ${fixvisible}
                             </td>
                             <td style="margin-left:auto;vertical-align: middle;">
                                <a class="btn btn-light" href="/Admin/ProductManage/ProductEdit/${datas[i].fProductId}">產品修改</a>                             

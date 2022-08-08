@@ -41,9 +41,18 @@
         <div class="row">
 
             <div style="margin-left:34%">
-                @foreach (var item in Model)
-                {
-
+                @{ 
+                    string vis ="";
+                    @foreach (var item in Model)
+                    {
+                        if (item.FVisible == true)
+                        {
+                            vis = "上架";
+                        }
+                        else
+                        {
+                            vis = "下架";
+                        }
                     <form asp-action="ProductEdit" enctype="multipart/form-data" onsubmit="return CheckCategory(),Checkproduct()">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" id="FProductId" name="FProductId" value="@Html.DisplayFor(modelItem => item.FProductId)" />
@@ -57,7 +66,7 @@
                             @*<input type="hidden" value=" @Html.DisplayFor(modelItem => item.FCategoryId)" id="FCategoryId" name="FCategoryId" />*@
                             <label for="FCategoryId" class="control-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => item.FCategoryId)</label>
                             <select name="FCategoryId" id="FCategoryId" class="custom-select" style="text-align:center;" required >
-                                <option value="999" disabled selected hidden>@Html.DisplayFor(modelItem => item.FCategoryName.FCategoryName)</option>
+                                <option value="" disabled selected hidden>@Html.DisplayFor(modelItem => item.FCategoryName.FCategoryName)</option>
                                 <option value="1">乳清蛋白</option>
                                 <option value="2">健康食品</option>
                                 <option value="3">運動用品</option>
@@ -79,7 +88,7 @@
                         <div class="form-group form-check col-md-4">
                             <label class="form-label" style="font-size:30px;">@Html.DisplayNameFor(modelItem => item.FVisible)</label>
                             <select name="qtypee" id="qtypee" class="custom-select" style="text-align:center;">
-                                <option value="999" disabled selected hidden>上/下架</option>
+                                <option value="999" disabled selected hidden>@vis</option>
                                 <option value="上架">上架</option>
                                 <option value="下架">下架</option>
                             </select>
@@ -97,7 +106,8 @@
                             <a asp-action="ProductList" class="btn btn-secondary">返回清單</a>
                         </div>
                     </form>
-                }            
+                }    
+                    }       
             </div>
         </div>
     </div>
