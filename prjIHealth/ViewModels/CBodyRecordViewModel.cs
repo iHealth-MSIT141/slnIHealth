@@ -32,7 +32,8 @@ namespace prjiHealth.ViewModels
                 if (FMemberId != null)
                 {
                     var theMember = db.TMembers.FirstOrDefault(m => m.FMemberId == FMemberId);
-                    string theBirthday = $"{theMember.FBirthday.Substring(0, 4)}/{theMember.FBirthday.Substring(4, 2)}/{theMember.FBirthday.Substring(6, 2)}";
+                    var fBirthday = theMember.FBirthday.Trim().Replace("-", "");
+                    string theBirthday = $"{fBirthday.Substring(0, 4)}/{fBirthday.Substring(4, 2)}/{fBirthday.Substring(6, 2)}";
                     DateTime bday = DateTime.Parse(theBirthday);
                     return (bday > DateTime.Today.AddYears(-(DateTime.Today.Year - bday.Year))) ? DateTime.Today.Year - bday.Year - 1 : DateTime.Today.Year - bday.Year;
                 }

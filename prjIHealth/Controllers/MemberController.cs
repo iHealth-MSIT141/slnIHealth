@@ -107,12 +107,15 @@ namespace prjIHealth.Controllers
                 q.FRemarks = vModel.fRemarks;
                 q.FPhone = vModel.fPhone;
                 _context.SaveChanges();
+                if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
+                {
+                    HttpContext.Session.Remove(CDictionary.SK_Logined_User);
+                    string loginSession = JsonSerializer.Serialize(q);
+                    HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
+                }
                 return RedirectToAction("Edit", "Member");
             }
             else { return RedirectToAction("Edit", "Member");}
-        
-           
-            
         }
         // GET: MemberRegister
         public IActionResult Register()
