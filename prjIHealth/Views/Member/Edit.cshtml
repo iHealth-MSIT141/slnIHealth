@@ -110,7 +110,9 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
+
                 <form asp-action="Edit" asp-controller="Member" enctype="multipart/form-data" id="editForm" name="EditForm">
+
                     <div class="container">
                         <div class="row">
                             <div class="col-4 reveal_b1">
@@ -151,11 +153,10 @@
                                 </div>
                                 <div class="form-group row justify-content-center">
                                     <div class="col-md-3">
-                                        <label asp-for="FMemberName" class="control-label" ></label>
+                                        <label asp-for="FMemberName" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="FMemberName" class="form-control" id="inpEditMemberName" />
-                                        <span id="spanEditMemberName"></span>
+                                        <input asp-for="FMemberName" class="form-control" />
                                     </div>
                                     <span asp-validation-for="FMemberName" class="text-danger"></span>
                                 </div>
@@ -168,8 +169,7 @@
                                         <label asp-for="FBirthday" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input id="inpEditBirthday" asp-for="FBirthday" class="form-control" >
-                                        <span id="spanEditBirthday"></span>
+                                        <input type="date" asp-for="FBirthday" class="form-control" value="@fBday" max="@maxDate" />
                                     </div>
                                     <span asp-validation-for="FBirthday" class="text-danger"></span>
                                 </div>
@@ -214,7 +214,7 @@
                                         <button type="button" class="btn btn-light" data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
                                             <i class="fa fa-key"></i> 重設密碼
                                         </button>
-                                        <input type="button" id="inpEditMember" value="會員資料修改" class=" btn btn-success" />
+                                        <input type="submit" value="會員資料修改" class=" btn btn-success" />
                                     @*</div>*@
                                 </div>
                             </div>
@@ -238,6 +238,7 @@
         {
             document.getElementById('imgShow').src = window.URL.createObjectURL(this.files[0]);
         });
+
         $('#inpEditMemberName').on('blur', () =>
         {
             var regEx = /^[\u4E00-\u9FFF a-zA-Z]{2,12}$/;
@@ -316,6 +317,7 @@
 
 
         });
+
     </script>
 }
 

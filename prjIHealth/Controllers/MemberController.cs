@@ -17,7 +17,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using prjIHealth.ViewModels;
 using X.PagedList;
-using System.Text.RegularExpressions;
 
 namespace prjIHealth.Controllers
 {
@@ -109,43 +108,38 @@ namespace prjIHealth.Controllers
             //var photo = Request.Form.Files;
             if (q != null)
             {
+
                 var regEx = new Regex(@"[0-9 ~!@#$%^&*()<>?`;'|:,.]+");
                 var m = regEx.IsMatch(vModel.fMemberName);
             
                 if (m == false)
                 {    if (vModel.photo != null)
+
+                if (vModel.photo != null)
+
                 {
                     string pName = Guid.NewGuid().ToString() + ".jpg";
                         vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
                     q.FPicturePath = pName;
                 }
-                    q.FMemberName = vModel.fMemberName;
-                    q.FBirthday = vModel.fBirthday;
-                    q.FAddress = vModel.fAddress;
-                    q.FPhone = vModel.fPhone;
-                    q.FEmail = vModel.fEmail;
-                    q.FRemarks = vModel.fRemarks;
-                    q.FPhone = vModel.fPhone;
-                    _context.SaveChanges();
-                    if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
-                    {
-                        HttpContext.Session.Remove(CDictionary.SK_Logined_User);
-                        string loginSession = JsonSerializer.Serialize(q);
-                        HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
-                    }
-                    return Content("true", "text/plain", System.Text.Encoding.UTF8);
-           
-                }
-                else
+
+                q.FMemberName = vModel.fMemberName;
+                q.FBirthday = vModel.fBirthday.Replace("-","");
+                q.FAddress = vModel.fAddress;
+                q.FPhone = vModel.fPhone;
+                q.FEmail = vModel.fEmail;
+                q.FRemarks = vModel.fRemarks;
+                q.FPhone = vModel.fPhone;
+                _context.SaveChanges();
+                if (HttpContext.Session.Keys.Contains(CDictionary.SK_Logined_User))
                 {
-                    return Content("regFalse", "text/plain", System.Text.Encoding.UTF8);
+                    HttpContext.Session.Remove(CDictionary.SK_Logined_User);
+                    string loginSession = JsonSerializer.Serialize(q);
+                    HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                 }
+                return RedirectToAction("Index", "Member");
             }
-            else
-            {
-                return Content("false", "text/plain", System.Text.Encoding.UTF8);
-            };
-           
+            else { return RedirectToAction("Index", "Member"); }
         }
         // GET: MemberRegister
         public IActionResult Register()
@@ -155,13 +149,9 @@ namespace prjIHealth.Controllers
         [HttpPost]
         public IActionResult Register(CLoginViewModel vModel, TMember tm)
         {
-
-            var regEx = new Regex(@"[0-9 ~!@#$%^&*()<>?`;'|:,.]+");
-            var m = regEx.IsMatch(vModel.fMemberName);
-            int n = int.Parse(vModel.fBirthday.Substring(0, 4));
-            if (vModel.fPassword == null || vModel.fUserName == null || vModel.fEmail == null || n > 2012 || n < 1930 || vModel.fBirthday == null || m == true)
+          int n = int.Parse(vModel.fBirthday.Substring(0, 4));
+            if (vModel.fPassword == null || vModel.fUserName == null || vModel.fEmail == null || n>2012 || n<1930 || vModel.fBirthday==null)
             {
-
                 return Content("empty", "text/plain", System.Text.Encoding.UTF8);
             }
             else if (vModel.fPassword == vModel.confirmPassword)
