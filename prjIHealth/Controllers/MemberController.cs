@@ -106,18 +106,19 @@ namespace prjIHealth.Controllers
         public IActionResult Edit(CLoginViewModel vModel)
         {
             var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == vModel.fMemberId);
+            //var photo = Request.Form.Files;
             if (q != null)
             {
                 var regEx = new Regex(@"[0-9 ~!@#$%^&*()<>?`;'|:,.]+");
                 var m = regEx.IsMatch(vModel.fMemberName);
-                if (vModel.photo != null)
+            
+                if (m == false)
+                {    if (vModel.photo != null)
                 {
                     string pName = Guid.NewGuid().ToString() + ".jpg";
-                    vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
+                        vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
                     q.FPicturePath = pName;
                 }
-                if (m == false)
-                {
                     q.FMemberName = vModel.fMemberName;
                     q.FBirthday = vModel.fBirthday;
                     q.FAddress = vModel.fAddress;
@@ -132,11 +133,13 @@ namespace prjIHealth.Controllers
                         string loginSession = JsonSerializer.Serialize(q);
                         HttpContext.Session.SetString(CDictionary.SK_Logined_User, loginSession);
                     }
-                    //return RedirectToAction("index", "Member");
                     return Content("true", "text/plain", System.Text.Encoding.UTF8);
+           
                 }
-                else { return Content("regFalse", "text/plain", System.Text.Encoding.UTF8); }
-
+                else
+                {
+                    return Content("regFalse", "text/plain", System.Text.Encoding.UTF8);
+                }
             }
             else
             {

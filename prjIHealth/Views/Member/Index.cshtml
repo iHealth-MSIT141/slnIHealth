@@ -124,13 +124,13 @@
                                         <img src="~/img/member/@Model.FPicturePath" onerror="this.src='/img/member/defaultImage.jpg'" alt=" " class="rounded-circle img-responsive  border border-ligt" id="imgShow" />
                                     </div>
                                 </div>
-                                <div class="form-group  justify-content-center">
+                                @*<div class="form-group  justify-content-center">
                                     <div class="col offset-md-2">
                                         <label id="lblPicture" class="col-form-label col-form-label-lg">
                                             <input id="imgLoad" type="file" name="photo" class="form-control" style="display:none;" readonly="readonly"/>
                                         </label>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                             <div class="col-8 reveal_b2">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -225,20 +225,11 @@
 
 @section Scripts{
     <script>
-        $('#lblPicture').mouseover(function ()
-        {
-            $(this).css('cursor', 'pointer');
-        });
-        $()
-        document.querySelector('#imgLoad').addEventListener("change", function ()
-        {
-            document.getElementById('imgShow').src = window.URL.createObjectURL(this.files[0]);
-        });
-
+ 
         $('#inpMemberEdit').on('click', (event) =>
         {
             event.preventDefault();
-            window.location.href = "/member/edit";            });
-        //});
+            window.location.href = "/member/edit";  });
+   
     </script>
     }

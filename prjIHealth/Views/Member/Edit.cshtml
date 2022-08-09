@@ -110,12 +110,7 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
-                @*<div class="offset-md-10 col-md-4">
-                    <button class="btn btn-success " data-toggle="modal" data-target="#resetPasswordModal" data-dismiss="modal" style="margin-right:5px">
-                        <i class="fa fa-key"></i> 重設密碼
-                    </button>
-                </div>*@
-                <form asp-action="Edit" asp-controller="Member" enctype="multipart/form-data" id="editForm">
+                <form asp-action="Edit" asp-controller="Member" enctype="multipart/form-data" id="editForm" name="EditForm">
                     <div class="container">
                         <div class="row">
                             <div class="col-4 reveal_b1">
@@ -269,8 +264,9 @@
             }
         });
         //============================================================================================
-        $('#inpEditMember').on('click', (event) =>
+        $('#inpEditMember').on('click', async (event) =>
         {
+            event.preventDefault();
             var registerD = new Date();
             var year = registerD.getFullYear().toString();
             var getDate = $('#inpEditBirthday').val();
@@ -286,19 +282,24 @@
                     if (getYear > (year - 10)) { $('#spanEditBirthday').text('必須大於十歳才可註冊').css("color", "red"); } else
                     {
                         $('#spanEditBirthday').text('請繼續').css("color", "blue");
-
-
                         event.preventDefault();
+                        let data = new FormData(document.EditForm);
+                        //let data = $("#editForm").serialize();
 
-                        let data = $("#editForm").serialize();
+                        //let jresult = await fetch('Edit', {
+                        //    body: editdata,
+                        //    method:"POST",
+                        //});
+
+                        //let result = await jresult.json();
                         $.ajax({
                             type: "Post",
                             url: "/Member/Edit",
                             data: data,
+                            processData: false,
+                            contentType:false,
                             success: function (data)
                             {
-
-                                let userName = $("#inpRegisterUserName").val();
                                 if (data == "true")
                                 {
                                     window.location.href = "/member/index"
@@ -308,12 +309,6 @@
                                 }
                             }
                         });
-
-
-
-
-
-
                     }
                 }
             }
