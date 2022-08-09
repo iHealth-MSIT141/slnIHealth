@@ -116,7 +116,7 @@
                         <label class="control-label">回覆方式</label>
                         <select name="rtype" id="rtype" class="custom-select">
                             <option value="999" disabled selected hidden>請選擇回覆方式</option>
-                            <option value="Email">Email</option>
+                            <option value="線上回覆">線上回覆</option>
                             <option value="電話聯絡">電話聯絡</option>
                         </select>
                     </div>
@@ -196,8 +196,8 @@
         var rtinpt = '';
         function SelectedFReplyType() {          /*判斷所選內容*/
             $('#AddFReplyType>input').remove();  /*避免重複點擊持續增加*/
-            if ($('#rtype').val() == "Email")
-                FReplyType = "Email";
+            if ($('#rtype').val() == "線上回覆")
+                FReplyType = "線上回覆";
             if ($('#rtype').val() == "電話聯絡")
                 FReplyType = "電話聯絡";
             input = `<input type="hidden" id="FReplyType" value="${FReplyType}" name="FReplyType" />`
