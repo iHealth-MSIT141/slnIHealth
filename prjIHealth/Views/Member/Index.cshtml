@@ -124,13 +124,13 @@
                                         <img src="~/img/member/@Model.FPicturePath" onerror="this.src='/img/member/defaultImage.jpg'" alt=" " class="rounded-circle img-responsive  border border-ligt" id="imgShow" />
                                     </div>
                                 </div>
-                                @*<div class="form-group  justify-content-center">
+                                <div class="form-group  justify-content-center">
                                     <div class="col offset-md-2">
                                         <label id="lblPicture" class="col-form-label col-form-label-lg">
-                                            <input id="imgLoad" type="file" name="photo" class="form-control" style="display:none;" readonly="readonly"/>
+                                            <input id="imgLoad" type="file" name="photo" class="form-control" style="display:none;" disabled/>
                                         </label>
                                     </div>
-                                </div>*@
+                                </div>
                             </div>
                             <div class="col-8 reveal_b2">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -140,7 +140,7 @@
                                         <label asp-for="FUserName" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="FUserName" class="form-control" readonly="readonly" />
+                                        <input asp-for="FUserName" class="form-control" disabled />
                                     </div>
                                     <span asp-validation-for="FUserName" class="text-danger"></span>
                                 </div>
@@ -149,7 +149,7 @@
                                         <label asp-for="FRegisterDate" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="FRegisterDate" class="form-control" readonly="readonly" />
+                                        <input asp-for="FRegisterDate" class="form-control" disabled />
                                     </div>
                                     <span asp-validation-for="FRegisterDate" class="text-danger"></span>
                                 </div>
@@ -158,7 +158,7 @@
                                         <label asp-for="FMemberName" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="FMemberName" class="form-control" readonly="readonly"/>
+                                        <input asp-for="FMemberName" class="form-control" disabled/>
                                     </div>
                                     <span asp-validation-for="FMemberName" class="text-danger"></span>
                                 </div>
@@ -167,7 +167,7 @@
                                         <label asp-for="FBirthday" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="FBirthday" class="form-control" readonly="readonly"/>
+                                        <input asp-for="FBirthday" class="form-control" disabled/>
                                     </div>
                                     <span asp-validation-for="FBirthday" class="text-danger"></span>
                                 </div>
@@ -176,7 +176,7 @@
                                         <label asp-for="FAddress" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="FAddress" class="form-control" readonly="readonly"/>
+                                        <input asp-for="FAddress" class="form-control" disabled/>
                                     </div>
                                     <span asp-validation-for="FAddress" class="text-danger"></span>
                                 </div>
@@ -185,7 +185,7 @@
                                         <label asp-for="FPhone" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="FPhone" class="form-control" readonly="readonly"/>
+                                        <input asp-for="FPhone" class="form-control" disabled/>
                                     </div>
                                     <span asp-validation-for="FPhone" class="text-danger"></span>
                                 </div>
@@ -194,7 +194,7 @@
                                         <label asp-for="FEmail" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="FEmail" class="form-control" readonly="readonly"/>
+                                        <input asp-for="FEmail" class="form-control" disabled/>
                                     </div>
                                     <span asp-validation-for="FEmail" class="text-danger"></span>
                                 </div>
@@ -203,7 +203,7 @@
                                         <label asp-for="FRemarks" class="control-label"></label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input asp-for="FRemarks" class="form-control" readonly="readonly"/>
+                                        <input asp-for="FRemarks" class="form-control" disabled/>
                                     </div>
                                     <span asp-validation-for="FRemarks" class="text-danger"></span>
                                 </div>
@@ -225,11 +225,20 @@
 
 @section Scripts{
     <script>
- 
+        $('#lblPicture').mouseover(function ()
+        {
+            $(this).css('cursor', 'pointer');
+        });
+        $()
+        document.querySelector('#imgLoad').addEventListener("change", function ()
+        {
+            document.getElementById('imgShow').src = window.URL.createObjectURL(this.files[0]);
+        });
+
         $('#inpMemberEdit').on('click', (event) =>
         {
             event.preventDefault();
-            window.location.href = "/member/edit";  });
-   
+            window.location.href = "/member/edit";            });
+        //});
     </script>
     }
