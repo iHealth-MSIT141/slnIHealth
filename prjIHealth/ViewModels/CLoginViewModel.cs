@@ -29,6 +29,8 @@ namespace prjiHealth.ViewModels
         public bool? FDisabled { get { return _tmember.FDisabled; } set { _tmember.FDisabled= value; } }
         public bool? FGender { get { return _tmember.FGender; } set { _tmember.FGender = value; } }
         public string fPicturePath { get { return _tmember.FPicturePath; } set { _tmember.FPicturePath = value; } }
+
+
         public IFormFile photo { get; set; }
 
         public int fAuthorityId {  get; set; }
