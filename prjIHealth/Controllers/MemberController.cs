@@ -105,24 +105,14 @@ namespace prjIHealth.Controllers
         public IActionResult Edit(CLoginViewModel vModel)
         {
             var q = _context.TMembers.FirstOrDefault(m => m.FMemberId == vModel.fMemberId);
-            //var photo = Request.Form.Files;
             if (q != null)
             {
-
-                var regEx = new Regex(@"[0-9 ~!@#$%^&*()<>?`;'|:,.]+");
-                var m = regEx.IsMatch(vModel.fMemberName);
-            
-                if (m == false)
-                {    if (vModel.photo != null)
-
                 if (vModel.photo != null)
-
                 {
                     string pName = Guid.NewGuid().ToString() + ".jpg";
-                        vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
+                    vModel.photo.CopyTo(new FileStream(_environment.WebRootPath + "/img/member/" + pName, FileMode.Create));
                     q.FPicturePath = pName;
                 }
-
                 q.FMemberName = vModel.fMemberName;
                 q.FBirthday = vModel.fBirthday.Replace("-","");
                 q.FAddress = vModel.fAddress;
